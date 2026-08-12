@@ -14,27 +14,26 @@ import {
   BookOpen,
   Image as ImageIcon,
   Lock,
+  Palette,
   PenTool,
   Presentation,
   Type,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { AssetCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 
-const PUBLIC_CATEGORY_TILES: {
-  category: AssetCategory;
-  icon: LucideIcon;
-}[] = [
-  { category: "brand-guidelines", icon: BookOpen },
-  { category: "logos", icon: PenTool },
-  { category: "brand-imagery", icon: ImageIcon },
-  { category: "fonts", icon: Type },
+const BRANDING_TILES: { id: string; href: string; icon: LucideIcon }[] = [
+  { id: "logo", href: "/branding/logo", icon: PenTool },
+  { id: "colors", href: "/branding/colors", icon: Palette },
+  { id: "typography", href: "/branding/typography", icon: Type },
+  { id: "imagery", href: "/branding/imagery", icon: ImageIcon },
+  { id: "guidelines", href: "/branding/guidelines", icon: BookOpen },
 ];
 
 export function HomeView() {
   const t = useTranslations("home");
+  const tSections = useTranslations("branding.sections");
   const router = useRouter();
   const { user } = useAuth();
 
@@ -53,7 +52,7 @@ export function HomeView() {
               size="lg"
               icon={<ArrowRight aria-hidden />}
               iconPosition="end"
-              onClick={() => router.push("/brand/logos")}
+              onClick={() => router.push("/branding")}
             >
               {t("browseAssets")}
             </Button>
@@ -72,13 +71,13 @@ export function HomeView() {
           <p className="text-sm text-muted-foreground">{t("categoriesSubtitle")}</p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {PUBLIC_CATEGORY_TILES.map(({ category, icon }) => (
+          {BRANDING_TILES.map(({ id, href, icon }) => (
             <Tile.Navigation
-              key={category}
-              href={`/brand/${category}`}
+              key={id}
+              href={href}
               icon={icon}
-              title={t(`categories.${category}.title`)}
-              description={t(`categories.${category}.description`)}
+              title={tSections(`${id}.title`)}
+              description={tSections(`${id}.description`)}
               cta={t("openCategory")}
             />
           ))}

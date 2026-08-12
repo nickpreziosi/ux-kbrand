@@ -2,10 +2,13 @@
   "shell": {
     "nav": {
       "home": "Inicio",
-      "guidelines": "Guías de marca",
-      "logos": "Logotipos",
+      "branding": "Marca",
+      "overview": "Resumen",
+      "logo": "Logotipo",
+      "colors": "Colores",
+      "typography": "Tipografía",
       "imagery": "Imágenes",
-      "fonts": "Tipografía",
+      "guidelines": "Guías de marca",
       "sales": "Recursos de ventas",
       "adminAssets": "Gestionar recursos",
       "adminUsers": "Usuarios y accesos"
@@ -29,54 +32,253 @@
     "categoriesSubtitle": "Categorías seleccionadas: siempre vigentes, siempre aprobadas.",
     "openCategory": "Abrir",
     "categories": {
-      "brand-guidelines": {
-        "title": "Guías de marca",
-        "description": "El manual de marca, voz y tono, y reglas de uso."
-      },
-      "logos": {
-        "title": "Logotipos",
-        "description": "Versiones principal, monocromática e ícono en formatos vectoriales."
-      },
-      "brand-imagery": {
-        "title": "Imágenes de marca",
-        "description": "Fondos y texturas visuales para presentaciones y páginas."
-      },
-      "fonts": {
-        "title": "Tipografía",
-        "description": "El kit tipográfico Sora y los tokens de tipografía."
-      },
       "sales": {
         "title": "Recursos de ventas",
         "description": "Presentaciones y materiales de ventas para empleados."
       }
     }
   },
+  "branding": {
+    "sections": {
+      "logo": {
+        "title": "Logotipo",
+        "description": "Versiones, área de respeto, tamaños mínimos y reglas de uso."
+      },
+      "colors": {
+        "title": "Colores",
+        "description": "La paleta de marca con nombres de tokens y valores hex."
+      },
+      "typography": {
+        "title": "Tipografía",
+        "description": "Sora, la escala tipográfica y el kit de fuentes descargable."
+      },
+      "imagery": {
+        "title": "Imágenes",
+        "description": "Fondos aprobados y cómo utilizarlos."
+      },
+      "guidelines": {
+        "title": "Guías de marca",
+        "description": "Consulta o descarga el documento completo de guías de marca."
+      }
+    },
+    "overview": {
+      "title": "Marca",
+      "subtitle": "Los estándares que más se consultan, junto al documento completo que los respalda.",
+      "sectionsAriaLabel": "Secciones de marca",
+      "openSection": "Abrir",
+      "sourceOfTruthAriaLabel": "Guías de marca completas",
+      "sourceOfTruthTitle": "La fuente de verdad",
+      "sourceOfTruthDescription": "Estas páginas resumen los estándares que los equipos consultan a diario. El documento completo de guías de marca sigue siendo la referencia autorizada: ante la duda, consúltalo.",
+      "openGuidelines": "Abrir guías de marca"
+    },
+    "document": {
+      "view": "Ver",
+      "download": "Descargar",
+      "updated": "Actualizado el {date}",
+      "unavailable": "El documento de guías de marca no está disponible en este momento.",
+      "previewFallback": "Tu navegador no puede mostrar este documento incrustado.",
+      "openInNewTab": "Abrir en una pestaña nueva"
+    },
+    "logo": {
+      "title": "Logotipo",
+      "subtitle": "Versiones aprobadas y las reglas que las mantienen reconocibles.",
+      "loadError": "No pudimos cargar los archivos del logotipo. Inténtalo de nuevo.",
+      "variantsAriaLabel": "Versiones del logotipo",
+      "downloadVariant": "Descargar",
+      "clearspaceTitle": "Área de respeto y tamaño mínimo",
+      "clearspaceDescription": "Mantén un área de respeto de al menos 1× la altura de la K en cada lado. Nada —texto, imágenes o bordes— debe invadir ese espacio.",
+      "minimumSize": "Tamaño mínimo: 24 px de alto en pantalla y 10 mm en impresión. El ícono puede reducirse hasta 16 px.",
+      "rulesTitle": "Qué hacer y qué evitar",
+      "variants": {
+        "primary": {
+          "name": "Versión principal (azul)",
+          "usage": "La opción por defecto. Úsala sobre fondos claros donde la marca tenga espacio."
+        },
+        "dark": {
+          "name": "Versión oscura",
+          "usage": "Para fondos claros donde el azul competiría con las imágenes del entorno."
+        },
+        "reversed": {
+          "name": "Versión invertida",
+          "usage": "Para fondos oscuros, fotografías y superposiciones sobre video."
+        },
+        "logomark": {
+          "name": "Isotipo",
+          "usage": "Avatares, favicons e íconos de app: donde la versión completa no se lea bien."
+        }
+      },
+      "rules": {
+        "dos": {
+          "clearspace": "Respeta el área de protección completa alrededor del logotipo.",
+          "approvedFiles": "Usa los archivos vectoriales de esta página: siempre la última versión.",
+          "contrast": "Coloca el logotipo sobre fondos con contraste suficiente para que se lea.",
+          "scaleProportionally": "Escala proporcionalmente desde la esquina."
+        },
+        "donts": {
+          "recolor": "No cambies el color del logotipo ni le apliques degradados.",
+          "distort": "No estires, comprimas, rotes ni inclines el logotipo.",
+          "effects": "No agregues sombras, contornos ni otros efectos.",
+          "rebuild": "No vuelvas a escribir ni redibujes el logotipo: descárgalo."
+        }
+      },
+      "allFilesTitle": "Todos los archivos del logotipo",
+      "allFilesDescription": "Todos los logotipos de K Lab y de producto del catálogo, incluidos los vectoriales para impresión."
+    },
+    "colors": {
+      "title": "Colores",
+      "subtitle": "La paleta como tokens de diseño: las muestras reflejan el valor real del tema activo.",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "value": "Valor",
+      "copied": "Se copió {value}",
+      "copyFailed": "No pudimos copiarlo. Intenta seleccionar el valor manualmente.",
+      "copyHex": "Copiar {value}",
+      "tokenNote": "Los colores de producto son propiedades personalizadas de CSS, por lo que los componentes se adaptan automáticamente al ajustar un token: referencia el nombre del token en el código en lugar de un hex fijo. Los colores de identidad de arriba aún no son tokens: la marca corporativa es azul mientras el acento de producto sigue siendo naranja, una divergencia que el equipo de diseño debe resolver.",
+      "groups": {
+        "identity": {
+          "title": "Identidad de marca",
+          "description": "Los colores de K Lab 2025, extraídos del logotipo principal y de las imágenes de fondo."
+        },
+        "product": {
+          "title": "Tokens de diseño de producto",
+          "description": "Lo que realmente renderizan las aplicaciones de K Lab. Ten en cuenta que el acento sigue siendo naranja mientras la identidad es azul: consulta la nota abajo."
+        },
+        "status": {
+          "title": "Estado",
+          "description": "Reservados para retroalimentación, nunca decorativos."
+        }
+      },
+      "tokens": {
+        "brandBlue": {
+          "name": "Azul de marca",
+          "usage": "El color principal de la identidad, presente en el logotipo principal."
+        },
+        "electricBlue": {
+          "name": "Azul eléctrico",
+          "usage": "El acento en las piezas de marca: brillo del chevrón, degradados y destacados."
+        },
+        "deepNavy": {
+          "name": "Azul profundo",
+          "usage": "El fondo oscuro detrás de las imágenes de marca y las versiones invertidas."
+        },
+        "brandWhite": {
+          "name": "Blanco",
+          "usage": "Versiones invertidas y fondo claro para el logotipo principal."
+        },
+        "accentBrand": {
+          "name": "Acento de marca",
+          "usage": "El naranja de K Lab. Acciones principales, énfasis y momentos de marca."
+        },
+        "foreground": {
+          "name": "Primer plano",
+          "usage": "Texto e íconos sobre el fondo por defecto."
+        },
+        "background": {
+          "name": "Fondo",
+          "usage": "La superficie base de la página en ambos temas."
+        },
+        "secondary": {
+          "name": "Secundario",
+          "usage": "Paneles atenuados, encabezados de tabla y superficies inactivas."
+        },
+        "accent": {
+          "name": "Acento",
+          "usage": "Estados de hover y selección sobre superficies neutras."
+        },
+        "muted": {
+          "name": "Atenuado",
+          "usage": "Texto secundario, leyendas y textos de ayuda."
+        },
+        "border": {
+          "name": "Borde",
+          "usage": "Divisores, contornos de tarjetas y bordes de campos."
+        },
+        "success": {
+          "name": "Éxito",
+          "usage": "Confirmaciones y estados correctos."
+        },
+        "warning": {
+          "name": "Advertencia",
+          "usage": "Requiere atención, pero aún no ha fallado nada."
+        },
+        "destructive": {
+          "name": "Destructivo",
+          "usage": "Errores y acciones irreversibles."
+        }
+      },
+      "identityColor": "Color de identidad"
+    },
+    "typography": {
+      "title": "Tipografía",
+      "subtitle": "Una sola tipografía, una escala fija y los tokens que la acompañan.",
+      "typefaceLabel": "Tipografía de marca",
+      "typefaceDescription": "Sora sostiene todas las superficies de K Lab: interfaz de producto, presentaciones y marketing. Pesos de 300 a 700; los títulos usan 600–700 y el cuerpo 400.",
+      "weightsTitle": "Pesos",
+      "specimenText": "Finanzas al ritmo de tu negocio",
+      "scaleTitle": "Escala tipográfica",
+      "scaleDescription": "Tamaño, peso e interlineado de cada nivel. Descarga los tokens abajo para usarlos en código.",
+      "scale": {
+        "display": "Display",
+        "h1": "Título 1",
+        "h2": "Título 2",
+        "h3": "Título 3",
+        "bodyLarge": "Cuerpo grande",
+        "body": "Cuerpo",
+        "caption": "Leyenda",
+        "overline": "Antetítulo"
+      },
+      "downloadsTitle": "Kit de fuentes y tokens",
+      "downloadsDescription": "Todo lo necesario para reproducir la tipografía de K Lab en una nueva superficie.",
+      "loadError": "No pudimos cargar los archivos de fuentes. Inténtalo de nuevo."
+    },
+    "imagery": {
+      "title": "Imágenes",
+      "subtitle": "Fondos y texturas aprobados, y cómo aplicarlos.",
+      "doTitle": "Sí",
+      "dontTitle": "No",
+      "dos": {
+        "approvedSets": "Usa los sets aprobados para presentaciones, portadas y secciones destacadas.",
+        "contrast": "Mantén legible el texto sobre las imágenes: agrega una capa si baja el contraste.",
+        "crop": "Recorta hacia el área principal en lugar de reducir toda la imagen."
+      },
+      "donts": {
+        "stretch": "No estires las imágenes para ajustarlas a un marco.",
+        "recolor": "No cambies el color ni apliques filtros intensos a las imágenes de marca.",
+        "clutter": "No combines varias imágenes cargadas en un mismo diseño."
+      },
+      "libraryTitle": "Biblioteca de imágenes",
+      "libraryDescription": "Descarga los archivos originales en máxima resolución.",
+      "loadError": "No pudimos cargar las imágenes. Inténtalo de nuevo."
+    },
+    "guidelines": {
+      "title": "Guías de marca",
+      "subtitle": "El documento completo: léelo aquí o descarga una copia.",
+      "loadError": "No pudimos cargar las guías. Inténtalo de nuevo.",
+      "companionAriaLabel": "Documentos complementarios",
+      "companionTitle": "Documentos complementarios",
+      "companionDescription": "Material de referencia que acompaña a las guías principales.",
+      "sourceNote": "Este documento es la fuente de verdad. Los resúmenes del portal remiten a él."
+    }
+  },
   "brand": {
-    "loadError": "No pudimos cargar estos recursos. Inténtalo de nuevo.",
     "categories": {
       "brand-guidelines": {
-        "title": "Guías de marca",
-        "subtitle": "Reglas y documentos de referencia para usar la marca K Lab."
+        "title": "Guías de marca"
       },
       "logos": {
-        "title": "Logotipos",
-        "subtitle": "Versiones aprobadas: descárgalas, no las redibujes."
+        "title": "Logotipos"
       },
       "brand-imagery": {
-        "title": "Imágenes de marca",
-        "subtitle": "Fondos y texturas para presentaciones y páginas."
+        "title": "Imágenes de marca"
       },
       "fonts": {
-        "title": "Tipografía",
-        "subtitle": "La tipografía Sora y los tokens de escala tipográfica."
+        "title": "Tipografía"
       },
       "pitch-decks": {
-        "title": "Presentaciones",
-        "subtitle": "Presentaciones aprobadas para conversaciones con clientes."
+        "title": "Presentaciones"
       },
       "sales-materials": {
-        "title": "Materiales de ventas",
-        "subtitle": "Fichas de producto, casos de éxito y material de apoyo."
+        "title": "Materiales de ventas"
       }
     }
   },

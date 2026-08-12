@@ -4,10 +4,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  // Dev pages are served cross-origin via the subdomain-native hosts (the server
-  // binds 127.0.0.1) — without these, Next silently blocks /_next dev resources
-  // and pages never hydrate (dead buttons, no HMR).
-  allowedDevOrigins: ["kbrand.klab.localhost", "*.klab.localhost"],
+  // Without these, Next dev answers /_next/static/chunks with 403 and the page
+  // renders but never hydrates (dead buttons, no client data, no HMR).
+  // Both entry points are supported: plain localhost and the subdomain-native
+  // hosts used when running alongside the SSO shell.
+  allowedDevOrigins: [
+    "localhost",
+    "127.0.0.1",
+    "kbrand.klab.localhost",
+    "*.klab.localhost",
+  ],
 };
 
 export default withNextIntl(nextConfig);

@@ -1,0 +1,47 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1237 >>
+stream
+BT /F1 24 Tf 72 720 Td (K Lab Brand Guidelines \(WIP\)) Tj ET
+BT /F1 12 Tf 72 680 Td (PLACEHOLDER - awaiting the PDF export of the working document.) Tj ET
+BT /F1 12 Tf 72 660 Td () Tj ET
+BT /F1 12 Tf 72 640 Td (The complete guidelines exist as an Illustrator file:) Tj ET
+BT /F1 12 Tf 72 620 Td (  brand-source/guidelines-wip/K Lab - Brand Guidelines wip 10Aug.ai) Tj ET
+BT /F1 12 Tf 72 600 Td (It is 486 MB and cannot be served or version-controlled as-is.) Tj ET
+BT /F1 12 Tf 72 580 Td () Tj ET
+BT /F1 12 Tf 72 560 Td (Meanwhile the portal surfaces the key standards directly:) Tj ET
+BT /F1 12 Tf 72 540 Td (  Logo      - lockups, clearspace, minimum sizes, do and don't) Tj ET
+BT /F1 12 Tf 72 520 Td (  Colors    - brand identity palette and product design tokens) Tj ET
+BT /F1 12 Tf 72 500 Td (  Typography- Sora, the type scale, and downloadable tokens) Tj ET
+BT /F1 12 Tf 72 480 Td (  Imagery   - approved backgrounds, renders, and usage rules) Tj ET
+BT /F1 12 Tf 72 460 Td () Tj ET
+BT /F1 12 Tf 72 440 Td (Replace this file with the real export and rerun:) Tj ET
+BT /F1 12 Tf 72 420 Td (  node scripts/generate-asset-catalog.mjs) Tj ET
+BT /F1 9 Tf 72 60 Td (K Lab - Brand and Sales Resource Portal - prototype placeholder) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001529 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1599
+%%EOF

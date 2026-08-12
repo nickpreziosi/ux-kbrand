@@ -41,6 +41,18 @@ export interface BrandAsset {
   createdBy: string;
 }
 
+/**
+ * Marks the complete brand guidelines document — the source of truth the
+ * portal links to rather than reproducing as web content. A tag (not a new
+ * field) keeps the schema flat and lets admins move the marker by editing an
+ * asset.
+ */
+export const BRAND_BOOK_TAG = "brand-book";
+
+export function findBrandBookAsset(assets: BrandAsset[]): BrandAsset | undefined {
+  return assets.find((asset) => asset.tags.includes(BRAND_BOOK_TAG));
+}
+
 export interface CreateBrandAssetInput {
   title: string;
   description: string;

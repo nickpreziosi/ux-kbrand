@@ -2,10 +2,13 @@
   "shell": {
     "nav": {
       "home": "Home",
-      "guidelines": "Guidelines",
-      "logos": "Logos",
+      "branding": "Branding",
+      "overview": "Overview",
+      "logo": "Logo",
+      "colors": "Colors",
+      "typography": "Typography",
       "imagery": "Imagery",
-      "fonts": "Fonts",
+      "guidelines": "Brand guidelines",
       "sales": "Sales resources",
       "adminAssets": "Manage assets",
       "adminUsers": "Users & access"
@@ -29,54 +32,253 @@
     "categoriesSubtitle": "Curated categories — always current, always approved.",
     "openCategory": "Open",
     "categories": {
-      "brand-guidelines": {
-        "title": "Brand guidelines",
-        "description": "The brand book, voice & tone, and usage rules."
-      },
-      "logos": {
-        "title": "Logos",
-        "description": "Primary, monochrome, and icon lockups in vector formats."
-      },
-      "brand-imagery": {
-        "title": "Brand imagery",
-        "description": "Backgrounds and visual textures for decks and pages."
-      },
-      "fonts": {
-        "title": "Fonts",
-        "description": "The Sora font kit and typography tokens."
-      },
       "sales": {
         "title": "Sales resources",
         "description": "Pitch decks and sales materials for employees."
       }
     }
   },
+  "branding": {
+    "sections": {
+      "logo": {
+        "title": "Logo",
+        "description": "Lockups, clearspace, minimum sizes, and usage rules."
+      },
+      "colors": {
+        "title": "Colors",
+        "description": "The brand palette with token names and hex values."
+      },
+      "typography": {
+        "title": "Typography",
+        "description": "Sora, the type scale, and the downloadable font kit."
+      },
+      "imagery": {
+        "title": "Imagery",
+        "description": "Approved backgrounds and how to use them."
+      },
+      "guidelines": {
+        "title": "Brand guidelines",
+        "description": "View or download the complete brand guidelines document."
+      }
+    },
+    "overview": {
+      "title": "Branding",
+      "subtitle": "The standards you reach for most, plus the complete guidelines behind them.",
+      "sectionsAriaLabel": "Branding sections",
+      "openSection": "Open",
+      "sourceOfTruthAriaLabel": "Complete brand guidelines",
+      "sourceOfTruthTitle": "The source of truth",
+      "sourceOfTruthDescription": "These pages summarize the standards teams reference every day. The complete brand guidelines document remains authoritative — when in doubt, check it.",
+      "openGuidelines": "Open brand guidelines"
+    },
+    "document": {
+      "view": "View",
+      "download": "Download",
+      "updated": "Updated {date}",
+      "unavailable": "The brand guidelines document isn't available right now.",
+      "previewFallback": "Your browser can't display this document inline.",
+      "openInNewTab": "Open in a new tab"
+    },
+    "logo": {
+      "title": "Logo",
+      "subtitle": "Approved lockups and the rules that keep them recognizable.",
+      "loadError": "We couldn't load the logo files. Please try again.",
+      "variantsAriaLabel": "Logo variants",
+      "downloadVariant": "Download",
+      "clearspaceTitle": "Clearspace & minimum size",
+      "clearspaceDescription": "Keep clearspace of at least 1× the height of the K on every side. Nothing — text, imagery, or edges — enters that space.",
+      "minimumSize": "Minimum size: 24px height on screen, 10mm in print. The icon mark may go down to 16px.",
+      "rulesTitle": "Do & don't",
+      "variants": {
+        "primary": {
+          "name": "Primary lockup (blue)",
+          "usage": "The default. Use on light surfaces wherever the brand has room to breathe."
+        },
+        "dark": {
+          "name": "Dark lockup",
+          "usage": "For light backgrounds where the blue would compete with surrounding artwork."
+        },
+        "reversed": {
+          "name": "Reversed lockup",
+          "usage": "For dark surfaces, photography, and video overlays."
+        },
+        "logomark": {
+          "name": "Logomark",
+          "usage": "Avatars, favicons, and app icons — anywhere the full lockup won't read."
+        }
+      },
+      "rules": {
+        "dos": {
+          "clearspace": "Keep the full clearspace around the lockup.",
+          "approvedFiles": "Use the vector files from this page — always the latest version.",
+          "contrast": "Place the logo on surfaces with enough contrast to stay legible.",
+          "scaleProportionally": "Scale proportionally from the corner."
+        },
+        "donts": {
+          "recolor": "Don't recolor the logo or apply gradients to it.",
+          "distort": "Don't stretch, squash, rotate, or skew the lockup.",
+          "effects": "Don't add shadows, outlines, or other effects.",
+          "rebuild": "Don't retype or redraw the wordmark — download it."
+        }
+      },
+      "allFilesTitle": "All logo files",
+      "allFilesDescription": "Every K Lab and product logo in the catalog, including vector masters for print."
+    },
+    "colors": {
+      "title": "Colors",
+      "subtitle": "The palette as design tokens — swatches show the live value in your current theme.",
+      "light": "Light",
+      "dark": "Dark",
+      "value": "Value",
+      "copied": "Copied {value}",
+      "copyFailed": "We couldn't copy that. Try selecting the value instead.",
+      "copyHex": "Copy {value}",
+      "tokenNote": "Product colours are CSS custom properties, so components adapt automatically when a token is retuned — reference the token name in code rather than a hard-coded hex. The identity colours above are not yet tokens: the corporate brand is blue while the product accent is still orange, a divergence the design team needs to resolve.",
+      "groups": {
+        "identity": {
+          "title": "Brand identity",
+          "description": "The 2025 K Lab colours, sampled from the master logo and background artwork."
+        },
+        "product": {
+          "title": "Product design tokens",
+          "description": "What the K Lab applications actually render with. Note the accent still ships orange while the identity is blue — see the note below."
+        },
+        "status": {
+          "title": "Status",
+          "description": "Reserved for feedback — never decorative."
+        }
+      },
+      "tokens": {
+        "brandBlue": {
+          "name": "Brand blue",
+          "usage": "The primary identity colour, carried by the main logo lockup."
+        },
+        "electricBlue": {
+          "name": "Electric blue",
+          "usage": "The accent in brand artwork — chevron glow, gradients, and highlights."
+        },
+        "deepNavy": {
+          "name": "Deep navy",
+          "usage": "The dark ground behind brand imagery and reversed lockups."
+        },
+        "brandWhite": {
+          "name": "White",
+          "usage": "Reversed lockups and the light ground for the primary logo."
+        },
+        "accentBrand": {
+          "name": "Accent brand",
+          "usage": "The K Lab orange. Primary actions, highlights, and brand moments."
+        },
+        "foreground": {
+          "name": "Foreground",
+          "usage": "Body text and icons on the default background."
+        },
+        "background": {
+          "name": "Background",
+          "usage": "The base page surface in both themes."
+        },
+        "secondary": {
+          "name": "Secondary",
+          "usage": "Muted panels, table headers, and inactive surfaces."
+        },
+        "accent": {
+          "name": "Accent",
+          "usage": "Hover and selected states on neutral surfaces."
+        },
+        "muted": {
+          "name": "Muted",
+          "usage": "Secondary text, captions, and helper copy."
+        },
+        "border": {
+          "name": "Border",
+          "usage": "Dividers, card outlines, and input borders."
+        },
+        "success": {
+          "name": "Success",
+          "usage": "Confirmations and healthy states."
+        },
+        "warning": {
+          "name": "Warning",
+          "usage": "Attention needed, but nothing has failed yet."
+        },
+        "destructive": {
+          "name": "Destructive",
+          "usage": "Errors and irreversible actions."
+        }
+      },
+      "identityColor": "Identity colour"
+    },
+    "typography": {
+      "title": "Typography",
+      "subtitle": "One typeface, a fixed scale, and the tokens that ship with it.",
+      "typefaceLabel": "Brand typeface",
+      "typefaceDescription": "Sora carries every K Lab surface — product UI, decks, and marketing. Weights 300 to 700; headings sit at 600–700, body at 400.",
+      "weightsTitle": "Weights",
+      "specimenText": "Finance that moves at the speed of your business",
+      "scaleTitle": "Type scale",
+      "scaleDescription": "Size, weight, and line height for each step. Download the tokens below to use them in code.",
+      "scale": {
+        "display": "Display",
+        "h1": "Heading 1",
+        "h2": "Heading 2",
+        "h3": "Heading 3",
+        "bodyLarge": "Body large",
+        "body": "Body",
+        "caption": "Caption",
+        "overline": "Overline"
+      },
+      "downloadsTitle": "Font kit & tokens",
+      "downloadsDescription": "Everything you need to reproduce K Lab typography in a new surface.",
+      "loadError": "We couldn't load the font files. Please try again."
+    },
+    "imagery": {
+      "title": "Imagery",
+      "subtitle": "Approved backgrounds and textures, and how to apply them.",
+      "doTitle": "Do",
+      "dontTitle": "Don't",
+      "dos": {
+        "approvedSets": "Use the approved sets below for decks, covers, and hero sections.",
+        "contrast": "Keep text over imagery legible — add an overlay if contrast drops.",
+        "crop": "Crop to the focal area rather than scaling the whole image down."
+      },
+      "donts": {
+        "stretch": "Don't stretch images to fit a frame.",
+        "recolor": "Don't recolor or heavily filter brand imagery.",
+        "clutter": "Don't stack multiple busy images in one layout."
+      },
+      "libraryTitle": "Image library",
+      "libraryDescription": "Download the source files at full resolution.",
+      "loadError": "We couldn't load the imagery. Please try again."
+    },
+    "guidelines": {
+      "title": "Brand guidelines",
+      "subtitle": "The complete document — read it here or download a copy.",
+      "loadError": "We couldn't load the guidelines. Please try again.",
+      "companionAriaLabel": "Companion documents",
+      "companionTitle": "Companion documents",
+      "companionDescription": "Reference material that sits alongside the main guidelines.",
+      "sourceNote": "This document is the source of truth. The summaries elsewhere in the portal point back to it."
+    }
+  },
   "brand": {
-    "loadError": "We couldn't load these assets. Please try again.",
     "categories": {
       "brand-guidelines": {
-        "title": "Brand guidelines",
-        "subtitle": "Rules and reference documents for using the K Lab brand."
+        "title": "Brand guidelines"
       },
       "logos": {
-        "title": "Logos",
-        "subtitle": "Approved lockups — download, don't redraw."
+        "title": "Logos"
       },
       "brand-imagery": {
-        "title": "Brand imagery",
-        "subtitle": "Backgrounds and textures for presentations and pages."
+        "title": "Brand imagery"
       },
       "fonts": {
-        "title": "Fonts",
-        "subtitle": "The Sora typeface and the type scale tokens."
+        "title": "Fonts"
       },
       "pitch-decks": {
-        "title": "Pitch decks",
-        "subtitle": "Approved decks for customer conversations."
+        "title": "Pitch decks"
       },
       "sales-materials": {
-        "title": "Sales materials",
-        "subtitle": "One-pagers, case studies, and leave-behinds."
+        "title": "Sales materials"
       }
     }
   },

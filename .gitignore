@@ -37,3 +37,9 @@ pnpm-debug.log*
 
 # Turborepo (if added later)
 .turbo
+
+# Brand originals too large for git (~880 MB). Vector sources, the Sora
+# typeface, and the generated web files in public/brand-files ARE committed.
+# Regenerate deliverables with: node scripts/build-brand-assets.mjs
+brand-source/raster-masters/
+brand-source/guidelines-wip/

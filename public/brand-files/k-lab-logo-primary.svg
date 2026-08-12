@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-label="K Lab">
-  <rect x="8" y="8" width="80" height="80" rx="18" fill="#F97316"/>
-  <path d="M32 26v44M32 48l26-22M36 44l24 26" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <text x="108" y="62" font-family="Sora, sans-serif" font-size="40" font-weight="700" fill="#0B0B0F">K Lab</text>
-  <text x="110" y="80" font-family="Sora, sans-serif" font-size="13" font-weight="500" letter-spacing="6" fill="#F97316">FINTECH</text>
-</svg>

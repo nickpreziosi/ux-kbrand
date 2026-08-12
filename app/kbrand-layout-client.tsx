@@ -16,6 +16,7 @@ import {
   PREFERENCES_BAR_LAYOUT_FLUSH_CLASS,
   PREFERENCES_BAR_LAYOUT_RESPONSIVE_CLASS,
   cn,
+  type AppSidebarAccordionItem,
   type AppSidebarNavLink,
 } from "@k-lab/components";
 import {
@@ -23,7 +24,9 @@ import {
   FolderCog,
   House,
   Image as ImageIcon,
+  LayoutGrid,
   LogIn,
+  Palette,
   PenTool,
   Presentation,
   Type,
@@ -59,25 +62,41 @@ export function KBrandLayoutClient({
   const { locale, changeLocale } = useAppLocaleChange();
 
   const primaryNav = React.useMemo<AppSidebarNavLink[]>(
+    () => [{ href: "/", label: t("nav.home"), icon: House }],
+    [t]
+  );
+
+  /** Branding standards live under one expandable group; the full guidelines
+   *  document is the last entry, as the source of truth behind the summaries. */
+  const brandingAccordion = React.useMemo<AppSidebarAccordionItem[]>(
     () => [
-      { href: "/", label: t("nav.home"), icon: House },
-      { href: "/brand/brand-guidelines", label: t("nav.guidelines"), icon: BookOpen },
-      { href: "/brand/logos", label: t("nav.logos"), icon: PenTool },
-      { href: "/brand/brand-imagery", label: t("nav.imagery"), icon: ImageIcon },
-      { href: "/brand/fonts", label: t("nav.fonts"), icon: Type },
-      { href: "/sales", label: t("nav.sales"), icon: Presentation },
+      {
+        id: "branding",
+        label: t("nav.branding"),
+        icon: Palette,
+        items: [
+          { href: "/branding", label: t("nav.overview"), icon: LayoutGrid },
+          { href: "/branding/logo", label: t("nav.logo"), icon: PenTool },
+          { href: "/branding/colors", label: t("nav.colors"), icon: Palette },
+          { href: "/branding/typography", label: t("nav.typography"), icon: Type },
+          { href: "/branding/imagery", label: t("nav.imagery"), icon: ImageIcon },
+          { href: "/branding/guidelines", label: t("nav.guidelines"), icon: BookOpen },
+        ],
+      },
     ],
     [t]
   );
 
-  const adminNav = React.useMemo<AppSidebarNavLink[]>(
-    () =>
-      isAdmin
+  const secondaryNav = React.useMemo<AppSidebarNavLink[]>(
+    () => [
+      { href: "/sales", label: t("nav.sales"), icon: Presentation },
+      ...(isAdmin
         ? [
             { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
             { href: "/admin/users", label: t("nav.adminUsers"), icon: Users },
           ]
-        : [],
+        : []),
+    ],
     [isAdmin, t]
   );
 
@@ -124,7 +143,8 @@ export function KBrandLayoutClient({
       sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
       preferences={preferences}
       primaryNav={primaryNav}
-      bottomNav={adminNav}
+      accordions={brandingAccordion}
+      bottomNav={secondaryNav}
       user={shellUser}
       onProfileClick={() => undefined}
       onSettingsClick={() => router.push("/settings")}
