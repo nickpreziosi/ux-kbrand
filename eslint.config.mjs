@@ -14,6 +14,14 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-require-imports": "off",
     },
   },
+  // Match the workspace baseline (core-admin pins an older react-hooks plugin
+  // where this rule doesn't error): the fetch-in-effect recipe shared across
+  // product repos sets loading state synchronously inside effects.
+  {
+    rules: {
+      "react-hooks/set-state-in-effect": "warn",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
