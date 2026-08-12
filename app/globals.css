@@ -1,0 +1,571 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Avatar trigger hover - overrides ghost button to use accent-brand tint */
+  .avatar-trigger-btn:hover {
+    background-color: hsl(var(--accent-brand) / 0.1) !important;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  /* ============================================
+     GLASS MORPHISM UTILITY CLASSES
+     ============================================ */
+  /* Standard glass morphism effect */
+  .glass-morphism {
+    /* Performance optimizations */
+    will-change: backdrop-filter;
+    transform: translateZ(0);
+
+    /* Enhanced backdrop filter with saturation for richer colors */
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+
+    /* Background with opacity */
+    background-color: hsl(var(--background) / var(--glass-background-opacity)) !important;
+
+    /* Asymmetric border for depth - top/left lighter, bottom/right darker */
+    border-top: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5));
+    border-right: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
+    border-bottom: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 0.5));
+    border-left: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
+
+    /* Multi-layer shadow system with outer shadow and inner highlight */
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 1px 0 rgba(255, 255, 255, var(--glass-inner-highlight-opacity));
+  }
+
+  /* Glass morphism for overlay components (lower opacity for subtle backdrop) */
+  .glass-morphism-overlay {
+    /* Performance optimizations */
+    will-change: backdrop-filter, transform;
+
+    /* Enhanced backdrop filter with saturation */
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+
+    /* Background with lower opacity for overlays */
+    background-color: hsl(var(--background) / var(--glass-background-opacity-overlay)) !important;
+
+    /* Asymmetric border for depth */
+    border-top: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5));
+    border-right: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
+    border-bottom: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 0.5));
+    border-left: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
+
+    /* Multi-layer shadow system */
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 1px 0 rgba(255, 255, 255, var(--glass-inner-highlight-opacity));
+  }
+
+  /* Navbar glass effect - uses glass morphism tokens without shadow */
+  /* Semi-transparent background required for backdrop-filter to show blur effect */
+  .glass-navbar {
+    /* Performance optimizations */
+    will-change: backdrop-filter;
+    transform: translateZ(0);
+
+    /* Semi-transparent background - enables visible glass blur (backdrop-filter blurs content behind) */
+    background-color: hsl(var(--background) / var(--glass-background-opacity)) !important;
+
+    /* Enhanced backdrop filter with saturation */
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+
+    /* Asymmetric border */
+    border-top-color: hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5)) !important;
+    border-right-color: hsl(var(--foreground) / var(--glass-border-opacity)) !important;
+    border-bottom-color: hsl(
+      var(--foreground) / calc(var(--glass-border-opacity) * 0.5)
+    ) !important;
+    border-left-color: hsl(var(--foreground) / var(--glass-border-opacity)) !important;
+  }
+
+  /* Glass item hover effect - reduced opacity for items inside glass containers */
+  /* Apply to interactive elements (buttons, links, menu items) within glass-morphism containers */
+  /* Overrides accent background to 50% opacity for softer hover on translucent backgrounds */
+
+  /* For components that ALWAYS have glass-morphism (dropdowns, popovers, selects, etc.) */
+  .glass-item:hover,
+  .glass-item:focus,
+  .glass-item[data-state="open"],
+  .glass-item[data-highlighted] {
+    background-color: hsl(var(--accent) / 0.5) !important;
+  }
+
+  /* For components that only have glass-morphism in DARK MODE (dialogs, sheets, drawers, sidebars) */
+  /* Uses dark:glass-morphism-overlay - so glass-item effect should only apply in dark mode */
+  .dark .glass-item-overlay:hover,
+  .dark .glass-item-overlay:focus,
+  .dark .glass-item-overlay[data-state="open"],
+  .dark .glass-item-overlay[data-highlighted] {
+    background-color: hsl(var(--accent) / 0.5) !important;
+  }
+
+  /* Mobile sidebar: larger dropdown items (language, etc.) to match nav link touch targets */
+  body[data-mobile-sidebar-open] [data-radix-select-item],
+  body[data-mobile-sidebar-open] [data-radix-dropdown-menu-item],
+  body[data-mobile-sidebar-open] [role="option"],
+  body[data-mobile-sidebar-open] [role="menuitem"] {
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+  }
+
+  /* Enhanced fallback for browsers without backdrop-filter support */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass-morphism,
+    .glass-morphism-overlay {
+      background-color: hsl(var(--background) / 0.95) !important;
+      filter: blur(1px);
+    }
+
+    .glass-navbar {
+      background-color: hsl(var(--background) / 0.95) !important;
+    }
+  }
+}
+
+html {
+  overscroll-behavior: none; /* Prevent bounce/chaining at viewport only */
+}
+
+/* Mobile viewport fix: 100vh on mobile Safari/Chrome uses the "large" viewport (URL bar hidden),
+   which can exceed the visible area when the URL bar is visible, causing body scroll.
+   Use 100dvh (dynamic viewport height) to match the actual visible viewport. */
+.h-screen-dvh {
+  height: 100vh; /* fallback for older browsers */
+}
+@supports (height: 100dvh) {
+  .h-screen-dvh {
+    height: 100dvh;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: hsl(var(--background));
+  /* Subtle gradient gives backdrop-filter something to blur for visible glass effect */
+  background-image: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
+}
+
+/* Auth pages: force white background on html and body */
+html.auth-page,
+body.auth-page,
+main.auth-page {
+  background-color: white !important;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@layer base {
+  /* ============================================
+     BASE DESIGN TOKENS
+     ============================================ */
+  :root {
+    /* Border Radius - Single source of truth */
+    /* iOS-style fixed radius for UI elements (not app icons) */
+    --radius: 8px; /* 12px - standard iOS-style radius */
+    --app-radius: 8px; /* 12px - consistent across all UI elements */
+
+    /* ============================================
+       GLASS MORPHISM DESIGN TOKENS
+       ============================================ */
+    /* Blur amount for backdrop filter - light mode */
+    --glass-blur: 8px;
+    /* Background opacity for glass effect - light mode */
+    --glass-background-opacity: 0.6;
+    /* Overlay variant uses lower opacity - light mode */
+    --glass-background-opacity-overlay: 0.4;
+    /* Border opacity for glass effect */
+    --glass-border-opacity: 0.2;
+    /* Color saturation enhancement for backdrop filter (180% = 1.8x saturation) */
+    --glass-saturation: 180%;
+    /* Inner highlight opacity for inset shadow (subtle white highlight) */
+    --glass-inner-highlight-opacity: 0.1;
+    /* Shadow for glass effect - multi-layer shadow system */
+    /* Format: x-offset y-offset blur spread rgba(r, g, b, opacity) */
+    /* Outer shadow for depth */
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  /* ============================================
+     KLABS THEME (Default)
+     ============================================ */
+  :root {
+    /* Base color system - update --base-hue and --base-saturation to change all dependent colors */
+    --base-hue: 0;
+    --base-saturation: 0%;
+    --base-lightness: 0%;
+    --base: var(--base-hue) var(--base-saturation) var(--base-lightness);
+
+    /* Klabs brand accent color */
+    --accent-brand-h: 23;
+    --accent-brand-s: 90%;
+    --accent-brand-l: 54%;
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+    --call-action: var(--accent-brand); /* Legacy alias */
+
+    --amex-brand-h: 208.12;
+    --amex-brand-s: 99%;
+    --amex-brand-l: 40.98%;
+    --amex-brand: var(--amex-brand-h) var(--amex-brand-s) var(--amex-brand-l);
+
+    /* Core colors */
+    --background: 0 0% 100%;
+    --foreground: var(--base);
+    /* Light-mode wallet carousel cool end: same hue as .dark --background, one step darker */
+    --wallet-carousel-cool-stop: 225 20% 5%;
+    --surface: var(--background);
+    --primary-foreground: 0 0% 98%;
+    --secondary: var(--base-hue) var(--base-saturation) 96%;
+    --muted: var(--base-hue) var(--base-saturation) 34%;
+    /* Input labels & placeholders: slightly darker for better visibility (WCAG) */
+    --input-placeholder: var(--base-hue) var(--base-saturation) 28%;
+    --accent: var(--base-hue) var(--base-saturation) 92%;
+    --border: var(--base-hue) var(--base-saturation) 85%;
+    --ring: var(--foreground);
+    --sidebar-bg: var(--base-hue) var(--base-saturation) 98%;
+    --sidebar-accent: var(--base-hue) var(--base-saturation) 94%;
+
+    /* Status colors - light backgrounds with black text for WCAG AA */
+    --status-text: 0 0% 98%;
+    --success: 141.1 71.4% 55%;
+    --success-foreground: 0 0% 0%;
+    /* Destructive: tuned red, lighter than original but not pastel */
+    --destructive: 0 80% 66%;
+    --destructive-foreground: 0 0% 0%;
+    --warning: 51.08 100% 56.47%;
+  }
+
+  .dark {
+    /* Base color system for dark theme */
+    --base-hue: 225;
+    --base-saturation: 20%;
+    --base-lightness: 6%;
+    --base: var(--base-hue) var(--base-saturation) var(--base-lightness);
+
+    /* Klabs brand accent color (same as light) */
+    --accent-brand-h: 23;
+    --accent-brand-s: 90%;
+    --accent-brand-l: 54%;
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+
+    /* Core colors */
+    --background: var(--base);
+    --foreground: 0 0% 98%;
+    --surface: var(--base-hue) var(--base-saturation) 8%;
+    --primary-foreground: var(--base);
+    --secondary: var(--base-hue) var(--base-saturation) 12%;
+    --muted: var(--base-hue) var(--base-saturation) 82%;
+    /* Input labels & placeholders: slightly lighter for better visibility (WCAG) */
+    --input-placeholder: var(--base-hue) var(--base-saturation) 82%;
+    --accent: var(--base-hue) var(--base-saturation) 18%;
+    --border: var(--base-hue) var(--base-saturation) 24%;
+    --ring: var(--foreground);
+    --sidebar-bg: var(--surface);
+    --sidebar-accent: var(--base-hue) var(--base-saturation) 14%;
+
+    /* Status colors - light backgrounds with black text for WCAG AA */
+    --status-text: 0 0% 98%;
+    --success: 141.1 71.4% 55%;
+    --success-foreground: 0 0% 0%;
+    /* Destructive (dark theme): closer to original, nudged lighter */
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 0%;
+    --warning: 51.08 100% 56.47%;
+
+    /* ============================================
+       GLASS MORPHISM DARK MODE ADJUSTMENTS
+       ============================================ */
+    /* More blur in dark mode for better depth perception */
+    --glass-blur: 12px;
+    /* Slightly more transparent in dark mode for better contrast */
+    --glass-background-opacity: 0.5;
+    /* Overlay variant for dark mode */
+    --glass-background-opacity-overlay: 0.35;
+    /* Slightly stronger inner highlight in dark mode */
+    --glass-inner-highlight-opacity: 0.15;
+    /* Enhanced shadow for dark mode */
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  /* ============================================
+     KEO CAPITAL BRAND
+     ============================================ */
+  /* Light mode: white bg, navy foreground, green accent */
+  html.brand-keo-capital {
+    --font-sans: var(--font-roboto);
+    --base-hue: 202;
+    --base-saturation: 43%;
+    --base-lightness: 27%;
+    --base: var(--base-hue) var(--base-saturation) var(--base-lightness);
+
+    --accent-brand-h: 148;
+    --accent-brand-s: 69%;
+    --accent-brand-l: 54%;
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+    --call-action: var(--accent-brand);
+
+    --background: 0 0% 100%;
+    --foreground: 202 43% 27%;
+    /* Matches brand dark page bg family; slightly darker than 27% for gradient depth */
+    --wallet-carousel-cool-stop: 202 43% 24%;
+    --surface: var(--background);
+    --primary-foreground: 0 0% 98%;
+    --secondary: 202 20% 96%;
+    --muted: 202 43% 34%;
+    --input-placeholder: 202 43% 28%;
+    --accent: 202 20% 94%;
+    --border: 202 20% 88%;
+    --ring: var(--foreground);
+    --sidebar-bg: 202 20% 98%;
+    --sidebar-accent: 202 20% 95%;
+
+    /* Supporting colors - use sparingly per brand guidelines */
+    --keo-navy: 202 43% 27%;
+    --keo-green: 148 69% 54%;
+    --keo-light-green: 120 33% 94%;
+    --keo-orange: 33 82% 51%;
+    --keo-red: 6 82% 49%;
+
+    /* Status colors - accent-brand for success, red destructive with improved contrast */
+    --success: var(--accent-brand);
+    --warning: var(--keo-orange);
+    --destructive: 6 82% 58%;
+
+    /* Auth page primary button - navy blue */
+    --auth-primary: 202 43% 27%;
+  }
+
+  html.brand-keo-capital.dark {
+    --keo-grey: 202 12% 38%;
+    --base-hue: 202;
+    --base-saturation: 43%;
+    --base-lightness: 27%;
+    --base: var(--base-hue) var(--base-saturation) var(--base-lightness);
+
+    --accent-brand-h: 148;
+    --accent-brand-s: 69%;
+    --accent-brand-l: 54%;
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+
+    --background: 202 43% 27%;
+    --foreground: 0 0% 100%;
+    /* Surface/card slightly darker than background for hierarchy */
+    --surface: 202 45% 24%;
+    --primary-foreground: 202 43% 27%;
+    --secondary: 202 45% 20%;
+    --muted: 202 20% 75%;
+    --input-placeholder: 202 20% 75%;
+    /* Accent for hover states */
+    --accent: 202 45% 24%;
+    --border: var(--keo-grey);
+    --ring: var(--foreground);
+    --sidebar-bg: var(--surface);
+    --sidebar-accent: 202 45% 20%;
+
+    /* Status colors - same as light mode, subtle contrast bump for destructive */
+    --success: var(--accent-brand);
+    --warning: var(--keo-orange);
+    --destructive: 6 82% 54%;
+
+    /* Auth page primary button - navy blue */
+    --auth-primary: 202 43% 27%;
+  }
+
+  html.brand-keo-capital body {
+    font-family: var(--font-roboto), sans-serif;
+  }
+
+  /* Language dropdown and other popovers - solid surface background in dark mode */
+  html.brand-keo-capital.dark [data-radix-popper-content-wrapper] [role="menu"],
+  html.brand-keo-capital.dark [data-radix-popper-content-wrapper] [role="listbox"] {
+    background-color: hsl(var(--background) / 0.5) !important;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  body {
+    font-family: var(--font-sora), sans-serif;
+  }
+
+  /* Allow all transitions on FloatingLabelInput label */
+  .floating-label-input-label {
+    /* Transitions are now handled by component classes */
+  }
+
+  /* Focus styles for all focusable elements */
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible,
+  [tabindex]:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid hsl(var(--foreground));
+    outline-offset: 2px;
+    border-radius: var(--app-radius);
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  70%,
+  100% {
+    opacity: 1;
+  }
+  71%,
+  99% {
+    opacity: 0;
+  }
+}
+
+body a,
+body button,
+body input,
+body select,
+body textarea {
+  border-radius: var(--app-radius) !important;
+}
+
+/* Consistent transitions for theme switching */
+/* Apply to root elements and ensure theme color transitions are smooth */
+/* Note: Only background and border colors transition - text color transitions are handled per-component where text color actually changes */
+html {
+  transition-property: background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+  transition-duration: 150ms;
+}
+
+body {
+  transition-property: background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+  transition-duration: 150ms;
+}
+
+/* Disable transitions during theme/branding switches */
+/* Exclude elements with [data-allow-transition] to preserve specific animations (e.g., toggle icons) */
+html.no-transitions,
+html.no-transitions *:not([data-allow-transition]):not([data-allow-transition] *),
+html.no-transitions *:not([data-allow-transition]):not([data-allow-transition] *)::before,
+html.no-transitions *:not([data-allow-transition]):not([data-allow-transition] *)::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+  /* or use appearance: none; for a shorter syntax that works in webkit/blink */
+  /* appearance: none; */
+}
+
+/* For Internet Explorer 10 and later */
+input[type="search"]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Soft badge variants: black/dark text on light tinted backgrounds (adapts to theme) */
+[class*="bg-success/20"][class*="text-success"],
+[class*="bg-warning/20"][class*="text-warning"],
+[class*="bg-destructive/20"][class*="text-destructive"],
+[class*="bg-accent-brand/20"][class*="text-accent-brand"] {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Black text on solid success and destructive (badges, buttons) */
+.text-success-foreground,
+.text-destructive-foreground {
+  color: black;
+}
+
+/* ============================================
+   CHARTS (Recharts) - Invoice & Core admin dashboard
+   Ensure chart text and axes use theme colors
+   ============================================ */
+.invoice-charts .recharts-cartesian-axis-tick text,
+.invoice-charts .recharts-legend-item-text,
+.core-admin-dashboard-charts .recharts-cartesian-axis-tick text,
+.core-admin-dashboard-charts .recharts-legend-item-text {
+  fill: hsl(var(--foreground) / 0.7) !important;
+}
+
+.invoice-charts .recharts-tooltip-wrapper .recharts-default-tooltip,
+.core-admin-dashboard-charts .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: hsl(var(--surface)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--app-radius) !important;
+  padding: 0.5rem 0.75rem !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+.invoice-charts .recharts-tooltip-wrapper .recharts-default-tooltip p,
+.invoice-charts .recharts-tooltip-wrapper .recharts-default-tooltip span,
+.core-admin-dashboard-charts .recharts-tooltip-wrapper .recharts-default-tooltip p,
+.core-admin-dashboard-charts .recharts-tooltip-wrapper .recharts-default-tooltip span {
+  color: hsl(var(--foreground)) !important;
+}
+
+.invoice-charts .recharts-cartesian-grid line,
+.core-admin-dashboard-charts .recharts-cartesian-grid line {
+  stroke: hsl(var(--border) / 0.6) !important;
+}
+
+/* ══════════ @k-lab/components FloatingLabelInput + browser autofill ══════════ */
+/*
+ * Chrome can paint autofill and match :-webkit-autofill before input.value is
+ * readable in JS (often until first interaction). Float from the pseudo-class,
+ * not only from data-floating-label-filled / .value.
+ */
+ .relative.w-full[data-floating-label-filled]:not(:focus-within) label.floating-label-input-label,
+ .relative.w-full:has(input:-webkit-autofill):not(:focus-within) label.floating-label-input-label,
+ .relative.w-full:has(input:-moz-autofill):not(:focus-within) label.floating-label-input-label,
+ .relative.w-full:has(input:autofill):not(:focus-within) label.floating-label-input-label {
+   left: 0.75rem !important;
+   top: 0 !important;
+   transform: translateY(-50%) !important;
+   font-size: 0.75rem !important;
+   font-weight: 500 !important;
+   line-height: 1rem !important;
+   opacity: 1 !important;
+   background-color: hsl(var(--border)) !important;
+   color: hsl(var(--foreground)) !important;
+ }

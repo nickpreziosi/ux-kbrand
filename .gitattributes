@@ -1,0 +1,12 @@
+* text=auto
+
+# Binary assets — never newline-convert (PDF xref offsets break on CRLF).
+*.pdf binary
+*.webp binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary

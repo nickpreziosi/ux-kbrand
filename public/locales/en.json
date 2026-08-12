@@ -1,0 +1,282 @@
+{
+  "shell": {
+    "nav": {
+      "home": "Home",
+      "guidelines": "Guidelines",
+      "logos": "Logos",
+      "imagery": "Imagery",
+      "fonts": "Fonts",
+      "sales": "Sales resources",
+      "adminAssets": "Manage assets",
+      "adminUsers": "Users & access"
+    },
+    "signIn": "Sign in",
+    "userNameFallback": "User",
+    "preferencesAriaLabel": "Preferences",
+    "homeAriaLabel": "Brand portal home",
+    "metadata": {
+      "title": "K Brand — Brand & Sales Resource Portal",
+      "description": "The single source of truth for the K Lab brand: approved guidelines, logos, imagery, fonts, and sales materials."
+    }
+  },
+  "home": {
+    "heroTitle": "The K Lab brand, ready to use",
+    "heroDescription": "Download approved brand guidelines, logos, imagery, and fonts — no requests, no waiting. Employees sign in for pitch decks and sales materials.",
+    "browseAssets": "Browse assets",
+    "employeeSignIn": "Employee sign in",
+    "categoriesAriaLabel": "Asset categories",
+    "categoriesTitle": "Explore the library",
+    "categoriesSubtitle": "Curated categories — always current, always approved.",
+    "openCategory": "Open",
+    "categories": {
+      "brand-guidelines": {
+        "title": "Brand guidelines",
+        "description": "The brand book, voice & tone, and usage rules."
+      },
+      "logos": {
+        "title": "Logos",
+        "description": "Primary, monochrome, and icon lockups in vector formats."
+      },
+      "brand-imagery": {
+        "title": "Brand imagery",
+        "description": "Backgrounds and visual textures for decks and pages."
+      },
+      "fonts": {
+        "title": "Fonts",
+        "description": "The Sora font kit and typography tokens."
+      },
+      "sales": {
+        "title": "Sales resources",
+        "description": "Pitch decks and sales materials for employees."
+      }
+    }
+  },
+  "brand": {
+    "loadError": "We couldn't load these assets. Please try again.",
+    "categories": {
+      "brand-guidelines": {
+        "title": "Brand guidelines",
+        "subtitle": "Rules and reference documents for using the K Lab brand."
+      },
+      "logos": {
+        "title": "Logos",
+        "subtitle": "Approved lockups — download, don't redraw."
+      },
+      "brand-imagery": {
+        "title": "Brand imagery",
+        "subtitle": "Backgrounds and textures for presentations and pages."
+      },
+      "fonts": {
+        "title": "Fonts",
+        "subtitle": "The Sora typeface and the type scale tokens."
+      },
+      "pitch-decks": {
+        "title": "Pitch decks",
+        "subtitle": "Approved decks for customer conversations."
+      },
+      "sales-materials": {
+        "title": "Sales materials",
+        "subtitle": "One-pagers, case studies, and leave-behinds."
+      }
+    }
+  },
+  "assets": {
+    "download": "Download",
+    "empty": {
+      "title": "Nothing here yet",
+      "description": "Assets published to this category will appear here."
+    }
+  },
+  "sales": {
+    "title": "Sales resources",
+    "subtitle": "Approved pitch decks and sales materials — internal use only.",
+    "loadError": "We couldn't load the sales resources. Please try again.",
+    "tabs": {
+      "pitchDecks": "Pitch decks",
+      "salesMaterials": "Sales materials"
+    }
+  },
+  "admin": {
+    "unauthorized": {
+      "title": "Admin access required",
+      "description": "Your account doesn't have permission to manage the portal. Contact a portal admin if you think this is a mistake.",
+      "backHome": "Back to home"
+    }
+  },
+  "adminAssets": {
+    "title": "Manage assets",
+    "subtitle": "Upload, edit, replace, archive, and remove portal resources.",
+    "newAsset": "New asset",
+    "emptyMessage": "No assets in the catalog yet.",
+    "columns": {
+      "title": "Asset",
+      "category": "Category",
+      "visibility": "Visibility",
+      "status": "Status",
+      "size": "Size",
+      "updated": "Updated"
+    },
+    "visibility": {
+      "public": "Public",
+      "employee": "Employees"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "actions": {
+      "menuAriaLabel": "Asset actions",
+      "edit": "Edit",
+      "download": "Download",
+      "archive": "Archive",
+      "restore": "Restore",
+      "delete": "Delete"
+    },
+    "toasts": {
+      "created": "Asset created",
+      "updated": "Asset updated",
+      "archived": "Asset archived",
+      "restored": "Asset restored",
+      "deleted": "Asset deleted",
+      "saveFailed": "Something went wrong. Please try again."
+    },
+    "deleteDialog": {
+      "title": "Delete asset?",
+      "description": "\"{title}\" will be permanently removed from the portal. This cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "form": {
+      "createTitle": "New asset",
+      "createDescription": "Publish a new resource to the portal.",
+      "editTitle": "Edit asset",
+      "editDescription": "Update details or replace the file. Leave the file empty to keep the current one.",
+      "titleLabel": "Title",
+      "descriptionLabel": "Description",
+      "categoryLabel": "Category",
+      "visibilityLabel": "Visibility",
+      "tagsLabel": "Tags (comma separated)",
+      "visibilityPublic": "Public",
+      "visibilityEmployee": "Employees only",
+      "fileLabel": "Drop a file here or click to browse",
+      "replaceFileLabel": "Drop a file to replace the current one",
+      "fileDescription": "Any file type, up to 50 MB.",
+      "titleRequired": "A title is required.",
+      "fileRequired": "Choose a file to publish.",
+      "cancel": "Cancel",
+      "save": "Save changes",
+      "create": "Create asset"
+    }
+  },
+  "adminUsers": {
+    "title": "Users & access",
+    "subtitle": "Invite employees, assign roles, and control portal access.",
+    "inviteUser": "Invite user",
+    "emptyMessage": "No users in the directory yet.",
+    "neverLoggedIn": "Never",
+    "columns": {
+      "name": "User",
+      "role": "Role",
+      "status": "Status",
+      "lastLogin": "Last sign-in"
+    },
+    "roles": {
+      "admin": "Admin",
+      "employee": "Employee"
+    },
+    "statuses": {
+      "active": "Active",
+      "invited": "Invited",
+      "disabled": "Disabled"
+    },
+    "actions": {
+      "menuAriaLabel": "User actions",
+      "makeAdmin": "Make admin",
+      "makeEmployee": "Make employee",
+      "disable": "Disable access",
+      "enable": "Enable access",
+      "delete": "Delete"
+    },
+    "invite": {
+      "title": "Invite user",
+      "description": "They'll get employee or admin access when they first sign in.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "roleLabel": "Role",
+      "fieldsRequired": "Name and email are required.",
+      "emailExists": "A user with this email already exists.",
+      "cancel": "Cancel",
+      "submit": "Send invite"
+    },
+    "deleteDialog": {
+      "title": "Remove user?",
+      "description": "{name} will lose access to employee resources and admin tools.",
+      "confirm": "Remove",
+      "cancel": "Cancel"
+    },
+    "toasts": {
+      "invited": "Invitation created",
+      "roleUpdated": "Role updated",
+      "disabled": "Access disabled",
+      "enabled": "Access enabled",
+      "deleted": "User removed",
+      "saveFailed": "Something went wrong. Please try again."
+    }
+  },
+  "auth": {
+    "pages": {
+      "title": "Sign in",
+      "subtitle": "Welcome back! Sign in to continue.",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm password",
+      "forgotPassword": "Forgot password?",
+      "rememberMe": "Keep me logged in",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "backToSignIn": "Back to Sign In",
+      "checkEmailHeading": "Check your email",
+      "resetLinkSent": "We've sent a password reset link to",
+      "resetLinkInstructions": "Check your inbox and follow the link in the email to reset your password.",
+      "noEmailReceived": "Didn't receive an email?",
+      "tryAgain": "Try again",
+      "resetPasswordTitle": "Reset password",
+      "resetPasswordSubtitle": "Enter your new password below.",
+      "passwordMismatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "resetSuccessHeading": "Password reset",
+      "resetSuccessMessage": "Your password has been reset. You can now sign in with your new password."
+    },
+    "forgotPassword": {
+      "didntReceiveEmail": "Didn't receive an email?"
+    },
+    "login": {
+      "signInFailed": "Sign in failed"
+    },
+    "resetPassword": {
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "successTitle": "Password updated",
+      "successMessage": "Your password has been reset. You can sign in with your new password."
+    }
+  },
+  "common": {
+    "goBack": "Go back",
+    "goHome": "Go home",
+    "tryAgain": "Try again"
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong",
+    "unexpectedRouteError": "An unexpected error occurred while loading this page. You can try again, or head back home.",
+    "contactSupportReference": "If the problem persists, contact support and share this reference:"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist or may have been moved."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and application preferences.",
+    "placeholder": "Settings options will appear here."
+  }
+}

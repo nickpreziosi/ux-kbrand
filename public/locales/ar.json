@@ -1,0 +1,282 @@
+{
+  "shell": {
+    "nav": {
+      "home": "الرئيسية",
+      "guidelines": "إرشادات العلامة",
+      "logos": "الشعارات",
+      "imagery": "الصور",
+      "fonts": "الخطوط",
+      "sales": "موارد المبيعات",
+      "adminAssets": "إدارة الموارد",
+      "adminUsers": "المستخدمون والصلاحيات"
+    },
+    "signIn": "تسجيل الدخول",
+    "userNameFallback": "مستخدم",
+    "preferencesAriaLabel": "التفضيلات",
+    "homeAriaLabel": "الصفحة الرئيسية لبوابة العلامة",
+    "metadata": {
+      "title": "K Brand — بوابة موارد العلامة والمبيعات",
+      "description": "المصدر الموحد لعلامة K Lab: إرشادات معتمدة وشعارات وصور وخطوط ومواد مبيعات."
+    }
+  },
+  "home": {
+    "heroTitle": "علامة K Lab جاهزة للاستخدام",
+    "heroDescription": "نزّل إرشادات العلامة والشعارات والصور والخطوط المعتمدة — دون طلبات أو انتظار. يسجّل الموظفون الدخول للوصول إلى العروض التقديمية ومواد المبيعات.",
+    "browseAssets": "تصفّح الموارد",
+    "employeeSignIn": "دخول الموظفين",
+    "categoriesAriaLabel": "فئات الموارد",
+    "categoriesTitle": "استكشف المكتبة",
+    "categoriesSubtitle": "فئات منسّقة: محدّثة دائمًا ومعتمدة دائمًا.",
+    "openCategory": "فتح",
+    "categories": {
+      "brand-guidelines": {
+        "title": "إرشادات العلامة",
+        "description": "دليل العلامة، والصوت والنبرة، وقواعد الاستخدام."
+      },
+      "logos": {
+        "title": "الشعارات",
+        "description": "النسخ الأساسية والأحادية اللون والأيقونية بصيغ متجهة."
+      },
+      "brand-imagery": {
+        "title": "صور العلامة",
+        "description": "خلفيات وأنسجة بصرية للعروض والصفحات."
+      },
+      "fonts": {
+        "title": "الخطوط",
+        "description": "حزمة خط Sora ورموز الطباعة."
+      },
+      "sales": {
+        "title": "موارد المبيعات",
+        "description": "عروض تقديمية ومواد مبيعات للموظفين."
+      }
+    }
+  },
+  "brand": {
+    "loadError": "تعذّر تحميل هذه الموارد. يرجى المحاولة مرة أخرى.",
+    "categories": {
+      "brand-guidelines": {
+        "title": "إرشادات العلامة",
+        "subtitle": "قواعد ومستندات مرجعية لاستخدام علامة K Lab."
+      },
+      "logos": {
+        "title": "الشعارات",
+        "subtitle": "نسخ معتمدة: نزّلها ولا تُعِد رسمها."
+      },
+      "brand-imagery": {
+        "title": "صور العلامة",
+        "subtitle": "خلفيات وأنسجة للعروض التقديمية والصفحات."
+      },
+      "fonts": {
+        "title": "الخطوط",
+        "subtitle": "خط Sora ورموز مقياس الطباعة."
+      },
+      "pitch-decks": {
+        "title": "العروض التقديمية",
+        "subtitle": "عروض معتمدة لمحادثات العملاء."
+      },
+      "sales-materials": {
+        "title": "مواد المبيعات",
+        "subtitle": "ملخصات وقصص نجاح ومواد داعمة."
+      }
+    }
+  },
+  "assets": {
+    "download": "تنزيل",
+    "empty": {
+      "title": "لا يوجد شيء هنا بعد",
+      "description": "ستظهر الموارد المنشورة في هذه الفئة هنا."
+    }
+  },
+  "sales": {
+    "title": "موارد المبيعات",
+    "subtitle": "عروض تقديمية ومواد مبيعات معتمدة — للاستخدام الداخلي فقط.",
+    "loadError": "تعذّر تحميل موارد المبيعات. يرجى المحاولة مرة أخرى.",
+    "tabs": {
+      "pitchDecks": "العروض التقديمية",
+      "salesMaterials": "مواد المبيعات"
+    }
+  },
+  "admin": {
+    "unauthorized": {
+      "title": "مطلوب صلاحية مسؤول",
+      "description": "لا يملك حسابك صلاحية إدارة البوابة. تواصل مع مسؤول البوابة إذا كنت تعتقد أن هذا خطأ.",
+      "backHome": "العودة إلى الرئيسية"
+    }
+  },
+  "adminAssets": {
+    "title": "إدارة الموارد",
+    "subtitle": "ارفع الموارد وعدّلها واستبدلها وأرشفها واحذفها.",
+    "newAsset": "مورد جديد",
+    "emptyMessage": "لا توجد موارد في الكتالوج بعد.",
+    "columns": {
+      "title": "المورد",
+      "category": "الفئة",
+      "visibility": "الرؤية",
+      "status": "الحالة",
+      "size": "الحجم",
+      "updated": "آخر تحديث"
+    },
+    "visibility": {
+      "public": "عام",
+      "employee": "الموظفون"
+    },
+    "status": {
+      "active": "نشط",
+      "archived": "مؤرشف"
+    },
+    "actions": {
+      "menuAriaLabel": "إجراءات المورد",
+      "edit": "تعديل",
+      "download": "تنزيل",
+      "archive": "أرشفة",
+      "restore": "استعادة",
+      "delete": "حذف"
+    },
+    "toasts": {
+      "created": "تم إنشاء المورد",
+      "updated": "تم تحديث المورد",
+      "archived": "تمت أرشفة المورد",
+      "restored": "تمت استعادة المورد",
+      "deleted": "تم حذف المورد",
+      "saveFailed": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    },
+    "deleteDialog": {
+      "title": "حذف المورد؟",
+      "description": "سيُحذف \"{title}\" نهائيًا من البوابة. لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "form": {
+      "createTitle": "مورد جديد",
+      "createDescription": "انشر موردًا جديدًا في البوابة.",
+      "editTitle": "تعديل المورد",
+      "editDescription": "حدّث التفاصيل أو استبدل الملف. اترك الملف فارغًا للاحتفاظ بالملف الحالي.",
+      "titleLabel": "العنوان",
+      "descriptionLabel": "الوصف",
+      "categoryLabel": "الفئة",
+      "visibilityLabel": "الرؤية",
+      "tagsLabel": "الوسوم (مفصولة بفواصل)",
+      "visibilityPublic": "عام",
+      "visibilityEmployee": "الموظفون فقط",
+      "fileLabel": "أسقط ملفًا هنا أو انقر للاستعراض",
+      "replaceFileLabel": "أسقط ملفًا لاستبدال الملف الحالي",
+      "fileDescription": "أي نوع ملف، حتى 50 ميغابايت.",
+      "titleRequired": "العنوان مطلوب.",
+      "fileRequired": "اختر ملفًا للنشر.",
+      "cancel": "إلغاء",
+      "save": "حفظ التغييرات",
+      "create": "إنشاء المورد"
+    }
+  },
+  "adminUsers": {
+    "title": "المستخدمون والصلاحيات",
+    "subtitle": "ادعُ الموظفين وعيّن الأدوار وتحكّم في الوصول إلى البوابة.",
+    "inviteUser": "دعوة مستخدم",
+    "emptyMessage": "لا يوجد مستخدمون في الدليل بعد.",
+    "neverLoggedIn": "أبدًا",
+    "columns": {
+      "name": "المستخدم",
+      "role": "الدور",
+      "status": "الحالة",
+      "lastLogin": "آخر تسجيل دخول"
+    },
+    "roles": {
+      "admin": "مسؤول",
+      "employee": "موظف"
+    },
+    "statuses": {
+      "active": "نشط",
+      "invited": "مدعو",
+      "disabled": "معطّل"
+    },
+    "actions": {
+      "menuAriaLabel": "إجراءات المستخدم",
+      "makeAdmin": "تعيين كمسؤول",
+      "makeEmployee": "تعيين كموظف",
+      "disable": "تعطيل الوصول",
+      "enable": "تفعيل الوصول",
+      "delete": "حذف"
+    },
+    "invite": {
+      "title": "دعوة مستخدم",
+      "description": "سيحصل على وصول موظف أو مسؤول عند أول تسجيل دخول.",
+      "nameLabel": "الاسم الكامل",
+      "emailLabel": "البريد الإلكتروني للعمل",
+      "roleLabel": "الدور",
+      "fieldsRequired": "الاسم والبريد الإلكتروني مطلوبان.",
+      "emailExists": "يوجد مستخدم بهذا البريد الإلكتروني بالفعل.",
+      "cancel": "إلغاء",
+      "submit": "إرسال الدعوة"
+    },
+    "deleteDialog": {
+      "title": "إزالة المستخدم؟",
+      "description": "سيفقد {name} الوصول إلى موارد الموظفين وأدوات الإدارة.",
+      "confirm": "إزالة",
+      "cancel": "إلغاء"
+    },
+    "toasts": {
+      "invited": "تم إنشاء الدعوة",
+      "roleUpdated": "تم تحديث الدور",
+      "disabled": "تم تعطيل الوصول",
+      "enabled": "تم تفعيل الوصول",
+      "deleted": "تمت إزالة المستخدم",
+      "saveFailed": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "auth": {
+    "pages": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحبًا بعودتك! سجّل الدخول للمتابعة.",
+      "emailLabel": "البريد الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "rememberMe": "إبقاء تسجيل الدخول نشطًا",
+      "submit": "تسجيل الدخول",
+      "submitting": "جارٍ تسجيل الدخول...",
+      "backToSignIn": "العودة إلى تسجيل الدخول",
+      "checkEmailHeading": "تحقق من بريدك الإلكتروني",
+      "resetLinkSent": "لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى",
+      "resetLinkInstructions": "تحقق من صندوق الوارد واتبع الرابط الموجود في الرسالة لإعادة تعيين كلمة المرور.",
+      "noEmailReceived": "لم تستلم رسالة؟",
+      "tryAgain": "حاول مرة أخرى",
+      "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+      "resetPasswordSubtitle": "أدخل كلمة المرور الجديدة أدناه.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "passwordMinLength": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "resetSuccessHeading": "تمت إعادة تعيين كلمة المرور",
+      "resetSuccessMessage": "تمت إعادة تعيين كلمة المرور. يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة."
+    },
+    "forgotPassword": {
+      "didntReceiveEmail": "لم تستلم رسالة؟"
+    },
+    "login": {
+      "signInFailed": "فشل تسجيل الدخول"
+    },
+    "resetPassword": {
+      "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+      "passwordTooShort": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "successTitle": "تم تحديث كلمة المرور",
+      "successMessage": "تمت إعادة تعيين كلمة المرور. يمكنك تسجيل الدخول باستخدام كلمة المرور الجديدة."
+    }
+  },
+  "common": {
+    "goBack": "رجوع",
+    "goHome": "الانتقال إلى الرئيسية",
+    "tryAgain": "حاول مرة أخرى"
+  },
+  "errors": {
+    "somethingWentWrong": "حدث خطأ ما",
+    "unexpectedRouteError": "حدث خطأ غير متوقع أثناء تحميل هذه الصفحة. يمكنك المحاولة مرة أخرى أو العودة إلى الصفحة الرئيسية.",
+    "contactSupportReference": "إذا استمرت المشكلة، فتواصل مع فريق الدعم وشارك هذا المرجع:"
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "message": "الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها."
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "إدارة حسابك وتفضيلات التطبيق.",
+    "placeholder": "ستظهر خيارات الإعدادات هنا."
+  }
+}

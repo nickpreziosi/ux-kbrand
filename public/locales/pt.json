@@ -1,0 +1,282 @@
+{
+  "shell": {
+    "nav": {
+      "home": "Início",
+      "guidelines": "Diretrizes da marca",
+      "logos": "Logotipos",
+      "imagery": "Imagens",
+      "fonts": "Tipografia",
+      "sales": "Recursos de vendas",
+      "adminAssets": "Gerenciar recursos",
+      "adminUsers": "Usuários e acessos"
+    },
+    "signIn": "Entrar",
+    "userNameFallback": "Usuário",
+    "preferencesAriaLabel": "Preferências",
+    "homeAriaLabel": "Início do portal da marca",
+    "metadata": {
+      "title": "K Brand — Portal de recursos de marca e vendas",
+      "description": "A única fonte de verdade da marca K Lab: diretrizes aprovadas, logotipos, imagens, tipografias e materiais de vendas."
+    }
+  },
+  "home": {
+    "heroTitle": "A marca K Lab, pronta para usar",
+    "heroDescription": "Baixe diretrizes de marca, logotipos, imagens e tipografias aprovadas — sem solicitações, sem espera. Funcionários entram para acessar apresentações e materiais de vendas.",
+    "browseAssets": "Explorar recursos",
+    "employeeSignIn": "Acesso para funcionários",
+    "categoriesAriaLabel": "Categorias de recursos",
+    "categoriesTitle": "Explore a biblioteca",
+    "categoriesSubtitle": "Categorias selecionadas: sempre atuais, sempre aprovadas.",
+    "openCategory": "Abrir",
+    "categories": {
+      "brand-guidelines": {
+        "title": "Diretrizes da marca",
+        "description": "O manual da marca, voz e tom, e regras de uso."
+      },
+      "logos": {
+        "title": "Logotipos",
+        "description": "Versões principal, monocromática e ícone em formatos vetoriais."
+      },
+      "brand-imagery": {
+        "title": "Imagens da marca",
+        "description": "Fundos e texturas visuais para apresentações e páginas."
+      },
+      "fonts": {
+        "title": "Tipografia",
+        "description": "O kit tipográfico Sora e os tokens de tipografia."
+      },
+      "sales": {
+        "title": "Recursos de vendas",
+        "description": "Apresentações e materiais de vendas para funcionários."
+      }
+    }
+  },
+  "brand": {
+    "loadError": "Não foi possível carregar estes recursos. Tente novamente.",
+    "categories": {
+      "brand-guidelines": {
+        "title": "Diretrizes da marca",
+        "subtitle": "Regras e documentos de referência para usar a marca K Lab."
+      },
+      "logos": {
+        "title": "Logotipos",
+        "subtitle": "Versões aprovadas: baixe, não redesenhe."
+      },
+      "brand-imagery": {
+        "title": "Imagens da marca",
+        "subtitle": "Fundos e texturas para apresentações e páginas."
+      },
+      "fonts": {
+        "title": "Tipografia",
+        "subtitle": "A fonte Sora e os tokens da escala tipográfica."
+      },
+      "pitch-decks": {
+        "title": "Apresentações",
+        "subtitle": "Apresentações aprovadas para conversas com clientes."
+      },
+      "sales-materials": {
+        "title": "Materiais de vendas",
+        "subtitle": "One-pagers, casos de sucesso e materiais de apoio."
+      }
+    }
+  },
+  "assets": {
+    "download": "Baixar",
+    "empty": {
+      "title": "Nada por aqui ainda",
+      "description": "Os recursos publicados nesta categoria aparecerão aqui."
+    }
+  },
+  "sales": {
+    "title": "Recursos de vendas",
+    "subtitle": "Apresentações e materiais de vendas aprovados — apenas para uso interno.",
+    "loadError": "Não foi possível carregar os recursos de vendas. Tente novamente.",
+    "tabs": {
+      "pitchDecks": "Apresentações",
+      "salesMaterials": "Materiais de vendas"
+    }
+  },
+  "admin": {
+    "unauthorized": {
+      "title": "Acesso de administrador necessário",
+      "description": "Sua conta não tem permissão para gerenciar o portal. Contate um administrador se achar que isso é um engano.",
+      "backHome": "Voltar ao início"
+    }
+  },
+  "adminAssets": {
+    "title": "Gerenciar recursos",
+    "subtitle": "Envie, edite, substitua, arquive e remova recursos do portal.",
+    "newAsset": "Novo recurso",
+    "emptyMessage": "Ainda não há recursos no catálogo.",
+    "columns": {
+      "title": "Recurso",
+      "category": "Categoria",
+      "visibility": "Visibilidade",
+      "status": "Status",
+      "size": "Tamanho",
+      "updated": "Atualizado"
+    },
+    "visibility": {
+      "public": "Público",
+      "employee": "Funcionários"
+    },
+    "status": {
+      "active": "Ativo",
+      "archived": "Arquivado"
+    },
+    "actions": {
+      "menuAriaLabel": "Ações do recurso",
+      "edit": "Editar",
+      "download": "Baixar",
+      "archive": "Arquivar",
+      "restore": "Restaurar",
+      "delete": "Excluir"
+    },
+    "toasts": {
+      "created": "Recurso criado",
+      "updated": "Recurso atualizado",
+      "archived": "Recurso arquivado",
+      "restored": "Recurso restaurado",
+      "deleted": "Recurso excluído",
+      "saveFailed": "Algo deu errado. Tente novamente."
+    },
+    "deleteDialog": {
+      "title": "Excluir recurso?",
+      "description": "\"{title}\" será removido permanentemente do portal. Esta ação não pode ser desfeita.",
+      "confirm": "Excluir",
+      "cancel": "Cancelar"
+    },
+    "form": {
+      "createTitle": "Novo recurso",
+      "createDescription": "Publique um novo recurso no portal.",
+      "editTitle": "Editar recurso",
+      "editDescription": "Atualize os detalhes ou substitua o arquivo. Deixe o arquivo vazio para manter o atual.",
+      "titleLabel": "Título",
+      "descriptionLabel": "Descrição",
+      "categoryLabel": "Categoria",
+      "visibilityLabel": "Visibilidade",
+      "tagsLabel": "Tags (separadas por vírgula)",
+      "visibilityPublic": "Público",
+      "visibilityEmployee": "Apenas funcionários",
+      "fileLabel": "Arraste um arquivo aqui ou clique para procurar",
+      "replaceFileLabel": "Arraste um arquivo para substituir o atual",
+      "fileDescription": "Qualquer tipo de arquivo, até 50 MB.",
+      "titleRequired": "O título é obrigatório.",
+      "fileRequired": "Escolha um arquivo para publicar.",
+      "cancel": "Cancelar",
+      "save": "Salvar alterações",
+      "create": "Criar recurso"
+    }
+  },
+  "adminUsers": {
+    "title": "Usuários e acessos",
+    "subtitle": "Convide funcionários, atribua papéis e controle o acesso ao portal.",
+    "inviteUser": "Convidar usuário",
+    "emptyMessage": "Ainda não há usuários no diretório.",
+    "neverLoggedIn": "Nunca",
+    "columns": {
+      "name": "Usuário",
+      "role": "Papel",
+      "status": "Status",
+      "lastLogin": "Último acesso"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "employee": "Funcionário"
+    },
+    "statuses": {
+      "active": "Ativo",
+      "invited": "Convidado",
+      "disabled": "Desativado"
+    },
+    "actions": {
+      "menuAriaLabel": "Ações do usuário",
+      "makeAdmin": "Tornar administrador",
+      "makeEmployee": "Tornar funcionário",
+      "disable": "Desativar acesso",
+      "enable": "Ativar acesso",
+      "delete": "Excluir"
+    },
+    "invite": {
+      "title": "Convidar usuário",
+      "description": "A pessoa terá acesso de funcionário ou administrador no primeiro login.",
+      "nameLabel": "Nome completo",
+      "emailLabel": "E-mail de trabalho",
+      "roleLabel": "Papel",
+      "fieldsRequired": "Nome e e-mail são obrigatórios.",
+      "emailExists": "Já existe um usuário com este e-mail.",
+      "cancel": "Cancelar",
+      "submit": "Enviar convite"
+    },
+    "deleteDialog": {
+      "title": "Remover usuário?",
+      "description": "{name} perderá o acesso aos recursos de funcionários e às ferramentas de administração.",
+      "confirm": "Remover",
+      "cancel": "Cancelar"
+    },
+    "toasts": {
+      "invited": "Convite criado",
+      "roleUpdated": "Papel atualizado",
+      "disabled": "Acesso desativado",
+      "enabled": "Acesso ativado",
+      "deleted": "Usuário removido",
+      "saveFailed": "Algo deu errado. Tente novamente."
+    }
+  },
+  "auth": {
+    "pages": {
+      "title": "Entrar",
+      "subtitle": "Bem-vindo de volta! Entre para continuar.",
+      "emailLabel": "Endereço de e-mail",
+      "passwordLabel": "Senha",
+      "confirmPasswordLabel": "Confirmar senha",
+      "forgotPassword": "Esqueceu a senha?",
+      "rememberMe": "Manter-me conectado",
+      "submit": "Entrar",
+      "submitting": "Entrando...",
+      "backToSignIn": "Voltar para o login",
+      "checkEmailHeading": "Verifique seu e-mail",
+      "resetLinkSent": "Enviamos um link de redefinição de senha para",
+      "resetLinkInstructions": "Verifique sua caixa de entrada e siga o link do e-mail para redefinir sua senha.",
+      "noEmailReceived": "Não recebeu o e-mail?",
+      "tryAgain": "Tentar novamente",
+      "resetPasswordTitle": "Redefinir senha",
+      "resetPasswordSubtitle": "Digite sua nova senha abaixo.",
+      "passwordMismatch": "As senhas não coincidem",
+      "passwordMinLength": "A senha deve ter pelo menos 8 caracteres",
+      "resetSuccessHeading": "Senha redefinida",
+      "resetSuccessMessage": "Sua senha foi redefinida. Agora você pode entrar com a nova senha."
+    },
+    "forgotPassword": {
+      "didntReceiveEmail": "Não recebeu o e-mail?"
+    },
+    "login": {
+      "signInFailed": "Falha ao entrar"
+    },
+    "resetPassword": {
+      "passwordsDoNotMatch": "As senhas não coincidem",
+      "passwordTooShort": "A senha deve ter pelo menos 8 caracteres",
+      "successTitle": "Senha atualizada",
+      "successMessage": "Sua senha foi redefinida. Você pode entrar com a nova senha."
+    }
+  },
+  "common": {
+    "goBack": "Voltar",
+    "goHome": "Ir para a página inicial",
+    "tryAgain": "Tentar novamente"
+  },
+  "errors": {
+    "somethingWentWrong": "Algo deu errado",
+    "unexpectedRouteError": "Ocorreu um erro inesperado ao carregar esta página. Você pode tentar novamente ou voltar à página inicial.",
+    "contactSupportReference": "Se o problema persistir, entre em contato com o suporte e informe esta referência:"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "message": "A página que você procura não existe ou pode ter sido movida."
+  },
+  "settings": {
+    "title": "Configurações",
+    "subtitle": "Gerencie sua conta e as preferências do aplicativo.",
+    "placeholder": "As opções de configuração aparecerão aqui."
+  }
+}

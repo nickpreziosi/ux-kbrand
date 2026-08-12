@@ -1,0 +1,282 @@
+{
+  "shell": {
+    "nav": {
+      "home": "Inicio",
+      "guidelines": "Guías de marca",
+      "logos": "Logotipos",
+      "imagery": "Imágenes",
+      "fonts": "Tipografía",
+      "sales": "Recursos de ventas",
+      "adminAssets": "Gestionar recursos",
+      "adminUsers": "Usuarios y accesos"
+    },
+    "signIn": "Iniciar sesión",
+    "userNameFallback": "Usuario",
+    "preferencesAriaLabel": "Preferencias",
+    "homeAriaLabel": "Inicio del portal de marca",
+    "metadata": {
+      "title": "K Brand — Portal de recursos de marca y ventas",
+      "description": "La única fuente de verdad de la marca K Lab: guías aprobadas, logotipos, imágenes, tipografías y materiales de ventas."
+    }
+  },
+  "home": {
+    "heroTitle": "La marca K Lab, lista para usar",
+    "heroDescription": "Descarga guías de marca, logotipos, imágenes y tipografías aprobadas — sin solicitudes ni esperas. El personal inicia sesión para acceder a presentaciones y materiales de ventas.",
+    "browseAssets": "Explorar recursos",
+    "employeeSignIn": "Acceso para empleados",
+    "categoriesAriaLabel": "Categorías de recursos",
+    "categoriesTitle": "Explora la biblioteca",
+    "categoriesSubtitle": "Categorías seleccionadas: siempre vigentes, siempre aprobadas.",
+    "openCategory": "Abrir",
+    "categories": {
+      "brand-guidelines": {
+        "title": "Guías de marca",
+        "description": "El manual de marca, voz y tono, y reglas de uso."
+      },
+      "logos": {
+        "title": "Logotipos",
+        "description": "Versiones principal, monocromática e ícono en formatos vectoriales."
+      },
+      "brand-imagery": {
+        "title": "Imágenes de marca",
+        "description": "Fondos y texturas visuales para presentaciones y páginas."
+      },
+      "fonts": {
+        "title": "Tipografía",
+        "description": "El kit tipográfico Sora y los tokens de tipografía."
+      },
+      "sales": {
+        "title": "Recursos de ventas",
+        "description": "Presentaciones y materiales de ventas para empleados."
+      }
+    }
+  },
+  "brand": {
+    "loadError": "No pudimos cargar estos recursos. Inténtalo de nuevo.",
+    "categories": {
+      "brand-guidelines": {
+        "title": "Guías de marca",
+        "subtitle": "Reglas y documentos de referencia para usar la marca K Lab."
+      },
+      "logos": {
+        "title": "Logotipos",
+        "subtitle": "Versiones aprobadas: descárgalas, no las redibujes."
+      },
+      "brand-imagery": {
+        "title": "Imágenes de marca",
+        "subtitle": "Fondos y texturas para presentaciones y páginas."
+      },
+      "fonts": {
+        "title": "Tipografía",
+        "subtitle": "La tipografía Sora y los tokens de escala tipográfica."
+      },
+      "pitch-decks": {
+        "title": "Presentaciones",
+        "subtitle": "Presentaciones aprobadas para conversaciones con clientes."
+      },
+      "sales-materials": {
+        "title": "Materiales de ventas",
+        "subtitle": "Fichas de producto, casos de éxito y material de apoyo."
+      }
+    }
+  },
+  "assets": {
+    "download": "Descargar",
+    "empty": {
+      "title": "Aún no hay nada aquí",
+      "description": "Los recursos publicados en esta categoría aparecerán aquí."
+    }
+  },
+  "sales": {
+    "title": "Recursos de ventas",
+    "subtitle": "Presentaciones y materiales de ventas aprobados — solo para uso interno.",
+    "loadError": "No pudimos cargar los recursos de ventas. Inténtalo de nuevo.",
+    "tabs": {
+      "pitchDecks": "Presentaciones",
+      "salesMaterials": "Materiales de ventas"
+    }
+  },
+  "admin": {
+    "unauthorized": {
+      "title": "Se requiere acceso de administrador",
+      "description": "Tu cuenta no tiene permisos para gestionar el portal. Contacta a un administrador si crees que es un error.",
+      "backHome": "Volver al inicio"
+    }
+  },
+  "adminAssets": {
+    "title": "Gestionar recursos",
+    "subtitle": "Sube, edita, reemplaza, archiva y elimina recursos del portal.",
+    "newAsset": "Nuevo recurso",
+    "emptyMessage": "Aún no hay recursos en el catálogo.",
+    "columns": {
+      "title": "Recurso",
+      "category": "Categoría",
+      "visibility": "Visibilidad",
+      "status": "Estado",
+      "size": "Tamaño",
+      "updated": "Actualizado"
+    },
+    "visibility": {
+      "public": "Público",
+      "employee": "Empleados"
+    },
+    "status": {
+      "active": "Activo",
+      "archived": "Archivado"
+    },
+    "actions": {
+      "menuAriaLabel": "Acciones del recurso",
+      "edit": "Editar",
+      "download": "Descargar",
+      "archive": "Archivar",
+      "restore": "Restaurar",
+      "delete": "Eliminar"
+    },
+    "toasts": {
+      "created": "Recurso creado",
+      "updated": "Recurso actualizado",
+      "archived": "Recurso archivado",
+      "restored": "Recurso restaurado",
+      "deleted": "Recurso eliminado",
+      "saveFailed": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar recurso?",
+      "description": "\"{title}\" se eliminará permanentemente del portal. Esta acción no se puede deshacer.",
+      "confirm": "Eliminar",
+      "cancel": "Cancelar"
+    },
+    "form": {
+      "createTitle": "Nuevo recurso",
+      "createDescription": "Publica un nuevo recurso en el portal.",
+      "editTitle": "Editar recurso",
+      "editDescription": "Actualiza los detalles o reemplaza el archivo. Deja el archivo vacío para conservar el actual.",
+      "titleLabel": "Título",
+      "descriptionLabel": "Descripción",
+      "categoryLabel": "Categoría",
+      "visibilityLabel": "Visibilidad",
+      "tagsLabel": "Etiquetas (separadas por comas)",
+      "visibilityPublic": "Público",
+      "visibilityEmployee": "Solo empleados",
+      "fileLabel": "Arrastra un archivo aquí o haz clic para buscar",
+      "replaceFileLabel": "Arrastra un archivo para reemplazar el actual",
+      "fileDescription": "Cualquier tipo de archivo, hasta 50 MB.",
+      "titleRequired": "El título es obligatorio.",
+      "fileRequired": "Elige un archivo para publicar.",
+      "cancel": "Cancelar",
+      "save": "Guardar cambios",
+      "create": "Crear recurso"
+    }
+  },
+  "adminUsers": {
+    "title": "Usuarios y accesos",
+    "subtitle": "Invita empleados, asigna roles y controla el acceso al portal.",
+    "inviteUser": "Invitar usuario",
+    "emptyMessage": "Aún no hay usuarios en el directorio.",
+    "neverLoggedIn": "Nunca",
+    "columns": {
+      "name": "Usuario",
+      "role": "Rol",
+      "status": "Estado",
+      "lastLogin": "Último acceso"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "employee": "Empleado"
+    },
+    "statuses": {
+      "active": "Activo",
+      "invited": "Invitado",
+      "disabled": "Deshabilitado"
+    },
+    "actions": {
+      "menuAriaLabel": "Acciones del usuario",
+      "makeAdmin": "Hacer administrador",
+      "makeEmployee": "Hacer empleado",
+      "disable": "Deshabilitar acceso",
+      "enable": "Habilitar acceso",
+      "delete": "Eliminar"
+    },
+    "invite": {
+      "title": "Invitar usuario",
+      "description": "Obtendrá acceso de empleado o administrador en su primer inicio de sesión.",
+      "nameLabel": "Nombre completo",
+      "emailLabel": "Correo de trabajo",
+      "roleLabel": "Rol",
+      "fieldsRequired": "El nombre y el correo son obligatorios.",
+      "emailExists": "Ya existe un usuario con este correo.",
+      "cancel": "Cancelar",
+      "submit": "Enviar invitación"
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar usuario?",
+      "description": "{name} perderá el acceso a los recursos de empleados y a las herramientas de administración.",
+      "confirm": "Eliminar",
+      "cancel": "Cancelar"
+    },
+    "toasts": {
+      "invited": "Invitación creada",
+      "roleUpdated": "Rol actualizado",
+      "disabled": "Acceso deshabilitado",
+      "enabled": "Acceso habilitado",
+      "deleted": "Usuario eliminado",
+      "saveFailed": "Algo salió mal. Inténtalo de nuevo."
+    }
+  },
+  "auth": {
+    "pages": {
+      "title": "Iniciar sesión",
+      "subtitle": "¡Bienvenido de nuevo! Inicie sesión para continuar.",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "forgotPassword": "¿Olvidó su contraseña?",
+      "rememberMe": "Mantener la sesión iniciada",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión...",
+      "backToSignIn": "Volver a iniciar sesión",
+      "checkEmailHeading": "Revise su correo",
+      "resetLinkSent": "Hemos enviado un enlace para restablecer la contraseña a",
+      "resetLinkInstructions": "Revise su bandeja de entrada y siga el enlace del correo para restablecer su contraseña.",
+      "noEmailReceived": "¿No recibió el correo?",
+      "tryAgain": "Intentar de nuevo",
+      "resetPasswordTitle": "Restablecer contraseña",
+      "resetPasswordSubtitle": "Ingrese su nueva contraseña a continuación.",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+      "resetSuccessHeading": "Contraseña restablecida",
+      "resetSuccessMessage": "Su contraseña ha sido restablecida. Ahora puede iniciar sesión con su nueva contraseña."
+    },
+    "forgotPassword": {
+      "didntReceiveEmail": "¿No recibió el correo?"
+    },
+    "login": {
+      "signInFailed": "Error al iniciar sesión"
+    },
+    "resetPassword": {
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+      "successTitle": "Contraseña actualizada",
+      "successMessage": "Su contraseña ha sido restablecida. Puede iniciar sesión con su nueva contraseña."
+    }
+  },
+  "common": {
+    "goBack": "Volver",
+    "goHome": "Ir al inicio",
+    "tryAgain": "Intentar de nuevo"
+  },
+  "errors": {
+    "somethingWentWrong": "Algo salió mal",
+    "unexpectedRouteError": "Ocurrió un error inesperado al cargar esta página. Puede intentar de nuevo o volver al inicio.",
+    "contactSupportReference": "Si el problema persiste, contacte a soporte y comparta esta referencia:"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "message": "La página que busca no existe o puede haber sido movida."
+  },
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Administre su cuenta y las preferencias de la aplicación.",
+    "placeholder": "Las opciones de configuración aparecerán aquí."
+  }
+}
