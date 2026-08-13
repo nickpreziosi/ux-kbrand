@@ -123,6 +123,11 @@ const config: Config = {
         },
         "call-action": "hsl(var(--call-action))",
         "accent-brand": "hsl(var(--accent-brand))",
+        // Fixed backdrops for logo/asset previews - theme-independent by design.
+        "brand-surface": {
+          light: "hsl(var(--brand-surface-light))",
+          dark: "hsl(var(--brand-surface-dark))",
+        },
         "accent-pink": "hsl(var(--accent-brand))", // Legacy alias
         "amex-brand": "hsl(var(--amex-brand))",
       },

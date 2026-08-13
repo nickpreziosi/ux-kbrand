@@ -26,10 +26,16 @@ const CONTENT_TYPES = {
 };
 
 /**
- * path      — relative to public/brand-files (public) or private-assets (employee)
- * category  — controlled category from the domain model
- * tags      — `primary`/`dark`/`reversed`/`mark` drive the logo variant cards;
- *             `brand-book` marks the complete guidelines document
+ * path       — relative to public/brand-files, or to private-assets when
+ *              location is "private"
+ * location   — "private" keeps the bytes outside the web root, streamed via
+ *              /api/sales-files/[id]. Independent of visibility: it says where
+ *              the file lives, not who may see it.
+ * visibility — role gating ("public" | "employee"). Every asset defaults to
+ *              "public" for now; admins re-gate at runtime from Manage assets.
+ * category   — controlled category from the domain model
+ * tags       — `primary`/`dark`/`reversed`/`mark` drive the logo variant cards;
+ *              `brand-book` marks the complete guidelines document
  */
 const CATALOG = [
   // ── Logos: K Lab master brand ────────────────────────────────────────────
@@ -343,7 +349,7 @@ const CATALOG = [
   {
     id: "ast-100",
     path: "k-lab-platform-pitch-2026.pdf",
-    visibility: "employee",
+    location: "private",
     category: "pitch-decks",
     title: "K Lab Platform Pitch 2026",
     description:
@@ -354,7 +360,7 @@ const CATALOG = [
   {
     id: "ast-101",
     path: "k-rails-invoice-pitch.pdf",
-    visibility: "employee",
+    location: "private",
     category: "pitch-decks",
     title: "K Rails Invoice Portal Pitch",
     description:
@@ -365,7 +371,7 @@ const CATALOG = [
   {
     id: "ast-110",
     path: "k-lab-product-one-pagers.pdf",
-    visibility: "employee",
+    location: "private",
     category: "sales-materials",
     title: "Product One-Pagers Pack",
     description: "One-page leave-behinds for KBPM, K Risk, K Leads, and K Rails — print-ready.",
@@ -375,7 +381,7 @@ const CATALOG = [
   {
     id: "ast-111",
     path: "case-study-regional-bank.pdf",
-    visibility: "employee",
+    location: "private",
     category: "sales-materials",
     title: "Case Study — Regional Bank",
     description:
@@ -386,7 +392,7 @@ const CATALOG = [
   {
     id: "ast-112",
     path: "legacy-pricing-sheet-2025.pdf",
-    visibility: "employee",
+    location: "private",
     category: "sales-materials",
     status: "archived",
     title: "Legacy Pricing Sheet 2025",
@@ -404,8 +410,8 @@ const privateFiles = [];
 
 for (const item of CATALOG) {
   const visibility = item.visibility ?? "public";
-  const employee = visibility === "employee";
-  const absolute = join(employee ? privateDir : publicDir, item.path);
+  const isPrivate = item.location === "private";
+  const absolute = join(isPrivate ? privateDir : publicDir, item.path);
 
   if (!existsSync(absolute)) {
     missing.push(item.path);
@@ -414,8 +420,8 @@ for (const item of CATALOG) {
 
   const fileName = item.path.split("/").pop();
   const extension = fileName.split(".").pop().toLowerCase();
-  const downloadUrl = employee ? `/api/sales-files/${item.id}` : `/brand-files/${item.path}`;
-  const categoryFolder = employee ? item.category : item.path.split("/").slice(0, -1).join("/");
+  const downloadUrl = isPrivate ? `/api/sales-files/${item.id}` : `/brand-files/${item.path}`;
+  const categoryFolder = isPrivate ? item.category : item.path.split("/").slice(0, -1).join("/");
 
   entries.push({
     id: item.id,
@@ -431,14 +437,14 @@ for (const item of CATALOG) {
       storagePath: `assets/${categoryFolder}/${fileName}`,
       downloadUrl,
     },
-    previewUrl: !employee && PREVIEWABLE.test(fileName) ? `/brand-files/${item.path}` : undefined,
+    previewUrl: !isPrivate && PREVIEWABLE.test(fileName) ? `/brand-files/${item.path}` : undefined,
     tags: item.tags,
     createdAt: item.created,
     updatedAt: item.created,
-    createdBy: employee ? "usr-002" : "usr-001",
+    createdBy: isPrivate ? "usr-002" : "usr-001",
   });
 
-  if (employee) privateFiles.push([item.id, fileName]);
+  if (isPrivate) privateFiles.push([item.id, fileName]);
 }
 
 if (missing.length) {
@@ -466,15 +472,17 @@ const output = `import type { BrandAsset } from "@/contexts/brand-assets/domain/
  * brand file; sizes are read from disk so the catalog cannot drift from what
  * the portal actually serves. Titles and descriptions live in that script.
  *
- * Public assets are served straight from /public/brand-files. Employee assets
- * live outside the web root and stream only through /api/sales-files/[id],
- * which enforces the session cookie.
+ * Files under /public/brand-files are served statically; private-location
+ * files live outside the web root and stream through /api/sales-files/[id],
+ * which enforces the session cookie only when the asset's visibility is
+ * "employee". Visibility (role gating) is independent of where the bytes
+ * live — every seed asset currently defaults to "public".
  */
 export const SEED_BRAND_ASSETS: BrandAsset[] = [
 ${body}
 ];
 
-/** Employee-only files streamed by /api/sales-files/[id] from private-assets/. */
+/** Private-location files streamed by /api/sales-files/[id] from private-assets/. */
 export const PRIVATE_SEED_FILES: Record<string, string> = {
 ${privateMap}
 };

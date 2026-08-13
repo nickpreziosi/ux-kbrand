@@ -13,7 +13,6 @@ import {
   ArrowRight,
   BookOpen,
   Image as ImageIcon,
-  Lock,
   Palette,
   PenTool,
   Presentation,
@@ -21,7 +20,9 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
+import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 
 const BRANDING_TILES: { id: string; href: string; icon: LucideIcon }[] = [
   { id: "logo", href: "/branding/logo", icon: PenTool },
@@ -36,6 +37,7 @@ export function HomeView() {
   const tSections = useTranslations("branding.sections");
   const router = useRouter();
   const { user } = useAuth();
+  const { viewerRole } = usePortalRole();
 
   return (
     <div className="space-y-8">
@@ -57,7 +59,12 @@ export function HomeView() {
               {t("browseAssets")}
             </Button>
             {!user ? (
-              <Button variant="outline" size="lg" href="/login" className="bg-background/80">
+              <Button
+                variant="outline"
+                size="lg"
+                href="/login"
+                className="bg-background/80"
+              >
                 {t("employeeSignIn")}
               </Button>
             ) : null}
@@ -65,12 +72,17 @@ export function HomeView() {
         }
       />
 
-      <section className="space-y-4" aria-label={t("categoriesAriaLabel")}>
+      <section
+        className="@container space-y-4"
+        aria-label={t("categoriesAriaLabel")}
+      >
         <div>
           <h2 className="text-xl font-semibold">{t("categoriesTitle")}</h2>
-          <p className="text-sm text-muted-foreground">{t("categoriesSubtitle")}</p>
+          <p className="text-sm text-muted-foreground">
+            {t("categoriesSubtitle")}
+          </p>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3">
           {BRANDING_TILES.map(({ id, href, icon }) => (
             <Tile.Navigation
               key={id}
@@ -81,16 +93,15 @@ export function HomeView() {
               cta={t("openCategory")}
             />
           ))}
-          <Tile.Navigation
-            href="/sales"
-            icon={Presentation}
-            title={t("categories.sales.title")}
-            description={t("categories.sales.description")}
-            cta={user ? t("openCategory") : t("employeeSignIn")}
-            actions={
-              !user ? <Lock className="h-4 w-4 text-muted-foreground" aria-hidden /> : undefined
-            }
-          />
+          {canSeeSalesSection(viewerRole) ? (
+            <Tile.Navigation
+              href="/sales"
+              icon={Presentation}
+              title={t("categories.sales.title")}
+              description={t("categories.sales.description")}
+              cta={t("openCategory")}
+            />
+          ) : null}
         </div>
       </section>
     </div>

@@ -6,9 +6,11 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
  * brand file; sizes are read from disk so the catalog cannot drift from what
  * the portal actually serves. Titles and descriptions live in that script.
  *
- * Public assets are served straight from /public/brand-files. Employee assets
- * live outside the web root and stream only through /api/sales-files/[id],
- * which enforces the session cookie.
+ * Files under /public/brand-files are served statically; private-location
+ * files live outside the web root and stream through /api/sales-files/[id],
+ * which enforces the session cookie only when the asset's visibility is
+ * "employee". Visibility (role gating) is independent of where the bytes
+ * live — every seed asset currently defaults to "public".
  */
 export const SEED_BRAND_ASSETS: BrandAsset[] = [
   {
@@ -768,7 +770,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "K Lab Platform Pitch 2026",
     description: "Master platform deck: suite overview, architecture story, and pricing framework. Approved 2026-07.",
     category: "pitch-decks",
-    visibility: "employee",
+    visibility: "public",
     status: "active",
     file: {
       fileName: "k-lab-platform-pitch-2026.pdf",
@@ -791,7 +793,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "K Rails Invoice Portal Pitch",
     description: "Product deck for the invoice financing portal — municipality and enterprise variants.",
     category: "pitch-decks",
-    visibility: "employee",
+    visibility: "public",
     status: "active",
     file: {
       fileName: "k-rails-invoice-pitch.pdf",
@@ -814,7 +816,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "Product One-Pagers Pack",
     description: "One-page leave-behinds for KBPM, K Risk, K Leads, and K Rails — print-ready.",
     category: "sales-materials",
-    visibility: "employee",
+    visibility: "public",
     status: "active",
     file: {
       fileName: "k-lab-product-one-pagers.pdf",
@@ -836,7 +838,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "Case Study — Regional Bank",
     description: "Anonymized results story: 40% faster onboarding with KBPM. Cleared for external sharing by legal.",
     category: "sales-materials",
-    visibility: "employee",
+    visibility: "public",
     status: "active",
     file: {
       fileName: "case-study-regional-bank.pdf",
@@ -858,7 +860,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "Legacy Pricing Sheet 2025",
     description: "Superseded by the 2026 pricing framework in the platform pitch. Kept for reference.",
     category: "sales-materials",
-    visibility: "employee",
+    visibility: "public",
     status: "archived",
     file: {
       fileName: "legacy-pricing-sheet-2025.pdf",
@@ -877,7 +879,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
 ];
 
-/** Employee-only files streamed by /api/sales-files/[id] from private-assets/. */
+/** Private-location files streamed by /api/sales-files/[id] from private-assets/. */
 export const PRIVATE_SEED_FILES: Record<string, string> = {
   "ast-100": "k-lab-platform-pitch-2026.pdf",
   "ast-101": "k-rails-invoice-pitch.pdf",

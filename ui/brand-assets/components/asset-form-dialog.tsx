@@ -29,6 +29,7 @@ import type {
   AssetVisibility,
   BrandAsset,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import { uploadAssetFile } from "@/contexts/brand-assets/infrastructure/http/upload-asset-file";
 import { readFloatingLabelInputValue } from "@/ui/shared/lib/floating-label-input-value";
 
 export interface AssetFormValues {
@@ -39,6 +40,12 @@ export interface AssetFormValues {
   tags: string[];
   /** Present only when a new file was chosen (create always; edit = replace). */
   file?: AssetFile;
+  /**
+   * Sent alongside a new file only: the file's own bytes for images, "" to
+   * clear a stale preview when the replacement can't preview itself. Left
+   * undefined when no file was chosen, which keeps the stored preview.
+   */
+  previewUrl?: string;
 }
 
 interface AssetFormDialogProps {
@@ -50,16 +57,32 @@ interface AssetFormDialogProps {
   onSubmit: (values: AssetFormValues) => Promise<void> | void;
 }
 
-/** Builds domain file metadata from a browser File (mock: blob URL serves the bytes). */
-function toAssetFile(file: File, category: AssetCategory): AssetFile {
-  const objectUrl = URL.createObjectURL(file);
-  return {
-    fileName: file.name,
-    contentType: file.type || "application/octet-stream",
-    sizeBytes: file.size,
-    storagePath: `assets/${category}/${file.name}`,
-    downloadUrl: objectUrl,
-  };
+/**
+ * Builds domain file metadata from a browser File. Default: upload the bytes
+ * to the mock HTTP backend so every tab (and download gating) can serve them.
+ * The in-browser mock (NEXT_PUBLIC_USE_MOCK_BRAND_API=true) keeps the old
+ * blob-URL shortcut — bytes never leave the browser there.
+ */
+async function toAssetFile(file: File, category: AssetCategory): Promise<AssetFile> {
+  if (process.env.NEXT_PUBLIC_USE_MOCK_BRAND_API === "true") {
+    return {
+      fileName: file.name,
+      contentType: file.type || "application/octet-stream",
+      sizeBytes: file.size,
+      storagePath: `assets/${category}/${file.name}`,
+      downloadUrl: URL.createObjectURL(file),
+    };
+  }
+  return uploadAssetFile(file, category);
+}
+
+/**
+ * Images preview from their own bytes, the way the seeded PNGs do (uploads are
+ * served inline by /api/uploads/[id]). PDFs, fonts and stylesheets have no
+ * thumbnail to show, so they fall back to the card's file-type icon.
+ */
+function selfPreviewUrl(file: File, assetFile: AssetFile): string {
+  return file.type.startsWith("image/") ? assetFile.downloadUrl : "";
 }
 
 export function AssetFormDialog({
@@ -79,7 +102,9 @@ export function AssetFormDialog({
   const [visibility, setVisibility] = React.useState<AssetVisibility>("public");
   const [tags, setTags] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]);
+  const [uploading, setUploading] = React.useState(false);
   const [formError, setFormError] = React.useState<string | null>(null);
+  const busy = submitting || uploading;
 
   React.useEffect(() => {
     if (!open) return;
@@ -112,6 +137,18 @@ export function AssetFormDialog({
     }
     setFormError(null);
     const chosen = files[0];
+    let assetFile: AssetFile | undefined;
+    if (chosen) {
+      setUploading(true);
+      try {
+        assetFile = await toAssetFile(chosen, category);
+      } catch {
+        setFormError(t("uploadFailed"));
+        return;
+      } finally {
+        setUploading(false);
+      }
+    }
     await onSubmit({
       title: title.trim(),
       description: description.trim(),
@@ -121,7 +158,8 @@ export function AssetFormDialog({
         .split(",")
         .map((tag) => tag.trim())
         .filter(Boolean),
-      file: chosen ? toAssetFile(chosen, category) : undefined,
+      file: assetFile,
+      previewUrl: chosen && assetFile ? selfPreviewUrl(chosen, assetFile) : undefined,
     });
   };
 
@@ -149,7 +187,7 @@ export function AssetFormDialog({
             label={t("titleLabel")}
             value={title}
             onChange={(e) => setTitle(readFloatingLabelInputValue(e))}
-            disabled={submitting}
+            disabled={busy}
             required
           />
           <FloatingLabelInput
@@ -157,7 +195,7 @@ export function AssetFormDialog({
             type="textarea"
             value={description}
             onChange={(e) => setDescription(readFloatingLabelInputValue(e))}
-            disabled={submitting}
+            disabled={busy}
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FloatingLabelInput
@@ -166,7 +204,7 @@ export function AssetFormDialog({
               selectOptions={categoryOptions}
               value={category}
               onChange={(e) => handleCategoryChange(readFloatingLabelInputValue(e))}
-              disabled={submitting}
+              disabled={busy}
             />
             <FloatingLabelInput
               label={t("visibilityLabel")}
@@ -176,16 +214,16 @@ export function AssetFormDialog({
               onChange={(e) =>
                 setVisibility(readFloatingLabelInputValue(e) as AssetVisibility)
               }
-              disabled={submitting}
+              disabled={busy}
             />
           </div>
           <FloatingLabelInput
             label={t("tagsLabel")}
             value={tags}
             onChange={(e) => setTags(readFloatingLabelInputValue(e))}
-            disabled={submitting}
+            disabled={busy}
           />
-          <Dropzone files={files} onFilesChange={setFiles} maxFiles={1} disabled={submitting}>
+          <Dropzone files={files} onFilesChange={setFiles} maxFiles={1} disabled={busy}>
             <DropzoneArea>
               <DropzoneUploadIcon />
               <DropzoneLabel>
@@ -202,11 +240,11 @@ export function AssetFormDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={submitting}
+              disabled={busy}
             >
               {t("cancel")}
             </Button>
-            <Button type="submit" variant="accent-brand" loading={submitting}>
+            <Button type="submit" variant="accent-brand" loading={busy}>
               {isEdit ? t("save") : t("create")}
             </Button>
           </DialogFooter>

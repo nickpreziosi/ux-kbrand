@@ -22,6 +22,11 @@ export class BrandAssetAdminService {
     return this.assets.update(id, input);
   }
 
+  /** Quick gating switch — who may view/download the asset. */
+  setVisibility(id: string, visibility: BrandAsset["visibility"]): Promise<BrandAsset> {
+    return this.assets.update(id, { visibility });
+  }
+
   setArchived(id: string, archived: boolean): Promise<BrandAsset> {
     return this.assets.setArchived(id, archived);
   }

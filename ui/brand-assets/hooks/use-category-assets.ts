@@ -4,8 +4,16 @@ import * as React from "react";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { AssetCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { brandAssetCatalogService } from "@/contexts/brand-assets/application/brand-assets-client-services";
+import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 
-export function usePublicAssets(category: AssetCategory) {
+/**
+ * Active assets of one category, scoped to what the current viewer may see:
+ * anonymous visitors get public assets only; employees and admins also get
+ * employee-gated ones. Waits for the role to resolve so a signed-in employee
+ * doesn't briefly see (and then re-fetch past) the public-only listing.
+ */
+export function useCategoryAssets(category: AssetCategory) {
+  const { viewerRole, loading: roleLoading } = usePortalRole();
   const [assets, setAssets] = React.useState<BrandAsset[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [loadError, setLoadError] = React.useState<string | null>(null);
@@ -14,17 +22,18 @@ export function usePublicAssets(category: AssetCategory) {
     setLoading(true);
     setLoadError(null);
     try {
-      setAssets(await brandAssetCatalogService.listPublicCategory(category));
+      setAssets(await brandAssetCatalogService.listCategory(category, viewerRole));
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : "errors.assets.loadFailed");
     } finally {
       setLoading(false);
     }
-  }, [category]);
+  }, [category, viewerRole]);
 
   React.useEffect(() => {
+    if (roleLoading) return;
     void refresh();
-  }, [refresh]);
+  }, [refresh, roleLoading]);
 
-  return { assets, loading, loadError, refresh };
+  return { assets, loading: loading || roleLoading, loadError, refresh };
 }

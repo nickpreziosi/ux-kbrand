@@ -59,15 +59,25 @@ function RoleBadge({ role, label }: { role: PortalRole; label: string }) {
 
 export function AdminUsersView() {
   const t = useTranslations("adminUsers");
-  const { users, loading, mutating, inviteUser, updateRole, setStatus, removeUser } =
-    useUserAdmin();
+  const {
+    users,
+    loading,
+    loadError,
+    mutating,
+    inviteUser,
+    updateRole,
+    setStatus,
+    removeUser,
+  } = useUserAdmin();
 
   const [inviteOpen, setInviteOpen] = React.useState(false);
   const [inviteName, setInviteName] = React.useState("");
   const [inviteEmail, setInviteEmail] = React.useState("");
   const [inviteRole, setInviteRole] = React.useState<PortalRole>("employee");
   const [inviteError, setInviteError] = React.useState<string | null>(null);
-  const [deleting, setDeleting] = React.useState<PortalUser | undefined>(undefined);
+  const [deleting, setDeleting] = React.useState<PortalUser | undefined>(
+    undefined,
+  );
 
   React.useEffect(() => {
     if (!inviteOpen) return;
@@ -148,7 +158,9 @@ export function AdminUsersView() {
             </Avatar>
             <div className="min-w-0">
               <p className="truncate font-medium">{row.original.displayName}</p>
-              <p className="truncate text-xs text-muted-foreground">{row.original.email}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {row.original.email}
+              </p>
             </div>
           </div>
         ),
@@ -157,7 +169,10 @@ export function AdminUsersView() {
         accessorKey: "role",
         header: t("columns.role"),
         cell: ({ row }) => (
-          <RoleBadge role={row.original.role} label={t(`roles.${row.original.role}`)} />
+          <RoleBadge
+            role={row.original.role}
+            label={t(`roles.${row.original.role}`)}
+          />
         ),
       },
       {
@@ -169,9 +184,13 @@ export function AdminUsersView() {
             return <Badge variant="success-soft">{t("statuses.active")}</Badge>;
           }
           if (status === "invited") {
-            return <Badge variant="warning-soft">{t("statuses.invited")}</Badge>;
+            return (
+              <Badge variant="warning-soft">{t("statuses.invited")}</Badge>
+            );
           }
-          return <Badge variant="destructive-soft">{t("statuses.disabled")}</Badge>;
+          return (
+            <Badge variant="destructive-soft">{t("statuses.disabled")}</Badge>
+          );
         },
       },
       {
@@ -205,9 +224,13 @@ export function AdminUsersView() {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onSelect={() => void handleRoleToggle(user)}>
                   <ShieldCheck className="me-2 h-4 w-4" aria-hidden />
-                  {user.role === "admin" ? t("actions.makeEmployee") : t("actions.makeAdmin")}
+                  {user.role === "admin"
+                    ? t("actions.makeEmployee")
+                    : t("actions.makeAdmin")}
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => void handleStatusToggle(user)}>
+                <DropdownMenuItem
+                  onSelect={() => void handleStatusToggle(user)}
+                >
                   {user.status === "disabled" ? (
                     <>
                       <UserCheck className="me-2 h-4 w-4" aria-hidden />
@@ -255,13 +278,17 @@ export function AdminUsersView() {
         }
       />
 
-      <DataTableShell
-        columns={columns}
-        data={users}
-        loading={loading}
-        emptyMessage={t("emptyMessage")}
-        getRowId={(user) => user.id}
-      />
+      {loadError ? (
+        <p className="text-sm text-destructive">{t("loadError")}</p>
+      ) : (
+        <DataTableShell
+          columns={columns}
+          data={users}
+          loading={loading}
+          emptyMessage={t("emptyMessage")}
+          getRowId={(user) => user.id}
+        />
+      )}
 
       <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
         <DialogContent className="sm:max-w-md">
@@ -298,7 +325,9 @@ export function AdminUsersView() {
               }
               disabled={mutating}
             />
-            {inviteError ? <p className="text-sm text-destructive">{inviteError}</p> : null}
+            {inviteError ? (
+              <p className="text-sm text-destructive">{inviteError}</p>
+            ) : null}
             <DialogFooter>
               <Button
                 type="button"
@@ -326,7 +355,9 @@ export function AdminUsersView() {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("deleteDialog.description", { name: deleting?.displayName ?? "" })}
+              {t("deleteDialog.description", {
+                name: deleting?.displayName ?? "",
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -27,6 +27,8 @@ import {
   ArchiveRestore,
   Download,
   FolderCog,
+  Globe,
+  Lock,
   MoreHorizontal,
   Pencil,
   Plus,
@@ -45,13 +47,26 @@ import {
 export function AdminAssetsView() {
   const t = useTranslations("adminAssets");
   const tCategories = useTranslations("brand.categories");
-  const { assets, loading, mutating, createAsset, updateAsset, setArchived, removeAsset } =
-    useAssetAdmin();
+  const {
+    assets,
+    loading,
+    loadError,
+    mutating,
+    createAsset,
+    updateAsset,
+    setVisibility,
+    setArchived,
+    removeAsset,
+  } = useAssetAdmin();
   const { portalUser } = usePortalRole();
 
   const [formOpen, setFormOpen] = React.useState(false);
-  const [editing, setEditing] = React.useState<BrandAsset | undefined>(undefined);
-  const [deleting, setDeleting] = React.useState<BrandAsset | undefined>(undefined);
+  const [editing, setEditing] = React.useState<BrandAsset | undefined>(
+    undefined,
+  );
+  const [deleting, setDeleting] = React.useState<BrandAsset | undefined>(
+    undefined,
+  );
 
   const openCreate = () => {
     setEditing(undefined);
@@ -77,6 +92,18 @@ export function AdminAssetsView() {
         toast.success(t("toasts.created"));
       }
       setFormOpen(false);
+    } catch {
+      toast.error(t("toasts.saveFailed"));
+    }
+  };
+
+  const handleVisibilityToggle = async (asset: BrandAsset) => {
+    try {
+      await setVisibility(
+        asset.id,
+        asset.visibility === "public" ? "employee" : "public",
+      );
+      toast.success(t("toasts.visibilityUpdated"));
     } catch {
       toast.error(t("toasts.saveFailed"));
     }
@@ -122,7 +149,9 @@ export function AdminAssetsView() {
         accessorKey: "category",
         header: t("columns.category"),
         cell: ({ row }) => (
-          <Badge variant="secondary">{tCategories(`${row.original.category}.title`)}</Badge>
+          <Badge variant="secondary">
+            {tCategories(`${row.original.category}.title`)}
+          </Badge>
         ),
       },
       {
@@ -186,12 +215,33 @@ export function AdminAssetsView() {
                   {t("actions.edit")}
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a href={asset.file.downloadUrl} target="_blank" rel="noopener">
+                  <a
+                    href={asset.file.downloadUrl}
+                    target="_blank"
+                    rel="noopener"
+                  >
                     <Download className="me-2 h-4 w-4" aria-hidden />
                     {t("actions.download")}
                   </a>
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => void handleArchiveToggle(asset)}>
+                <DropdownMenuItem
+                  onSelect={() => void handleVisibilityToggle(asset)}
+                >
+                  {asset.visibility === "public" ? (
+                    <>
+                      <Lock className="me-2 h-4 w-4" aria-hidden />
+                      {t("actions.makeEmployee")}
+                    </>
+                  ) : (
+                    <>
+                      <Globe className="me-2 h-4 w-4" aria-hidden />
+                      {t("actions.makePublic")}
+                    </>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => void handleArchiveToggle(asset)}
+                >
                   {asset.status === "archived" ? (
                     <>
                       <ArchiveRestore className="me-2 h-4 w-4" aria-hidden />
@@ -229,19 +279,27 @@ export function AdminAssetsView() {
         subtitle={t("subtitle")}
         icon={<FolderCog className="h-8 w-8" aria-hidden />}
         actions={
-          <Button variant="accent-brand" icon={<Plus aria-hidden />} onClick={openCreate}>
+          <Button
+            variant="accent-brand"
+            icon={<Plus aria-hidden />}
+            onClick={openCreate}
+          >
             {t("newAsset")}
           </Button>
         }
       />
 
-      <DataTableShell
-        columns={columns}
-        data={assets}
-        loading={loading}
-        emptyMessage={t("emptyMessage")}
-        getRowId={(asset) => asset.id}
-      />
+      {loadError ? (
+        <p className="text-sm text-destructive">{t("loadError")}</p>
+      ) : (
+        <DataTableShell
+          columns={columns}
+          data={assets}
+          loading={loading}
+          emptyMessage={t("emptyMessage")}
+          getRowId={(asset) => asset.id}
+        />
+      )}
 
       <AssetFormDialog
         open={formOpen}

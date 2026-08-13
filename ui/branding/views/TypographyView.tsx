@@ -4,13 +4,13 @@ import * as React from "react";
 import { Card, CardContent, PageHeader, Separator } from "@k-lab/components";
 import { Type as TypeIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { usePublicAssets } from "@/ui/brand-assets/hooks/use-public-assets";
+import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
 import { FONT_WEIGHTS, TYPE_SCALE } from "@/ui/branding/content/type-scale";
 
 export function TypographyView() {
   const t = useTranslations("branding.typography");
-  const { assets, loading, loadError } = usePublicAssets("fonts");
+  const { assets, loading, loadError } = useCategoryAssets("fonts");
 
   return (
     <div className="space-y-8">

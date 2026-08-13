@@ -3,13 +3,13 @@ import type { AuthGatewayPort } from "@/contexts/user-management/auth/domain/aut
 export class SignInWithEmailPasswordService {
   constructor(
     private readonly gateway: AuthGatewayPort,
-    private readonly setPresenceSession: () => Promise<void>
+    private readonly setPresenceSession: (email?: string) => Promise<void>
   ) {}
 
   async signInWithPresenceSession(email: string, password: string): Promise<void> {
     await this.gateway.signInWithEmailAndPassword(email, password);
     try {
-      await this.setPresenceSession();
+      await this.setPresenceSession(email);
     } catch (e) {
       await this.gateway.signOut();
       throw new Error(

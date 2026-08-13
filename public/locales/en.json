@@ -287,6 +287,10 @@
     "empty": {
       "title": "Nothing here yet",
       "description": "Assets published to this category will appear here."
+    },
+    "visibility": {
+      "public": "Public",
+      "employee": "Employees"
     }
   },
   "sales": {
@@ -310,6 +314,7 @@
     "subtitle": "Upload, edit, replace, archive, and remove portal resources.",
     "newAsset": "New asset",
     "emptyMessage": "No assets in the catalog yet.",
+    "loadError": "We couldn't load the asset catalog. Please try again.",
     "columns": {
       "title": "Asset",
       "category": "Category",
@@ -332,7 +337,9 @@
       "download": "Download",
       "archive": "Archive",
       "restore": "Restore",
-      "delete": "Delete"
+      "delete": "Delete",
+      "makePublic": "Make public",
+      "makeEmployee": "Employees only"
     },
     "toasts": {
       "created": "Asset created",
@@ -340,7 +347,8 @@
       "archived": "Asset archived",
       "restored": "Asset restored",
       "deleted": "Asset deleted",
-      "saveFailed": "Something went wrong. Please try again."
+      "saveFailed": "Something went wrong. Please try again.",
+      "visibilityUpdated": "Asset access updated"
     },
     "deleteDialog": {
       "title": "Delete asset?",
@@ -365,6 +373,7 @@
       "fileDescription": "Any file type, up to 50 MB.",
       "titleRequired": "A title is required.",
       "fileRequired": "Choose a file to publish.",
+      "uploadFailed": "Uploading the file failed. Please try again.",
       "cancel": "Cancel",
       "save": "Save changes",
       "create": "Create asset"
@@ -375,6 +384,7 @@
     "subtitle": "Invite employees, assign roles, and control portal access.",
     "inviteUser": "Invite user",
     "emptyMessage": "No users in the directory yet.",
+    "loadError": "We couldn't load the user directory. Please try again.",
     "neverLoggedIn": "Never",
     "columns": {
       "name": "User",
@@ -469,6 +479,12 @@
   },
   "errors": {
     "somethingWentWrong": "Something went wrong",
+    "api": {
+      "unauthorized": "Sign in to continue.",
+      "forbidden": "You don't have permission to do that.",
+      "invalidRequest": "The request could not be processed.",
+      "requestFailed": "The request failed. Please try again."
+    },
     "unexpectedRouteError": "An unexpected error occurred while loading this page. You can try again, or head back home.",
     "contactSupportReference": "If the problem persists, contact support and share this reference:"
   },
@@ -480,5 +496,21 @@
     "title": "Settings",
     "subtitle": "Manage your account and application preferences.",
     "placeholder": "Settings options will appear here."
+  },
+  "devTools": {
+    "roleSwitcher": {
+      "tooltip": "Dev role preview",
+      "title": "Dev role preview",
+      "entityLabel": "App",
+      "entity": "Brand portal",
+      "roleLabel": "Role",
+      "apply": "Apply",
+      "reset": "Reset to my role",
+      "roles": {
+        "public": "Public",
+        "employee": "Employee",
+        "admin": "Admin"
+      }
+    }
   }
 }

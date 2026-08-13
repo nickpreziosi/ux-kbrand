@@ -287,6 +287,10 @@
     "empty": {
       "title": "Nada por aqui ainda",
       "description": "Os recursos publicados nesta categoria aparecerão aqui."
+    },
+    "visibility": {
+      "public": "Público",
+      "employee": "Funcionários"
     }
   },
   "sales": {
@@ -310,6 +314,7 @@
     "subtitle": "Envie, edite, substitua, arquive e remova recursos do portal.",
     "newAsset": "Novo recurso",
     "emptyMessage": "Ainda não há recursos no catálogo.",
+    "loadError": "Não foi possível carregar o catálogo de recursos. Tente novamente.",
     "columns": {
       "title": "Recurso",
       "category": "Categoria",
@@ -332,7 +337,9 @@
       "download": "Baixar",
       "archive": "Arquivar",
       "restore": "Restaurar",
-      "delete": "Excluir"
+      "delete": "Excluir",
+      "makePublic": "Tornar público",
+      "makeEmployee": "Apenas funcionários"
     },
     "toasts": {
       "created": "Recurso criado",
@@ -340,7 +347,8 @@
       "archived": "Recurso arquivado",
       "restored": "Recurso restaurado",
       "deleted": "Recurso excluído",
-      "saveFailed": "Algo deu errado. Tente novamente."
+      "saveFailed": "Algo deu errado. Tente novamente.",
+      "visibilityUpdated": "Acesso ao recurso atualizado"
     },
     "deleteDialog": {
       "title": "Excluir recurso?",
@@ -365,6 +373,7 @@
       "fileDescription": "Qualquer tipo de arquivo, até 50 MB.",
       "titleRequired": "O título é obrigatório.",
       "fileRequired": "Escolha um arquivo para publicar.",
+      "uploadFailed": "Falha ao enviar o arquivo. Tente novamente.",
       "cancel": "Cancelar",
       "save": "Salvar alterações",
       "create": "Criar recurso"
@@ -375,6 +384,7 @@
     "subtitle": "Convide funcionários, atribua papéis e controle o acesso ao portal.",
     "inviteUser": "Convidar usuário",
     "emptyMessage": "Ainda não há usuários no diretório.",
+    "loadError": "Não foi possível carregar o diretório de usuários. Tente novamente.",
     "neverLoggedIn": "Nunca",
     "columns": {
       "name": "Usuário",
@@ -469,6 +479,12 @@
   },
   "errors": {
     "somethingWentWrong": "Algo deu errado",
+    "api": {
+      "unauthorized": "Faça login para continuar.",
+      "forbidden": "Você não tem permissão para fazer isso.",
+      "invalidRequest": "Não foi possível processar a solicitação.",
+      "requestFailed": "A solicitação falhou. Tente novamente."
+    },
     "unexpectedRouteError": "Ocorreu um erro inesperado ao carregar esta página. Você pode tentar novamente ou voltar à página inicial.",
     "contactSupportReference": "Se o problema persistir, entre em contato com o suporte e informe esta referência:"
   },
@@ -480,5 +496,21 @@
     "title": "Configurações",
     "subtitle": "Gerencie sua conta e as preferências do aplicativo.",
     "placeholder": "As opções de configuração aparecerão aqui."
+  },
+  "devTools": {
+    "roleSwitcher": {
+      "tooltip": "Pré-visualização de papel (dev)",
+      "title": "Pré-visualização de papel (dev)",
+      "entityLabel": "Aplicativo",
+      "entity": "Portal da marca",
+      "roleLabel": "Papel",
+      "apply": "Aplicar",
+      "reset": "Voltar ao meu papel",
+      "roles": {
+        "public": "Público",
+        "employee": "Funcionário",
+        "admin": "Administrador"
+      }
+    }
   }
 }

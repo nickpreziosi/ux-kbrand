@@ -22,20 +22,23 @@ export class MockPortalUserRepository implements PortalUserRepository {
   private users: PortalUser[] = clone(SEED_PORTAL_USERS);
   private sequence = 0;
 
+  /** Server-side (mock HTTP backend) passes 0 — the network already adds latency. */
+  constructor(private readonly latencyMs: number = MOCK_LATENCY_MS) {}
+
   async list(): Promise<PortalUser[]> {
-    await delay(MOCK_LATENCY_MS);
+    await delay(this.latencyMs);
     return clone(this.users);
   }
 
   async getByEmail(email: string): Promise<PortalUser | null> {
-    await delay(MOCK_LATENCY_MS);
+    await delay(this.latencyMs);
     const normalized = email.trim().toLowerCase();
     const user = this.users.find((u) => u.email.toLowerCase() === normalized);
     return user ? clone(user) : null;
   }
 
   async invite(input: InvitePortalUserInput): Promise<PortalUser> {
-    await delay(MOCK_LATENCY_MS);
+    await delay(this.latencyMs);
     const normalized = input.email.trim().toLowerCase();
     if (this.users.some((u) => u.email.toLowerCase() === normalized)) {
       throw new Error("errors.users.emailExists");
@@ -63,7 +66,7 @@ export class MockPortalUserRepository implements PortalUserRepository {
   }
 
   async remove(id: string): Promise<void> {
-    await delay(MOCK_LATENCY_MS);
+    await delay(this.latencyMs);
     if (!this.users.some((u) => u.id === id)) {
       throw new Error("errors.users.notFound");
     }
@@ -74,7 +77,7 @@ export class MockPortalUserRepository implements PortalUserRepository {
     id: string,
     changes: Partial<Pick<PortalUser, "role" | "status">>,
   ): Promise<PortalUser> {
-    await delay(MOCK_LATENCY_MS);
+    await delay(this.latencyMs);
     const existing = this.users.find((u) => u.id === id);
     if (!existing) throw new Error("errors.users.notFound");
     const updated: PortalUser = {

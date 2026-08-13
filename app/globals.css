@@ -27,21 +27,27 @@
 
     /* Enhanced backdrop filter with saturation for richer colors */
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) !important;
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+      saturate(var(--glass-saturation));
 
     /* Background with opacity */
-    background-color: hsl(var(--background) / var(--glass-background-opacity)) !important;
+    background-color: hsl(
+      var(--background) / var(--glass-background-opacity)
+    ) !important;
 
     /* Asymmetric border for depth - top/left lighter, bottom/right darker */
-    border-top: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5));
+    border-top: 1px solid
+      hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5));
     border-right: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
-    border-bottom: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 0.5));
+    border-bottom: 1px solid
+      hsl(var(--foreground) / calc(var(--glass-border-opacity) * 0.5));
     border-left: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
 
     /* Multi-layer shadow system with outer shadow and inner highlight */
     box-shadow:
       var(--glass-shadow),
-      inset 0 1px 1px 0 rgba(255, 255, 255, var(--glass-inner-highlight-opacity));
+      inset 0 1px 1px 0
+        rgba(255, 255, 255, var(--glass-inner-highlight-opacity));
   }
 
   /* Glass morphism for overlay components (lower opacity for subtle backdrop) */
@@ -51,21 +57,27 @@
 
     /* Enhanced backdrop filter with saturation */
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) !important;
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+      saturate(var(--glass-saturation));
 
     /* Background with lower opacity for overlays */
-    background-color: hsl(var(--background) / var(--glass-background-opacity-overlay)) !important;
+    background-color: hsl(
+      var(--background) / var(--glass-background-opacity-overlay)
+    ) !important;
 
     /* Asymmetric border for depth */
-    border-top: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5));
+    border-top: 1px solid
+      hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5));
     border-right: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
-    border-bottom: 1px solid hsl(var(--foreground) / calc(var(--glass-border-opacity) * 0.5));
+    border-bottom: 1px solid
+      hsl(var(--foreground) / calc(var(--glass-border-opacity) * 0.5));
     border-left: 1px solid hsl(var(--foreground) / var(--glass-border-opacity));
 
     /* Multi-layer shadow system */
     box-shadow:
       var(--glass-shadow),
-      inset 0 1px 1px 0 rgba(255, 255, 255, var(--glass-inner-highlight-opacity));
+      inset 0 1px 1px 0
+        rgba(255, 255, 255, var(--glass-inner-highlight-opacity));
   }
 
   /* Navbar glass effect - uses glass morphism tokens without shadow */
@@ -76,19 +88,28 @@
     transform: translateZ(0);
 
     /* Semi-transparent background - enables visible glass blur (backdrop-filter blurs content behind) */
-    background-color: hsl(var(--background) / var(--glass-background-opacity)) !important;
+    background-color: hsl(
+      var(--background) / var(--glass-background-opacity)
+    ) !important;
 
     /* Enhanced backdrop filter with saturation */
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) !important;
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+      saturate(var(--glass-saturation));
 
     /* Asymmetric border */
-    border-top-color: hsl(var(--foreground) / calc(var(--glass-border-opacity) * 1.5)) !important;
-    border-right-color: hsl(var(--foreground) / var(--glass-border-opacity)) !important;
+    border-top-color: hsl(
+      var(--foreground) / calc(var(--glass-border-opacity) * 1.5)
+    ) !important;
+    border-right-color: hsl(
+      var(--foreground) / var(--glass-border-opacity)
+    ) !important;
     border-bottom-color: hsl(
       var(--foreground) / calc(var(--glass-border-opacity) * 0.5)
     ) !important;
-    border-left-color: hsl(var(--foreground) / var(--glass-border-opacity)) !important;
+    border-left-color: hsl(
+      var(--foreground) / var(--glass-border-opacity)
+    ) !important;
   }
 
   /* Glass item hover effect - reduced opacity for items inside glass containers */
@@ -158,7 +179,11 @@ body {
   overflow-x: hidden;
   background-color: hsl(var(--background));
   /* Subtle gradient gives backdrop-filter something to blur for visible glass effect */
-  background-image: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
+  background-image: linear-gradient(
+    180deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--secondary)) 100%
+  );
 }
 
 /* Auth pages: force white background on html and body */
@@ -229,13 +254,20 @@ a {
     --accent-brand-h: 23;
     --accent-brand-s: 90%;
     --accent-brand-l: 54%;
-    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s)
+      var(--accent-brand-l);
     --call-action: var(--accent-brand); /* Legacy alias */
 
     --amex-brand-h: 208.12;
     --amex-brand-s: 99%;
     --amex-brand-l: 40.98%;
     --amex-brand: var(--amex-brand-h) var(--amex-brand-s) var(--amex-brand-l);
+
+    /* Brand preview surfaces - the backdrops the logo lockups are designed
+       against. Fixed in both themes on purpose: a logo swatch has to show the
+       real surface, not the current UI theme, so .dark does not override these. */
+    --brand-surface-light: 0 0% 100%;
+    --brand-surface-dark: 210 100% 5%;
 
     /* Core colors */
     --background: 0 0% 100%;
@@ -275,7 +307,8 @@ a {
     --accent-brand-h: 23;
     --accent-brand-s: 90%;
     --accent-brand-l: 54%;
-    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s)
+      var(--accent-brand-l);
 
     /* Core colors */
     --background: var(--base);
@@ -330,7 +363,8 @@ a {
     --accent-brand-h: 148;
     --accent-brand-s: 69%;
     --accent-brand-l: 54%;
-    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s)
+      var(--accent-brand-l);
     --call-action: var(--accent-brand);
 
     --background: 0 0% 100%;
@@ -374,7 +408,8 @@ a {
     --accent-brand-h: 148;
     --accent-brand-s: 69%;
     --accent-brand-l: 54%;
-    --accent-brand: var(--accent-brand-h) var(--accent-brand-s) var(--accent-brand-l);
+    --accent-brand: var(--accent-brand-h) var(--accent-brand-s)
+      var(--accent-brand-l);
 
     --background: 202 43% 27%;
     --foreground: 0 0% 100%;
@@ -406,7 +441,9 @@ a {
 
   /* Language dropdown and other popovers - solid surface background in dark mode */
   html.brand-keo-capital.dark [data-radix-popper-content-wrapper] [role="menu"],
-  html.brand-keo-capital.dark [data-radix-popper-content-wrapper] [role="listbox"] {
+  html.brand-keo-capital.dark
+    [data-radix-popper-content-wrapper]
+    [role="listbox"] {
     background-color: hsl(var(--background) / 0.5) !important;
   }
 }
@@ -480,9 +517,12 @@ body {
 /* Disable transitions during theme/branding switches */
 /* Exclude elements with [data-allow-transition] to preserve specific animations (e.g., toggle icons) */
 html.no-transitions,
-html.no-transitions *:not([data-allow-transition]):not([data-allow-transition] *),
-html.no-transitions *:not([data-allow-transition]):not([data-allow-transition] *)::before,
-html.no-transitions *:not([data-allow-transition]):not([data-allow-transition] *)::after {
+html.no-transitions
+  *:not([data-allow-transition]):not([data-allow-transition] *),
+html.no-transitions
+  *:not([data-allow-transition]):not([data-allow-transition] *)::before,
+html.no-transitions
+  *:not([data-allow-transition]):not([data-allow-transition] *)::after {
   transition: none !important;
   animation: none !important;
 }
@@ -529,7 +569,9 @@ input[type="search"]::-ms-clear {
 }
 
 .invoice-charts .recharts-tooltip-wrapper .recharts-default-tooltip,
-.core-admin-dashboard-charts .recharts-tooltip-wrapper .recharts-default-tooltip {
+.core-admin-dashboard-charts
+  .recharts-tooltip-wrapper
+  .recharts-default-tooltip {
   background-color: hsl(var(--surface)) !important;
   border: 1px solid hsl(var(--border)) !important;
   border-radius: var(--app-radius) !important;
@@ -539,8 +581,14 @@ input[type="search"]::-ms-clear {
 
 .invoice-charts .recharts-tooltip-wrapper .recharts-default-tooltip p,
 .invoice-charts .recharts-tooltip-wrapper .recharts-default-tooltip span,
-.core-admin-dashboard-charts .recharts-tooltip-wrapper .recharts-default-tooltip p,
-.core-admin-dashboard-charts .recharts-tooltip-wrapper .recharts-default-tooltip span {
+.core-admin-dashboard-charts
+  .recharts-tooltip-wrapper
+  .recharts-default-tooltip
+  p,
+.core-admin-dashboard-charts
+  .recharts-tooltip-wrapper
+  .recharts-default-tooltip
+  span {
   color: hsl(var(--foreground)) !important;
 }
 
@@ -555,17 +603,21 @@ input[type="search"]::-ms-clear {
  * readable in JS (often until first interaction). Float from the pseudo-class,
  * not only from data-floating-label-filled / .value.
  */
- .relative.w-full[data-floating-label-filled]:not(:focus-within) label.floating-label-input-label,
- .relative.w-full:has(input:-webkit-autofill):not(:focus-within) label.floating-label-input-label,
- .relative.w-full:has(input:-moz-autofill):not(:focus-within) label.floating-label-input-label,
- .relative.w-full:has(input:autofill):not(:focus-within) label.floating-label-input-label {
-   left: 0.75rem !important;
-   top: 0 !important;
-   transform: translateY(-50%) !important;
-   font-size: 0.75rem !important;
-   font-weight: 500 !important;
-   line-height: 1rem !important;
-   opacity: 1 !important;
-   background-color: hsl(var(--border)) !important;
-   color: hsl(var(--foreground)) !important;
- }
+.relative.w-full[data-floating-label-filled]:not(:focus-within)
+  label.floating-label-input-label,
+.relative.w-full:has(input:-webkit-autofill):not(:focus-within)
+  label.floating-label-input-label,
+.relative.w-full:has(input:-moz-autofill):not(:focus-within)
+  label.floating-label-input-label,
+.relative.w-full:has(input:autofill):not(:focus-within)
+  label.floating-label-input-label {
+  left: 0.75rem !important;
+  top: 0 !important;
+  transform: translateY(-50%) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  line-height: 1rem !important;
+  opacity: 1 !important;
+  background-color: hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+}

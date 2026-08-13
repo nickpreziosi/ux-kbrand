@@ -36,9 +36,13 @@ export function isSalesCategory(category: AssetCategory): boolean {
   return SALES_CATEGORIES.includes(category);
 }
 
-/** Default visibility a category implies; admins can still override per asset. */
+/**
+ * Default visibility for a new asset. Every asset starts "public" for now
+ * (regardless of category) — admins re-gate per asset from Manage assets.
+ * The category parameter stays as the seam for category-driven defaults later.
+ */
 export function defaultVisibilityForCategory(
-  category: AssetCategory,
+  _category: AssetCategory,
 ): "public" | "employee" {
-  return isSalesCategory(category) ? "employee" : "public";
+  return "public";
 }

@@ -5,13 +5,13 @@ import { PageHeader } from "@k-lab/components";
 import { BookOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { findBrandBookAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
-import { usePublicAssets } from "@/ui/brand-assets/hooks/use-public-assets";
+import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
 import { DocumentViewerCard } from "@/ui/branding/components/document-viewer-card";
 
 export function BrandGuidelinesDocView() {
   const t = useTranslations("branding.guidelines");
-  const { assets, loading, loadError } = usePublicAssets("brand-guidelines");
+  const { assets, loading, loadError } = useCategoryAssets("brand-guidelines");
   const brandBook = findBrandBookAsset(assets);
   const companionDocs = assets.filter((asset) => asset.id !== brandBook?.id);
 

@@ -20,6 +20,19 @@ export interface AssetFile {
   downloadUrl: string;
 }
 
+/** Wire-input guard (mock HTTP backend validates uploads/creates with it). */
+export function isAssetFile(value: unknown): value is AssetFile {
+  if (typeof value !== "object" || value === null) return false;
+  const file = value as Record<string, unknown>;
+  return (
+    typeof file.fileName === "string" &&
+    typeof file.contentType === "string" &&
+    typeof file.sizeBytes === "number" &&
+    typeof file.storagePath === "string" &&
+    typeof file.downloadUrl === "string"
+  );
+}
+
 /**
  * Maps 1:1 to a Firestore `assets/{id}` document. Timestamps are ISO strings
  * (Firestore `Timestamp.toDate().toISOString()` at the mapper seam).

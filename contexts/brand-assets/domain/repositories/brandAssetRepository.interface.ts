@@ -8,7 +8,8 @@ import type { AssetVisibility } from "@/contexts/brand-assets/domain/models/bran
 
 export interface ListBrandAssetsParams {
   category?: AssetCategory;
-  visibility?: AssetVisibility;
+  /** Keep only assets whose visibility is in this set (viewer-role gating). */
+  visibilities?: AssetVisibility[];
   /** Admin listings include archived assets; public listings never do. */
   includeArchived?: boolean;
 }

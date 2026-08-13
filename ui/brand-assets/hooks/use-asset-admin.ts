@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type {
+  AssetVisibility,
   BrandAsset,
   CreateBrandAssetInput,
   UpdateBrandAssetInput,
@@ -55,6 +56,12 @@ export function useAssetAdmin() {
     [runMutation],
   );
 
+  const setVisibility = React.useCallback(
+    (id: string, visibility: AssetVisibility) =>
+      runMutation(() => brandAssetAdminService.setVisibility(id, visibility)),
+    [runMutation],
+  );
+
   const setArchived = React.useCallback(
     (id: string, archived: boolean) =>
       runMutation(() => brandAssetAdminService.setArchived(id, archived)),
@@ -74,6 +81,7 @@ export function useAssetAdmin() {
     refresh,
     createAsset,
     updateAsset,
+    setVisibility,
     setArchived,
     removeAsset,
   };

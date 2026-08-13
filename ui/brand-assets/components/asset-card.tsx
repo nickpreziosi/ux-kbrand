@@ -13,7 +13,7 @@ import {
   cn,
   formatFileSize,
 } from "@k-lab/components";
-import { Download, FileText, Image as ImageIcon, Type } from "lucide-react";
+import { Download, FileText, Globe, Image as ImageIcon, Lock, Type } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 
@@ -31,11 +31,13 @@ function PreviewFallbackIcon({ contentType }: { contentType: string }) {
 
 interface AssetCardProps {
   asset: BrandAsset;
+  /** Show the asset's gating badge (employees/admins; read-only here). */
+  showVisibility?: boolean;
   className?: string;
 }
 
 /** Catalog card: preview, metadata badges, and a direct download action. */
-export function AssetCard({ asset, className }: AssetCardProps) {
+export function AssetCard({ asset, showVisibility = false, className }: AssetCardProps) {
   const t = useTranslations("assets");
 
   return (
@@ -53,6 +55,19 @@ export function AssetCard({ asset, className }: AssetCardProps) {
         ) : (
           <PreviewFallbackIcon contentType={asset.file.contentType} />
         )}
+        {showVisibility ? (
+          <Badge
+            variant={asset.visibility === "public" ? "success-soft" : "warning-soft"}
+            className="absolute start-2 top-2 gap-1"
+          >
+            {asset.visibility === "public" ? (
+              <Globe className="h-3 w-3" aria-hidden />
+            ) : (
+              <Lock className="h-3 w-3" aria-hidden />
+            )}
+            {t(`visibility.${asset.visibility}`)}
+          </Badge>
+        ) : null}
       </div>
       <CardContent className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-start justify-between gap-2">

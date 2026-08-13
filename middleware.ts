@@ -23,9 +23,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Gated downloads enforce the session themselves (401 beats a login-page
-  // HTML response for a fetch/download).
-  if (pathname.startsWith("/api/sales-files/")) {
+  // API routes (mock HTTP backend, gated downloads) enforce the session
+  // themselves (401 JSON beats a login-page HTML response for a fetch).
+  if (pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 

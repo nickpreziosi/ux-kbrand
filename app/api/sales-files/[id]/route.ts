@@ -2,37 +2,31 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import {
-  PRIVATE_SEED_FILES,
-  SEED_BRAND_ASSETS,
-} from "@/contexts/brand-assets/infrastructure/mock/seed-assets";
-import { PRESENCE_COOKIE_NAME } from "@/lib/auth/presence-cookie";
-import { PLATFORM_PRESENCE_COOKIE } from "@/lib/platform-auth/constants";
-import { isPlatformDeployment } from "@/lib/platform-auth/deployment-profile";
+import { PRIVATE_SEED_FILES } from "@/contexts/brand-assets/infrastructure/mock/seed-assets";
+import { getServerBrandAssetRepository } from "@/contexts/brand-assets/application/brand-assets-server-services";
+import { canViewAsset } from "@/contexts/brand-assets/domain";
+import { resolveApiViewer } from "@/lib/api/viewer";
 
 /**
- * Employee-only downloads. Files live OUTSIDE /public (private-assets/) so
- * the only way to the bytes is through this session check — protected files
- * cannot be fetched anonymously.
+ * Downloads for private-location files (private-assets/, outside /public).
+ * Visibility comes from the mock HTTP backend's server-side store, so an
+ * admin re-gating an asset takes effect immediately — no seed-only caveat.
  */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const hasSession = isPlatformDeployment()
-    ? request.cookies.get(PLATFORM_PRESENCE_COOKIE)?.value === "1"
-    : request.cookies.get(PRESENCE_COOKIE_NAME)?.value === "1";
-
-  if (!hasSession) {
-    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
-  }
-
   const { id } = await params;
   const fileName = PRIVATE_SEED_FILES[id];
-  const asset = SEED_BRAND_ASSETS.find((a) => a.id === id);
+  const asset = await getServerBrandAssetRepository().getById(id);
 
   if (!fileName || !asset) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const viewer = await resolveApiViewer(request);
+  if (!canViewAsset(viewer.role, asset)) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
   }
 
   try {

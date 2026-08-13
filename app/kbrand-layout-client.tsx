@@ -10,6 +10,7 @@ import {
   DEFAULT_SIDEBAR_COLLAPSE_COOKIE,
   KLabLogo,
   PreferencesBar,
+  PreferencesBarDevEntityRoleDropdown,
   PreferencesBarLanguageCommand,
   PreferencesBarThemeToggle,
   PREFERENCES_BAR_LAYOUT_FIXED_CLASS,
@@ -33,7 +34,13 @@ import {
   Users,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
+import type { ViewerRole } from "@/contexts/shared/domain/viewer-role";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
+import {
+  DEV_ROLE_OVERRIDE_ENABLED,
+  writeDevRoleOverride,
+} from "@/ui/user-management/dev/dev-role-override";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAppLocaleChange } from "@/app/providers/app-intl-provider";
@@ -58,7 +65,8 @@ export function KBrandLayoutClient({
   const pathname = usePathname() ?? "/";
   const t = useTranslations("shell");
   const { user, signOut } = useAuth();
-  const { isAdmin } = usePortalRole();
+  const { viewerRole, devRoleOverride, isAdmin } = usePortalRole();
+  const tDevRole = useTranslations("devTools.roleSwitcher");
   const { locale, changeLocale } = useAppLocaleChange();
 
   const primaryNav = React.useMemo<AppSidebarNavLink[]>(
@@ -87,9 +95,13 @@ export function KBrandLayoutClient({
     [t]
   );
 
+  // Public visitors don't see the Sales section at all; admins additionally
+  // get the management area (see asset-access domain rules).
   const secondaryNav = React.useMemo<AppSidebarNavLink[]>(
     () => [
-      { href: "/sales", label: t("nav.sales"), icon: Presentation },
+      ...(canSeeSalesSection(viewerRole)
+        ? [{ href: "/sales", label: t("nav.sales"), icon: Presentation }]
+        : []),
       ...(isAdmin
         ? [
             { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
@@ -97,7 +109,7 @@ export function KBrandLayoutClient({
           ]
         : []),
     ],
-    [isAdmin, t]
+    [viewerRole, isAdmin, t]
   );
 
   const isAuthPage = isPublicPath(pathname);
@@ -127,6 +139,33 @@ export function KBrandLayoutClient({
           }}
           syncDocumentAttributes
         />
+        {DEV_ROLE_OVERRIDE_ENABLED ? (
+          // Dev-only role mock (same dev-session control as the other repos).
+          // Overrides the client-side viewerRole; the session cookie stays real.
+          <PreferencesBarDevEntityRoleDropdown
+            className={devRoleOverride ? "text-warning" : undefined}
+            tooltipText={tDevRole("tooltip")}
+            title={tDevRole("title")}
+            entityLabel={tDevRole("entityLabel")}
+            roleLabel={tDevRole("roleLabel")}
+            applyLabel={tDevRole("apply")}
+            resetLabel={tDevRole("reset")}
+            entities={[{ value: "kbrand", label: tDevRole("entity") }]}
+            rolesForEntity={() =>
+              (["public", "employee", "admin"] as ViewerRole[]).map((role) => ({
+                value: role,
+                label: tDevRole(`roles.${role}`),
+              }))
+            }
+            value={{ entity: "kbrand", role: viewerRole }}
+            onApply={(_entity, role) => {
+              writeDevRoleOverride(role as ViewerRole);
+            }}
+            onReset={() => {
+              writeDevRoleOverride(null);
+            }}
+          />
+        ) : null}
       </PreferencesBar>
     </div>
   );
