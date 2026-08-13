@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader } from "@k-lab/components";
 import { BookOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { findBrandBookAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
 import { DocumentViewerCard } from "@/ui/branding/components/document-viewer-card";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 
 export function BrandGuidelinesDocView() {
   const t = useTranslations("branding.guidelines");
@@ -17,7 +17,7 @@ export function BrandGuidelinesDocView() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<BookOpen className="h-8 w-8" aria-hidden />}

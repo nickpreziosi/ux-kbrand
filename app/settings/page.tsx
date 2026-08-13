@@ -1,13 +1,13 @@
 import { Settings } from "lucide-react";
-import { PageHeader } from "@k-lab/components";
 import { getTranslations } from "next-intl/server";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 
 export default async function SettingsPage() {
   const t = await getTranslations("settings");
 
   return (
     <div className="space-y-6">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Settings className="h-8 w-8" />}

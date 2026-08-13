@@ -28,9 +28,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   FloatingLabelInput,
-  PageHeader,
   getInitials,
 } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import {
   MoreHorizontal,
   ShieldCheck,
@@ -263,7 +263,7 @@ export function AdminUsersView() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Users className="h-8 w-8" aria-hidden />}

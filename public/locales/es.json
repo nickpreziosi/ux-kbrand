@@ -10,6 +10,7 @@
       "imagery": "Imágenes",
       "guidelines": "Guías de marca",
       "sales": "Recursos de ventas",
+      "admin": "Admin",
       "adminAssets": "Gestionar recursos",
       "adminUsers": "Usuarios y accesos"
     },
@@ -17,10 +18,29 @@
     "userNameFallback": "Usuario",
     "preferencesAriaLabel": "Preferencias",
     "homeAriaLabel": "Inicio del portal de marca",
+    "supportAccess": "Acceso",
+    "supportBrandAssets": "Activos de marca",
+    "supportBug": "Informe de error",
+    "supportOther": "Otro",
     "metadata": {
       "title": "K Brand — Portal de recursos de marca y ventas",
       "description": "La única fuente de verdad de la marca K Lab: guías aprobadas, logotipos, imágenes, tipografías y materiales de ventas."
     }
+  },
+  "Footer": {
+    "copyright": "© {year} K Lab AI Holdings Inc. Todos los derechos reservados.",
+    "website": "k-lab.ai",
+    "legal": "Legal",
+    "feedback": "Comentarios",
+    "help": "Ayuda",
+    "support": "Soporte",
+    "utilityLinksNavLabel": "Sitio web, legal, comentarios, ayuda y soporte",
+    "socialNavLabel": "K Lab en redes sociales",
+    "socialLinkedIn": "K Lab en LinkedIn",
+    "socialX": "K Lab en X",
+    "socialInstagram": "K Lab en Instagram",
+    "socialTiktok": "K Lab en TikTok",
+    "socialYoutube": "K Lab en YouTube"
   },
   "home": {
     "heroTitle": "La marca K Lab, lista para usar",

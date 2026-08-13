@@ -10,6 +10,7 @@
       "imagery": "Imagery",
       "guidelines": "Brand guidelines",
       "sales": "Sales resources",
+      "admin": "Admin",
       "adminAssets": "Manage assets",
       "adminUsers": "Users & access"
     },
@@ -17,10 +18,29 @@
     "userNameFallback": "User",
     "preferencesAriaLabel": "Preferences",
     "homeAriaLabel": "Brand portal home",
+    "supportAccess": "Access",
+    "supportBrandAssets": "Brand assets",
+    "supportBug": "Bug report",
+    "supportOther": "Other",
     "metadata": {
       "title": "K Brand — Brand & Sales Resource Portal",
       "description": "The single source of truth for the K Lab brand: approved guidelines, logos, imagery, fonts, and sales materials."
     }
+  },
+  "Footer": {
+    "copyright": "© {year} K Lab AI Holdings Inc. All rights reserved.",
+    "website": "k-lab.ai",
+    "legal": "Legal",
+    "feedback": "Feedback",
+    "help": "Help",
+    "support": "Support",
+    "utilityLinksNavLabel": "Website, legal, feedback, help, and support",
+    "socialNavLabel": "K Lab on social media",
+    "socialLinkedIn": "K Lab on LinkedIn",
+    "socialX": "K Lab on X",
+    "socialInstagram": "K Lab on Instagram",
+    "socialTiktok": "K Lab on TikTok",
+    "socialYoutube": "K Lab on YouTube"
   },
   "home": {
     "heroTitle": "The K Lab brand, ready to use",

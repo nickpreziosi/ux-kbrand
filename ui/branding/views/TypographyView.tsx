@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent, PageHeader, Separator } from "@k-lab/components";
+import { Card, CardContent, Separator } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Type as TypeIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
@@ -14,7 +15,7 @@ export function TypographyView() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<TypeIcon className="h-8 w-8" aria-hidden />}

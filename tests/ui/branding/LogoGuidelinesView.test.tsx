@@ -74,6 +74,15 @@ jest.mock("@/ui/brand-assets/components/asset-grid", () => ({
   AssetGrid: () => <div data-testid="asset-grid" />,
 }));
 
+jest.mock("@/ui/shared/components/k-brand-page-header", () => ({
+  KBrandPageHeader: ({ title, subtitle }: { title: string; subtitle?: string }) => (
+    <header>
+      <h1>{title}</h1>
+      {subtitle ? <p>{subtitle}</p> : null}
+    </header>
+  ),
+}));
+
 jest.mock("@k-lab/components", () => {
   const ReactLib = require("react") as typeof import("react");
   return {
@@ -118,12 +127,6 @@ jest.mock("@k-lab/components", () => {
       className,
     }: React.PropsWithChildren<{ className?: string }>) => (
       <div className={className}>{children}</div>
-    ),
-    PageHeader: ({ title, subtitle }: { title: string; subtitle?: string }) => (
-      <header>
-        <h1>{title}</h1>
-        {subtitle ? <p>{subtitle}</p> : null}
-      </header>
     ),
     Skeleton: ({ className }: { className?: string }) => (
       <div data-testid="skeleton" className={className} />

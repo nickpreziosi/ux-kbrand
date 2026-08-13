@@ -6,10 +6,10 @@ import {
   Button,
   Card,
   CardContent,
-  PageHeader,
   Skeleton,
   cn,
 } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Download, PenTool, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
@@ -138,7 +138,7 @@ export function LogoGuidelinesView() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<PenTool className="h-8 w-8" aria-hidden />}

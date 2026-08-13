@@ -10,6 +10,7 @@
       "imagery": "الصور",
       "guidelines": "إرشادات العلامة",
       "sales": "موارد المبيعات",
+      "admin": "الإدارة",
       "adminAssets": "إدارة الموارد",
       "adminUsers": "المستخدمون والصلاحيات"
     },
@@ -17,10 +18,29 @@
     "userNameFallback": "مستخدم",
     "preferencesAriaLabel": "التفضيلات",
     "homeAriaLabel": "الصفحة الرئيسية لبوابة العلامة",
+    "supportAccess": "الوصول",
+    "supportBrandAssets": "أصول العلامة التجارية",
+    "supportBug": "بلاغ عن خطأ",
+    "supportOther": "أخرى",
     "metadata": {
       "title": "K Brand — بوابة موارد العلامة والمبيعات",
       "description": "المصدر الموحد لعلامة K Lab: إرشادات معتمدة وشعارات وصور وخطوط ومواد مبيعات."
     }
+  },
+  "Footer": {
+    "copyright": "© {year} K Lab AI Holdings Inc. جميع الحقوق محفوظة.",
+    "website": "k-lab.ai",
+    "legal": "قانوني",
+    "feedback": "ملاحظات",
+    "help": "مساعدة",
+    "support": "الدعم",
+    "utilityLinksNavLabel": "الموقع والقانوني والملاحظات والمساعدة والدعم",
+    "socialNavLabel": "K Lab على وسائل التواصل الاجتماعي",
+    "socialLinkedIn": "K Lab على LinkedIn",
+    "socialX": "K Lab على X",
+    "socialInstagram": "K Lab على Instagram",
+    "socialTiktok": "K Lab على TikTok",
+    "socialYoutube": "K Lab على YouTube"
   },
   "home": {
     "heroTitle": "علامة K Lab جاهزة للاستخدام",
