@@ -8,7 +8,6 @@ import {
   Button,
   DEFAULT_LANGUAGE_OPTIONS,
   DEFAULT_SIDEBAR_COLLAPSE_COOKIE,
-  KLabLogo,
   PreferencesBar,
   PreferencesBarDevEntityRoleDropdown,
   PreferencesBarLanguageCommand,
@@ -44,6 +43,8 @@ import {
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAppLocaleChange } from "@/app/providers/app-intl-provider";
+import { KBrandSidebarBrand } from "@/ui/shared/components/k-brand-sidebar-brand";
+import { KLabBrandLogo } from "@/ui/shared/components/k-lab-brand-logo";
 
 interface KBrandLayoutClientProps {
   children: React.ReactNode;
@@ -193,8 +194,7 @@ export function KBrandLayoutClient({
         void changeLocale(code);
       }}
       languages={DEFAULT_LANGUAGE_OPTIONS}
-      customLogo={<KLabLogo className="h-6 w-auto" aria-hidden />}
-      customLogoCollapsed={<KLabLogo variant="icon" className="h-9 w-9 shrink-0" />}
+      brand={<KBrandSidebarBrand />}
       navbarRightSlot={
         !user ? (
           <Button
@@ -214,7 +214,11 @@ export function KBrandLayoutClient({
           aria-label={t("homeAriaLabel")}
         >
           <span className="inline-flex h-8 max-w-full items-center origin-left scale-[1.08]">
-            <KLabLogo className="h-7 w-auto max-w-full" aria-hidden />
+            <KLabBrandLogo
+              variant="theme-aware"
+              className="h-7 w-auto max-w-full"
+              aria-hidden
+            />
           </span>
         </Link>
       }

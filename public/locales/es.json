@@ -85,6 +85,14 @@
       "loadError": "No pudimos cargar los archivos del logotipo. Inténtalo de nuevo.",
       "variantsAriaLabel": "Versiones del logotipo",
       "downloadVariant": "Descargar",
+      "formats": {
+        "png": "PNG",
+        "svg": "SVG",
+        "pdf": "PDF",
+        "ai": "AI"
+      },
+      "clearspaceFullLabel": "Lockup completo",
+      "clearspaceIconLabel": "Icono",
       "clearspaceTitle": "Área de respeto y tamaño mínimo",
       "clearspaceDescription": "Mantén un área de respeto de al menos 1× la altura de la K en cada lado. Nada —texto, imágenes o bordes— debe invadir ese espacio.",
       "minimumSize": "Tamaño mínimo: 24 px de alto en pantalla y 10 mm en impresión. El ícono puede reducirse hasta 16 px.",
@@ -133,15 +141,15 @@
       "copied": "Se copió {value}",
       "copyFailed": "No pudimos copiarlo. Intenta seleccionar el valor manualmente.",
       "copyHex": "Copiar {value}",
-      "tokenNote": "Los colores de producto son propiedades personalizadas de CSS, por lo que los componentes se adaptan automáticamente al ajustar un token: referencia el nombre del token en el código en lugar de un hex fijo. Los colores de identidad de arriba aún no son tokens: la marca corporativa es azul mientras el acento de producto sigue siendo naranja, una divergencia que el equipo de diseño debe resolver.",
+      "tokenNote": "Los colores de producto son propiedades personalizadas de CSS, por lo que los componentes se adaptan automáticamente al ajustar un token: referencia el nombre del token en el código en lugar de un hex fijo. El token accent-brand coincide con los azules de identidad de K Lab de @k-lab/components (azul marino en claro, azul eléctrico en oscuro).",
       "groups": {
         "identity": {
           "title": "Identidad de marca",
-          "description": "Los colores de K Lab 2025, extraídos del logotipo principal y de las imágenes de fondo."
+          "description": "Los colores de K Lab, extraídos del logotipo principal y de las imágenes de fondo."
         },
         "product": {
           "title": "Tokens de diseño de producto",
-          "description": "Lo que realmente renderizan las aplicaciones de K Lab. Ten en cuenta que el acento sigue siendo naranja mientras la identidad es azul: consulta la nota abajo."
+          "description": "Lo que realmente renderizan las aplicaciones de K Lab y este portal, incluido el token accent-brand azul."
         },
         "status": {
           "title": "Estado",
@@ -167,7 +175,7 @@
         },
         "accentBrand": {
           "name": "Acento de marca",
-          "usage": "El naranja de K Lab. Acciones principales, énfasis y momentos de marca."
+          "usage": "El azul de K Lab. Acciones principales, énfasis y momentos de marca."
         },
         "foreground": {
           "name": "Primer plano",

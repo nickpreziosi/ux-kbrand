@@ -85,6 +85,14 @@
       "loadError": "We couldn't load the logo files. Please try again.",
       "variantsAriaLabel": "Logo variants",
       "downloadVariant": "Download",
+      "formats": {
+        "png": "PNG",
+        "svg": "SVG",
+        "pdf": "PDF",
+        "ai": "AI"
+      },
+      "clearspaceFullLabel": "Full lockup",
+      "clearspaceIconLabel": "Icon",
       "clearspaceTitle": "Clearspace & minimum size",
       "clearspaceDescription": "Keep clearspace of at least 1× the height of the K on every side. Nothing — text, imagery, or edges — enters that space.",
       "minimumSize": "Minimum size: 24px height on screen, 10mm in print. The icon mark may go down to 16px.",
@@ -133,15 +141,15 @@
       "copied": "Copied {value}",
       "copyFailed": "We couldn't copy that. Try selecting the value instead.",
       "copyHex": "Copy {value}",
-      "tokenNote": "Product colours are CSS custom properties, so components adapt automatically when a token is retuned — reference the token name in code rather than a hard-coded hex. The identity colours above are not yet tokens: the corporate brand is blue while the product accent is still orange, a divergence the design team needs to resolve.",
+      "tokenNote": "Product colours are CSS custom properties, so components adapt automatically when a token is retuned — reference the token name in code rather than a hard-coded hex. The accent-brand token matches the K Lab identity blues from @k-lab/components (navy in light, electric blue in dark).",
       "groups": {
         "identity": {
           "title": "Brand identity",
-          "description": "The 2025 K Lab colours, sampled from the master logo and background artwork."
+          "description": "The K Lab colours, sampled from the master logo and background artwork."
         },
         "product": {
           "title": "Product design tokens",
-          "description": "What the K Lab applications actually render with. Note the accent still ships orange while the identity is blue — see the note below."
+          "description": "What the K Lab applications and this portal render with — including the blue accent-brand token."
         },
         "status": {
           "title": "Status",
@@ -167,7 +175,7 @@
         },
         "accentBrand": {
           "name": "Accent brand",
-          "usage": "The K Lab orange. Primary actions, highlights, and brand moments."
+          "usage": "The K Lab blue. Primary actions, highlights, and brand moments."
         },
         "foreground": {
           "name": "Foreground",

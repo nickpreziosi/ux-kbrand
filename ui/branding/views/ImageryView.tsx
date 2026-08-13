@@ -65,7 +65,12 @@ export function ImageryView() {
         {loadError ? (
           <p className="text-sm text-destructive">{t("loadError")}</p>
         ) : (
-          <AssetGrid assets={assets} loading={loading} skeletonCount={3} />
+          <AssetGrid
+            assets={assets}
+            loading={loading}
+            skeletonCount={3}
+            expandPreview
+          />
         )}
       </section>
     </div>

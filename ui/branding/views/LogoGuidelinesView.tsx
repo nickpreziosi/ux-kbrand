@@ -16,6 +16,12 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
 import {
+  brandDownloadUrl,
+  getFormatsForVariant,
+  previewAssetForVariant,
+  type LogoFormat,
+} from "@/ui/branding/content/logo-formats";
+import {
   LOGO_RULE_KEYS,
   LOGO_VARIANTS,
   type LogoVariant,
@@ -31,13 +37,15 @@ const SURFACE_CLASS: Record<LogoVariant["surface"], string> = {
 
 function LogoVariantCard({
   variant,
-  asset,
+  assets,
 }: {
   variant: LogoVariant;
-  asset?: BrandAsset;
+  assets: BrandAsset[];
 }) {
   const t = useTranslations("branding.logo.variants");
   const tCommon = useTranslations("branding.logo");
+  const preview = previewAssetForVariant(assets, variant);
+  const formats = getFormatsForVariant(assets, variant);
 
   return (
     <Card className="flex h-full flex-col overflow-hidden">
@@ -47,9 +55,9 @@ function LogoVariantCard({
           SURFACE_CLASS[variant.surface],
         )}
       >
-        {asset?.previewUrl ? (
+        {preview?.previewUrl ? (
           <Image
-            src={asset.previewUrl}
+            src={preview.previewUrl}
             alt={t(`${variant.id}.name`)}
             width={240}
             height={72}
@@ -65,20 +73,53 @@ function LogoVariantCard({
         <p className="flex-1 text-sm text-muted-foreground">
           {t(`${variant.id}.usage`)}
         </p>
-        <Button
-          variant="outline"
-          size="sm"
-          className="mt-2 w-fit"
-          icon={<Download aria-hidden />}
-          href={asset?.file.downloadUrl ?? "#"}
-          target="_blank"
-          rel="noopener"
-          disabled={!asset}
-        >
-          {tCommon("downloadVariant")}
-        </Button>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {formats.map(({ format, asset }) => (
+            <Button
+              key={asset.id}
+              variant="outline"
+              size="sm"
+              className="w-fit"
+              icon={<Download aria-hidden />}
+              href={brandDownloadUrl(asset.id)}
+            >
+              {tCommon(`formats.${format}` as `formats.${LogoFormat}`)}
+            </Button>
+          ))}
+        </div>
       </CardContent>
     </Card>
+  );
+}
+
+function ClearspaceDiagram({
+  src,
+  alt,
+  label,
+}: {
+  src: string;
+  alt: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex w-full items-center justify-center rounded-app-radius border border-dashed border-border bg-secondary p-6">
+        <div className="relative border border-dashed border-accent-brand/60 p-6">
+          <Image
+            src={src}
+            alt={alt}
+            width={200}
+            height={80}
+            unoptimized
+            className="h-12 w-auto max-w-full object-contain sm:h-16"
+          />
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary px-1 text-xs font-semibold uppercase tracking-wider text-accent-brand">
+            1×
+          </span>
+        </div>
+      </div>
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+    </div>
   );
 }
 
@@ -86,15 +127,13 @@ export function LogoGuidelinesView() {
   const t = useTranslations("branding.logo");
   const { assets, loading, loadError } = useCategoryAssets("logos");
 
-  const variantAssets = React.useMemo(
-    () =>
-      LOGO_VARIANTS.map((variant) => ({
-        variant,
-        asset: assets.find((asset) =>
-          variant.matchTags.every((tag) => asset.tags.includes(tag)),
-        ),
-      })),
-    [assets],
+  const primaryPreview = previewAssetForVariant(
+    assets,
+    LOGO_VARIANTS.find((variant) => variant.id === "primary")!,
+  );
+  const markPreview = previewAssetForVariant(
+    assets,
+    LOGO_VARIANTS.find((variant) => variant.id === "logomark")!,
   );
 
   return (
@@ -121,11 +160,11 @@ export function LogoGuidelinesView() {
                       className="aspect-[16/11] w-full"
                     />
                   ))
-                : variantAssets.map(({ variant, asset }) => (
+                : LOGO_VARIANTS.map((variant) => (
                     <LogoVariantCard
                       key={variant.id}
                       variant={variant}
-                      asset={asset}
+                      assets={assets}
                     />
                   ))}
             </div>
@@ -141,15 +180,25 @@ export function LogoGuidelinesView() {
                   <p className="text-sm text-muted-foreground">
                     {t("clearspaceDescription")}
                   </p>
-                  <div className="flex items-center justify-center rounded-app-radius border border-dashed border-border bg-secondary p-6">
-                    <div className="relative border border-dashed border-accent-brand/60 p-6">
-                      <span className="text-3xl font-bold tracking-tight">
-                        K Lab
-                      </span>
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary px-1 text-xs font-semibold uppercase tracking-wider text-accent-brand">
-                        1×
-                      </span>
-                    </div>
+                  <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2">
+                    {primaryPreview?.previewUrl ? (
+                      <ClearspaceDiagram
+                        src={primaryPreview.previewUrl}
+                        alt={t("clearspaceFullLabel")}
+                        label={t("clearspaceFullLabel")}
+                      />
+                    ) : (
+                      <Skeleton className="h-32 w-full" />
+                    )}
+                    {markPreview?.previewUrl ? (
+                      <ClearspaceDiagram
+                        src={markPreview.previewUrl}
+                        alt={t("clearspaceIconLabel")}
+                        label={t("clearspaceIconLabel")}
+                      />
+                    ) : (
+                      <Skeleton className="h-32 w-full" />
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {t("minimumSize")}

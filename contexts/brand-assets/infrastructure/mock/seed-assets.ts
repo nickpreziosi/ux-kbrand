@@ -15,7 +15,7 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
 export const SEED_BRAND_ASSETS: BrandAsset[] = [
   {
     id: "ast-010",
-    title: "K Lab logo — primary (blue)",
+    title: "K Lab logo — primary (blue), PNG",
     description: "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
     category: "logos",
     visibility: "public",
@@ -23,7 +23,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-blue.png",
       contentType: "image/png",
-      sizeBytes: 167789,
+      sizeBytes: 127850,
       storagePath: "assets/logos/k-lab-logo-blue.png",
       downloadUrl: "/brand-files/logos/k-lab-logo-blue.png"
     },
@@ -31,15 +31,65 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "primary",
       "logo",
-      "blue"
+      "blue",
+      "png"
     ],
     createdAt: "2025-11-04T09:05:00.000Z",
     updatedAt: "2025-11-04T09:05:00.000Z",
     createdBy: "usr-001"
   },
   {
+    id: "ast-010-svg",
+    title: "K Lab logo — primary (blue), SVG",
+    description: "Scalable SVG of the primary lockup for digital use.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logo-blue.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 347196,
+      storagePath: "assets/logos/vector/k-lab-logo-blue.svg",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logo-blue.svg"
+    },
+    previewUrl: "/brand-files/logos/vector/k-lab-logo-blue.svg",
+    tags: [
+      "primary",
+      "logo",
+      "blue",
+      "svg"
+    ],
+    createdAt: "2026-08-13T14:00:00.000Z",
+    updatedAt: "2026-08-13T14:00:00.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-010-ai",
+    title: "K Lab logo — primary (blue), AI",
+    description: "Illustrator master of the primary lockup for design workflows.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logo-blue.ai",
+      contentType: "application/postscript",
+      sizeBytes: 4338417,
+      storagePath: "assets/logos/vector/k-lab-logo-blue.ai",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logo-blue.ai"
+    },
+    tags: [
+      "primary",
+      "logo",
+      "blue",
+      "ai"
+    ],
+    createdAt: "2026-08-13T14:00:01.000Z",
+    updatedAt: "2026-08-13T14:00:01.000Z",
+    createdBy: "usr-001"
+  },
+  {
     id: "ast-011",
-    title: "K Lab logo — dark",
+    title: "K Lab logo — dark, PNG",
     description: "Dark lockup for light backgrounds where the blue would compete with artwork.",
     category: "logos",
     visibility: "public",
@@ -47,22 +97,70 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-dark.png",
       contentType: "image/png",
-      sizeBytes: 99305,
+      sizeBytes: 77075,
       storagePath: "assets/logos/k-lab-logo-dark.png",
       downloadUrl: "/brand-files/logos/k-lab-logo-dark.png"
     },
     previewUrl: "/brand-files/logos/k-lab-logo-dark.png",
     tags: [
       "dark",
-      "logo"
+      "logo",
+      "png"
     ],
     createdAt: "2025-11-04T09:06:00.000Z",
     updatedAt: "2025-11-04T09:06:00.000Z",
     createdBy: "usr-001"
   },
   {
+    id: "ast-011-svg",
+    title: "K Lab logo — dark, SVG",
+    description: "Scalable SVG of the dark lockup.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logo-dark.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 10263,
+      storagePath: "assets/logos/vector/k-lab-logo-dark.svg",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logo-dark.svg"
+    },
+    previewUrl: "/brand-files/logos/vector/k-lab-logo-dark.svg",
+    tags: [
+      "dark",
+      "logo",
+      "svg"
+    ],
+    createdAt: "2026-08-13T14:00:02.000Z",
+    updatedAt: "2026-08-13T14:00:02.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-011-ai",
+    title: "K Lab logo — dark, AI",
+    description: "Illustrator master of the dark lockup.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logo-dark.ai",
+      contentType: "application/postscript",
+      sizeBytes: 1585822,
+      storagePath: "assets/logos/vector/k-lab-logo-dark.ai",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logo-dark.ai"
+    },
+    tags: [
+      "dark",
+      "logo",
+      "ai"
+    ],
+    createdAt: "2026-08-13T14:00:03.000Z",
+    updatedAt: "2026-08-13T14:00:03.000Z",
+    createdBy: "usr-001"
+  },
+  {
     id: "ast-012",
-    title: "K Lab logo — reversed (white)",
+    title: "K Lab logo — reversed (white), PNG",
     description: "Reversed lockup for dark surfaces, photography, and video overlays.",
     category: "logos",
     visibility: "public",
@@ -70,7 +168,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-white.png",
       contentType: "image/png",
-      sizeBytes: 89309,
+      sizeBytes: 78693,
       storagePath: "assets/logos/k-lab-logo-white.png",
       downloadUrl: "/brand-files/logos/k-lab-logo-white.png"
     },
@@ -78,156 +176,214 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "reversed",
       "white",
-      "logo"
+      "logo",
+      "png"
     ],
     createdAt: "2025-11-04T09:07:00.000Z",
     updatedAt: "2025-11-04T09:07:00.000Z",
     createdBy: "usr-001"
   },
   {
-    id: "ast-013",
-    title: "K Lab logo — 2025 refresh",
-    description: "The 2025 identity lockup with the dimensional chevron treatment.",
+    id: "ast-012-svg",
+    title: "K Lab logo — reversed (white), SVG",
+    description: "Scalable SVG of the reversed lockup.",
     category: "logos",
     visibility: "public",
     status: "active",
     file: {
-      fileName: "k-lab-logo-2025.png",
-      contentType: "image/png",
-      sizeBytes: 97387,
-      storagePath: "assets/logos/k-lab-logo-2025.png",
-      downloadUrl: "/brand-files/logos/k-lab-logo-2025.png"
+      fileName: "k-lab-logo-white.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 8942,
+      storagePath: "assets/logos/vector/k-lab-logo-white.svg",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logo-white.svg"
     },
-    previewUrl: "/brand-files/logos/k-lab-logo-2025.png",
+    previewUrl: "/brand-files/logos/vector/k-lab-logo-white.svg",
     tags: [
-      "2025",
-      "logo"
+      "reversed",
+      "white",
+      "logo",
+      "svg"
     ],
-    createdAt: "2026-01-15T10:00:00.000Z",
-    updatedAt: "2026-01-15T10:00:00.000Z",
+    createdAt: "2026-08-13T14:00:04.000Z",
+    updatedAt: "2026-08-13T14:00:04.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-012-ai",
+    title: "K Lab logo — reversed (white), AI",
+    description: "Illustrator master of the reversed lockup.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logo-white.ai",
+      contentType: "application/postscript",
+      sizeBytes: 1582103,
+      storagePath: "assets/logos/vector/k-lab-logo-white.ai",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logo-white.ai"
+    },
+    tags: [
+      "reversed",
+      "white",
+      "logo",
+      "ai"
+    ],
+    createdAt: "2026-08-13T14:00:05.000Z",
+    updatedAt: "2026-08-13T14:00:05.000Z",
     createdBy: "usr-001"
   },
   {
     id: "ast-014",
-    title: "K Lab logomark",
-    description: "The standalone chevron mark in its rounded container — avatars, app icons, and favicons.",
+    title: "K Lab logomark, PNG",
+    description: "The standalone mark in its rounded container — avatars, app icons, and favicons.",
     category: "logos",
     visibility: "public",
     status: "active",
     file: {
-      fileName: "k-lab-logomark-2025.png",
+      fileName: "k-lab-logomark.png",
       contentType: "image/png",
-      sizeBytes: 112121,
-      storagePath: "assets/logos/k-lab-logomark-2025.png",
-      downloadUrl: "/brand-files/logos/k-lab-logomark-2025.png"
+      sizeBytes: 624236,
+      storagePath: "assets/logos/k-lab-logomark.png",
+      downloadUrl: "/brand-files/logos/k-lab-logomark.png"
     },
-    previewUrl: "/brand-files/logos/k-lab-logomark-2025.png",
+    previewUrl: "/brand-files/logos/k-lab-logomark.png",
     tags: [
       "mark",
       "icon",
-      "logomark"
+      "logomark",
+      "png"
     ],
     createdAt: "2026-01-15T10:05:00.000Z",
     updatedAt: "2026-01-15T10:05:00.000Z",
     createdBy: "usr-001"
   },
   {
-    id: "ast-015",
-    title: "K Lab logomark — dark",
-    description: "Dark variant of the chevron mark for light interfaces.",
+    id: "ast-014-svg",
+    title: "K Lab logomark, SVG",
+    description: "Scalable SVG of the logomark.",
     category: "logos",
     visibility: "public",
     status: "active",
     file: {
-      fileName: "k-lab-logomark-dark.png",
-      contentType: "image/png",
-      sizeBytes: 92626,
-      storagePath: "assets/logos/k-lab-logomark-dark.png",
-      downloadUrl: "/brand-files/logos/k-lab-logomark-dark.png"
+      fileName: "k-lab-logomark.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 4776,
+      storagePath: "assets/logos/vector/k-lab-logomark.svg",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark.svg"
     },
-    previewUrl: "/brand-files/logos/k-lab-logomark-dark.png",
+    previewUrl: "/brand-files/logos/vector/k-lab-logomark.svg",
     tags: [
+      "mark",
+      "icon",
       "logomark",
-      "dark"
+      "svg"
     ],
-    createdAt: "2025-11-04T09:10:00.000Z",
-    updatedAt: "2025-11-04T09:10:00.000Z",
+    createdAt: "2026-08-13T14:00:06.000Z",
+    updatedAt: "2026-08-13T14:00:06.000Z",
     createdBy: "usr-001"
   },
   {
-    id: "ast-020",
-    title: "K Lab logo — vector (PDF)",
-    description: "Scalable vector master of the 2025 lockup for print and large format.",
+    id: "ast-014-pdf",
+    title: "K Lab logomark, PDF",
+    description: "Vector PDF master of the logomark for print.",
     category: "logos",
     visibility: "public",
     status: "active",
     file: {
-      fileName: "k-lab-logo-2025.pdf",
-      contentType: "application/pdf",
-      sizeBytes: 377579,
-      storagePath: "assets/logos/vector/k-lab-logo-2025.pdf",
-      downloadUrl: "/brand-files/logos/vector/k-lab-logo-2025.pdf"
-    },
-    tags: [
-      "vector",
-      "print",
-      "logo"
-    ],
-    createdAt: "2026-01-15T10:10:00.000Z",
-    updatedAt: "2026-01-15T10:10:00.000Z",
-    createdBy: "usr-001"
-  },
-  {
-    id: "ast-021",
-    title: "K Lab logomark — vector (PDF)",
-    description: "Scalable vector master of the chevron mark.",
-    category: "logos",
-    visibility: "public",
-    status: "active",
-    file: {
-      fileName: "k-lab-logomark-2025.pdf",
+      fileName: "k-lab-logomark.pdf",
       contentType: "application/pdf",
       sizeBytes: 379252,
-      storagePath: "assets/logos/vector/k-lab-logomark-2025.pdf",
-      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-2025.pdf"
+      storagePath: "assets/logos/vector/k-lab-logomark.pdf",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark.pdf"
     },
     tags: [
+      "mark",
+      "logomark",
+      "pdf",
       "vector",
-      "print",
-      "logomark"
+      "print"
     ],
-    createdAt: "2026-01-15T10:11:00.000Z",
-    updatedAt: "2026-01-15T10:11:00.000Z",
+    createdAt: "2026-08-13T14:00:07.000Z",
+    updatedAt: "2026-08-13T14:00:07.000Z",
     createdBy: "usr-001"
   },
   {
-    id: "ast-022",
-    title: "K Lab logomark — dark, vector (PDF)",
-    description: "Vector master of the dark chevron mark.",
+    id: "ast-014-ai",
+    title: "K Lab logomark, AI",
+    description: "Illustrator master of the logomark.",
     category: "logos",
     visibility: "public",
     status: "active",
     file: {
-      fileName: "k-lab-logomark-dark.pdf",
-      contentType: "application/pdf",
-      sizeBytes: 371413,
-      storagePath: "assets/logos/vector/k-lab-logomark-dark.pdf",
-      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-dark.pdf"
+      fileName: "k-lab-logomark.ai",
+      contentType: "application/postscript",
+      sizeBytes: 1587467,
+      storagePath: "assets/logos/vector/k-lab-logomark.ai",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark.ai"
     },
     tags: [
-      "vector",
-      "print",
+      "mark",
       "logomark",
-      "dark"
+      "ai"
     ],
-    createdAt: "2025-11-04T09:12:00.000Z",
-    updatedAt: "2025-11-04T09:12:00.000Z",
+    createdAt: "2026-08-13T14:00:08.000Z",
+    updatedAt: "2026-08-13T14:00:08.000Z",
     createdBy: "usr-001"
   },
   {
-    id: "ast-023",
-    title: "K Lab logomark — white, vector (PDF)",
-    description: "Vector master of the reversed chevron mark for dark surfaces.",
+    id: "ast-015",
+    title: "K Lab logomark — white, PNG",
+    description: "Reversed logomark for dark surfaces.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logomark-white.png",
+      contentType: "image/png",
+      sizeBytes: 410086,
+      storagePath: "assets/logos/k-lab-logomark-white.png",
+      downloadUrl: "/brand-files/logos/k-lab-logomark-white.png"
+    },
+    previewUrl: "/brand-files/logos/k-lab-logomark-white.png",
+    tags: [
+      "logomark",
+      "reversed",
+      "white",
+      "png"
+    ],
+    createdAt: "2026-08-13T14:00:09.000Z",
+    updatedAt: "2026-08-13T14:00:09.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-015-svg",
+    title: "K Lab logomark — white, SVG",
+    description: "Scalable SVG of the reversed logomark.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logomark-white.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 3451,
+      storagePath: "assets/logos/vector/k-lab-logomark-white.svg",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-white.svg"
+    },
+    previewUrl: "/brand-files/logos/vector/k-lab-logomark-white.svg",
+    tags: [
+      "logomark",
+      "reversed",
+      "white",
+      "svg"
+    ],
+    createdAt: "2026-08-13T14:00:10.000Z",
+    updatedAt: "2026-08-13T14:00:10.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-015-pdf",
+    title: "K Lab logomark — white, PDF",
+    description: "Vector PDF of the reversed logomark.",
     category: "logos",
     visibility: "public",
     status: "active",
@@ -239,13 +395,87 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark-white.pdf"
     },
     tags: [
-      "vector",
-      "print",
       "logomark",
-      "reversed"
+      "reversed",
+      "white",
+      "pdf",
+      "vector",
+      "print"
     ],
     createdAt: "2025-11-04T09:13:00.000Z",
     updatedAt: "2025-11-04T09:13:00.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-015-ai",
+    title: "K Lab logomark — white, AI",
+    description: "Illustrator master of the reversed logomark.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logomark-white.ai",
+      contentType: "application/postscript",
+      sizeBytes: 1577963,
+      storagePath: "assets/logos/vector/k-lab-logomark-white.ai",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-white.ai"
+    },
+    tags: [
+      "logomark",
+      "reversed",
+      "white",
+      "ai"
+    ],
+    createdAt: "2026-08-13T14:00:11.000Z",
+    updatedAt: "2026-08-13T14:00:11.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-016-pdf",
+    title: "K Lab logomark — dark, PDF",
+    description: "Vector PDF of the dark logomark.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logomark-dark.pdf",
+      contentType: "application/pdf",
+      sizeBytes: 371413,
+      storagePath: "assets/logos/vector/k-lab-logomark-dark.pdf",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-dark.pdf"
+    },
+    tags: [
+      "logomark",
+      "dark",
+      "pdf",
+      "vector",
+      "print"
+    ],
+    createdAt: "2025-11-04T09:12:00.000Z",
+    updatedAt: "2025-11-04T09:12:00.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-016-ai",
+    title: "K Lab logomark — dark, AI",
+    description: "Illustrator master of the dark logomark.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    file: {
+      fileName: "k-lab-logomark-dark.ai",
+      contentType: "application/postscript",
+      sizeBytes: 1581642,
+      storagePath: "assets/logos/vector/k-lab-logomark-dark.ai",
+      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-dark.ai"
+    },
+    tags: [
+      "logomark",
+      "dark",
+      "ai"
+    ],
+    createdAt: "2026-08-13T14:00:12.000Z",
+    updatedAt: "2026-08-13T14:00:12.000Z",
     createdBy: "usr-001"
   },
   {

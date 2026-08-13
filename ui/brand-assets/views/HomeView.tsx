@@ -2,13 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import {
-  Button,
-  Hero,
-  KLabLogo,
-  Tile,
-  authBrandPanelPresets,
-} from "@k-lab/components";
+import { Button, Hero, Tile } from "@k-lab/components";
 import {
   ArrowRight,
   BookOpen,
@@ -21,6 +15,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
+import { logoRightBrandLayers } from "@/lib/brand/auth-brand-layers";
+import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 
@@ -43,8 +39,8 @@ export function HomeView() {
     <div className="space-y-8">
       <Hero
         className="overflow-hidden rounded-app-radius"
-        layers={authBrandPanelPresets.wave()}
-        logo={<KLabLogo variant="light" className="h-8 w-auto" />}
+        layers={logoRightBrandLayers()}
+        logo={<KLabBrandLogoMark variant="white" className="h-8 w-auto" />}
         title={t("heroTitle")}
         description={t("heroDescription")}
         actions={
