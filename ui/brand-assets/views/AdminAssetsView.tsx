@@ -19,9 +19,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  PageHeader,
   formatFileSize,
 } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import {
   Archive,
   ArchiveRestore,
@@ -274,7 +274,7 @@ export function AdminAssetsView() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<FolderCog className="h-8 w-8" aria-hidden />}

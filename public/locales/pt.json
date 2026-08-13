@@ -10,6 +10,7 @@
       "imagery": "Imagens",
       "guidelines": "Diretrizes da marca",
       "sales": "Recursos de vendas",
+      "admin": "Admin",
       "adminAssets": "Gerenciar recursos",
       "adminUsers": "Usuários e acessos"
     },
@@ -17,10 +18,29 @@
     "userNameFallback": "Usuário",
     "preferencesAriaLabel": "Preferências",
     "homeAriaLabel": "Início do portal da marca",
+    "supportAccess": "Acesso",
+    "supportBrandAssets": "Ativos da marca",
+    "supportBug": "Relatório de bug",
+    "supportOther": "Outro",
     "metadata": {
       "title": "K Brand — Portal de recursos de marca e vendas",
       "description": "A única fonte de verdade da marca K Lab: diretrizes aprovadas, logotipos, imagens, tipografias e materiais de vendas."
     }
+  },
+  "Footer": {
+    "copyright": "© {year} K Lab AI Holdings Inc. Todos os direitos reservados.",
+    "website": "k-lab.ai",
+    "legal": "Legal",
+    "feedback": "Feedback",
+    "help": "Ajuda",
+    "support": "Suporte",
+    "utilityLinksNavLabel": "Site, legal, feedback, ajuda e suporte",
+    "socialNavLabel": "K Lab nas redes sociais",
+    "socialLinkedIn": "K Lab no LinkedIn",
+    "socialX": "K Lab no X",
+    "socialInstagram": "K Lab no Instagram",
+    "socialTiktok": "K Lab no TikTok",
+    "socialYoutube": "K Lab no YouTube"
   },
   "home": {
     "heroTitle": "A marca K Lab, pronta para usar",
@@ -85,6 +105,14 @@
       "loadError": "Não foi possível carregar os arquivos do logotipo. Tente novamente.",
       "variantsAriaLabel": "Versões do logotipo",
       "downloadVariant": "Baixar",
+      "formats": {
+        "png": "PNG",
+        "svg": "SVG",
+        "pdf": "PDF",
+        "ai": "AI"
+      },
+      "clearspaceFullLabel": "Lockup completo",
+      "clearspaceIconLabel": "Ícone",
       "clearspaceTitle": "Área de respiro e tamanho mínimo",
       "clearspaceDescription": "Mantenha uma área de respiro de pelo menos 1× a altura do K em cada lado. Nada — texto, imagens ou bordas — deve invadir esse espaço.",
       "minimumSize": "Tamanho mínimo: 24 px de altura em tela e 10 mm em impressão. O ícone pode chegar a 16 px.",
@@ -133,15 +161,15 @@
       "copied": "{value} copiado",
       "copyFailed": "Não foi possível copiar. Tente selecionar o valor manualmente.",
       "copyHex": "Copiar {value}",
-      "tokenNote": "As cores de produto são propriedades personalizadas de CSS, então os componentes se adaptam automaticamente quando um token é ajustado — referencie o nome do token no código em vez de um hex fixo. As cores de identidade acima ainda não são tokens: a marca corporativa é azul enquanto o destaque do produto continua laranja, uma divergência que o time de design precisa resolver.",
+      "tokenNote": "As cores de produto são propriedades personalizadas de CSS, então os componentes se adaptam automaticamente quando um token é ajustado — referencie o nome do token no código em vez de um hex fixo. O token accent-brand corresponde aos azuis de identidade da K Lab em @k-lab/components (azul-marinho no claro, azul elétrico no escuro).",
       "groups": {
         "identity": {
           "title": "Identidade da marca",
-          "description": "As cores da K Lab 2025, extraídas do logotipo principal e das imagens de fundo."
+          "description": "As cores da K Lab, extraídas do logotipo principal e das imagens de fundo."
         },
         "product": {
           "title": "Tokens de design do produto",
-          "description": "O que as aplicações da K Lab realmente renderizam. Observe que o destaque continua laranja enquanto a identidade é azul — veja a nota abaixo."
+          "description": "O que as aplicações da K Lab e este portal realmente renderizam — incluindo o token accent-brand azul."
         },
         "status": {
           "title": "Status",
@@ -167,7 +195,7 @@
         },
         "accentBrand": {
           "name": "Destaque da marca",
-          "usage": "O laranja da K Lab. Ações principais, destaques e momentos de marca."
+          "usage": "O azul da K Lab. Ações principais, destaques e momentos de marca."
         },
         "foreground": {
           "name": "Primeiro plano",

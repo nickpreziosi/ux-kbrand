@@ -8,7 +8,7 @@ import {
   Button,
   DEFAULT_LANGUAGE_OPTIONS,
   DEFAULT_SIDEBAR_COLLAPSE_COOKIE,
-  KLabLogo,
+  Footer,
   PreferencesBar,
   PreferencesBarDevEntityRoleDropdown,
   PreferencesBarLanguageCommand,
@@ -16,9 +16,11 @@ import {
   PREFERENCES_BAR_LAYOUT_FIXED_CLASS,
   PREFERENCES_BAR_LAYOUT_FLUSH_CLASS,
   PREFERENCES_BAR_LAYOUT_RESPONSIVE_CLASS,
+  SupportDialogProvider,
   cn,
   type AppSidebarAccordionItem,
   type AppSidebarNavLink,
+  type SupportTopicOption,
 } from "@k-lab/components";
 import {
   BookOpen,
@@ -33,7 +35,7 @@ import {
   Type,
   Users,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
 import type { ViewerRole } from "@/contexts/shared/domain/viewer-role";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
@@ -44,6 +46,16 @@ import {
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAppLocaleChange } from "@/app/providers/app-intl-provider";
+import { KBrandSidebarBrand } from "@/ui/shared/components/k-brand-sidebar-brand";
+import { KLabBrandLogo } from "@/ui/shared/components/k-lab-brand-logo";
+
+/** Same recipe as InternalAppShellLayout DEMO_SUPPORT_TOPICS. */
+const SUPPORT_TOPICS: SupportTopicOption[] = [
+  { id: "access", label: "Access" },
+  { id: "brand-assets", label: "Brand assets" },
+  { id: "bug", label: "Bug report" },
+  { id: "other", label: "Other" },
+];
 
 interface KBrandLayoutClientProps {
   children: React.ReactNode;
@@ -64,10 +76,34 @@ export function KBrandLayoutClient({
   const router = useRouter();
   const pathname = usePathname() ?? "/";
   const t = useTranslations("shell");
+  const messages = useMessages();
   const { user, signOut } = useAuth();
   const { viewerRole, devRoleOverride, isAdmin } = usePortalRole();
   const tDevRole = useTranslations("devTools.roleSwitcher");
   const { locale, changeLocale } = useAppLocaleChange();
+
+  // Read Footer copy from the loaded message tree (same keys as k-lab-components).
+  // Avoid useTranslations("Footer") — a stale provider tree without that namespace
+  // otherwise paints literal "Footer.*" keys into the component.
+  const footerMessages = React.useMemo(() => {
+    const footer = (messages as Record<string, unknown> | undefined)?.Footer;
+    if (!footer || typeof footer !== "object") return undefined;
+    return footer as {
+      copyright: string;
+      website: string;
+      legal: string;
+      feedback: string;
+      help: string;
+      support: string;
+      utilityLinksNavLabel: string;
+      socialNavLabel: string;
+      socialLinkedIn: string;
+      socialX: string;
+      socialInstagram: string;
+      socialTiktok: string;
+      socialYoutube: string;
+    };
+  }, [messages]);
 
   const primaryNav = React.useMemo<AppSidebarNavLink[]>(
     () => [{ href: "/", label: t("nav.home"), icon: House }],
@@ -174,53 +210,84 @@ export function KBrandLayoutClient({
     return <>{children}</>;
   }
 
+  const footer = (
+    <Footer className="mt-auto border-t" messages={footerMessages}>
+      <Footer.Container>
+        <Footer.Grid>
+          <Footer.Copyright year={2026} />
+          <Footer.Nav>
+            <Footer.WebsiteLink href="https://k-lab.ai" />
+            <Footer.Separator />
+            <Footer.Feedback />
+            <Footer.Separator />
+            <Footer.HelpLink href="/branding/guidelines" />
+            <Footer.Separator />
+            <Footer.Support />
+          </Footer.Nav>
+          <Footer.SocialLinks />
+        </Footer.Grid>
+      </Footer.Container>
+      <Footer.FeedbackDialog onSubmit={async () => undefined} />
+    </Footer>
+  );
+
   return (
-    <AppLayoutClient
-      currentPath={pathname}
-      homeHref="/"
-      initialCollapsed={initialSidebarCollapsed}
-      sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
-      preferences={preferences}
-      primaryNav={primaryNav}
-      accordions={brandingAccordion}
-      bottomNav={secondaryNav}
-      user={shellUser}
-      onProfileClick={() => undefined}
-      onSettingsClick={() => router.push("/settings")}
-      onLogoutClick={handleLogoutClick}
-      locale={locale}
-      onLocaleChange={(code) => {
-        void changeLocale(code);
-      }}
-      languages={DEFAULT_LANGUAGE_OPTIONS}
-      customLogo={<KLabLogo className="h-6 w-auto" aria-hidden />}
-      customLogoCollapsed={<KLabLogo variant="icon" className="h-9 w-9 shrink-0" />}
-      navbarRightSlot={
-        !user ? (
-          <Button
-            variant="accent-brand"
-            size="sm"
-            icon={<LogIn aria-hidden />}
-            href={`/login?next=${encodeURIComponent(pathname)}`}
-          >
-            {t("signIn")}
-          </Button>
-        ) : undefined
-      }
-      mobileHeader={
-        <Link
-          href="/"
-          className="flex h-11 w-full min-w-0 items-center"
-          aria-label={t("homeAriaLabel")}
-        >
-          <span className="inline-flex h-8 max-w-full items-center origin-left scale-[1.08]">
-            <KLabLogo className="h-7 w-auto max-w-full" aria-hidden />
-          </span>
-        </Link>
-      }
-      contentClassName="mx-auto w-full max-w-7xl 2xl:max-w-[1800px]"
+    <SupportDialogProvider
+      supportTopics={SUPPORT_TOPICS}
+      defaultEmail={shellUser?.email ?? undefined}
+      onSubmit={async () => undefined}
     >
-      {children}
-    </AppLayoutClient>
+      <AppLayoutClient
+        currentPath={pathname}
+        homeHref="/"
+        initialCollapsed={initialSidebarCollapsed}
+        sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
+        preferences={preferences}
+        primaryNav={primaryNav}
+        accordions={brandingAccordion}
+        bottomNav={secondaryNav}
+        user={shellUser}
+        onProfileClick={() => undefined}
+        onSettingsClick={() => router.push("/settings")}
+        onLogoutClick={handleLogoutClick}
+        locale={locale}
+        onLocaleChange={(code) => {
+          void changeLocale(code);
+        }}
+        languages={DEFAULT_LANGUAGE_OPTIONS}
+        brand={<KBrandSidebarBrand />}
+        footer={footer}
+        navbarRightSlot={
+          !user ? (
+            <Button
+              variant="accent-brand"
+              size="sm"
+              icon={<LogIn aria-hidden />}
+              href={`/login?next=${encodeURIComponent(pathname)}`}
+            >
+              {t("signIn")}
+            </Button>
+          ) : undefined
+        }
+        mobileHeader={
+          <Link
+            href="/"
+            className="flex h-11 w-full min-w-0 items-center"
+            aria-label={t("homeAriaLabel")}
+          >
+            <span className="inline-flex h-8 max-w-full items-center origin-left scale-[1.08]">
+              <KLabBrandLogo
+                variant="theme-aware"
+                className="h-7 w-auto max-w-full"
+                aria-hidden
+              />
+            </span>
+          </Link>
+        }
+        contentClassName="bg-background"
+      >
+        <div className="mx-auto w-full max-w-7xl 2xl:max-w-[1800px]">{children}</div>
+      </AppLayoutClient>
+    </SupportDialogProvider>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent, PageHeader } from "@k-lab/components";
+import { Card, CardContent } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Image as ImageIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
@@ -16,7 +17,7 @@ export function ImageryView() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<ImageIcon className="h-8 w-8" aria-hidden />}
@@ -65,7 +66,12 @@ export function ImageryView() {
         {loadError ? (
           <p className="text-sm text-destructive">{t("loadError")}</p>
         ) : (
-          <AssetGrid assets={assets} loading={loading} skeletonCount={3} />
+          <AssetGrid
+            assets={assets}
+            loading={loading}
+            skeletonCount={3}
+            expandPreview
+          />
         )}
       </section>
     </div>

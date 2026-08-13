@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import {
-  PageHeader,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Presentation } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSalesAssets } from "@/ui/brand-assets/hooks/use-sales-assets";
@@ -19,7 +19,7 @@ export function SalesResourcesView() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Presentation className="h-8 w-8" aria-hidden />}

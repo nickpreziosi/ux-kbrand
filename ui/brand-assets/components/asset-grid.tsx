@@ -14,22 +14,29 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
 import { canSeeAssetGating } from "@/contexts/brand-assets/domain/services/asset-access";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { AssetCard } from "./asset-card";
+import { AssetPreviewDialog } from "./asset-preview-dialog";
 
 interface AssetGridProps {
   assets: BrandAsset[];
   loading?: boolean;
   skeletonCount?: number;
+  /** Click a thumbnail to open a larger preview dialog. */
+  expandPreview?: boolean;
 }
 
 export function AssetGrid({
   assets,
   loading = false,
   skeletonCount = 4,
+  expandPreview = false,
 }: AssetGridProps) {
   const t = useTranslations("assets");
   // Employees/admins see each asset's gating on the card; public visitors never do.
   const { viewerRole } = usePortalRole();
   const showVisibility = canSeeAssetGating(viewerRole);
+  const [previewAsset, setPreviewAsset] = React.useState<BrandAsset | null>(
+    null,
+  );
 
   // Column count tracks the grid's own width, not the viewport: the content
   // area shrinks when the sidebar expands, so viewport breakpoints would leave
@@ -70,9 +77,23 @@ export function AssetGrid({
             key={asset.id}
             asset={asset}
             showVisibility={showVisibility}
+            onPreview={
+              expandPreview && asset.previewUrl
+                ? () => setPreviewAsset(asset)
+                : undefined
+            }
           />
         ))}
       </div>
+      {expandPreview ? (
+        <AssetPreviewDialog
+          asset={previewAsset}
+          open={Boolean(previewAsset)}
+          onOpenChange={(open) => {
+            if (!open) setPreviewAsset(null);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

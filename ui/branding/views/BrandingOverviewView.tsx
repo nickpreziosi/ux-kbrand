@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Tile } from "@k-lab/components";
+import { Tile } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import type { LucideIcon } from "lucide-react";
 import {
   BookOpen,
@@ -31,7 +32,7 @@ export function BrandingOverviewView() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Palette className="h-8 w-8" aria-hidden />}

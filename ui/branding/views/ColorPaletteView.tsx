@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent, PageHeader, cn } from "@k-lab/components";
+import { Card, CardContent, cn } from "@k-lab/components";
+import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Copy, Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -101,7 +102,7 @@ export function ColorPaletteView() {
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      <KBrandPageHeader
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Palette className="h-8 w-8" aria-hidden />}

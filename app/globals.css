@@ -241,7 +241,7 @@ a {
   }
 
   /* ============================================
-     KLABS THEME (Default)
+     K LAB THEME (Default) — aligned with @k-lab/components
      ============================================ */
   :root {
     /* Base color system - update --base-hue and --base-saturation to change all dependent colors */
@@ -250,10 +250,10 @@ a {
     --base-lightness: 0%;
     --base: var(--base-hue) var(--base-saturation) var(--base-lightness);
 
-    /* Klabs brand accent color */
-    --accent-brand-h: 23;
-    --accent-brand-s: 90%;
-    --accent-brand-l: 54%;
+    /* K Lab brand accent — Secondary #1e3d72 (darker blue on light) */
+    --accent-brand-h: 218;
+    --accent-brand-s: 58%;
+    --accent-brand-l: 28%;
     --accent-brand: var(--accent-brand-h) var(--accent-brand-s)
       var(--accent-brand-l);
     --call-action: var(--accent-brand); /* Legacy alias */
@@ -272,65 +272,65 @@ a {
     /* Core colors */
     --background: 0 0% 100%;
     --foreground: var(--base);
-    /* Light-mode wallet carousel cool end: same hue as .dark --background, one step darker */
+    /* Cool stop kept for wallet carousel demos (portal-only) */
     --wallet-carousel-cool-stop: 225 20% 5%;
     --surface: var(--background);
-    --primary-foreground: 0 0% 98%;
-    --secondary: var(--base-hue) var(--base-saturation) 96%;
-    --muted: var(--base-hue) var(--base-saturation) 34%;
-    /* Input labels & placeholders: slightly darker for better visibility (WCAG) */
-    --input-placeholder: var(--base-hue) var(--base-saturation) 28%;
-    --accent: var(--base-hue) var(--base-saturation) 92%;
-    --border: var(--base-hue) var(--base-saturation) 85%;
-    --ring: var(--foreground);
-    --sidebar-bg: var(--base-hue) var(--base-saturation) 98%;
-    --sidebar-accent: var(--base-hue) var(--base-saturation) 94%;
+    --primary-foreground: 0 0% 100%; /* White #ffffff */
+    --secondary: 0 0% 94%; /* Grey 1 #efefef */
+    /* Muted text — Primary #303030 */
+    --muted: 0 0% 19%;
+    /* Input labels & placeholders: match muted (WCAG on white) */
+    --input-placeholder: 0 0% 19%;
+    --accent: 0 0% 94%; /* Grey 1 #efefef */
+    --border: 0 0% 87%; /* Grey 2 #dddddd */
+    --ring: var(--accent-brand);
+    --sidebar-bg: 0 0% 100%; /* White #ffffff */
+    --sidebar-accent: 0 0% 94%; /* Grey 1 #efefef */
 
-    /* Status colors - light backgrounds with black text for WCAG AA */
+    /* Status colors */
     --status-text: 0 0% 98%;
-    --success: 141.1 71.4% 55%;
+    --success: 141.1 71.4% 45%;
     --success-foreground: 0 0% 0%;
-    /* Destructive: tuned red, lighter than original but not pastel */
-    --destructive: 0 80% 66%;
+    --destructive: 0 84.2% 56%;
     --destructive-foreground: 0 0% 0%;
     --warning: 51.08 100% 56.47%;
   }
 
   .dark {
-    /* Base color system for dark theme */
-    --base-hue: 225;
-    --base-saturation: 20%;
-    --base-lightness: 6%;
+    /* Dark theme — Black #000000 */
+    --base-hue: 0;
+    --base-saturation: 0%;
+    --base-lightness: 0%;
     --base: var(--base-hue) var(--base-saturation) var(--base-lightness);
 
-    /* Klabs brand accent color (same as light) */
-    --accent-brand-h: 23;
-    --accent-brand-s: 90%;
-    --accent-brand-l: 54%;
+    /* K Lab brand accent — Tertiary #00acfd (lighter blue on dark) */
+    --accent-brand-h: 199;
+    --accent-brand-s: 100%;
+    --accent-brand-l: 50%;
     --accent-brand: var(--accent-brand-h) var(--accent-brand-s)
       var(--accent-brand-l);
 
     /* Core colors */
     --background: var(--base);
-    --foreground: 0 0% 98%;
+    --foreground: 0 0% 100%; /* White #ffffff */
     --surface: var(--base-hue) var(--base-saturation) 8%;
     --primary-foreground: var(--base);
     --secondary: var(--base-hue) var(--base-saturation) 12%;
-    --muted: var(--base-hue) var(--base-saturation) 82%;
-    /* Input labels & placeholders: slightly lighter for better visibility (WCAG) */
-    --input-placeholder: var(--base-hue) var(--base-saturation) 82%;
-    --accent: var(--base-hue) var(--base-saturation) 18%;
-    --border: var(--base-hue) var(--base-saturation) 24%;
+    /* Muted text — Additional Color 1 #a5a5a5 */
+    --muted: 0 0% 65%;
+    /* Input labels & placeholders: match muted for WCAG on black */
+    --input-placeholder: 0 0% 65%;
+    --accent: 0 0% 19%; /* Primary #303030 */
+    --border: 0 0% 19%; /* Primary #303030 */
     --ring: var(--foreground);
     --sidebar-bg: var(--surface);
-    --sidebar-accent: var(--base-hue) var(--base-saturation) 14%;
+    --sidebar-accent: 0 0% 19%; /* Primary #303030 */
 
-    /* Status colors - light backgrounds with black text for WCAG AA */
+    /* Status colors */
     --status-text: 0 0% 98%;
-    --success: 141.1 71.4% 55%;
+    --success: 141.1 71.4% 42%;
     --success-foreground: 0 0% 0%;
-    /* Destructive (dark theme): closer to original, nudged lighter */
-    --destructive: 0 70% 60%;
+    --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 0%;
     --warning: 51.08 100% 56.47%;
 
