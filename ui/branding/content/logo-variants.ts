@@ -1,7 +1,7 @@
 /**
- * Logo variants shown on the branding page. Each variant resolves to a catalog
- * asset by tag (never by id) so admins can replace the underlying file without
- * touching code. Copy lives in `branding.logo.variants` per locale.
+ * Logo variants used to pick clearspace previews. Each variant resolves to a
+ * catalog asset by tag (never by id) so admins can replace the underlying file
+ * without touching code.
  */
 export interface LogoVariant {
   id: "primary" | "dark" | "reversed" | "logomark";

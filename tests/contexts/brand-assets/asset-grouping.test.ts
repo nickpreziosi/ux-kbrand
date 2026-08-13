@@ -138,9 +138,9 @@ describe("groupBrandAssets", () => {
     const logos = SEED_BRAND_ASSETS.filter((seed) => seed.category === "logos");
     const groups = groupBrandAssets(logos);
 
-    // 22 logo files, but 6 grouped lockups/marks plus 3 ungrouped product logos.
+    // 20 logo files, but 5 grouped lockups/marks plus 3 ungrouped product logos.
     expect(logos.length).toBeGreaterThan(groups.length);
-    expect(groups).toHaveLength(9);
+    expect(groups).toHaveLength(8);
 
     const logomark = groups.find((group) => group.id === "k-lab-logomark");
     expect(logomark?.title).toBe("K Lab logomark");

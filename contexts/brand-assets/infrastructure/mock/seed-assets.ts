@@ -54,7 +54,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-blue.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 347396,
+      sizeBytes: 347196,
       storagePath: "assets/logos/vector/k-lab-logo-blue.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-blue.svg"
     },
@@ -136,7 +136,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-dark.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 10472,
+      sizeBytes: 10263,
       storagePath: "assets/logos/vector/k-lab-logo-dark.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-dark.svg"
     },
@@ -217,7 +217,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-white.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 9114,
+      sizeBytes: 8942,
       storagePath: "assets/logos/vector/k-lab-logo-white.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-white.svg"
     },
@@ -300,7 +300,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logomark.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 4877,
+      sizeBytes: 4776,
       storagePath: "assets/logos/vector/k-lab-logomark.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark.svg"
     },
@@ -410,7 +410,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logomark-white.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 3515,
+      sizeBytes: 3451,
       storagePath: "assets/logos/vector/k-lab-logomark-white.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark-white.svg"
     },
@@ -479,60 +479,6 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     ],
     createdAt: "2026-08-13T14:00:11.000Z",
     updatedAt: "2026-08-13T14:00:11.000Z",
-    createdBy: "usr-001"
-  },
-  {
-    id: "ast-016-pdf",
-    title: "K Lab logomark — dark, PDF",
-    description: "Vector PDF of the dark logomark.",
-    category: "logos",
-    visibility: "public",
-    status: "active",
-    groupId: "k-lab-logomark-dark",
-    groupTitle: "K Lab logomark — dark",
-    groupDescription: "The dark logomark. Vector masters only — no raster export.",
-    file: {
-      fileName: "k-lab-logomark-dark.pdf",
-      contentType: "application/pdf",
-      sizeBytes: 371413,
-      storagePath: "assets/logos/vector/k-lab-logomark-dark.pdf",
-      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-dark.pdf"
-    },
-    tags: [
-      "logomark",
-      "dark",
-      "pdf",
-      "vector",
-      "print"
-    ],
-    createdAt: "2025-11-04T09:12:00.000Z",
-    updatedAt: "2025-11-04T09:12:00.000Z",
-    createdBy: "usr-001"
-  },
-  {
-    id: "ast-016-ai",
-    title: "K Lab logomark — dark, AI",
-    description: "Illustrator master of the dark logomark.",
-    category: "logos",
-    visibility: "public",
-    status: "active",
-    groupId: "k-lab-logomark-dark",
-    groupTitle: "K Lab logomark — dark",
-    groupDescription: "The dark logomark. Vector masters only — no raster export.",
-    file: {
-      fileName: "k-lab-logomark-dark.ai",
-      contentType: "application/postscript",
-      sizeBytes: 1581642,
-      storagePath: "assets/logos/vector/k-lab-logomark-dark.ai",
-      downloadUrl: "/brand-files/logos/vector/k-lab-logomark-dark.ai"
-    },
-    tags: [
-      "logomark",
-      "dark",
-      "ai"
-    ],
-    createdAt: "2026-08-13T14:00:12.000Z",
-    updatedAt: "2026-08-13T14:00:12.000Z",
     createdBy: "usr-001"
   },
   {

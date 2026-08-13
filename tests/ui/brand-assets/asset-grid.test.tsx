@@ -20,6 +20,7 @@ jest.mock("next-intl", () => ({
     const messages: Record<string, string> = {
       download: "Download",
       downloadAll: "Download all",
+      downloadAllOption: "All",
       downloadFormat: "Download {format}",
       fileCount: "{count} files",
       totalSize: "{size} total",
@@ -33,7 +34,9 @@ jest.mock("next-intl", () => ({
         String(values[name] ?? ""),
       );
     };
-    return t;
+    return Object.assign(t, {
+      has: (key: string) => Object.prototype.hasOwnProperty.call(messages, key),
+    });
   },
 }));
 
@@ -70,6 +73,23 @@ jest.mock("@k-lab/components", () => {
         </button>
       );
     },
+    DropdownMenu: ({ children }: React.PropsWithChildren) => (
+      <div>{children}</div>
+    ),
+    DropdownMenuTrigger: ({
+      children,
+      asChild,
+    }: React.PropsWithChildren<{ asChild?: boolean }>) =>
+      asChild ? <>{children}</> : <button type="button">{children}</button>,
+    DropdownMenuContent: ({ children }: React.PropsWithChildren) => (
+      <div>{children}</div>
+    ),
+    DropdownMenuItem: ({
+      children,
+      asChild,
+    }: React.PropsWithChildren<{ asChild?: boolean }>) =>
+      asChild ? <>{children}</> : <div>{children}</div>,
+    DropdownMenuSeparator: () => <hr />,
     Badge: ({ children }: React.PropsWithChildren) => <span>{children}</span>,
     Card: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
     CardContent: ({ children }: React.PropsWithChildren) => (
@@ -184,8 +204,8 @@ const logoGroup = [
   }),
 ];
 
-describe("AssetGrid format chips", () => {
-  it("renders one card for a group and a chip per format", () => {
+describe("AssetGrid download menu", () => {
+  it("renders one card for a group", () => {
     render(<AssetGrid assets={logoGroup} />);
 
     expect(
@@ -196,8 +216,10 @@ describe("AssetGrid format chips", () => {
     expect(screen.getByText("The default lockup.")).toBeInTheDocument();
   });
 
-  it("shows each format's own size and links it to that file's download", () => {
+  it("puts every format and an All option in one Download menu", () => {
     render(<AssetGrid assets={logoGroup} />);
+
+    expect(screen.getByRole("button", { name: "Download" })).toBeInTheDocument();
 
     const png = screen.getByRole("link", { name: "Download PNG" });
     expect(png).toHaveAttribute("href", "/api/brand-download/ast-010");
@@ -212,30 +234,30 @@ describe("AssetGrid format chips", () => {
       "href",
       "/api/brand-download/ast-010-ai",
     );
+
+    const all = screen.getByRole("link", { name: "Download all" });
+    expect(all).toHaveAttribute("href", "/api/brand-bundle/k-lab-logo-blue");
+    expect(all).toHaveTextContent("All");
+    expect(all).toHaveTextContent("1320 B");
   });
 
-  it("orders chips raster first, editable masters last", () => {
+  it("orders formats raster first, editable masters last, All at the end", () => {
     render(<AssetGrid assets={logoGroup} />);
 
     const formats = screen
       .getAllByRole("link")
       .map((link) => link.getAttribute("aria-label"))
-      .filter((label): label is string => Boolean(label?.startsWith("Download ")));
+      .filter((label): label is string => Boolean(label?.startsWith("Download")));
 
-    expect(formats).toEqual(["Download PNG", "Download SVG", "Download AI"]);
+    expect(formats).toEqual([
+      "Download PNG",
+      "Download SVG",
+      "Download AI",
+      "Download all",
+    ]);
   });
 
-  it("bundles the whole group behind one action, sized as the total", () => {
-    render(<AssetGrid assets={logoGroup} />);
-
-    expect(screen.getByRole("link", { name: "Download all" })).toHaveAttribute(
-      "href",
-      "/api/brand-bundle/k-lab-logo-blue",
-    );
-    expect(screen.getByText("1320 B total")).toBeInTheDocument();
-  });
-
-  it("leaves a single-file asset exactly as it was", () => {
+  it("leaves a single-file asset as a direct download", () => {
     render(<AssetGrid assets={[chevron]} />);
 
     expect(screen.getByText("WEBP")).toBeInTheDocument();

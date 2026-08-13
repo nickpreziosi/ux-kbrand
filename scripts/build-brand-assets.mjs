@@ -68,7 +68,6 @@ const LOGOS = [
   "k-lab-logo-white",
   "k-lab-logo-2025",
   "k-lab-logomark-2025",
-  "k-lab-logomark-dark",
 ];
 
 await Promise.all([

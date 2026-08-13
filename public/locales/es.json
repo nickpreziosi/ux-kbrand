@@ -103,38 +103,12 @@
       "title": "Logotipo",
       "subtitle": "Versiones aprobadas y las reglas que las mantienen reconocibles.",
       "loadError": "No pudimos cargar los archivos del logotipo. Inténtalo de nuevo.",
-      "variantsAriaLabel": "Versiones del logotipo",
-      "downloadVariant": "Descargar",
-      "formats": {
-        "png": "PNG",
-        "svg": "SVG",
-        "pdf": "PDF",
-        "ai": "AI"
-      },
       "clearspaceFullLabel": "Lockup completo",
       "clearspaceIconLabel": "Icono",
       "clearspaceTitle": "Área de respeto y tamaño mínimo",
       "clearspaceDescription": "Mantén un área de respeto de al menos 1× la altura de la K en cada lado. Nada —texto, imágenes o bordes— debe invadir ese espacio.",
       "minimumSize": "Tamaño mínimo: 24 px de alto en pantalla y 10 mm en impresión. El ícono puede reducirse hasta 16 px.",
       "rulesTitle": "Qué hacer y qué evitar",
-      "variants": {
-        "primary": {
-          "name": "Versión principal (azul)",
-          "usage": "La opción por defecto. Úsala sobre fondos claros donde la marca tenga espacio."
-        },
-        "dark": {
-          "name": "Versión oscura",
-          "usage": "Para fondos claros donde el azul competiría con las imágenes del entorno."
-        },
-        "reversed": {
-          "name": "Versión invertida",
-          "usage": "Para fondos oscuros, fotografías y superposiciones sobre video."
-        },
-        "logomark": {
-          "name": "Isotipo",
-          "usage": "Avatares, favicons e íconos de app: donde la versión completa no se lea bien."
-        }
-      },
       "rules": {
         "dos": {
           "clearspace": "Respeta el área de protección completa alrededor del logotipo.",
@@ -313,6 +287,7 @@
   "assets": {
     "download": "Descargar",
     "downloadAll": "Descargar todo",
+    "downloadAllOption": "Todo",
     "downloadFormat": "Descargar {format}",
     "fileCount": "{count} archivos",
     "totalSize": "{size} en total",

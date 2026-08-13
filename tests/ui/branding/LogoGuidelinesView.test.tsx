@@ -25,18 +25,12 @@ jest.mock("next-intl", () => ({
         title: "Logo",
         subtitle: "Lockups and usage.",
         loadError: "Failed",
-        variantsAriaLabel: "Logo variants",
         clearspaceTitle: "Clearspace & minimum size",
         clearspaceDescription: "Keep clearspace.",
         minimumSize: "Min size 24px.",
         rulesTitle: "Do and don't",
         allFilesTitle: "All logo files",
         allFilesDescription: "Every file.",
-        downloadVariant: "Download",
-        "formats.png": "PNG",
-        "formats.svg": "SVG",
-        "formats.pdf": "PDF",
-        "formats.ai": "AI",
         "rules.dos.clearspace": "Respect clearspace.",
         "rules.dos.approvedFiles": "Use approved files.",
         "rules.dos.contrast": "Use contrast.",
@@ -45,16 +39,6 @@ jest.mock("next-intl", () => ({
         "rules.donts.distort": "Don't distort.",
         "rules.donts.effects": "Don't add effects.",
         "rules.donts.rebuild": "Don't rebuild.",
-      },
-      "branding.logo.variants": {
-        "primary.name": "Primary",
-        "primary.usage": "Default lockup.",
-        "dark.name": "Dark",
-        "dark.usage": "Dark lockup.",
-        "reversed.name": "Reversed",
-        "reversed.usage": "Reversed lockup.",
-        "logomark.name": "Logomark",
-        "logomark.usage": "Icon mark.",
       },
       "brandAssets.assetCard": {
         download: "Download",
@@ -219,25 +203,5 @@ describe("LogoGuidelinesView", () => {
       "/brand-files/logos/k-lab-logomark.png",
     );
     expect(within(clearspaceSection).queryByText("K Lab")).not.toBeInTheDocument();
-  });
-
-  it("shows only available format downloads for the primary variant", () => {
-    render(<LogoGuidelinesView />);
-
-    const primaryCard = screen.getByRole("heading", { name: "Primary" })
-      .closest("div")!.parentElement!;
-    expect(within(primaryCard).getByRole("link", { name: "PNG" })).toHaveAttribute(
-      "href",
-      "/api/brand-download/ast-primary-png",
-    );
-    expect(within(primaryCard).getByRole("link", { name: "SVG" })).toHaveAttribute(
-      "href",
-      "/api/brand-download/ast-primary-svg",
-    );
-    expect(within(primaryCard).getByRole("link", { name: "AI" })).toHaveAttribute(
-      "href",
-      "/api/brand-download/ast-primary-ai",
-    );
-    expect(within(primaryCard).queryByRole("link", { name: "PDF" })).toBeNull();
   });
 });

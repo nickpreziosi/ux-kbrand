@@ -103,38 +103,12 @@
       "title": "Logo",
       "subtitle": "Approved lockups and the rules that keep them recognizable.",
       "loadError": "We couldn't load the logo files. Please try again.",
-      "variantsAriaLabel": "Logo variants",
-      "downloadVariant": "Download",
-      "formats": {
-        "png": "PNG",
-        "svg": "SVG",
-        "pdf": "PDF",
-        "ai": "AI"
-      },
       "clearspaceFullLabel": "Full lockup",
       "clearspaceIconLabel": "Icon",
       "clearspaceTitle": "Clearspace & minimum size",
       "clearspaceDescription": "Keep clearspace of at least 1× the height of the K on every side. Nothing — text, imagery, or edges — enters that space.",
       "minimumSize": "Minimum size: 24px height on screen, 10mm in print. The icon mark may go down to 16px.",
       "rulesTitle": "Do & don't",
-      "variants": {
-        "primary": {
-          "name": "Primary lockup (blue)",
-          "usage": "The default. Use on light surfaces wherever the brand has room to breathe."
-        },
-        "dark": {
-          "name": "Dark lockup",
-          "usage": "For light backgrounds where the blue would compete with surrounding artwork."
-        },
-        "reversed": {
-          "name": "Reversed lockup",
-          "usage": "For dark surfaces, photography, and video overlays."
-        },
-        "logomark": {
-          "name": "Logomark",
-          "usage": "Avatars, favicons, and app icons — anywhere the full lockup won't read."
-        }
-      },
       "rules": {
         "dos": {
           "clearspace": "Keep the full clearspace around the lockup.",
@@ -313,6 +287,7 @@
   "assets": {
     "download": "Download",
     "downloadAll": "Download all",
+    "downloadAllOption": "All",
     "downloadFormat": "Download {format}",
     "fileCount": "{count} files",
     "totalSize": "{size} total",

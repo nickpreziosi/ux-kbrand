@@ -57,10 +57,6 @@ const GROUPS = {
     title: "K Lab logomark — white",
     description: "Reversed logomark for dark surfaces.",
   },
-  "k-lab-logomark-dark": {
-    title: "K Lab logomark — dark",
-    description: "The dark logomark. Vector masters only — no raster export.",
-  },
 };
 
 /**
@@ -78,7 +74,7 @@ const GROUPS = {
  *              tests/contexts/brand-assets/sales-privacy.test.ts holds the two
  *              in sync).
  * category   — controlled category from the domain model
- * tags       — `primary`/`dark`/`reversed`/`mark` drive the logo variant cards;
+ * tags       — `primary`/`dark`/`reversed`/`mark` pick previews for clearspace;
  *              `brand-book` marks the complete guidelines document
  */
 const CATALOG = [
@@ -262,26 +258,6 @@ const CATALOG = [
     description: "Illustrator master of the reversed logomark.",
     tags: ["logomark", "reversed", "white", "ai"],
     created: "2026-08-13T14:00:11.000Z",
-  },
-  {
-    id: "ast-016-pdf",
-    group: "k-lab-logomark-dark",
-    path: "logos/vector/k-lab-logomark-dark.pdf",
-    category: "logos",
-    title: "K Lab logomark — dark, PDF",
-    description: "Vector PDF of the dark logomark.",
-    tags: ["logomark", "dark", "pdf", "vector", "print"],
-    created: "2025-11-04T09:12:00.000Z",
-  },
-  {
-    id: "ast-016-ai",
-    group: "k-lab-logomark-dark",
-    path: "logos/vector/k-lab-logomark-dark.ai",
-    category: "logos",
-    title: "K Lab logomark — dark, AI",
-    description: "Illustrator master of the dark logomark.",
-    tags: ["logomark", "dark", "ai"],
-    created: "2026-08-13T14:00:12.000Z",
   },
 
   // ── Logos: product brands ────────────────────────────────────────────────

@@ -2,95 +2,17 @@
 
 import * as React from "react";
 import Image from "next/image";
-import {
-  Button,
-  Card,
-  CardContent,
-  Skeleton,
-  cn,
-} from "@k-lab/components";
+import { Card, CardContent, Skeleton } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
-import { Check, Download, PenTool, X } from "lucide-react";
+import { Check, PenTool, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
-import {
-  brandDownloadUrl,
-  getFormatsForVariant,
-  previewAssetForVariant,
-  type LogoFormat,
-} from "@/ui/branding/content/logo-formats";
+import { previewAssetForVariant } from "@/ui/branding/content/logo-formats";
 import {
   LOGO_RULE_KEYS,
   LOGO_VARIANTS,
-  type LogoVariant,
 } from "@/ui/branding/content/logo-variants";
-
-// Deep navy / pure white from the brand identity palette — the surfaces these
-// lockups are actually designed against, so they stay fixed in both themes
-// (see --brand-surface-* in globals.css).
-const SURFACE_CLASS: Record<LogoVariant["surface"], string> = {
-  light: "bg-brand-surface-light",
-  dark: "bg-brand-surface-dark",
-};
-
-function LogoVariantCard({
-  variant,
-  assets,
-}: {
-  variant: LogoVariant;
-  assets: BrandAsset[];
-}) {
-  const t = useTranslations("branding.logo.variants");
-  const tCommon = useTranslations("branding.logo");
-  const preview = previewAssetForVariant(assets, variant);
-  const formats = getFormatsForVariant(assets, variant);
-
-  return (
-    <Card className="flex h-full flex-col overflow-hidden">
-      <div
-        className={cn(
-          "relative flex aspect-[16/9] items-center justify-center border-b border-border p-8",
-          SURFACE_CLASS[variant.surface],
-        )}
-      >
-        {preview?.previewUrl ? (
-          <Image
-            src={preview.previewUrl}
-            alt={t(`${variant.id}.name`)}
-            width={240}
-            height={72}
-            unoptimized
-            className="max-h-full w-auto max-w-full object-contain"
-          />
-        ) : (
-          <Skeleton className="h-12 w-40" />
-        )}
-      </div>
-      <CardContent className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="font-semibold">{t(`${variant.id}.name`)}</h3>
-        <p className="flex-1 text-sm text-muted-foreground">
-          {t(`${variant.id}.usage`)}
-        </p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {formats.map(({ format, asset }) => (
-            <Button
-              key={asset.id}
-              variant="outline"
-              size="sm"
-              className="w-fit"
-              icon={<Download aria-hidden />}
-              href={brandDownloadUrl(asset.id)}
-            >
-              {tCommon(`formats.${format}` as `formats.${LogoFormat}`)}
-            </Button>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 function ClearspaceDiagram({
   src,
@@ -148,28 +70,6 @@ export function LogoGuidelinesView() {
         <p className="text-sm text-destructive">{t("loadError")}</p>
       ) : (
         <>
-          <section
-            className="@container space-y-4"
-            aria-label={t("variantsAriaLabel")}
-          >
-            <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3">
-              {loading
-                ? LOGO_VARIANTS.map((variant) => (
-                    <Skeleton
-                      key={variant.id}
-                      className="aspect-[16/11] w-full"
-                    />
-                  ))
-                : LOGO_VARIANTS.map((variant) => (
-                    <LogoVariantCard
-                      key={variant.id}
-                      variant={variant}
-                      assets={assets}
-                    />
-                  ))}
-            </div>
-          </section>
-
           <section className="@container">
             <div className="grid grid-cols-1 gap-4 @lg:grid-cols-2">
               <Card>

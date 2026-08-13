@@ -10,12 +10,17 @@ import {
   CardDescription,
   CardFooter,
   CardTitle,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   cn,
   formatFileSize,
 } from "@k-lab/components";
 import {
+  ChevronDown,
   Download,
-  FileArchive,
   FileText,
   Globe,
   Image as ImageIcon,
@@ -43,6 +48,23 @@ function PreviewFallbackIcon({ contentType }: { contentType: string }) {
   return <FileText className={className} aria-hidden />;
 }
 
+function FormatSizeLabel({
+  label,
+  sizeBytes,
+}: {
+  label: string;
+  sizeBytes: number;
+}) {
+  return (
+    <>
+      <span className="font-semibold">{label}</span>
+      <span className="font-normal text-muted-foreground">
+        {formatFileSize(sizeBytes)}
+      </span>
+    </>
+  );
+}
+
 interface AssetCardProps {
   /** One artwork and every format it ships in (single-file assets are a group of one). */
   group: AssetGroup;
@@ -54,10 +76,9 @@ interface AssetCardProps {
 }
 
 /**
- * Catalog card for one artwork. When the group holds several formats, each one
- * gets a chip carrying its own size and its own download link, and the footer
- * action bundles the lot — so a card answers "how big is the PNG?" without a
- * click and still lets you take one file or all of them.
+ * Catalog card for one artwork. Multi-format groups expose every file (and a
+ * zip of the lot) from a single Download menu, so the card stays compact while
+ * still answering "how big is the PNG?" before a click.
  */
 export function AssetCard({
   group,
@@ -68,6 +89,10 @@ export function AssetCard({
   const t = useTranslations("assets");
   const { preview, assets } = group;
   const multiFormat = assets.length > 1;
+  // Lockups (transparent wordmarks) must fit inside the frame; product shots
+  // and imagery fill it, same as the rest of the catalog.
+  const coverPreview =
+    group.category !== "logos" || group.tags.includes("product");
 
   const previewImage = preview.previewUrl ? (
     <Image
@@ -76,7 +101,7 @@ export function AssetCard({
       fill
       unoptimized
       className={cn(
-        "object-cover",
+        coverPreview ? "object-cover" : "object-contain",
         onPreview && "transition-transform duration-200 group-hover:scale-[1.03]",
       )}
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -85,24 +110,38 @@ export function AssetCard({
 
   return (
     <Card className={cn("flex h-full flex-col overflow-hidden", className)}>
-      <div className="relative flex aspect-video items-center justify-center overflow-hidden border-b border-border bg-secondary">
-        {previewImage && onPreview ? (
-          <button
-            type="button"
-            onClick={onPreview}
-            className="group absolute inset-0 cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
-            aria-label={group.title}
-          >
-            {previewImage}
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30 group-focus-visible:bg-black/30">
-              <Maximize2
-                className="h-8 w-8 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-                aria-hidden
-              />
-            </span>
-          </button>
-        ) : previewImage ? (
-          previewImage
+      <div
+        className={cn(
+          "relative flex aspect-video items-center justify-center overflow-hidden border-b border-border bg-secondary",
+          onPreview && "group",
+        )}
+      >
+        {previewImage ? (
+          <>
+            <div
+              className={cn(
+                "absolute",
+                coverPreview ? "inset-0" : "inset-6",
+              )}
+            >
+              {previewImage}
+            </div>
+            {onPreview ? (
+              <button
+                type="button"
+                onClick={onPreview}
+                className="absolute inset-0 cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                aria-label={group.title}
+              >
+                <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30 group-focus-visible:bg-black/30">
+                  <Maximize2
+                    className="h-8 w-8 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                    aria-hidden
+                  />
+                </span>
+              </button>
+            ) : null}
+          </>
         ) : (
           <PreviewFallbackIcon contentType={preview.file.contentType} />
         )}
@@ -138,42 +177,75 @@ export function AssetCard({
         </CardDescription>
       </CardContent>
 
-      {multiFormat ? (
-        // Every format, its own size, its own download — the answer to "which
-        // one do I need?" without opening anything.
-        <div className="flex flex-wrap gap-1.5 px-4 pb-3">
-          {assets.map((asset) => (
+      <CardFooter
+        className={cn(
+          "flex items-center gap-2 p-4 pt-0",
+          multiFormat ? "justify-end" : "justify-between",
+        )}
+      >
+        {multiFormat ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="accent-brand"
+                size="sm"
+                icon={<Download aria-hidden />}
+              >
+                {t("download")}
+                <ChevronDown className="h-3.5 w-3.5 opacity-80" aria-hidden />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {assets.map((asset) => (
+                <DropdownMenuItem key={asset.id} asChild>
+                  <a
+                    href={assetDownloadHref(asset)}
+                    className="flex items-center gap-1.5"
+                    aria-label={t("downloadFormat", {
+                      format: formatLabel(asset),
+                    })}
+                  >
+                    <FormatSizeLabel
+                      label={formatLabel(asset)}
+                      sizeBytes={asset.file.sizeBytes}
+                    />
+                  </a>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <a
+                  href={brandBundleUrl(group.id)}
+                  className="flex items-center gap-1.5"
+                  aria-label={t("downloadAll")}
+                >
+                  <FormatSizeLabel
+                    label={
+                      t.has("downloadAllOption")
+                        ? t("downloadAllOption")
+                        : t("downloadAll")
+                    }
+                    sizeBytes={group.totalBytes}
+                  />
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <>
+            <span className="text-xs text-muted-foreground">
+              {formatFileSize(preview.file.sizeBytes)}
+            </span>
             <Button
-              key={asset.id}
-              variant="outline"
+              variant="accent-brand"
               size="sm"
-              href={assetDownloadHref(asset)}
-              aria-label={t("downloadFormat", { format: formatLabel(asset) })}
-              className="h-auto gap-1.5 px-2 py-1 text-xs font-semibold"
+              icon={<Download aria-hidden />}
+              href={assetDownloadHref(preview)}
             >
-              {formatLabel(asset)}
-              <span className="font-normal text-muted-foreground">
-                {formatFileSize(asset.file.sizeBytes)}
-              </span>
+              {t("download")}
             </Button>
-          ))}
-        </div>
-      ) : null}
-
-      <CardFooter className="flex items-center justify-between gap-2 p-4 pt-0">
-        <span className="text-xs text-muted-foreground">
-          {multiFormat
-            ? t("totalSize", { size: formatFileSize(group.totalBytes) })
-            : formatFileSize(preview.file.sizeBytes)}
-        </span>
-        <Button
-          variant="accent-brand"
-          size="sm"
-          icon={multiFormat ? <FileArchive aria-hidden /> : <Download aria-hidden />}
-          href={multiFormat ? brandBundleUrl(group.id) : assetDownloadHref(preview)}
-        >
-          {multiFormat ? t("downloadAll") : t("download")}
-        </Button>
+          </>
+        )}
       </CardFooter>
     </Card>
   );
