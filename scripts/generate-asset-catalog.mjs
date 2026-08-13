@@ -28,13 +28,55 @@ const CONTENT_TYPES = {
 };
 
 /**
+ * Assets that are the same artwork in different formats. The key is the
+ * `group` referenced by catalog entries below; title/description are the copy
+ * the grouped card shows, so each member keeps its own format-specific title
+ * for the admin table. Adding a format to a group is one CATALOG entry — the
+ * card picks it up with no UI change.
+ */
+const GROUPS = {
+  "k-lab-logo-blue": {
+    title: "K Lab logo — primary (blue)",
+    description:
+      "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
+  },
+  "k-lab-logo-dark": {
+    title: "K Lab logo — dark",
+    description: "Dark lockup for light backgrounds where the blue would compete with artwork.",
+  },
+  "k-lab-logo-white": {
+    title: "K Lab logo — reversed (white)",
+    description: "Reversed lockup for dark surfaces, photography, and video overlays.",
+  },
+  "k-lab-logomark": {
+    title: "K Lab logomark",
+    description:
+      "The standalone mark in its rounded container — avatars, app icons, and favicons.",
+  },
+  "k-lab-logomark-white": {
+    title: "K Lab logomark — white",
+    description: "Reversed logomark for dark surfaces.",
+  },
+  "k-lab-logomark-dark": {
+    title: "K Lab logomark — dark",
+    description: "The dark logomark. Vector masters only — no raster export.",
+  },
+};
+
+/**
  * path       — relative to public/brand-files, or to private-assets when
  *              location is "private"
+ * group      — key into GROUPS; every entry sharing one collapses into a
+ *              single card whose chips are the formats
  * location   — "private" keeps the bytes outside the web root, streamed via
  *              /api/sales-files/[id]. Independent of visibility: it says where
  *              the file lives, not who may see it.
- * visibility — role gating ("public" | "employee"). Every asset defaults to
- *              "public" for now; admins re-gate at runtime from Manage assets.
+ * visibility — role gating ("public" | "employee"). Brand assets default to
+ *              "public"; sales categories are always "employee" and cannot be
+ *              opted out of here (mirrors resolveVisibilityForCategory in
+ *              contexts/brand-assets/domain/models/asset-category.model.ts —
+ *              tests/contexts/brand-assets/sales-privacy.test.ts holds the two
+ *              in sync).
  * category   — controlled category from the domain model
  * tags       — `primary`/`dark`/`reversed`/`mark` drive the logo variant cards;
  *              `brand-book` marks the complete guidelines document
@@ -43,6 +85,7 @@ const CATALOG = [
   // ── Logos: K Lab primary (blue) — PNG / SVG / AI ─────────────────────────
   {
     id: "ast-010",
+    group: "k-lab-logo-blue",
     path: "logos/k-lab-logo-blue.png",
     category: "logos",
     title: "K Lab logo — primary (blue), PNG",
@@ -53,6 +96,7 @@ const CATALOG = [
   },
   {
     id: "ast-010-svg",
+    group: "k-lab-logo-blue",
     path: "logos/vector/k-lab-logo-blue.svg",
     category: "logos",
     title: "K Lab logo — primary (blue), SVG",
@@ -62,6 +106,7 @@ const CATALOG = [
   },
   {
     id: "ast-010-ai",
+    group: "k-lab-logo-blue",
     path: "logos/vector/k-lab-logo-blue.ai",
     category: "logos",
     title: "K Lab logo — primary (blue), AI",
@@ -73,6 +118,7 @@ const CATALOG = [
   // ── Logos: K Lab dark — PNG / SVG / AI ───────────────────────────────────
   {
     id: "ast-011",
+    group: "k-lab-logo-dark",
     path: "logos/k-lab-logo-dark.png",
     category: "logos",
     title: "K Lab logo — dark, PNG",
@@ -82,6 +128,7 @@ const CATALOG = [
   },
   {
     id: "ast-011-svg",
+    group: "k-lab-logo-dark",
     path: "logos/vector/k-lab-logo-dark.svg",
     category: "logos",
     title: "K Lab logo — dark, SVG",
@@ -91,6 +138,7 @@ const CATALOG = [
   },
   {
     id: "ast-011-ai",
+    group: "k-lab-logo-dark",
     path: "logos/vector/k-lab-logo-dark.ai",
     category: "logos",
     title: "K Lab logo — dark, AI",
@@ -102,6 +150,7 @@ const CATALOG = [
   // ── Logos: K Lab reversed (white) — PNG / SVG / AI ───────────────────────
   {
     id: "ast-012",
+    group: "k-lab-logo-white",
     path: "logos/k-lab-logo-white.png",
     category: "logos",
     title: "K Lab logo — reversed (white), PNG",
@@ -111,6 +160,7 @@ const CATALOG = [
   },
   {
     id: "ast-012-svg",
+    group: "k-lab-logo-white",
     path: "logos/vector/k-lab-logo-white.svg",
     category: "logos",
     title: "K Lab logo — reversed (white), SVG",
@@ -120,6 +170,7 @@ const CATALOG = [
   },
   {
     id: "ast-012-ai",
+    group: "k-lab-logo-white",
     path: "logos/vector/k-lab-logo-white.ai",
     category: "logos",
     title: "K Lab logo — reversed (white), AI",
@@ -131,6 +182,7 @@ const CATALOG = [
   // ── Logos: K Lab logomark — PNG / SVG / PDF / AI ─────────────────────────
   {
     id: "ast-014",
+    group: "k-lab-logomark",
     path: "logos/k-lab-logomark.png",
     category: "logos",
     title: "K Lab logomark, PNG",
@@ -141,6 +193,7 @@ const CATALOG = [
   },
   {
     id: "ast-014-svg",
+    group: "k-lab-logomark",
     path: "logos/vector/k-lab-logomark.svg",
     category: "logos",
     title: "K Lab logomark, SVG",
@@ -150,6 +203,7 @@ const CATALOG = [
   },
   {
     id: "ast-014-pdf",
+    group: "k-lab-logomark",
     path: "logos/vector/k-lab-logomark.pdf",
     category: "logos",
     title: "K Lab logomark, PDF",
@@ -159,6 +213,7 @@ const CATALOG = [
   },
   {
     id: "ast-014-ai",
+    group: "k-lab-logomark",
     path: "logos/vector/k-lab-logomark.ai",
     category: "logos",
     title: "K Lab logomark, AI",
@@ -170,6 +225,7 @@ const CATALOG = [
   // ── Logos: logomark variants (extra catalog files) ───────────────────────
   {
     id: "ast-015",
+    group: "k-lab-logomark-white",
     path: "logos/k-lab-logomark-white.png",
     category: "logos",
     title: "K Lab logomark — white, PNG",
@@ -179,6 +235,7 @@ const CATALOG = [
   },
   {
     id: "ast-015-svg",
+    group: "k-lab-logomark-white",
     path: "logos/vector/k-lab-logomark-white.svg",
     category: "logos",
     title: "K Lab logomark — white, SVG",
@@ -188,6 +245,7 @@ const CATALOG = [
   },
   {
     id: "ast-015-pdf",
+    group: "k-lab-logomark-white",
     path: "logos/vector/k-lab-logomark-white.pdf",
     category: "logos",
     title: "K Lab logomark — white, PDF",
@@ -197,6 +255,7 @@ const CATALOG = [
   },
   {
     id: "ast-015-ai",
+    group: "k-lab-logomark-white",
     path: "logos/vector/k-lab-logomark-white.ai",
     category: "logos",
     title: "K Lab logomark — white, AI",
@@ -206,6 +265,7 @@ const CATALOG = [
   },
   {
     id: "ast-016-pdf",
+    group: "k-lab-logomark-dark",
     path: "logos/vector/k-lab-logomark-dark.pdf",
     category: "logos",
     title: "K Lab logomark — dark, PDF",
@@ -215,6 +275,7 @@ const CATALOG = [
   },
   {
     id: "ast-016-ai",
+    group: "k-lab-logomark-dark",
     path: "logos/vector/k-lab-logomark-dark.ai",
     category: "logos",
     title: "K Lab logomark — dark, AI",
@@ -492,13 +553,18 @@ const CATALOG = [
   },
 ];
 
+/** Keep in step with SALES_CATEGORIES in the domain category model. */
+const SALES_CATEGORIES = ["pitch-decks", "sales-materials"];
+
 const PREVIEWABLE = /\.(png|webp|jpg|jpeg|svg|gif)$/i;
 const missing = [];
 const entries = [];
 const privateFiles = [];
 
 for (const item of CATALOG) {
-  const visibility = item.visibility ?? "public";
+  const visibility = SALES_CATEGORIES.includes(item.category)
+    ? "employee"
+    : (item.visibility ?? "public");
   const isPrivate = item.location === "private";
   const absolute = join(isPrivate ? privateDir : publicDir, item.path);
 
@@ -512,6 +578,12 @@ for (const item of CATALOG) {
   const downloadUrl = isPrivate ? `/api/sales-files/${item.id}` : `/brand-files/${item.path}`;
   const categoryFolder = isPrivate ? item.category : item.path.split("/").slice(0, -1).join("/");
 
+  const group = item.group ? GROUPS[item.group] : undefined;
+  if (item.group && !group) {
+    console.error(`Unknown group "${item.group}" on ${item.id} — add it to GROUPS.`);
+    process.exit(1);
+  }
+
   entries.push({
     id: item.id,
     title: item.title,
@@ -519,6 +591,9 @@ for (const item of CATALOG) {
     category: item.category,
     visibility,
     status: item.status ?? "active",
+    groupId: item.group,
+    groupTitle: group?.title,
+    groupDescription: group?.description,
     file: {
       fileName,
       contentType: CONTENT_TYPES[extension] ?? "application/octet-stream",

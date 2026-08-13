@@ -11,6 +11,8 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
 
 interface AssetPreviewDialogProps {
   asset: BrandAsset | null;
+  /** Group title, when the thumbnail stands for a multi-format group. */
+  title?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -18,10 +20,12 @@ interface AssetPreviewDialogProps {
 /** Larger, uncropped view of a catalog thumbnail. */
 export function AssetPreviewDialog({
   asset,
+  title,
   open,
   onOpenChange,
 }: AssetPreviewDialogProps) {
   const previewUrl = asset?.previewUrl;
+  const label = title ?? asset?.title ?? "";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -32,10 +36,10 @@ export function AssetPreviewDialog({
       >
         {asset && previewUrl ? (
           <>
-            <DialogTitle className="sr-only">{asset.title}</DialogTitle>
+            <DialogTitle className="sr-only">{label}</DialogTitle>
             <Image
               src={previewUrl}
-              alt={asset.title}
+              alt={label}
               width={1920}
               height={1080}
               unoptimized

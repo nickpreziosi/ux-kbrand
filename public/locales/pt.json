@@ -312,6 +312,10 @@
   },
   "assets": {
     "download": "Baixar",
+    "downloadAll": "Baixar tudo",
+    "downloadFormat": "Baixar {format}",
+    "fileCount": "{count} arquivos",
+    "totalSize": "{size} no total",
     "empty": {
       "title": "Nada por aqui ainda",
       "description": "Os recursos publicados nesta categoria aparecerão aqui."
@@ -349,7 +353,8 @@
       "visibility": "Visibilidade",
       "status": "Status",
       "size": "Tamanho",
-      "updated": "Atualizado"
+      "updated": "Atualizado",
+      "formats": "Formatos"
     },
     "visibility": {
       "public": "Público",
@@ -367,7 +372,9 @@
       "restore": "Restaurar",
       "delete": "Excluir",
       "makePublic": "Tornar público",
-      "makeEmployee": "Apenas funcionários"
+      "makeEmployee": "Apenas funcionários",
+      "editFormats": "Editar formatos",
+      "downloadAll": "Baixar todos os formatos"
     },
     "toasts": {
       "created": "Recurso criado",
@@ -380,15 +387,15 @@
     },
     "deleteDialog": {
       "title": "Excluir recurso?",
-      "description": "\"{title}\" será removido permanentemente do portal. Esta ação não pode ser desfeita.",
+      "description": "\"{title}\" será removido permanentemente do portal, {count, plural, one {junto com seu arquivo} other {junto com seus # arquivos}}. Esta ação não pode ser desfeita.",
       "confirm": "Excluir",
       "cancel": "Cancelar"
     },
     "form": {
       "createTitle": "Novo recurso",
-      "createDescription": "Publique um novo recurso no portal.",
+      "createDescription": "Publique um novo recurso. Envie todos os formatos da mesma arte e eles compartilharão um único card.",
       "editTitle": "Editar recurso",
-      "editDescription": "Atualize os detalhes ou substitua o arquivo. Deixe o arquivo vazio para manter o atual.",
+      "editDescription": "Atualize os detalhes, adicione os formatos que faltam ou remova os que não publica mais.",
       "titleLabel": "Título",
       "descriptionLabel": "Descrição",
       "categoryLabel": "Categoria",
@@ -396,16 +403,25 @@
       "tagsLabel": "Tags (separadas por vírgula)",
       "visibilityPublic": "Público",
       "visibilityEmployee": "Apenas funcionários",
-      "fileLabel": "Arraste um arquivo aqui ou clique para procurar",
-      "replaceFileLabel": "Arraste um arquivo para substituir o atual",
-      "fileDescription": "Qualquer tipo de arquivo, até 50 MB.",
+      "visibilitySalesLocked": "Os recursos de vendas são sempre exclusivos para funcionários.",
       "titleRequired": "O título é obrigatório.",
-      "fileRequired": "Escolha um arquivo para publicar.",
+      "fileRequired": "Escolha pelo menos um arquivo para publicar.",
       "uploadFailed": "Falha ao enviar o arquivo. Tente novamente.",
       "cancel": "Cancelar",
       "save": "Salvar alterações",
-      "create": "Criar recurso"
-    }
+      "create": "Criar recurso",
+      "filesLabel": "Arraste arquivos aqui ou clique para procurar",
+      "addFormatsLabel": "Arraste arquivos para adicionar mais formatos",
+      "filesDescription": "Qualquer tipo de arquivo, até 25 MB cada. PNG, SVG, PDF e outros formatos da mesma arte podem entrar juntos.",
+      "currentFormats": "Formatos publicados",
+      "removeFormat": "Remover {format}",
+      "restoreFormat": "Manter {format}",
+      "removalPending": "{count, plural, one {# arquivo será excluído ao salvar.} other {# arquivos serão excluídos ao salvar.}}",
+      "keepOneFile": "Um recurso precisa de pelo menos um arquivo.",
+      "tooManyFiles": "Um recurso comporta até {max} arquivos.",
+      "duplicateFormats": "Cada formato pode aparecer apenas uma vez. Já estão neste recurso: {formats}."
+    },
+    "fileCount": "{count} arquivos"
   },
   "adminUsers": {
     "title": "Usuários e acessos",

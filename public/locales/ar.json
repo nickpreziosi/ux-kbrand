@@ -312,6 +312,10 @@
   },
   "assets": {
     "download": "تنزيل",
+    "downloadAll": "تنزيل الكل",
+    "downloadFormat": "تنزيل {format}",
+    "fileCount": "{count} ملفات",
+    "totalSize": "{size} الإجمالي",
     "empty": {
       "title": "لا يوجد شيء هنا بعد",
       "description": "ستظهر الموارد المنشورة في هذه الفئة هنا."
@@ -349,7 +353,8 @@
       "visibility": "الرؤية",
       "status": "الحالة",
       "size": "الحجم",
-      "updated": "آخر تحديث"
+      "updated": "آخر تحديث",
+      "formats": "الصيغ"
     },
     "visibility": {
       "public": "عام",
@@ -367,7 +372,9 @@
       "restore": "استعادة",
       "delete": "حذف",
       "makePublic": "جعله عامًا",
-      "makeEmployee": "للموظفين فقط"
+      "makeEmployee": "للموظفين فقط",
+      "editFormats": "تعديل الصيغ",
+      "downloadAll": "تنزيل كل الصيغ"
     },
     "toasts": {
       "created": "تم إنشاء المورد",
@@ -380,15 +387,15 @@
     },
     "deleteDialog": {
       "title": "حذف المورد؟",
-      "description": "سيُحذف \"{title}\" نهائيًا من البوابة. لا يمكن التراجع عن هذا الإجراء.",
+      "description": "سيُحذف \"{title}\" نهائيًا من البوابة مع {count, plural, one {ملفه} other {ملفاته البالغ عددها #}}. لا يمكن التراجع عن هذا الإجراء.",
       "confirm": "حذف",
       "cancel": "إلغاء"
     },
     "form": {
       "createTitle": "مورد جديد",
-      "createDescription": "انشر موردًا جديدًا في البوابة.",
+      "createDescription": "انشر موردًا جديدًا. ارفع كل صيغ العمل نفسه لتظهر جميعها في بطاقة واحدة.",
       "editTitle": "تعديل المورد",
-      "editDescription": "حدّث التفاصيل أو استبدل الملف. اترك الملف فارغًا للاحتفاظ بالملف الحالي.",
+      "editDescription": "حدّث التفاصيل أو أضف الصيغ الناقصة أو احذف ما لم تعد تنشره.",
       "titleLabel": "العنوان",
       "descriptionLabel": "الوصف",
       "categoryLabel": "الفئة",
@@ -396,16 +403,25 @@
       "tagsLabel": "الوسوم (مفصولة بفواصل)",
       "visibilityPublic": "عام",
       "visibilityEmployee": "الموظفون فقط",
-      "fileLabel": "أسقط ملفًا هنا أو انقر للاستعراض",
-      "replaceFileLabel": "أسقط ملفًا لاستبدال الملف الحالي",
-      "fileDescription": "أي نوع ملف، حتى 50 ميغابايت.",
+      "visibilitySalesLocked": "موارد المبيعات متاحة للموظفين فقط دائمًا.",
       "titleRequired": "العنوان مطلوب.",
-      "fileRequired": "اختر ملفًا للنشر.",
+      "fileRequired": "اختر ملفًا واحدًا على الأقل للنشر.",
       "uploadFailed": "فشل رفع الملف. حاول مرة أخرى.",
       "cancel": "إلغاء",
       "save": "حفظ التغييرات",
-      "create": "إنشاء المورد"
-    }
+      "create": "إنشاء المورد",
+      "filesLabel": "أسقط الملفات هنا أو انقر للاستعراض",
+      "addFormatsLabel": "أسقط ملفات لإضافة صيغ أخرى",
+      "filesDescription": "أي نوع ملف، حتى 25 ميغابايت لكل ملف. يمكن رفع PNG وSVG وPDF وغيرها من صيغ العمل نفسه معًا.",
+      "currentFormats": "الصيغ المنشورة",
+      "removeFormat": "إزالة {format}",
+      "restoreFormat": "الإبقاء على {format}",
+      "removalPending": "{count, plural, one {سيُحذف # ملف عند الحفظ.} other {ستُحذف # ملفات عند الحفظ.}}",
+      "keepOneFile": "يحتاج المورد إلى ملف واحد على الأقل.",
+      "tooManyFiles": "يتسع المورد حتى {max} ملفات.",
+      "duplicateFormats": "لا يمكن تكرار الصيغة نفسها. موجودة بالفعل في هذا المورد: {formats}."
+    },
+    "fileCount": "{count} ملفات"
   },
   "adminUsers": {
     "title": "المستخدمون والصلاحيات",

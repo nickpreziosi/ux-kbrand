@@ -20,6 +20,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
     file: {
       fileName: "k-lab-logo-blue.png",
       contentType: "image/png",
@@ -45,10 +48,13 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
     file: {
       fileName: "k-lab-logo-blue.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 347196,
+      sizeBytes: 347396,
       storagePath: "assets/logos/vector/k-lab-logo-blue.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-blue.svg"
     },
@@ -70,6 +76,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
     file: {
       fileName: "k-lab-logo-blue.ai",
       contentType: "application/postscript",
@@ -94,6 +103,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-dark",
+    groupTitle: "K Lab logo — dark",
+    groupDescription: "Dark lockup for light backgrounds where the blue would compete with artwork.",
     file: {
       fileName: "k-lab-logo-dark.png",
       contentType: "image/png",
@@ -118,10 +130,13 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-dark",
+    groupTitle: "K Lab logo — dark",
+    groupDescription: "Dark lockup for light backgrounds where the blue would compete with artwork.",
     file: {
       fileName: "k-lab-logo-dark.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 10263,
+      sizeBytes: 10472,
       storagePath: "assets/logos/vector/k-lab-logo-dark.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-dark.svg"
     },
@@ -142,6 +157,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-dark",
+    groupTitle: "K Lab logo — dark",
+    groupDescription: "Dark lockup for light backgrounds where the blue would compete with artwork.",
     file: {
       fileName: "k-lab-logo-dark.ai",
       contentType: "application/postscript",
@@ -165,6 +183,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-white",
+    groupTitle: "K Lab logo — reversed (white)",
+    groupDescription: "Reversed lockup for dark surfaces, photography, and video overlays.",
     file: {
       fileName: "k-lab-logo-white.png",
       contentType: "image/png",
@@ -190,10 +211,13 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-white",
+    groupTitle: "K Lab logo — reversed (white)",
+    groupDescription: "Reversed lockup for dark surfaces, photography, and video overlays.",
     file: {
       fileName: "k-lab-logo-white.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 8942,
+      sizeBytes: 9114,
       storagePath: "assets/logos/vector/k-lab-logo-white.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-white.svg"
     },
@@ -215,6 +239,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logo-white",
+    groupTitle: "K Lab logo — reversed (white)",
+    groupDescription: "Reversed lockup for dark surfaces, photography, and video overlays.",
     file: {
       fileName: "k-lab-logo-white.ai",
       contentType: "application/postscript",
@@ -239,6 +266,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark",
+    groupTitle: "K Lab logomark",
+    groupDescription: "The standalone mark in its rounded container — avatars, app icons, and favicons.",
     file: {
       fileName: "k-lab-logomark.png",
       contentType: "image/png",
@@ -264,10 +294,13 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark",
+    groupTitle: "K Lab logomark",
+    groupDescription: "The standalone mark in its rounded container — avatars, app icons, and favicons.",
     file: {
       fileName: "k-lab-logomark.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 4776,
+      sizeBytes: 4877,
       storagePath: "assets/logos/vector/k-lab-logomark.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark.svg"
     },
@@ -289,6 +322,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark",
+    groupTitle: "K Lab logomark",
+    groupDescription: "The standalone mark in its rounded container — avatars, app icons, and favicons.",
     file: {
       fileName: "k-lab-logomark.pdf",
       contentType: "application/pdf",
@@ -314,6 +350,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark",
+    groupTitle: "K Lab logomark",
+    groupDescription: "The standalone mark in its rounded container — avatars, app icons, and favicons.",
     file: {
       fileName: "k-lab-logomark.ai",
       contentType: "application/postscript",
@@ -337,6 +376,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark-white",
+    groupTitle: "K Lab logomark — white",
+    groupDescription: "Reversed logomark for dark surfaces.",
     file: {
       fileName: "k-lab-logomark-white.png",
       contentType: "image/png",
@@ -362,10 +404,13 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark-white",
+    groupTitle: "K Lab logomark — white",
+    groupDescription: "Reversed logomark for dark surfaces.",
     file: {
       fileName: "k-lab-logomark-white.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 3451,
+      sizeBytes: 3515,
       storagePath: "assets/logos/vector/k-lab-logomark-white.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark-white.svg"
     },
@@ -387,6 +432,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark-white",
+    groupTitle: "K Lab logomark — white",
+    groupDescription: "Reversed logomark for dark surfaces.",
     file: {
       fileName: "k-lab-logomark-white.pdf",
       contentType: "application/pdf",
@@ -413,6 +461,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark-white",
+    groupTitle: "K Lab logomark — white",
+    groupDescription: "Reversed logomark for dark surfaces.",
     file: {
       fileName: "k-lab-logomark-white.ai",
       contentType: "application/postscript",
@@ -437,6 +488,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark-dark",
+    groupTitle: "K Lab logomark — dark",
+    groupDescription: "The dark logomark. Vector masters only — no raster export.",
     file: {
       fileName: "k-lab-logomark-dark.pdf",
       contentType: "application/pdf",
@@ -462,6 +516,9 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-logomark-dark",
+    groupTitle: "K Lab logomark — dark",
+    groupDescription: "The dark logomark. Vector masters only — no raster export.",
     file: {
       fileName: "k-lab-logomark-dark.ai",
       contentType: "application/postscript",
@@ -1000,7 +1057,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "K Lab Platform Pitch 2026",
     description: "Master platform deck: suite overview, architecture story, and pricing framework. Approved 2026-07.",
     category: "pitch-decks",
-    visibility: "public",
+    visibility: "employee",
     status: "active",
     file: {
       fileName: "k-lab-platform-pitch-2026.pdf",
@@ -1023,7 +1080,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "K Rails Invoice Portal Pitch",
     description: "Product deck for the invoice financing portal — municipality and enterprise variants.",
     category: "pitch-decks",
-    visibility: "public",
+    visibility: "employee",
     status: "active",
     file: {
       fileName: "k-rails-invoice-pitch.pdf",
@@ -1046,7 +1103,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "Product One-Pagers Pack",
     description: "One-page leave-behinds for KBPM, K Risk, K Leads, and K Rails — print-ready.",
     category: "sales-materials",
-    visibility: "public",
+    visibility: "employee",
     status: "active",
     file: {
       fileName: "k-lab-product-one-pagers.pdf",
@@ -1068,7 +1125,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "Case Study — Regional Bank",
     description: "Anonymized results story: 40% faster onboarding with KBPM. Cleared for external sharing by legal.",
     category: "sales-materials",
-    visibility: "public",
+    visibility: "employee",
     status: "active",
     file: {
       fileName: "case-study-regional-bank.pdf",
@@ -1090,7 +1147,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     title: "Legacy Pricing Sheet 2025",
     description: "Superseded by the 2026 pricing framework in the platform pitch. Kept for reference.",
     category: "sales-materials",
-    visibility: "public",
+    visibility: "employee",
     status: "archived",
     file: {
       fileName: "legacy-pricing-sheet-2025.pdf",

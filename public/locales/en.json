@@ -312,6 +312,10 @@
   },
   "assets": {
     "download": "Download",
+    "downloadAll": "Download all",
+    "downloadFormat": "Download {format}",
+    "fileCount": "{count} files",
+    "totalSize": "{size} total",
     "empty": {
       "title": "Nothing here yet",
       "description": "Assets published to this category will appear here."
@@ -349,7 +353,8 @@
       "visibility": "Visibility",
       "status": "Status",
       "size": "Size",
-      "updated": "Updated"
+      "updated": "Updated",
+      "formats": "Formats"
     },
     "visibility": {
       "public": "Public",
@@ -367,7 +372,9 @@
       "restore": "Restore",
       "delete": "Delete",
       "makePublic": "Make public",
-      "makeEmployee": "Employees only"
+      "makeEmployee": "Employees only",
+      "editFormats": "Edit formats",
+      "downloadAll": "Download all formats"
     },
     "toasts": {
       "created": "Asset created",
@@ -380,15 +387,15 @@
     },
     "deleteDialog": {
       "title": "Delete asset?",
-      "description": "\"{title}\" will be permanently removed from the portal. This cannot be undone.",
+      "description": "\"{title}\" will be permanently removed from the portal, {count, plural, one {along with its file} other {along with all # of its files}}. This cannot be undone.",
       "confirm": "Delete",
       "cancel": "Cancel"
     },
     "form": {
       "createTitle": "New asset",
-      "createDescription": "Publish a new resource to the portal.",
+      "createDescription": "Publish a new resource. Upload every format of the same artwork and they share one card.",
       "editTitle": "Edit asset",
-      "editDescription": "Update details or replace the file. Leave the file empty to keep the current one.",
+      "editDescription": "Update the details, add formats that are missing, or drop ones you no longer publish.",
       "titleLabel": "Title",
       "descriptionLabel": "Description",
       "categoryLabel": "Category",
@@ -396,16 +403,25 @@
       "tagsLabel": "Tags (comma separated)",
       "visibilityPublic": "Public",
       "visibilityEmployee": "Employees only",
-      "fileLabel": "Drop a file here or click to browse",
-      "replaceFileLabel": "Drop a file to replace the current one",
-      "fileDescription": "Any file type, up to 50 MB.",
+      "visibilitySalesLocked": "Sales resources are always employee-only.",
       "titleRequired": "A title is required.",
-      "fileRequired": "Choose a file to publish.",
+      "fileRequired": "Choose at least one file to publish.",
       "uploadFailed": "Uploading the file failed. Please try again.",
       "cancel": "Cancel",
       "save": "Save changes",
-      "create": "Create asset"
-    }
+      "create": "Create asset",
+      "filesLabel": "Drop files here or click to browse",
+      "addFormatsLabel": "Drop files to add more formats",
+      "filesDescription": "Any file type, up to 25 MB each. PNG, SVG, PDF and other formats of the same artwork can go in together.",
+      "currentFormats": "Published formats",
+      "removeFormat": "Remove {format}",
+      "restoreFormat": "Keep {format}",
+      "removalPending": "{count, plural, one {# file will be deleted when you save.} other {# files will be deleted when you save.}}",
+      "keepOneFile": "An asset needs at least one file.",
+      "tooManyFiles": "An asset can hold up to {max} files.",
+      "duplicateFormats": "Each format can appear only once. Already in this asset: {formats}."
+    },
+    "fileCount": "{count} files"
   },
   "adminUsers": {
     "title": "Users & access",

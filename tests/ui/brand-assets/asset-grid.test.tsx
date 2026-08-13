@@ -17,11 +17,21 @@ jest.mock("next/image", () => ({
 
 jest.mock("next-intl", () => ({
   useTranslations: () => {
-    const t = (key: string) => {
-      if (key === "download") return "Download";
-      if (key === "empty.title") return "Nothing here yet";
-      if (key === "empty.description") return "Empty";
-      return key;
+    const messages: Record<string, string> = {
+      download: "Download",
+      downloadAll: "Download all",
+      downloadFormat: "Download {format}",
+      fileCount: "{count} files",
+      totalSize: "{size} total",
+      "empty.title": "Nothing here yet",
+      "empty.description": "Empty",
+    };
+    const t = (key: string, values?: Record<string, string | number>) => {
+      const message = messages[key] ?? key;
+      if (!values) return message;
+      return message.replace(/\{(\w+)\}/g, (_match, name: string) =>
+        String(values[name] ?? ""),
+      );
     };
     return t;
   },
@@ -35,21 +45,27 @@ jest.mock("@k-lab/components", () => {
   return {
     cn: (...parts: Array<string | false | undefined>) =>
       parts.filter(Boolean).join(" "),
-    formatFileSize: () => "1 KB",
+    formatFileSize: (bytes: number) => `${bytes} B`,
+    // Only the props the DOM needs; icon/variant/size stay off the element.
     Button: ({
       children,
       href,
-      ...rest
-    }: React.PropsWithChildren<{ href?: string }>) => {
+      className,
+      "aria-label": ariaLabel,
+    }: React.PropsWithChildren<{
+      href?: string;
+      className?: string;
+      "aria-label"?: string;
+    }>) => {
       if (href) {
         return (
-          <a href={href} {...rest}>
+          <a href={href} className={className} aria-label={ariaLabel}>
             {children}
           </a>
         );
       }
       return (
-        <button type="button" {...rest}>
+        <button type="button" className={className} aria-label={ariaLabel}>
           {children}
         </button>
       );
@@ -99,7 +115,13 @@ function asset(partial: {
   title: string;
   previewUrl?: string;
   description?: string;
+  fileName?: string;
+  sizeBytes?: number;
+  groupId?: string;
+  groupTitle?: string;
+  groupDescription?: string;
 }): BrandAsset {
+  const fileName = partial.fileName ?? `${partial.id}.webp`;
   return {
     id: partial.id,
     title: partial.title,
@@ -108,13 +130,16 @@ function asset(partial: {
     visibility: "public",
     status: "active",
     file: {
-      fileName: `${partial.id}.webp`,
+      fileName,
       contentType: "image/webp",
-      sizeBytes: 1024,
-      storagePath: `assets/backgrounds/${partial.id}.webp`,
-      downloadUrl: `/brand-files/backgrounds/${partial.id}.webp`,
+      sizeBytes: partial.sizeBytes ?? 1024,
+      storagePath: `assets/backgrounds/${fileName}`,
+      downloadUrl: `/brand-files/backgrounds/${fileName}`,
     },
     previewUrl: partial.previewUrl,
+    groupId: partial.groupId,
+    groupTitle: partial.groupTitle,
+    groupDescription: partial.groupDescription,
     tags: ["background"],
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
@@ -126,6 +151,103 @@ const chevron = asset({
   id: "ast-040",
   title: "Chevron neon",
   previewUrl: "/brand-files/backgrounds/k-lab-bg-001.webp",
+});
+
+const logoGroup = [
+  asset({
+    id: "ast-010",
+    title: "K Lab logo — primary (blue), PNG",
+    fileName: "k-lab-logo-blue.png",
+    sizeBytes: 1000,
+    previewUrl: "/brand-files/logos/k-lab-logo-blue.png",
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup.",
+  }),
+  asset({
+    id: "ast-010-ai",
+    title: "K Lab logo — primary (blue), AI",
+    fileName: "k-lab-logo-blue.ai",
+    sizeBytes: 20,
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup.",
+  }),
+  asset({
+    id: "ast-010-svg",
+    title: "K Lab logo — primary (blue), SVG",
+    fileName: "k-lab-logo-blue.svg",
+    sizeBytes: 300,
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup.",
+  }),
+];
+
+describe("AssetGrid format chips", () => {
+  it("renders one card for a group and a chip per format", () => {
+    render(<AssetGrid assets={logoGroup} />);
+
+    expect(
+      screen.getAllByRole("heading", { name: "K Lab logo — primary (blue)" }),
+    ).toHaveLength(1);
+    expect(screen.queryByText(/, PNG$/)).not.toBeInTheDocument();
+    expect(screen.getByText("3 files")).toBeInTheDocument();
+    expect(screen.getByText("The default lockup.")).toBeInTheDocument();
+  });
+
+  it("shows each format's own size and links it to that file's download", () => {
+    render(<AssetGrid assets={logoGroup} />);
+
+    const png = screen.getByRole("link", { name: "Download PNG" });
+    expect(png).toHaveAttribute("href", "/api/brand-download/ast-010");
+    expect(png).toHaveTextContent("PNG");
+    expect(png).toHaveTextContent("1000 B");
+
+    expect(screen.getByRole("link", { name: "Download SVG" })).toHaveAttribute(
+      "href",
+      "/api/brand-download/ast-010-svg",
+    );
+    expect(screen.getByRole("link", { name: "Download AI" })).toHaveAttribute(
+      "href",
+      "/api/brand-download/ast-010-ai",
+    );
+  });
+
+  it("orders chips raster first, editable masters last", () => {
+    render(<AssetGrid assets={logoGroup} />);
+
+    const formats = screen
+      .getAllByRole("link")
+      .map((link) => link.getAttribute("aria-label"))
+      .filter((label): label is string => Boolean(label?.startsWith("Download ")));
+
+    expect(formats).toEqual(["Download PNG", "Download SVG", "Download AI"]);
+  });
+
+  it("bundles the whole group behind one action, sized as the total", () => {
+    render(<AssetGrid assets={logoGroup} />);
+
+    expect(screen.getByRole("link", { name: "Download all" })).toHaveAttribute(
+      "href",
+      "/api/brand-bundle/k-lab-logo-blue",
+    );
+    expect(screen.getByText("1320 B total")).toBeInTheDocument();
+  });
+
+  it("leaves a single-file asset exactly as it was", () => {
+    render(<AssetGrid assets={[chevron]} />);
+
+    expect(screen.getByText("WEBP")).toBeInTheDocument();
+    expect(screen.getByText("1024 B")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download" })).toHaveAttribute(
+      "href",
+      "/api/brand-download/ast-040",
+    );
+    expect(
+      screen.queryByRole("link", { name: "Download all" }),
+    ).not.toBeInTheDocument();
+  });
 });
 
 describe("AssetGrid expandPreview", () => {

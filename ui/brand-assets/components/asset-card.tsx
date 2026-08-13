@@ -15,6 +15,7 @@ import {
 } from "@k-lab/components";
 import {
   Download,
+  FileArchive,
   FileText,
   Globe,
   Image as ImageIcon,
@@ -24,18 +25,15 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
-import { brandDownloadUrl } from "@/ui/branding/content/logo-formats";
+import {
+  assetFormat,
+  type AssetGroup,
+} from "@/contexts/brand-assets/domain/services/asset-grouping";
+import { brandBundleUrl } from "@/ui/branding/content/logo-formats";
+import { assetDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
 
-function downloadHrefForAsset(asset: BrandAsset): string {
-  if (asset.file.downloadUrl.startsWith("/brand-files/")) {
-    return brandDownloadUrl(asset.id);
-  }
-  return asset.file.downloadUrl;
-}
-
-function fileExtension(fileName: string): string {
-  const dot = fileName.lastIndexOf(".");
-  return dot >= 0 ? fileName.slice(dot + 1).toUpperCase() : "FILE";
+function formatLabel(asset: BrandAsset): string {
+  return assetFormat(asset)?.toUpperCase() ?? "FILE";
 }
 
 function PreviewFallbackIcon({ contentType }: { contentType: string }) {
@@ -46,26 +44,35 @@ function PreviewFallbackIcon({ contentType }: { contentType: string }) {
 }
 
 interface AssetCardProps {
-  asset: BrandAsset;
-  /** Show the asset's gating badge (employees/admins; read-only here). */
+  /** One artwork and every format it ships in (single-file assets are a group of one). */
+  group: AssetGroup;
+  /** Show the group's gating badge (employees/admins; read-only here). */
   showVisibility?: boolean;
   /** Opens a larger preview when the thumbnail is clicked. */
   onPreview?: () => void;
   className?: string;
 }
 
-/** Catalog card: preview, metadata badges, and a direct download action. */
+/**
+ * Catalog card for one artwork. When the group holds several formats, each one
+ * gets a chip carrying its own size and its own download link, and the footer
+ * action bundles the lot — so a card answers "how big is the PNG?" without a
+ * click and still lets you take one file or all of them.
+ */
 export function AssetCard({
-  asset,
+  group,
   showVisibility = false,
   onPreview,
   className,
 }: AssetCardProps) {
   const t = useTranslations("assets");
-  const previewImage = asset.previewUrl ? (
+  const { preview, assets } = group;
+  const multiFormat = assets.length > 1;
+
+  const previewImage = preview.previewUrl ? (
     <Image
-      src={asset.previewUrl}
-      alt={asset.title}
+      src={preview.previewUrl}
+      alt={group.title}
       fill
       unoptimized
       className={cn(
@@ -84,7 +91,7 @@ export function AssetCard({
             type="button"
             onClick={onPreview}
             className="group absolute inset-0 cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
-            aria-label={asset.title}
+            aria-label={group.title}
           >
             {previewImage}
             <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30 group-focus-visible:bg-black/30">
@@ -97,44 +104,75 @@ export function AssetCard({
         ) : previewImage ? (
           previewImage
         ) : (
-          <PreviewFallbackIcon contentType={asset.file.contentType} />
+          <PreviewFallbackIcon contentType={preview.file.contentType} />
         )}
         {showVisibility ? (
           <Badge
-            variant={asset.visibility === "public" ? "success-soft" : "warning-soft"}
+            variant={group.visibility === "public" ? "success-soft" : "warning-soft"}
             className="pointer-events-none absolute start-2 top-2 z-10 gap-1"
           >
-            {asset.visibility === "public" ? (
+            {group.visibility === "public" ? (
               <Globe className="h-3 w-3" aria-hidden />
             ) : (
               <Lock className="h-3 w-3" aria-hidden />
             )}
-            {t(`visibility.${asset.visibility}`)}
+            {t(`visibility.${group.visibility}`)}
           </Badge>
         ) : null}
       </div>
+
       <CardContent className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-base leading-snug">{asset.title}</CardTitle>
-          <Badge variant="secondary" className="shrink-0">
-            {fileExtension(asset.file.fileName)}
+          <CardTitle className="text-base leading-snug">{group.title}</CardTitle>
+          <Badge
+            variant={multiFormat ? "accent-brand-soft" : "secondary"}
+            className="shrink-0"
+          >
+            {multiFormat
+              ? t("fileCount", { count: assets.length })
+              : formatLabel(preview)}
           </Badge>
         </div>
         <CardDescription className="line-clamp-2 text-sm">
-          {asset.description}
+          {group.description}
         </CardDescription>
       </CardContent>
+
+      {multiFormat ? (
+        // Every format, its own size, its own download — the answer to "which
+        // one do I need?" without opening anything.
+        <div className="flex flex-wrap gap-1.5 px-4 pb-3">
+          {assets.map((asset) => (
+            <Button
+              key={asset.id}
+              variant="outline"
+              size="sm"
+              href={assetDownloadHref(asset)}
+              aria-label={t("downloadFormat", { format: formatLabel(asset) })}
+              className="h-auto gap-1.5 px-2 py-1 text-xs font-semibold"
+            >
+              {formatLabel(asset)}
+              <span className="font-normal text-muted-foreground">
+                {formatFileSize(asset.file.sizeBytes)}
+              </span>
+            </Button>
+          ))}
+        </div>
+      ) : null}
+
       <CardFooter className="flex items-center justify-between gap-2 p-4 pt-0">
         <span className="text-xs text-muted-foreground">
-          {formatFileSize(asset.file.sizeBytes)}
+          {multiFormat
+            ? t("totalSize", { size: formatFileSize(group.totalBytes) })
+            : formatFileSize(preview.file.sizeBytes)}
         </span>
         <Button
           variant="accent-brand"
           size="sm"
-          icon={<Download aria-hidden />}
-          href={downloadHrefForAsset(asset)}
+          icon={multiFormat ? <FileArchive aria-hidden /> : <Download aria-hidden />}
+          href={multiFormat ? brandBundleUrl(group.id) : assetDownloadHref(preview)}
         >
-          {t("download")}
+          {multiFormat ? t("downloadAll") : t("download")}
         </Button>
       </CardFooter>
     </Card>

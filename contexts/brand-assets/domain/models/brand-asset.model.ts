@@ -47,6 +47,18 @@ export interface BrandAsset {
   file: AssetFile;
   /** Optional inline preview (image assets render it in cards). */
   previewUrl?: string;
+  /**
+   * Same artwork, different encoding: every PNG/SVG/PDF/AI export of one logo
+   * shares a `groupId`, and listings collapse the group into a single card.
+   * Absent means the asset stands alone — the pre-grouping behaviour.
+   *
+   * The group's display copy is denormalized onto every member (identical on
+   * each) so a listing never has to fetch a sibling to render a card, and so
+   * per-file `title`s can stay format-specific for the admin table.
+   */
+  groupId?: string;
+  groupTitle?: string;
+  groupDescription?: string;
   tags: string[];
   createdAt: string;
   updatedAt: string;
@@ -75,6 +87,10 @@ export interface CreateBrandAssetInput {
   previewUrl?: string;
   tags?: string[];
   createdBy: string;
+  /** Joins an existing group; absent means the asset stands alone. */
+  groupId?: string;
+  groupTitle?: string;
+  groupDescription?: string;
 }
 
 export interface UpdateBrandAssetInput {
@@ -86,4 +102,48 @@ export interface UpdateBrandAssetInput {
   file?: AssetFile;
   previewUrl?: string;
   tags?: string[];
+  groupId?: string;
+  groupTitle?: string;
+  groupDescription?: string;
+}
+
+/** One file of an artwork, on its way in — the bytes are already uploaded. */
+export interface AssetGroupFileInput {
+  file: AssetFile;
+  /** Image files preview from their own bytes; "" or absent means no preview. */
+  previewUrl?: string;
+}
+
+/**
+ * Publishes one artwork in every format it ships in: one asset record per file,
+ * all sharing a freshly minted `groupId` so listings collapse them into a
+ * single card. A one-file group is the ordinary "upload an asset" case.
+ */
+export interface CreateBrandAssetGroupInput {
+  title: string;
+  description: string;
+  category: AssetCategory;
+  visibility: AssetVisibility;
+  files: AssetGroupFileInput[];
+  tags?: string[];
+  createdBy: string;
+}
+
+/**
+ * One admin edit of a whole group: shared metadata, formats added, formats
+ * dropped. Bundling them keeps a group from being half-saved — the members
+ * never disagree about title, category or gating.
+ */
+export interface SaveBrandAssetGroupInput {
+  title?: string;
+  description?: string;
+  category?: AssetCategory;
+  visibility?: AssetVisibility;
+  tags?: string[];
+  /** Formats to add — the "this artwork was missing its SVG" case. */
+  addFiles?: AssetGroupFileInput[];
+  /** Member asset ids to delete. Never allowed to empty the group. */
+  removeAssetIds?: string[];
+  /** Uploader for added members; defaults to the group's existing owner. */
+  createdBy?: string;
 }

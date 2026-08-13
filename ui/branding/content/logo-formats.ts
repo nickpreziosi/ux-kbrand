@@ -1,4 +1,5 @@
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import { assetFormat } from "@/contexts/brand-assets/domain/services/asset-grouping";
 import type { LogoVariant } from "@/ui/branding/content/logo-variants";
 
 /** Downloadable logo file formats, in display order. */
@@ -21,16 +22,15 @@ export function brandDownloadUrl(assetId: string): string {
   return `/api/brand-download/${assetId}`;
 }
 
-/** Infer format from filename extension or an explicit format tag. */
+/** Zip of every format in an asset group (the card's "Download all"). */
+export function brandBundleUrl(groupId: string): string {
+  return `/api/brand-bundle/${groupId}`;
+}
+
+/** Narrow an asset's format to the four the logo pages offer. */
 export function formatFromAsset(asset: BrandAsset): LogoFormat | null {
-  const ext = asset.file.fileName.split(".").pop()?.toLowerCase();
-  if (ext === "png" || ext === "svg" || ext === "pdf" || ext === "ai") {
-    return ext;
-  }
-  for (const format of LOGO_FORMAT_ORDER) {
-    if (asset.tags.includes(format)) return format;
-  }
-  return null;
+  const format = assetFormat(asset);
+  return LOGO_FORMAT_ORDER.find((candidate) => candidate === format) ?? null;
 }
 
 /**

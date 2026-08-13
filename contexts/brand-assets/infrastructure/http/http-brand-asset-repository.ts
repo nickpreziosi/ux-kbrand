@@ -1,6 +1,8 @@
 import type {
   BrandAsset,
+  CreateBrandAssetGroupInput,
   CreateBrandAssetInput,
+  SaveBrandAssetGroupInput,
   UpdateBrandAssetInput,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type {
@@ -67,5 +69,43 @@ export class HttpBrandAssetRepository implements BrandAssetRepository {
     await fetchJson<{ ok: boolean }>(`/api/assets/${encodeURIComponent(id)}`, {
       method: "DELETE",
     });
+  }
+
+  async createGroup(input: CreateBrandAssetGroupInput): Promise<BrandAsset[]> {
+    const { assets } = await fetchJson<{ assets: BrandAsset[] }>(
+      "/api/asset-groups",
+      { method: "POST", json: input },
+    );
+    return assets;
+  }
+
+  /** One request for the whole edit — metadata, added formats, removals. */
+  async saveGroup(
+    groupId: string,
+    input: SaveBrandAssetGroupInput,
+  ): Promise<BrandAsset[]> {
+    const { assets } = await fetchJson<{ assets: BrandAsset[] }>(
+      `/api/asset-groups/${encodeURIComponent(groupId)}`,
+      { method: "PATCH", json: input },
+    );
+    return assets;
+  }
+
+  async setGroupArchived(
+    groupId: string,
+    archived: boolean,
+  ): Promise<BrandAsset[]> {
+    const { assets } = await fetchJson<{ assets: BrandAsset[] }>(
+      `/api/asset-groups/${encodeURIComponent(groupId)}`,
+      { method: "PATCH", json: { archived } },
+    );
+    return assets;
+  }
+
+  async removeGroup(groupId: string): Promise<void> {
+    await fetchJson<{ ok: boolean }>(
+      `/api/asset-groups/${encodeURIComponent(groupId)}`,
+      { method: "DELETE" },
+    );
   }
 }

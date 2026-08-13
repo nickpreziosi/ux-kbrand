@@ -7,6 +7,7 @@ import {
   canViewAsset,
   visibilitiesForViewer,
 } from "@/contexts/brand-assets/domain/services/asset-access";
+import { isSalesCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { SEED_BRAND_ASSETS } from "@/contexts/brand-assets/infrastructure/mock/seed-assets";
 
 function assetWithVisibility(visibility: BrandAsset["visibility"]): BrandAsset {
@@ -47,10 +48,14 @@ describe("asset-access", () => {
     }
   });
 
-  it("seeds every asset as public by default", () => {
+  // Sales categories are employee-only by domain rule; the rest of the seed
+  // catalog is public-first. See sales-privacy.test.ts for the invariant.
+  it("seeds every brand asset as public and every sales asset as employee", () => {
     expect(SEED_BRAND_ASSETS.length).toBeGreaterThan(0);
     for (const asset of SEED_BRAND_ASSETS) {
-      expect(asset.visibility).toBe("public");
+      expect(asset.visibility).toBe(
+        isSalesCategory(asset.category) ? "employee" : "public",
+      );
     }
   });
 });

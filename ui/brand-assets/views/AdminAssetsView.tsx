@@ -26,6 +26,7 @@ import {
   Archive,
   ArchiveRestore,
   Download,
+  FileArchive,
   FolderCog,
   Globe,
   Lock,
@@ -36,9 +37,14 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import {
+  assetFormat,
+  groupBrandAssets,
+  type AssetGroup,
+} from "@/contexts/brand-assets/domain/services/asset-grouping";
 import { useAssetAdmin } from "@/ui/brand-assets/hooks/use-asset-admin";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
+import { groupDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
 import {
   AssetFormDialog,
   type AssetFormValues,
@@ -52,41 +58,57 @@ export function AdminAssetsView() {
     loading,
     loadError,
     mutating,
-    createAsset,
-    updateAsset,
-    setVisibility,
-    setArchived,
-    removeAsset,
+    createAssetGroup,
+    saveAssetGroup,
+    setGroupVisibility,
+    setGroupArchived,
+    removeAssetGroup,
   } = useAssetAdmin();
   const { portalUser } = usePortalRole();
 
   const [formOpen, setFormOpen] = React.useState(false);
-  const [editing, setEditing] = React.useState<BrandAsset | undefined>(
+  const [editing, setEditing] = React.useState<AssetGroup | undefined>(
     undefined,
   );
-  const [deleting, setDeleting] = React.useState<BrandAsset | undefined>(
+  const [deleting, setDeleting] = React.useState<AssetGroup | undefined>(
     undefined,
   );
+
+  // One row per artwork, not per file — the admin edits the same unit a
+  // visitor downloads, so adding a format never means hunting for siblings.
+  const groups = React.useMemo(() => groupBrandAssets(assets), [assets]);
 
   const openCreate = () => {
     setEditing(undefined);
     setFormOpen(true);
   };
 
-  const openEdit = (asset: BrandAsset) => {
-    setEditing(asset);
+  const openEdit = (group: AssetGroup) => {
+    setEditing(group);
     setFormOpen(true);
   };
 
   const handleSubmit = async (values: AssetFormValues) => {
     try {
       if (editing) {
-        await updateAsset(editing.id, values);
+        await saveAssetGroup(editing.id, {
+          title: values.title,
+          description: values.description,
+          category: values.category,
+          visibility: values.visibility,
+          tags: values.tags,
+          addFiles: values.addFiles,
+          removeAssetIds: values.removeAssetIds,
+        });
         toast.success(t("toasts.updated"));
       } else {
-        await createAsset({
-          ...values,
-          file: values.file!,
+        await createAssetGroup({
+          title: values.title,
+          description: values.description,
+          category: values.category,
+          visibility: values.visibility,
+          tags: values.tags,
+          files: values.addFiles,
           createdBy: portalUser?.id ?? "usr-unknown",
         });
         toast.success(t("toasts.created"));
@@ -97,11 +119,11 @@ export function AdminAssetsView() {
     }
   };
 
-  const handleVisibilityToggle = async (asset: BrandAsset) => {
+  const handleVisibilityToggle = async (group: AssetGroup) => {
     try {
-      await setVisibility(
-        asset.id,
-        asset.visibility === "public" ? "employee" : "public",
+      await setGroupVisibility(
+        group.id,
+        group.visibility === "public" ? "employee" : "public",
       );
       toast.success(t("toasts.visibilityUpdated"));
     } catch {
@@ -109,10 +131,10 @@ export function AdminAssetsView() {
     }
   };
 
-  const handleArchiveToggle = async (asset: BrandAsset) => {
+  const handleArchiveToggle = async (group: AssetGroup) => {
     try {
-      const archived = asset.status !== "archived";
-      await setArchived(asset.id, archived);
+      const archived = group.status !== "archived";
+      await setGroupArchived(group.id, archived);
       toast.success(archived ? t("toasts.archived") : t("toasts.restored"));
     } catch {
       toast.error(t("toasts.saveFailed"));
@@ -122,7 +144,7 @@ export function AdminAssetsView() {
   const handleDelete = async () => {
     if (!deleting) return;
     try {
-      await removeAsset(deleting.id);
+      await removeAssetGroup(deleting.id);
       toast.success(t("toasts.deleted"));
     } catch {
       toast.error(t("toasts.saveFailed"));
@@ -131,7 +153,7 @@ export function AdminAssetsView() {
     }
   };
 
-  const columns = React.useMemo<ColumnDef<BrandAsset, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<AssetGroup, unknown>[]>(
     () => [
       {
         accessorKey: "title",
@@ -140,8 +162,27 @@ export function AdminAssetsView() {
           <div className="min-w-0">
             <p className="truncate font-medium">{row.original.title}</p>
             <p className="truncate text-xs text-muted-foreground">
-              {row.original.file.fileName}
+              {row.original.assets.length > 1
+                ? t("fileCount", { count: row.original.assets.length })
+                : row.original.preview.file.fileName}
             </p>
+          </div>
+        ),
+      },
+      {
+        id: "formats",
+        header: t("columns.formats"),
+        cell: ({ row }) => (
+          <div className="flex flex-wrap gap-1">
+            {row.original.assets.map((asset) => (
+              <Badge
+                key={asset.id}
+                variant="outline"
+                className="font-semibold uppercase"
+              >
+                {assetFormat(asset) ?? "file"}
+              </Badge>
+            ))}
           </div>
         ),
       },
@@ -179,7 +220,7 @@ export function AdminAssetsView() {
         header: t("columns.size"),
         cell: ({ row }) => (
           <span className="text-sm text-muted-foreground">
-            {formatFileSize(row.original.file.sizeBytes)}
+            {formatFileSize(row.original.totalBytes)}
           </span>
         ),
       },
@@ -196,7 +237,8 @@ export function AdminAssetsView() {
         id: "actions",
         header: "",
         cell: ({ row }) => {
-          const asset = row.original;
+          const group = row.original;
+          const multiFormat = group.assets.length > 1;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -210,24 +252,30 @@ export function AdminAssetsView() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => openEdit(asset)}>
+                <DropdownMenuItem onSelect={() => openEdit(group)}>
                   <Pencil className="me-2 h-4 w-4" aria-hidden />
-                  {t("actions.edit")}
+                  {multiFormat ? t("actions.editFormats") : t("actions.edit")}
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <a
-                    href={asset.file.downloadUrl}
+                    href={groupDownloadHref(group)}
                     target="_blank"
                     rel="noopener"
                   >
-                    <Download className="me-2 h-4 w-4" aria-hidden />
-                    {t("actions.download")}
+                    {multiFormat ? (
+                      <FileArchive className="me-2 h-4 w-4" aria-hidden />
+                    ) : (
+                      <Download className="me-2 h-4 w-4" aria-hidden />
+                    )}
+                    {multiFormat
+                      ? t("actions.downloadAll")
+                      : t("actions.download")}
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onSelect={() => void handleVisibilityToggle(asset)}
+                  onSelect={() => void handleVisibilityToggle(group)}
                 >
-                  {asset.visibility === "public" ? (
+                  {group.visibility === "public" ? (
                     <>
                       <Lock className="me-2 h-4 w-4" aria-hidden />
                       {t("actions.makeEmployee")}
@@ -240,9 +288,9 @@ export function AdminAssetsView() {
                   )}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onSelect={() => void handleArchiveToggle(asset)}
+                  onSelect={() => void handleArchiveToggle(group)}
                 >
-                  {asset.status === "archived" ? (
+                  {group.status === "archived" ? (
                     <>
                       <ArchiveRestore className="me-2 h-4 w-4" aria-hidden />
                       {t("actions.restore")}
@@ -257,7 +305,7 @@ export function AdminAssetsView() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="text-destructive focus:text-destructive"
-                  onSelect={() => setDeleting(asset)}
+                  onSelect={() => setDeleting(group)}
                 >
                   <Trash2 className="me-2 h-4 w-4" aria-hidden />
                   {t("actions.delete")}
@@ -294,17 +342,17 @@ export function AdminAssetsView() {
       ) : (
         <DataTableShell
           columns={columns}
-          data={assets}
+          data={groups}
           loading={loading}
           emptyMessage={t("emptyMessage")}
-          getRowId={(asset) => asset.id}
+          getRowId={(group) => group.id}
         />
       )}
 
       <AssetFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        asset={editing}
+        group={editing}
         submitting={mutating}
         onSubmit={handleSubmit}
       />
@@ -319,7 +367,10 @@ export function AdminAssetsView() {
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("deleteDialog.description", { title: deleting?.title ?? "" })}
+              {t("deleteDialog.description", {
+                title: deleting?.title ?? "",
+                count: deleting?.assets.length ?? 0,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

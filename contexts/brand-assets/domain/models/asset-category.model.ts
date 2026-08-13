@@ -37,12 +37,25 @@ export function isSalesCategory(category: AssetCategory): boolean {
 }
 
 /**
- * Default visibility for a new asset. Every asset starts "public" for now
- * (regardless of category) — admins re-gate per asset from Manage assets.
- * The category parameter stays as the seam for category-driven defaults later.
+ * Sales material is employee-only by definition: pitch decks, one-pagers, and
+ * case studies are never served to anonymous visitors, whatever visibility the
+ * caller asks for. Every other category takes the requested value, so brand
+ * assets stay public-first.
+ *
+ * This is an invariant, not a default — the write paths run every create and
+ * edit through it, so an asset cannot be published by moving it into a sales
+ * category, or by editing a sales asset's gating afterwards.
  */
-export function defaultVisibilityForCategory(
-  _category: AssetCategory,
+export function resolveVisibilityForCategory(
+  category: AssetCategory,
+  requested: "public" | "employee",
 ): "public" | "employee" {
-  return "public";
+  return isSalesCategory(category) ? "employee" : requested;
+}
+
+/** Visibility a new asset starts with, before the admin changes anything. */
+export function defaultVisibilityForCategory(
+  category: AssetCategory,
+): "public" | "employee" {
+  return resolveVisibilityForCategory(category, "public");
 }

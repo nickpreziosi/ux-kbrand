@@ -16,12 +16,27 @@ const globalStore = globalThis as unknown as {
   __kbrandSeedFingerprint?: string;
 };
 
-function seedFingerprint(): string {
-  return SEED_BRAND_ASSETS.map((asset) => asset.id).join(",");
-}
+/**
+ * Fingerprints the whole catalog, not just its ids: regenerating the seed to
+ * re-gate an asset changes no id, and a store rebuilt only on id changes would
+ * keep serving the old visibility until the process restarted. Computed once
+ * per module evaluation — the seed is a module constant.
+ */
+const SEED_FINGERPRINT = JSON.stringify(SEED_BRAND_ASSETS);
+
+/**
+ * The repository's own method set joins the fingerprint: HMR keeps the cached
+ * instance across a recompile, so adding a method to the class would otherwise
+ * 500 every call to it ("not a function") until the dev server restarted.
+ */
+const STORE_FINGERPRINT = `${Object.getOwnPropertyNames(
+  MockBrandAssetRepository.prototype,
+)
+  .sort()
+  .join(",")}|${SEED_FINGERPRINT}`;
 
 export function getServerBrandAssetRepository(): MockBrandAssetRepository {
-  const fingerprint = seedFingerprint();
+  const fingerprint = STORE_FINGERPRINT;
   if (
     !globalStore.__kbrandServerAssetRepository ||
     globalStore.__kbrandSeedFingerprint !== fingerprint

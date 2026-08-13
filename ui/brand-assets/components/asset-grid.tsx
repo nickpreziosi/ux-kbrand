@@ -12,6 +12,10 @@ import { FolderOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { canSeeAssetGating } from "@/contexts/brand-assets/domain/services/asset-access";
+import {
+  groupBrandAssets,
+  type AssetGroup,
+} from "@/contexts/brand-assets/domain/services/asset-grouping";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { AssetCard } from "./asset-card";
 import { AssetPreviewDialog } from "./asset-preview-dialog";
@@ -34,9 +38,12 @@ export function AssetGrid({
   // Employees/admins see each asset's gating on the card; public visitors never do.
   const { viewerRole } = usePortalRole();
   const showVisibility = canSeeAssetGating(viewerRole);
-  const [previewAsset, setPreviewAsset] = React.useState<BrandAsset | null>(
+  const [previewGroup, setPreviewGroup] = React.useState<AssetGroup | null>(
     null,
   );
+  // Format duplicates (the same logo as PNG, SVG, PDF, AI) collapse into one
+  // card; assets without a group stay one card each, exactly as before.
+  const groups = React.useMemo(() => groupBrandAssets(assets), [assets]);
 
   // Column count tracks the grid's own width, not the viewport: the content
   // area shrinks when the sidebar expands, so viewport breakpoints would leave
@@ -72,14 +79,14 @@ export function AssetGrid({
   return (
     <div className="@container">
       <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4">
-        {assets.map((asset) => (
+        {groups.map((group) => (
           <AssetCard
-            key={asset.id}
-            asset={asset}
+            key={group.id}
+            group={group}
             showVisibility={showVisibility}
             onPreview={
-              expandPreview && asset.previewUrl
-                ? () => setPreviewAsset(asset)
+              expandPreview && group.preview.previewUrl
+                ? () => setPreviewGroup(group)
                 : undefined
             }
           />
@@ -87,10 +94,11 @@ export function AssetGrid({
       </div>
       {expandPreview ? (
         <AssetPreviewDialog
-          asset={previewAsset}
-          open={Boolean(previewAsset)}
+          asset={previewGroup?.preview ?? null}
+          title={previewGroup?.title}
+          open={Boolean(previewGroup)}
           onOpenChange={(open) => {
-            if (!open) setPreviewAsset(null);
+            if (!open) setPreviewGroup(null);
           }}
         />
       ) : null}
