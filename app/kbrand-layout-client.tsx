@@ -286,7 +286,7 @@ export function KBrandLayoutClient({
         }
         contentClassName="bg-background"
       >
-        <div className="mx-auto w-full max-w-7xl 2xl:max-w-[1800px]">{children}</div>
+        <div className="mx-auto w-full max-w-[1800px]">{children}</div>
       </AppLayoutClient>
     </SupportDialogProvider>
   );
