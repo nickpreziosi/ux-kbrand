@@ -1,107 +1,158 @@
 /**
- * Colour reference for the branding section, in two layers:
+ * Official K Lab colour and gradient reference from the brand guidelines.
+ * Values follow the HEX (and matching RGB / CMYK) on those pages; HSL is
+ * derived so every swatch can copy all four encodings.
  *
- *  - `identity` — official K Lab palette from the brand guidelines (primary,
- *    secondary, tertiary, and additional). These are literal values; they are
- *    not design tokens.
- *  - `product` / `status` — the design tokens K Lab apps render with, defined
- *    in app/globals.css (aligned with @k-lab/components). Swatches render the
- *    live CSS variable so they stay true when a token is retuned.
- *
- * Copy for each entry lives in `branding.colors.tokens` per locale.
+ * Copy for names and group titles lives in `branding.colors` per locale.
  */
-export interface BrandColorToken {
-  /** Translation key under `branding.colors.tokens`. */
+
+export type BrandColorFormat = "hex" | "rgb" | "cmyk" | "hsl";
+
+export interface BrandColor {
   id: string;
-  /** CSS custom property (without `--`) when the colour is a design token.
-   *  Absent for identity colours, which render their literal value. */
-  token?: string;
-  /** Light-theme HSL triplet. */
-  light: string;
-  /** Dark-theme triplet; omitted when the token resolves to the same colour. */
-  dark?: string;
+  hex: string;
+  rgb: string;
+  cmyk: string;
+  hsl: string;
 }
 
 export interface BrandColorGroup {
-  id: "identity" | "product" | "status";
-  tokens: BrandColorToken[];
+  id: "primaryPalette" | "secondaryColors" | "neutrals";
+  colors: BrandColor[];
 }
+
+export interface BrandGradient {
+  id: "primaryGradient" | "secondaryGradient" | "tertiaryGradient";
+  /** CSS linear-gradient using the palette stops. */
+  css: string;
+  usage: "darkMode" | "lightMode" | "lightOnly";
+}
+
+export const BRAND_COLOR_FORMATS: readonly BrandColorFormat[] = [
+  "hex",
+  "rgb",
+  "cmyk",
+  "hsl",
+];
 
 export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
   {
-    id: "identity",
-    tokens: [
-      { id: "primaryColor", light: "0 0% 19%" },
-      { id: "secondaryColor", light: "218 58% 28.2%" },
-      { id: "tertiaryColor", light: "199.2 100% 49.6%" },
-      { id: "additionalColor1", light: "0 0% 64.7%" },
-      { id: "additionalColor2", light: "196 82% 71.6%" },
-      { id: "additionalColor3", light: "0 0% 0%" },
-    ],
-  },
-  {
-    id: "product",
-    tokens: [
+    id: "primaryPalette",
+    colors: [
       {
-        id: "accentBrand",
-        token: "accent-brand",
-        light: "218 58% 28%",
-        dark: "199 100% 50%",
-      },
-      {
-        id: "foreground",
-        token: "foreground",
-        light: "0 0% 0%",
-        dark: "0 0% 100%",
-      },
-      {
-        id: "background",
-        token: "background",
-        light: "0 0% 100%",
-        dark: "0 0% 0%",
+        id: "primary",
+        hex: "#303030",
+        rgb: "48, 48, 48",
+        cmyk: "0, 0, 0, 81",
+        hsl: "0, 0%, 19%",
       },
       {
         id: "secondary",
-        token: "secondary",
-        light: "0 0% 94%",
-        dark: "0 0% 12%",
+        hex: "#1E3D72",
+        rgb: "30, 61, 114",
+        cmyk: "100, 85, 28, 14",
+        hsl: "218, 58%, 28%",
       },
       {
-        id: "accent",
-        token: "accent",
-        light: "0 0% 94%",
-        dark: "0 0% 19%",
-      },
-      {
-        id: "muted",
-        token: "muted",
-        light: "0 0% 19%",
-        dark: "0 0% 65%",
-      },
-      {
-        id: "border",
-        token: "border",
-        light: "0 0% 87%",
-        dark: "0 0% 19%",
+        id: "tertiary",
+        hex: "#00ACFD",
+        rgb: "0, 172, 253",
+        cmyk: "67, 20, 0, 0",
+        hsl: "199, 100%, 50%",
       },
     ],
   },
   {
-    id: "status",
-    tokens: [
+    id: "secondaryColors",
+    colors: [
       {
-        id: "success",
-        token: "success",
-        light: "141.1 71.4% 45%",
-        dark: "141.1 71.4% 42%",
+        id: "additional1",
+        hex: "#A5A5A5",
+        rgb: "165, 165, 165",
+        cmyk: "0, 0, 0, 35",
+        hsl: "0, 0%, 65%",
       },
-      { id: "warning", token: "warning", light: "51.08 100% 56.47%" },
       {
-        id: "destructive",
-        token: "destructive",
-        light: "0 84.2% 56%",
-        dark: "0 62.8% 50%",
+        id: "additional2",
+        hex: "#7BD2F2",
+        rgb: "123, 210, 242",
+        cmyk: "46, 0, 2, 0",
+        hsl: "196, 82%, 72%",
+      },
+      {
+        id: "additional3",
+        hex: "#000000",
+        rgb: "0, 0, 0",
+        cmyk: "0, 0, 0, 100",
+        hsl: "0, 0%, 0%",
+      },
+    ],
+  },
+  {
+    id: "neutrals",
+    colors: [
+      {
+        id: "white",
+        hex: "#FFFFFF",
+        rgb: "255, 255, 255",
+        cmyk: "1, 2, 2, 0",
+        hsl: "0, 0%, 100%",
+      },
+      {
+        id: "grey1",
+        hex: "#EFEFEF",
+        rgb: "239, 239, 239",
+        cmyk: "0, 0, 0, 6",
+        hsl: "0, 0%, 94%",
+      },
+      {
+        id: "grey2",
+        hex: "#DDDDDD",
+        rgb: "221, 221, 221",
+        cmyk: "0, 0, 0, 13",
+        hsl: "0, 0%, 87%",
+      },
+      {
+        id: "black",
+        hex: "#000000",
+        rgb: "0, 0, 0",
+        cmyk: "75, 68, 67, 90",
+        hsl: "0, 0%, 0%",
       },
     ],
   },
 ];
+
+export const BRAND_GRADIENTS: BrandGradient[] = [
+  {
+    id: "primaryGradient",
+    css: "linear-gradient(180deg, #000000 0%, #1E3D72 100%)",
+    usage: "darkMode",
+  },
+  {
+    id: "secondaryGradient",
+    css: "linear-gradient(180deg, #FFFFFF 0%, #1E3D72 100%)",
+    usage: "lightMode",
+  },
+  {
+    id: "tertiaryGradient",
+    css: "linear-gradient(180deg, #FFFFFF 0%, #7BD2F2 100%)",
+    usage: "lightOnly",
+  },
+];
+
+/** Paste-ready encoding: HEX as `#…`, RGB/HSL as CSS functions, CMYK as print channels. */
+export function colorValue(color: BrandColor, format: BrandColorFormat): string {
+  switch (format) {
+    case "hex":
+      return color.hex;
+    case "rgb":
+      return `rgb(${color.rgb})`;
+    case "cmyk": {
+      const [cyan, magenta, yellow, black] = color.cmyk.split(",").map((part) => part.trim());
+      return `C: ${cyan}, M: ${magenta}, Y: ${yellow}, K: ${black}`;
+    }
+    case "hsl":
+      return `hsl(${color.hsl})`;
+  }
+}

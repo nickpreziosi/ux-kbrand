@@ -128,95 +128,54 @@
     },
     "colors": {
       "title": "Cores",
-      "subtitle": "A paleta como tokens de design — as amostras mostram o valor real do tema atual.",
-      "light": "Claro",
-      "dark": "Escuro",
-      "value": "Valor",
+      "subtitle": "A paleta oficial da K Lab nas diretrizes da marca.",
       "copied": "{value} copiado",
       "copyFailed": "Não foi possível copiar. Tente selecionar o valor manualmente.",
-      "copyHex": "Copiar {value}",
-      "tokenNote": "As cores de produto são propriedades personalizadas de CSS, então os componentes se adaptam automaticamente quando um token é ajustado — referencie o nome do token no código em vez de um hex fixo. O token accent-brand corresponde aos azuis de identidade da K Lab em @k-lab/components (azul-marinho no claro, azul elétrico no escuro).",
+      "copyValue": "Copiar {value}",
+      "formats": {
+        "hex": "HEX",
+        "rgb": "RGB",
+        "cmyk": "CMYK",
+        "hsl": "HSL"
+      },
       "groups": {
-        "identity": {
-          "title": "Identidade da marca",
-          "description": "A paleta oficial da K Lab nas diretrizes da marca."
+        "primaryPalette": {
+          "title": "Paleta primária",
+          "description": "Nossa paleta é a parte mais emotiva da identidade. O uso deve ser consistente para construir um reconhecimento de marca sólido."
         },
-        "product": {
-          "title": "Tokens de design do produto",
-          "description": "O que as aplicações da K Lab e este portal realmente renderizam — incluindo o token accent-brand azul."
+        "secondaryColors": {
+          "title": "Cores secundárias",
+          "description": "Nossa paleta é a parte mais emotiva da identidade. O uso deve ser consistente para construir um reconhecimento de marca sólido."
         },
-        "status": {
-          "title": "Status",
-          "description": "Reservadas para feedback — nunca decorativas. Sucesso e destrutivo mudam no modo escuro; atenção permanece igual."
+        "neutrals": {
+          "title": "Cores neutras",
+          "description": "Os neutros dão o espaço negativo que as cores primárias precisam. São a base da interface e do layout."
+        },
+        "gradients": {
+          "title": "Gradientes",
+          "description": "Os gradientes acrescentam profundidade à linguagem visual. Use-os para destacar interações ou como fundos imersivos, nunca no texto."
         }
       },
-      "tokens": {
-        "primaryColor": {
-          "name": "Primário",
-          "usage": "A cor principal da identidade — carvão para texto, interface e a versão escura do logotipo."
-        },
-        "secondaryColor": {
-          "name": "Secundário",
-          "usage": "O azul da K Lab. Logotipo e momentos de marca no tema claro."
-        },
-        "tertiaryColor": {
-          "name": "Terciário",
-          "usage": "Azul elétrico para destaques, gradientes e acentos no tema escuro."
-        },
-        "additionalColor1": {
-          "name": "Adicional 1",
-          "usage": "Cinza médio para texto e interface de apoio."
-        },
-        "additionalColor2": {
-          "name": "Adicional 2",
-          "usage": "Ciano claro para momentos de marca de apoio."
-        },
-        "additionalColor3": {
-          "name": "Adicional 3",
-          "usage": "Preto puro."
-        },
-        "accentBrand": {
-          "name": "Destaque da marca",
-          "usage": "O azul da K Lab. Ações principais, destaques e momentos de marca."
-        },
-        "foreground": {
-          "name": "Primeiro plano",
-          "usage": "Texto e ícones sobre o fundo padrão."
-        },
-        "background": {
-          "name": "Fundo",
-          "usage": "A superfície base da página nos dois temas."
-        },
-        "secondary": {
-          "name": "Secundário",
-          "usage": "Painéis atenuados, cabeçalhos de tabela e superfícies inativas."
-        },
-        "accent": {
-          "name": "Realce",
-          "usage": "Estados de hover e seleção em superfícies neutras."
-        },
-        "muted": {
-          "name": "Atenuado",
-          "usage": "Texto secundário, legendas e textos de apoio."
-        },
-        "border": {
-          "name": "Borda",
-          "usage": "Divisores, contornos de cartões e bordas de campos."
-        },
-        "success": {
-          "name": "Sucesso",
-          "usage": "Confirmações e estados saudáveis."
-        },
-        "warning": {
-          "name": "Atenção",
-          "usage": "Requer atenção, mas nada falhou ainda."
-        },
-        "destructive": {
-          "name": "Destrutivo",
-          "usage": "Erros e ações irreversíveis."
-        }
+      "swatches": {
+        "primary": "Cor primária",
+        "secondary": "Cor secundária",
+        "tertiary": "Cor terciária",
+        "additional1": "Cor adicional 1",
+        "additional2": "Cor adicional 2",
+        "additional3": "Cor adicional 3",
+        "white": "Branco",
+        "grey1": "Cinza 1",
+        "grey2": "Cinza 2",
+        "black": "Preto",
+        "primaryGradient": "Gradiente primário",
+        "secondaryGradient": "Gradiente secundário",
+        "tertiaryGradient": "Gradiente terciário"
       },
-      "identityColor": "Cor de identidade"
+      "gradientUsage": {
+        "darkMode": "Para o modo escuro",
+        "lightMode": "Para o modo claro",
+        "lightOnly": "Somente modo claro"
+      }
     },
     "typography": {
       "title": "Tipografia",

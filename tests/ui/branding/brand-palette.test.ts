@@ -1,46 +1,62 @@
-import { BRAND_COLOR_GROUPS } from "@/ui/branding/content/brand-palette";
+import {
+  BRAND_COLOR_GROUPS,
+  BRAND_GRADIENTS,
+  colorValue,
+} from "@/ui/branding/content/brand-palette";
 
-describe("brand-palette tokens", () => {
-  it("aligns product accent-brand with k-lab-components (blue light / cyan dark)", () => {
-    const product = BRAND_COLOR_GROUPS.find((group) => group.id === "product");
-    const accent = product?.tokens.find((token) => token.id === "accentBrand");
-    expect(accent?.token).toBe("accent-brand");
-    expect(accent?.light).toBe("218 58% 28%");
-    expect(accent?.dark).toBe("199 100% 50%");
-  });
-
-  it("records dark-mode shifts for success and destructive, not warning", () => {
-    const status = BRAND_COLOR_GROUPS.find((group) => group.id === "status");
-    const byId = Object.fromEntries(
-      (status?.tokens ?? []).map((token) => [token.id, token]),
-    );
-
-    expect(byId.success?.light).toBe("141.1 71.4% 45%");
-    expect(byId.success?.dark).toBe("141.1 71.4% 42%");
-    expect(byId.destructive?.light).toBe("0 84.2% 56%");
-    expect(byId.destructive?.dark).toBe("0 62.8% 50%");
-    expect(byId.warning?.light).toBe("51.08 100% 56.47%");
-    expect(byId.warning?.dark).toBeUndefined();
-  });
-
-  it("lists the official identity palette and omits deep navy", () => {
-    const identity = BRAND_COLOR_GROUPS.find((group) => group.id === "identity");
-    const ids = (identity?.tokens ?? []).map((token) => token.id);
-    const byId = Object.fromEntries(
-      (identity?.tokens ?? []).map((token) => [token.id, token]),
-    );
-
-    expect(ids).toEqual([
-      "primaryColor",
-      "secondaryColor",
-      "tertiaryColor",
-      "additionalColor1",
-      "additionalColor2",
-      "additionalColor3",
+describe("brand palette", () => {
+  it("lists only guideline groups: primary, secondary, and neutrals", () => {
+    expect(BRAND_COLOR_GROUPS.map((group) => group.id)).toEqual([
+      "primaryPalette",
+      "secondaryColors",
+      "neutrals",
     ]);
-    expect(ids).not.toContain("deepNavy");
-    expect(byId.primaryColor?.light).toBe("0 0% 19%");
-    expect(byId.secondaryColor?.light).toBe("218 58% 28.2%");
-    expect(byId.tertiaryColor?.light).toBe("199.2 100% 49.6%");
+  });
+
+  it("uses the official primary palette hex values", () => {
+    const primary = BRAND_COLOR_GROUPS[0].colors;
+    expect(primary.map((color) => color.id)).toEqual([
+      "primary",
+      "secondary",
+      "tertiary",
+    ]);
+    expect(primary[0].hex).toBe("#303030");
+    expect(primary[1].hex).toBe("#1E3D72");
+    expect(primary[2].hex).toBe("#00ACFD");
+  });
+
+  it("includes neutrals from the guidelines", () => {
+    const neutrals = BRAND_COLOR_GROUPS.find((group) => group.id === "neutrals");
+    expect(neutrals?.colors.map((color) => color.id)).toEqual([
+      "white",
+      "grey1",
+      "grey2",
+      "black",
+    ]);
+    expect(neutrals?.colors.map((color) => color.hex)).toEqual([
+      "#FFFFFF",
+      "#EFEFEF",
+      "#DDDDDD",
+      "#000000",
+    ]);
+  });
+
+  it("exposes primary, secondary, and tertiary gradients", () => {
+    expect(BRAND_GRADIENTS.map((gradient) => gradient.id)).toEqual([
+      "primaryGradient",
+      "secondaryGradient",
+      "tertiaryGradient",
+    ]);
+    expect(BRAND_GRADIENTS[0].usage).toBe("darkMode");
+    expect(BRAND_GRADIENTS[1].usage).toBe("lightMode");
+    expect(BRAND_GRADIENTS[2].usage).toBe("lightOnly");
+  });
+
+  it("copies color encodings in paste-ready function form", () => {
+    const primary = BRAND_COLOR_GROUPS[0].colors[0];
+    expect(colorValue(primary, "hex")).toBe("#303030");
+    expect(colorValue(primary, "rgb")).toBe("rgb(48, 48, 48)");
+    expect(colorValue(primary, "cmyk")).toBe("C: 0, M: 0, Y: 0, K: 81");
+    expect(colorValue(primary, "hsl")).toBe("hsl(0, 0%, 19%)");
   });
 });

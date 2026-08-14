@@ -128,95 +128,54 @@
     },
     "colors": {
       "title": "Colors",
-      "subtitle": "The palette as design tokens — swatches show the live value in your current theme.",
-      "light": "Light",
-      "dark": "Dark",
-      "value": "Value",
+      "subtitle": "The official K Lab palette from the brand guidelines.",
       "copied": "Copied {value}",
       "copyFailed": "We couldn't copy that. Try selecting the value instead.",
-      "copyHex": "Copy {value}",
-      "tokenNote": "Product colours are CSS custom properties, so components adapt automatically when a token is retuned — reference the token name in code rather than a hard-coded hex. The accent-brand token matches the K Lab identity blues from @k-lab/components (navy in light, electric blue in dark).",
+      "copyValue": "Copy {value}",
+      "formats": {
+        "hex": "HEX",
+        "rgb": "RGB",
+        "cmyk": "CMYK",
+        "hsl": "HSL"
+      },
       "groups": {
-        "identity": {
-          "title": "Brand identity",
-          "description": "The official K Lab palette from the brand guidelines."
+        "primaryPalette": {
+          "title": "Primary palette",
+          "description": "Our palette is the most emotive part of our identity. Usage must remain consistent to build strong brand recognition."
         },
-        "product": {
-          "title": "Product design tokens",
-          "description": "What the K Lab applications and this portal render with — including the blue accent-brand token."
+        "secondaryColors": {
+          "title": "Secondary colors",
+          "description": "Our palette is the most emotive part of our identity. Usage must remain consistent to build strong brand recognition."
         },
-        "status": {
-          "title": "Status",
-          "description": "Reserved for feedback — never decorative. Success and destructive shift in dark mode; warning stays the same."
+        "neutrals": {
+          "title": "Neutral colors",
+          "description": "Neutrals provide the necessary negative space for our primary colors to shine. They are the backbone of our UI and layout."
+        },
+        "gradients": {
+          "title": "Gradients",
+          "description": "Gradients add depth and dimension to our visual language. They should be used to highlight key interactions or as immersive backgrounds, never for body text."
         }
       },
-      "tokens": {
-        "primaryColor": {
-          "name": "Primary",
-          "usage": "The core identity colour — charcoal for type, UI chrome, and the dark lockup."
-        },
-        "secondaryColor": {
-          "name": "Secondary",
-          "usage": "The K Lab blue. Logo lockup and light-theme brand moments."
-        },
-        "tertiaryColor": {
-          "name": "Tertiary",
-          "usage": "Electric blue for highlights, gradients, and dark-theme accents."
-        },
-        "additionalColor1": {
-          "name": "Additional 1",
-          "usage": "Mid grey for supporting text and UI."
-        },
-        "additionalColor2": {
-          "name": "Additional 2",
-          "usage": "Light cyan for supporting brand moments."
-        },
-        "additionalColor3": {
-          "name": "Additional 3",
-          "usage": "Pure black."
-        },
-        "accentBrand": {
-          "name": "Accent brand",
-          "usage": "The K Lab blue. Primary actions, highlights, and brand moments."
-        },
-        "foreground": {
-          "name": "Foreground",
-          "usage": "Body text and icons on the default background."
-        },
-        "background": {
-          "name": "Background",
-          "usage": "The base page surface in both themes."
-        },
-        "secondary": {
-          "name": "Secondary",
-          "usage": "Muted panels, table headers, and inactive surfaces."
-        },
-        "accent": {
-          "name": "Accent",
-          "usage": "Hover and selected states on neutral surfaces."
-        },
-        "muted": {
-          "name": "Muted",
-          "usage": "Secondary text, captions, and helper copy."
-        },
-        "border": {
-          "name": "Border",
-          "usage": "Dividers, card outlines, and input borders."
-        },
-        "success": {
-          "name": "Success",
-          "usage": "Confirmations and healthy states."
-        },
-        "warning": {
-          "name": "Warning",
-          "usage": "Attention needed, but nothing has failed yet."
-        },
-        "destructive": {
-          "name": "Destructive",
-          "usage": "Errors and irreversible actions."
-        }
+      "swatches": {
+        "primary": "Primary color",
+        "secondary": "Secondary color",
+        "tertiary": "Tertiary color",
+        "additional1": "Additional color 1",
+        "additional2": "Additional color 2",
+        "additional3": "Additional color 3",
+        "white": "White",
+        "grey1": "Grey 1",
+        "grey2": "Grey 2",
+        "black": "Black",
+        "primaryGradient": "Primary gradient",
+        "secondaryGradient": "Secondary gradient",
+        "tertiaryGradient": "Tertiary gradient"
       },
-      "identityColor": "Identity colour"
+      "gradientUsage": {
+        "darkMode": "For dark mode",
+        "lightMode": "For light mode",
+        "lightOnly": "Only light mode"
+      }
     },
     "typography": {
       "title": "Typography",
