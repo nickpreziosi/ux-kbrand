@@ -31,9 +31,13 @@ mock repositories.
 
 The viewer's role is resolved server-side from the httpOnly presence cookie +
 `KBrandSessionEmail` cookie (set at login; in platform mode the email comes
-from the verified Firebase token) → directory lookup. Error payloads are
-`{ "error": "<i18n key>" }`, rethrown client-side as `Error(message)` so the
-hooks' existing key matching keeps working. Prototype trust model — in
+from the verified Firebase token) → directory lookup. JSON error payloads are
+`{ "error": "<i18n key>" }` (one `jsonError` helper in `lib/api/viewer.ts`),
+rethrown client-side as `Error(message)` so the hooks' existing key matching
+keeps working. The byte and session routes (`brand-download`, `brand-bundle`,
+`sales-files`, `auth/session`) bypass the helper and still answer in English
+prose — harmless while nothing renders those bodies, but they should move onto
+the helper before anything does. Prototype trust model — in
 isolated mode the login flow self-reports the email after a real Firebase
 sign-in; production replaces this with verified custom claims.
 
@@ -127,8 +131,10 @@ a shared `groupId`; the catalog collapses each group into one card with format
 chips.
 
 - **`groupId`** — stable readable slug minted from the artwork title
-  (`makeGroupId`: "K Lab logo — primary (blue)" → `k-lab-logo-blue`),
-  disambiguated against ids in use. Readable because it appears in bundle URLs
+  (`makeGroupId`: "K Lab logo — blue" → `k-lab-logo-blue`; diacritics folded,
+  everything else hyphenated), disambiguated against ids in use. Seeded groups
+  carry hand-written ids, so a seed id need not match what `makeGroupId` would
+  produce for the same title. Readable because it appears in bundle URLs
   (`/api/brand-bundle/k-lab-logo-blue`). **Absent means the asset stands
   alone** — pre-grouping records keep working, and `groupKey()` falls back to
   the asset's own id, which is also the id it keeps when a second format joins.
@@ -137,6 +143,11 @@ chips.
   card without fetching siblings, and each member's own `title` stays
   format-specific for the admin table (`memberTitle` derives
   "…, SVG" — never hand-edited, so a rename can't leave members disagreeing).
+  Only the write path keeps them identical: `PATCH /api/assets/[id]` declines to
+  read the three group fields, so the HTTP API can't split a group's copy — but
+  `UpdateBrandAssetInput` still declares them, so the in-browser mock and any
+  future adapter can. Dropping them from the patch type would make the type
+  agree with the route, and is the version Firestore rules can express.
 - **Grouping is on the format axis only.** Colour/orientation variants (blue vs
   white lockup) are separate artworks with separate group ids.
 - **`AssetGroup`** (derived, never persisted): `id`, `title`, `description`,
@@ -147,6 +158,16 @@ chips.
   restrictive** member — a group is only as open as its tightest file),
   `status` (`archived` only when every format is), `tags`, `updatedAt` (latest
   member edit), `totalBytes`.
+- **`AssetGroupFilter`** (`domain/services/asset-filtering.ts`, also derived and
+  never stored) — what the admin table narrows by: `search`, `category`,
+  `visibility`, `status`, each pinned to one value or open at the sentinel
+  `ANY = "all"`. It filters **groups**, not files, because a row is an artwork:
+  `visibility` and `status` therefore match the *derived* values, and `search`
+  ANDs its terms over the group's title, description, category and tags plus
+  every member's file name and format (an admin hunting "the SVG" is searching
+  the files, one level below the row). Client-side over the whole catalog, the
+  same bet as the grouping fold — and it expires with it, since neither derived
+  facet can become a Firestore `where` clause once listings paginate.
 - **Format tags**: each file stores its own extension as a tag (`"png"`); the
   derived group strips the tags that are just format markers for its members
   (`withoutFormatTags`), so `png` never leaks onto the SVG through the admin
@@ -176,9 +197,12 @@ chips.
 
 - `contexts/brand-assets/infrastructure/mock/seed-assets.ts` — **generated** by
   `scripts/generate-asset-catalog.mjs` from the files actually on disk, so
-  `sizeBytes` and `downloadUrl` can never drift. 46 asset records covering every
-  category, 19 of them belonging to 6 artwork groups (the logo and logomark
-  lockups) → 33 cards in the catalog. Per-file titles, descriptions, tags and a
+  `sizeBytes` and `downloadUrl` can never drift. 44 asset records covering every
+  category, 17 of them belonging to 5 multi-format artwork groups (the logo and
+  logomark lockups) → 32 cards in the catalog. Imagery and the product logos
+  carry a `groupId` too, as groups of one, so a second format can join without
+  an id changing hands; only the fonts, the guidelines document and the sales
+  files have none. Per-file titles, descriptions, tags and a
   `group` key live in that script's `CATALOG`; the group's shared copy lives
   once in its `GROUPS` map and is stamped onto each member as `groupTitle` /
   `groupDescription` (an unknown `group` key fails the build). The generator
