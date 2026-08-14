@@ -22,7 +22,8 @@ jest.mock("next-intl", () => ({
       downloadAll: "Download all",
       downloadAllOption: "All",
       downloadFormat: "Download {format}",
-      fileCount: "{count} files",
+      "fileCount.one": "{count} file",
+      "fileCount.other": "{count} files",
       totalSize: "{size} total",
       "empty.title": "Nothing here yet",
       "empty.description": "Empty",
@@ -257,12 +258,12 @@ describe("AssetGrid download menu", () => {
     ]);
   });
 
-  it("leaves a single-file asset as a direct download", () => {
+  it("puts a single-file asset in the same Download menu, without All", () => {
     render(<AssetGrid assets={[chevron]} />);
 
-    expect(screen.getByText("WEBP")).toBeInTheDocument();
-    expect(screen.getByText("1024 B")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Download" })).toHaveAttribute(
+    expect(screen.getByText("1 file")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Download" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download WEBP" })).toHaveAttribute(
       "href",
       "/api/brand-download/ast-040",
     );

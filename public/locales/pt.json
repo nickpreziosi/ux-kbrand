@@ -272,7 +272,10 @@
     "downloadAll": "Baixar tudo",
     "downloadAllOption": "Tudo",
     "downloadFormat": "Baixar {format}",
-    "fileCount": "{count} arquivos",
+    "fileCount": {
+      "one": "{count} arquivo",
+      "other": "{count} arquivos"
+    },
     "totalSize": "{size} no total",
     "empty": {
       "title": "Nada por aqui ainda",

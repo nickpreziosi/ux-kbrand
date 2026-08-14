@@ -79,11 +79,12 @@ export function AssetGrid({
   return (
     <div className="@container">
       <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4">
-        {groups.map((group) => (
+        {groups.map((group, index) => (
           <AssetCard
             key={group.id}
             group={group}
             showVisibility={showVisibility}
+            priority={index === 0}
             onPreview={
               expandPreview && group.preview.previewUrl
                 ? () => setPreviewGroup(group)

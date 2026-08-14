@@ -72,18 +72,21 @@ interface AssetCardProps {
   showVisibility?: boolean;
   /** Opens a larger preview when the thumbnail is clicked. */
   onPreview?: () => void;
+  /** Eager-load this thumbnail — set on the first grid card, which is often LCP. */
+  priority?: boolean;
   className?: string;
 }
 
 /**
- * Catalog card for one artwork. Multi-format groups expose every file (and a
- * zip of the lot) from a single Download menu, so the card stays compact while
- * still answering "how big is the PNG?" before a click.
+ * Catalog card for one artwork. Every format lands in one Download menu (and a
+ * zip of the lot when there is more than one), so a second file on the same
+ * group appears without a UI change.
  */
 export function AssetCard({
   group,
   showVisibility = false,
   onPreview,
+  priority = false,
   className,
 }: AssetCardProps) {
   const t = useTranslations("assets");
@@ -100,6 +103,8 @@ export function AssetCard({
       alt={group.title}
       fill
       unoptimized
+      priority={priority}
+      loading={priority ? "eager" : "lazy"}
       className={cn(
         coverPreview ? "object-cover" : "object-contain",
         onPreview && "transition-transform duration-200 group-hover:scale-[1.03]",
@@ -163,13 +168,11 @@ export function AssetCard({
       <CardContent className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-base leading-snug">{group.title}</CardTitle>
-          <Badge
-            variant={multiFormat ? "accent-brand-soft" : "secondary"}
-            className="shrink-0"
-          >
-            {multiFormat
-              ? t("fileCount", { count: assets.length })
-              : formatLabel(preview)}
+          <Badge variant="accent-brand-soft" className="shrink-0">
+            {t(
+              assets.length === 1 ? "fileCount.one" : "fileCount.other",
+              { count: assets.length },
+            )}
           </Badge>
         </div>
         <CardDescription className="line-clamp-2 text-sm">
@@ -177,75 +180,58 @@ export function AssetCard({
         </CardDescription>
       </CardContent>
 
-      <CardFooter
-        className={cn(
-          "flex items-center gap-2 p-4 pt-0",
-          multiFormat ? "justify-end" : "justify-between",
-        )}
-      >
-        {multiFormat ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="accent-brand"
-                size="sm"
-                icon={<Download aria-hidden />}
-              >
-                {t("download")}
-                <ChevronDown className="h-3.5 w-3.5 opacity-80" aria-hidden />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {assets.map((asset) => (
-                <DropdownMenuItem key={asset.id} asChild>
-                  <a
-                    href={assetDownloadHref(asset)}
-                    className="flex items-center gap-1.5"
-                    aria-label={t("downloadFormat", {
-                      format: formatLabel(asset),
-                    })}
-                  >
-                    <FormatSizeLabel
-                      label={formatLabel(asset)}
-                      sizeBytes={asset.file.sizeBytes}
-                    />
-                  </a>
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <a
-                  href={brandBundleUrl(group.id)}
-                  className="flex items-center gap-1.5"
-                  aria-label={t("downloadAll")}
-                >
-                  <FormatSizeLabel
-                    label={
-                      t.has("downloadAllOption")
-                        ? t("downloadAllOption")
-                        : t("downloadAll")
-                    }
-                    sizeBytes={group.totalBytes}
-                  />
-                </a>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <>
-            <span className="text-xs text-muted-foreground">
-              {formatFileSize(preview.file.sizeBytes)}
-            </span>
+      <CardFooter className="flex items-center justify-end gap-2 p-4 pt-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <Button
               variant="accent-brand"
               size="sm"
               icon={<Download aria-hidden />}
-              href={assetDownloadHref(preview)}
             >
               {t("download")}
+              <ChevronDown className="h-3.5 w-3.5 opacity-80" aria-hidden />
             </Button>
-          </>
-        )}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {assets.map((asset) => (
+              <DropdownMenuItem key={asset.id} asChild>
+                <a
+                  href={assetDownloadHref(asset)}
+                  className="flex items-center gap-1.5"
+                  aria-label={t("downloadFormat", {
+                    format: formatLabel(asset),
+                  })}
+                >
+                  <FormatSizeLabel
+                    label={formatLabel(asset)}
+                    sizeBytes={asset.file.sizeBytes}
+                  />
+                </a>
+              </DropdownMenuItem>
+            ))}
+            {multiFormat ? (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <a
+                    href={brandBundleUrl(group.id)}
+                    className="flex items-center gap-1.5"
+                    aria-label={t("downloadAll")}
+                  >
+                    <FormatSizeLabel
+                      label={
+                        t.has("downloadAllOption")
+                          ? t("downloadAllOption")
+                          : t("downloadAll")
+                      }
+                      sizeBytes={group.totalBytes}
+                    />
+                  </a>
+                </DropdownMenuItem>
+              </>
+            ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </CardFooter>
     </Card>
   );

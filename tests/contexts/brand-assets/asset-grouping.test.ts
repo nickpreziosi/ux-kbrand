@@ -138,9 +138,13 @@ describe("groupBrandAssets", () => {
     const logos = SEED_BRAND_ASSETS.filter((seed) => seed.category === "logos");
     const groups = groupBrandAssets(logos);
 
-    // 20 logo files, but 5 grouped lockups/marks plus 3 ungrouped product logos.
+    // 5 grouped lockups/marks plus 3 grouped product logos.
     expect(logos.length).toBeGreaterThan(groups.length);
     expect(groups).toHaveLength(8);
+
+    const product = groups.find((group) => group.id === "k-rails-logo");
+    expect(product?.title).toBe("K Rails — product logo");
+    expect(product?.assets.map((member) => assetFormat(member))).toEqual(["webp"]);
 
     const logomark = groups.find((group) => group.id === "k-lab-logomark");
     expect(logomark?.title).toBe("K Lab logomark");
@@ -150,6 +154,21 @@ describe("groupBrandAssets", () => {
       "pdf",
       "ai",
     ]);
+  });
+
+  it("gives seeded imagery a group id so extra formats join the same card", () => {
+    const imagery = SEED_BRAND_ASSETS.filter(
+      (seed) => seed.category === "brand-imagery",
+    );
+    const groups = groupBrandAssets(imagery);
+
+    expect(groups).toHaveLength(imagery.length);
+    expect(groups.every((group) => group.assets.length === 1)).toBe(true);
+    expect(groups.map((group) => group.id)).toEqual(
+      imagery.map((asset) => asset.groupId),
+    );
+    expect(groups[0].id).toBe("k-lab-bg-001");
+    expect(groups[0].title).toBe("Chevron neon — deep navy");
   });
 
   it("gives every seeded group member the same display copy", () => {

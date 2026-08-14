@@ -272,7 +272,10 @@
     "downloadAll": "Descargar todo",
     "downloadAllOption": "Todo",
     "downloadFormat": "Descargar {format}",
-    "fileCount": "{count} archivos",
+    "fileCount": {
+      "one": "{count} archivo",
+      "other": "{count} archivos"
+    },
     "totalSize": "{size} en total",
     "empty": {
       "title": "Aún no hay nada aquí",

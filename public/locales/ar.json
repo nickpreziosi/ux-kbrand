@@ -272,7 +272,10 @@
     "downloadAll": "تنزيل الكل",
     "downloadAllOption": "الكل",
     "downloadFormat": "تنزيل {format}",
-    "fileCount": "{count} ملفات",
+    "fileCount": {
+      "one": "{count} ملف",
+      "other": "{count} ملفات"
+    },
     "totalSize": "{size} الإجمالي",
     "empty": {
       "title": "لا يوجد شيء هنا بعد",

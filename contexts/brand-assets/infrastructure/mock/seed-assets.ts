@@ -483,11 +483,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-030",
-    title: "K Rails — product logo",
+    title: "K Rails — product logo, WEBP",
     description: "Dimensional product lockup for K Rails, the invoice financing platform.",
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-rails-logo",
+    groupTitle: "K Rails — product logo",
+    groupDescription: "Dimensional product lockup for K Rails, the invoice financing platform.",
     file: {
       fileName: "k-rails.webp",
       contentType: "image/webp",
@@ -498,7 +501,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/sub-brands/k-rails.webp",
     tags: [
       "product",
-      "k-rails"
+      "k-rails",
+      "webp"
     ],
     createdAt: "2026-02-10T11:00:00.000Z",
     updatedAt: "2026-02-10T11:00:00.000Z",
@@ -506,11 +510,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-031",
-    title: "K Talk — product logo",
+    title: "K Talk — product logo, WEBP",
     description: "Dimensional product lockup for K Talk.",
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "k-talk-logo",
+    groupTitle: "K Talk — product logo",
+    groupDescription: "Dimensional product lockup for K Talk.",
     file: {
       fileName: "k-talk.webp",
       contentType: "image/webp",
@@ -521,7 +528,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/sub-brands/k-talk.webp",
     tags: [
       "product",
-      "k-talk"
+      "k-talk",
+      "webp"
     ],
     createdAt: "2026-02-10T11:01:00.000Z",
     updatedAt: "2026-02-10T11:01:00.000Z",
@@ -529,11 +537,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-032",
-    title: "Kena — product logo",
+    title: "Kena — product logo, WEBP",
     description: "Dimensional product lockup for Kena.",
     category: "logos",
     visibility: "public",
     status: "active",
+    groupId: "kena-logo",
+    groupTitle: "Kena — product logo",
+    groupDescription: "Dimensional product lockup for Kena.",
     file: {
       fileName: "kena.webp",
       contentType: "image/webp",
@@ -544,7 +555,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/sub-brands/kena.webp",
     tags: [
       "product",
-      "kena"
+      "kena",
+      "webp"
     ],
     createdAt: "2026-02-10T11:02:00.000Z",
     updatedAt: "2026-02-10T11:02:00.000Z",
@@ -552,11 +564,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-040",
-    title: "Chevron neon — deep navy",
+    title: "Chevron neon — deep navy, WEBP",
     description: "Hero background: the chevron rendered in electric blue on deep navy.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-001",
+    groupTitle: "Chevron neon — deep navy",
+    groupDescription: "Hero background: the chevron rendered in electric blue on deep navy.",
     file: {
       fileName: "k-lab-bg-001.webp",
       contentType: "image/webp",
@@ -568,7 +583,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "background",
       "hero",
-      "navy"
+      "navy",
+      "webp"
     ],
     createdAt: "2025-12-02T12:00:00.000Z",
     updatedAt: "2025-12-02T12:00:00.000Z",
@@ -576,11 +592,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-041",
-    title: "Blue gradient field",
+    title: "Blue gradient field, WEBP",
     description: "Smooth blue gradient for section dividers, covers, and social cards.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-002",
+    groupTitle: "Blue gradient field",
+    groupDescription: "Smooth blue gradient for section dividers, covers, and social cards.",
     file: {
       fileName: "k-lab-bg-002.webp",
       contentType: "image/webp",
@@ -591,7 +610,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/backgrounds/k-lab-bg-002.webp",
     tags: [
       "background",
-      "gradient"
+      "gradient",
+      "webp"
     ],
     createdAt: "2025-12-02T12:01:00.000Z",
     updatedAt: "2025-12-02T12:01:00.000Z",
@@ -599,11 +619,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-042",
-    title: "Blue gradient field — dot texture",
+    title: "Blue gradient field — dot texture, WEBP",
     description: "The blue gradient with the brand dot matrix overlay.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-002-dots",
+    groupTitle: "Blue gradient field — dot texture",
+    groupDescription: "The blue gradient with the brand dot matrix overlay.",
     file: {
       fileName: "k-lab-bg-002-dots.webp",
       contentType: "image/webp",
@@ -615,7 +638,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "background",
       "gradient",
-      "texture"
+      "texture",
+      "webp"
     ],
     createdAt: "2025-12-02T12:02:00.000Z",
     updatedAt: "2025-12-02T12:02:00.000Z",
@@ -623,11 +647,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-043",
-    title: "Depth gradient",
+    title: "Depth gradient, WEBP",
     description: "Layered blue depth field for presentation backgrounds.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-003",
+    groupTitle: "Depth gradient",
+    groupDescription: "Layered blue depth field for presentation backgrounds.",
     file: {
       fileName: "k-lab-bg-003.webp",
       contentType: "image/webp",
@@ -639,7 +666,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "background",
       "gradient",
-      "slides"
+      "slides",
+      "webp"
     ],
     createdAt: "2025-12-02T12:03:00.000Z",
     updatedAt: "2025-12-02T12:03:00.000Z",
@@ -647,11 +675,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-044",
-    title: "Depth gradient — dot texture",
+    title: "Depth gradient — dot texture, WEBP",
     description: "Depth field with the brand dot matrix overlay.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-003-dots",
+    groupTitle: "Depth gradient — dot texture",
+    groupDescription: "Depth field with the brand dot matrix overlay.",
     file: {
       fileName: "k-lab-bg-003-dots.webp",
       contentType: "image/webp",
@@ -663,7 +694,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "background",
       "gradient",
-      "texture"
+      "texture",
+      "webp"
     ],
     createdAt: "2025-12-02T12:04:00.000Z",
     updatedAt: "2025-12-02T12:04:00.000Z",
@@ -671,11 +703,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-045",
-    title: "Horizon gradient",
+    title: "Horizon gradient, WEBP",
     description: "Wide horizon gradient suited to full-bleed hero sections.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-004",
+    groupTitle: "Horizon gradient",
+    groupDescription: "Wide horizon gradient suited to full-bleed hero sections.",
     file: {
       fileName: "k-lab-bg-004.webp",
       contentType: "image/webp",
@@ -686,7 +721,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/backgrounds/k-lab-bg-004.webp",
     tags: [
       "background",
-      "hero"
+      "hero",
+      "webp"
     ],
     createdAt: "2025-12-02T12:05:00.000Z",
     updatedAt: "2025-12-02T12:05:00.000Z",
@@ -694,11 +730,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-046",
-    title: "Horizon gradient — dot texture",
+    title: "Horizon gradient — dot texture, WEBP",
     description: "Horizon gradient with the brand dot matrix overlay.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-004-dots",
+    groupTitle: "Horizon gradient — dot texture",
+    groupDescription: "Horizon gradient with the brand dot matrix overlay.",
     file: {
       fileName: "k-lab-bg-004-dots.webp",
       contentType: "image/webp",
@@ -710,7 +749,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "background",
       "hero",
-      "texture"
+      "texture",
+      "webp"
     ],
     createdAt: "2025-12-02T12:06:00.000Z",
     updatedAt: "2025-12-02T12:06:00.000Z",
@@ -718,11 +758,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-047",
-    title: "Circuit field",
+    title: "Circuit field, WEBP",
     description: "Technical circuit texture for data and infrastructure stories.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-005",
+    groupTitle: "Circuit field",
+    groupDescription: "Technical circuit texture for data and infrastructure stories.",
     file: {
       fileName: "k-lab-bg-005.webp",
       contentType: "image/webp",
@@ -733,7 +776,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/backgrounds/k-lab-bg-005.webp",
     tags: [
       "background",
-      "technical"
+      "technical",
+      "webp"
     ],
     createdAt: "2025-12-02T12:07:00.000Z",
     updatedAt: "2025-12-02T12:07:00.000Z",
@@ -741,11 +785,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-048",
-    title: "Signal field",
+    title: "Signal field, WEBP",
     description: "Abstract signal texture for section breaks and covers.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-bg-006",
+    groupTitle: "Signal field",
+    groupDescription: "Abstract signal texture for section breaks and covers.",
     file: {
       fileName: "k-lab-bg-006.webp",
       contentType: "image/webp",
@@ -756,7 +803,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     previewUrl: "/brand-files/backgrounds/k-lab-bg-006.webp",
     tags: [
       "background",
-      "technical"
+      "technical",
+      "webp"
     ],
     createdAt: "2025-12-02T12:08:00.000Z",
     updatedAt: "2025-12-02T12:08:00.000Z",
@@ -764,11 +812,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-050",
-    title: "Product render 01",
+    title: "Product render 01, WEBP",
     description: "Device render for product marketing and deck covers.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-screen-01",
+    groupTitle: "Product render 01",
+    groupDescription: "Device render for product marketing and deck covers.",
     file: {
       fileName: "k-lab-screen-01.webp",
       contentType: "image/webp",
@@ -780,7 +831,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "render",
       "product",
-      "marketing"
+      "marketing",
+      "webp"
     ],
     createdAt: "2026-02-18T09:30:00.000Z",
     updatedAt: "2026-02-18T09:30:00.000Z",
@@ -788,11 +840,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-051",
-    title: "Product render 02",
+    title: "Product render 02, WEBP",
     description: "Alternate device render with the platform interface in context.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-screen-02",
+    groupTitle: "Product render 02",
+    groupDescription: "Alternate device render with the platform interface in context.",
     file: {
       fileName: "k-lab-screen-02.webp",
       contentType: "image/webp",
@@ -804,7 +859,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "render",
       "product",
-      "marketing"
+      "marketing",
+      "webp"
     ],
     createdAt: "2026-02-18T09:31:00.000Z",
     updatedAt: "2026-02-18T09:31:00.000Z",
@@ -812,11 +868,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-052",
-    title: "Product render 03",
+    title: "Product render 03, WEBP",
     description: "Wide product render for hero sections and landing pages.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-lab-screen-03",
+    groupTitle: "Product render 03",
+    groupDescription: "Wide product render for hero sections and landing pages.",
     file: {
       fileName: "k-lab-screen-03.webp",
       contentType: "image/webp",
@@ -828,7 +887,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "render",
       "product",
-      "marketing"
+      "marketing",
+      "webp"
     ],
     createdAt: "2026-02-18T09:32:00.000Z",
     updatedAt: "2026-02-18T09:32:00.000Z",
@@ -836,11 +896,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-053",
-    title: "K Rails — key visual",
+    title: "K Rails — key visual, WEBP",
     description: "Campaign key visual for K Rails.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-rails-keyvisual",
+    groupTitle: "K Rails — key visual",
+    groupDescription: "Campaign key visual for K Rails.",
     file: {
       fileName: "k-rails-keyvisual.webp",
       contentType: "image/webp",
@@ -852,7 +915,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "keyvisual",
       "k-rails",
-      "campaign"
+      "campaign",
+      "webp"
     ],
     createdAt: "2026-02-20T14:00:00.000Z",
     updatedAt: "2026-02-20T14:00:00.000Z",
@@ -860,11 +924,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-054",
-    title: "K Talk — key visual",
+    title: "K Talk — key visual, WEBP",
     description: "Campaign key visual for K Talk.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "k-talk-keyvisual",
+    groupTitle: "K Talk — key visual",
+    groupDescription: "Campaign key visual for K Talk.",
     file: {
       fileName: "k-talk-keyvisual.webp",
       contentType: "image/webp",
@@ -876,7 +943,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "keyvisual",
       "k-talk",
-      "campaign"
+      "campaign",
+      "webp"
     ],
     createdAt: "2026-02-20T14:01:00.000Z",
     updatedAt: "2026-02-20T14:01:00.000Z",
@@ -884,11 +952,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
   },
   {
     id: "ast-055",
-    title: "Kena — key visual",
+    title: "Kena — key visual, WEBP",
     description: "Campaign key visual for Kena.",
     category: "brand-imagery",
     visibility: "public",
     status: "active",
+    groupId: "kena-keyvisual",
+    groupTitle: "Kena — key visual",
+    groupDescription: "Campaign key visual for Kena.",
     file: {
       fileName: "kena-keyvisual.webp",
       contentType: "image/webp",
@@ -900,7 +971,8 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     tags: [
       "keyvisual",
       "kena",
-      "campaign"
+      "campaign",
+      "webp"
     ],
     createdAt: "2026-02-20T14:02:00.000Z",
     updatedAt: "2026-02-20T14:02:00.000Z",
