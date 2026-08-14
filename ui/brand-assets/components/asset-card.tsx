@@ -36,6 +36,7 @@ import {
 } from "@/contexts/brand-assets/domain/services/asset-grouping";
 import { brandBundleUrl } from "@/ui/branding/content/logo-formats";
 import { assetDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
+import { assetThumbnail } from "@/ui/brand-assets/lib/asset-thumbnail";
 
 function formatLabel(asset: BrandAsset): string {
   return assetFormat(asset)?.toUpperCase() ?? "FILE";
@@ -92,10 +93,9 @@ export function AssetCard({
   const t = useTranslations("assets");
   const { preview, assets } = group;
   const multiFormat = assets.length > 1;
-  // Lockups (transparent wordmarks) must fit inside the frame; product shots
-  // and imagery fill it, same as the rest of the catalog.
-  const coverPreview =
-    group.category !== "logos" || group.tags.includes("product");
+  // How the artwork meets its frame: lockups are contained over a brand
+  // surface with clearspace around them, photography fills the frame.
+  const { fit, surfaceClassName, clearspace } = assetThumbnail(preview);
 
   const previewImage = preview.previewUrl ? (
     <Image
@@ -106,7 +106,7 @@ export function AssetCard({
       priority={priority}
       loading={priority ? "eager" : "lazy"}
       className={cn(
-        coverPreview ? "object-cover" : "object-contain",
+        fit === "cover" ? "object-cover" : "object-contain",
         onPreview && "transition-transform duration-200 group-hover:scale-[1.03]",
       )}
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -117,18 +117,16 @@ export function AssetCard({
     <Card className={cn("flex h-full flex-col overflow-hidden", className)}>
       <div
         className={cn(
-          "relative flex aspect-video items-center justify-center overflow-hidden border-b border-border bg-secondary",
+          "relative flex aspect-video items-center justify-center overflow-hidden border-b border-border",
+          surfaceClassName,
           onPreview && "group",
         )}
       >
         {previewImage ? (
           <>
-            <div
-              className={cn(
-                "absolute",
-                coverPreview ? "inset-0" : "inset-6",
-              )}
-            >
+            {/* The image wrapper carries the clearspace, so the surface behind
+                it still reaches the frame's edges. */}
+            <div className={cn("absolute", clearspace ? "inset-6" : "inset-0")}>
               {previewImage}
             </div>
             {onPreview ? (

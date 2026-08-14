@@ -6,8 +6,10 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  cn,
 } from "@k-lab/components";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import { assetThumbnail } from "@/ui/brand-assets/lib/asset-thumbnail";
 
 interface AssetPreviewDialogProps {
   asset: BrandAsset | null;
@@ -26,6 +28,9 @@ export function AssetPreviewDialog({
 }: AssetPreviewDialogProps) {
   const previewUrl = asset?.previewUrl;
   const label = title ?? asset?.title ?? "";
+  const surface = asset
+    ? assetThumbnail(asset)
+    : { surfaceClassName: "", clearspace: false };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -37,14 +42,24 @@ export function AssetPreviewDialog({
         {asset && previewUrl ? (
           <>
             <DialogTitle className="sr-only">{label}</DialogTitle>
-            <Image
-              src={previewUrl}
-              alt={label}
-              width={1920}
-              height={1080}
-              unoptimized
-              className="h-auto max-h-[85vh] w-auto max-w-[90vw] object-contain sm:rounded-md"
-            />
+            {/* Transparent artwork gets the same brand surface it has on the
+                card — over a dim overlay alone, the reversed logo reads as a
+                blank rectangle and the dark one all but disappears. */}
+            <div
+              className={cn(
+                "flex items-center justify-center sm:rounded-md",
+                surface.clearspace && `${surface.surfaceClassName} p-8`,
+              )}
+            >
+              <Image
+                src={previewUrl}
+                alt={label}
+                width={1920}
+                height={1080}
+                unoptimized
+                className="h-auto max-h-[80vh] w-auto max-w-[86vw] object-contain sm:rounded-md"
+              />
+            </div>
           </>
         ) : null}
       </DialogContent>
