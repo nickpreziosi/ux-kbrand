@@ -455,40 +455,20 @@
     }
   },
   "auth": {
-    "pages": {
-      "title": "Entrar",
-      "subtitle": "Bem-vindo de volta! Entre para continuar.",
-      "emailLabel": "Endereço de e-mail",
-      "passwordLabel": "Senha",
-      "confirmPasswordLabel": "Confirmar senha",
-      "forgotPassword": "Esqueceu a senha?",
-      "rememberMe": "Manter-me conectado",
-      "submit": "Entrar",
-      "submitting": "Entrando...",
-      "backToSignIn": "Voltar para o login",
-      "checkEmailHeading": "Verifique seu e-mail",
-      "resetLinkSent": "Enviamos um link de redefinição de senha para",
-      "resetLinkInstructions": "Verifique sua caixa de entrada e siga o link do e-mail para redefinir sua senha.",
-      "noEmailReceived": "Não recebeu o e-mail?",
-      "tryAgain": "Tentar novamente",
-      "resetPasswordTitle": "Redefinir senha",
-      "resetPasswordSubtitle": "Digite sua nova senha abaixo.",
-      "passwordMismatch": "As senhas não coincidem",
-      "passwordMinLength": "A senha deve ter pelo menos 8 caracteres",
-      "resetSuccessHeading": "Senha redefinida",
-      "resetSuccessMessage": "Sua senha foi redefinida. Agora você pode entrar com a nova senha."
-    },
-    "forgotPassword": {
-      "didntReceiveEmail": "Não recebeu o e-mail?"
-    },
     "login": {
-      "signInFailed": "Falha ao entrar"
-    },
-    "resetPassword": {
-      "passwordsDoNotMatch": "As senhas não coincidem",
-      "passwordTooShort": "A senha deve ter pelo menos 8 caracteres",
-      "successTitle": "Senha atualizada",
-      "successMessage": "Sua senha foi redefinida. Você pode entrar com a nova senha."
+      "title": "Entrar",
+      "subtitle": "Use sua conta Microsoft da K Lab para continuar.",
+      "signInWithMicrosoft": "Entrar com a Microsoft",
+      "signingIn": "Entrando...",
+      "errors": {
+        "popupBlocked": "Seu navegador bloqueou a janela de login. Permita pop-ups para este site e tente novamente.",
+        "tenantRejected": "Entre com sua conta Microsoft da K Lab.",
+        "accountCollision": "Sua conta precisa de uma migração única; contate a TI.",
+        "network": "Erro de rede. Verifique sua conexão.",
+        "tooManyRequests": "Muitas tentativas. Tente novamente mais tarde.",
+        "sessionFailed": "Não foi possível iniciar a sessão. Tente novamente ou contate a TI.",
+        "signInFailed": "Falha ao entrar. Tente novamente."
+      }
     }
   },
   "common": {

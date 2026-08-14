@@ -3,7 +3,8 @@
 import {
   getAuth,
   onAuthStateChanged,
-  signInWithEmailAndPassword as firebaseSignInWithEmailAndPassword,
+  OAuthProvider,
+  signInWithPopup,
   signOut as firebaseSignOut,
   type User,
 } from "firebase/auth";
@@ -14,7 +15,7 @@ import type {
   AuthenticatedUser,
 } from "@/contexts/user-management/auth/domain/auth-gateway.port";
 import { normalizeClaims } from "@/contexts/user-management/auth/domain/token-claims";
-import { mapFirebaseAuthErrorToMessage } from "@/contexts/user-management/auth/infrastructure/map-firebase-auth-error";
+import { mapFirebaseAuthErrorToSignInError } from "@/contexts/user-management/auth/infrastructure/map-firebase-auth-error";
 
 function toAuthenticatedUser(u: User | null): AuthenticatedUser | null {
   if (!u) return null;
@@ -43,11 +44,22 @@ class FirebaseAuthGateway implements AuthGatewayPort {
     return getAuth(getFirebaseWebApp());
   }
 
-  async signInWithEmailAndPassword(email: string, password: string): Promise<void> {
+  async signInWithMicrosoft(): Promise<void> {
+    const provider = new OAuthProvider("microsoft.com");
+    const tenantId = process.env.NEXT_PUBLIC_ENTRA_TENANT_ID;
+    provider.setCustomParameters({
+      // Routes straight to the K Lab login; the single-tenant app
+      // registration in Entra is what actually enforces the boundary.
+      ...(tenantId ? { tenant: tenantId } : {}),
+      prompt: "select_account",
+    });
     try {
-      await firebaseSignInWithEmailAndPassword(this.auth, email, password);
+      // Popup, not redirect: the app runs on a different domain than the
+      // Firebase authDomain and signInWithRedirect is unreliable cross-origin
+      // now that browsers block third-party cookies.
+      await signInWithPopup(this.auth, provider);
     } catch (e) {
-      throw new Error(mapFirebaseAuthErrorToMessage(e));
+      throw mapFirebaseAuthErrorToSignInError(e);
     }
   }
 

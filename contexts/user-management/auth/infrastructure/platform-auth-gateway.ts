@@ -33,7 +33,7 @@ function sessionStateFromPlatformToken(): AuthSessionState {
 }
 
 class PlatformAuthGateway implements AuthGatewayPort {
-  async signInWithEmailAndPassword(_email: string, _password: string): Promise<void> {
+  async signInWithMicrosoft(): Promise<void> {
     window.location.assign(shellLoginUrl());
   }
 

@@ -272,10 +272,10 @@
     "downloadAll": "Download all",
     "downloadAllOption": "All",
     "downloadFormat": "Download {format}",
-      "fileCount": {
-        "one": "{count} file",
-        "other": "{count} files"
-      },
+    "fileCount": {
+      "one": "{count} file",
+      "other": "{count} files"
+    },
     "totalSize": "{size} total",
     "empty": {
       "title": "Nothing here yet",
@@ -455,40 +455,20 @@
     }
   },
   "auth": {
-    "pages": {
-      "title": "Sign in",
-      "subtitle": "Welcome back! Sign in to continue.",
-      "emailLabel": "Email address",
-      "passwordLabel": "Password",
-      "confirmPasswordLabel": "Confirm password",
-      "forgotPassword": "Forgot password?",
-      "rememberMe": "Keep me logged in",
-      "submit": "Sign In",
-      "submitting": "Signing in...",
-      "backToSignIn": "Back to Sign In",
-      "checkEmailHeading": "Check your email",
-      "resetLinkSent": "We've sent a password reset link to",
-      "resetLinkInstructions": "Check your inbox and follow the link in the email to reset your password.",
-      "noEmailReceived": "Didn't receive an email?",
-      "tryAgain": "Try again",
-      "resetPasswordTitle": "Reset password",
-      "resetPasswordSubtitle": "Enter your new password below.",
-      "passwordMismatch": "Passwords do not match",
-      "passwordMinLength": "Password must be at least 8 characters",
-      "resetSuccessHeading": "Password reset",
-      "resetSuccessMessage": "Your password has been reset. You can now sign in with your new password."
-    },
-    "forgotPassword": {
-      "didntReceiveEmail": "Didn't receive an email?"
-    },
     "login": {
-      "signInFailed": "Sign in failed"
-    },
-    "resetPassword": {
-      "passwordsDoNotMatch": "Passwords do not match",
-      "passwordTooShort": "Password must be at least 8 characters",
-      "successTitle": "Password updated",
-      "successMessage": "Your password has been reset. You can sign in with your new password."
+      "title": "Sign in",
+      "subtitle": "Use your K Lab Microsoft account to continue.",
+      "signInWithMicrosoft": "Sign in with Microsoft",
+      "signingIn": "Signing in...",
+      "errors": {
+        "popupBlocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
+        "tenantRejected": "Sign in with your K Lab Microsoft account.",
+        "accountCollision": "Your account needs a one-time migration — contact IT.",
+        "network": "Network error. Check your connection.",
+        "tooManyRequests": "Too many attempts. Try again later.",
+        "sessionFailed": "Could not start your session. Try again or contact IT.",
+        "signInFailed": "Sign in failed. Try again."
+      }
     }
   },
   "common": {

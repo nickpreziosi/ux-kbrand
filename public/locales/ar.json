@@ -455,40 +455,20 @@
     }
   },
   "auth": {
-    "pages": {
-      "title": "تسجيل الدخول",
-      "subtitle": "مرحبًا بعودتك! سجّل الدخول للمتابعة.",
-      "emailLabel": "البريد الإلكتروني",
-      "passwordLabel": "كلمة المرور",
-      "confirmPasswordLabel": "تأكيد كلمة المرور",
-      "forgotPassword": "هل نسيت كلمة المرور؟",
-      "rememberMe": "إبقاء تسجيل الدخول نشطًا",
-      "submit": "تسجيل الدخول",
-      "submitting": "جارٍ تسجيل الدخول...",
-      "backToSignIn": "العودة إلى تسجيل الدخول",
-      "checkEmailHeading": "تحقق من بريدك الإلكتروني",
-      "resetLinkSent": "لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى",
-      "resetLinkInstructions": "تحقق من صندوق الوارد واتبع الرابط الموجود في الرسالة لإعادة تعيين كلمة المرور.",
-      "noEmailReceived": "لم تستلم رسالة؟",
-      "tryAgain": "حاول مرة أخرى",
-      "resetPasswordTitle": "إعادة تعيين كلمة المرور",
-      "resetPasswordSubtitle": "أدخل كلمة المرور الجديدة أدناه.",
-      "passwordMismatch": "كلمتا المرور غير متطابقتين",
-      "passwordMinLength": "يجب ألا تقل كلمة المرور عن 8 أحرف",
-      "resetSuccessHeading": "تمت إعادة تعيين كلمة المرور",
-      "resetSuccessMessage": "تمت إعادة تعيين كلمة المرور. يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة."
-    },
-    "forgotPassword": {
-      "didntReceiveEmail": "لم تستلم رسالة؟"
-    },
     "login": {
-      "signInFailed": "فشل تسجيل الدخول"
-    },
-    "resetPassword": {
-      "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
-      "passwordTooShort": "يجب ألا تقل كلمة المرور عن 8 أحرف",
-      "successTitle": "تم تحديث كلمة المرور",
-      "successMessage": "تمت إعادة تعيين كلمة المرور. يمكنك تسجيل الدخول باستخدام كلمة المرور الجديدة."
+      "title": "تسجيل الدخول",
+      "subtitle": "استخدم حساب Microsoft الخاص بك في K Lab للمتابعة.",
+      "signInWithMicrosoft": "تسجيل الدخول باستخدام Microsoft",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "errors": {
+        "popupBlocked": "حظر المتصفح نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة لهذا الموقع وحاول مرة أخرى.",
+        "tenantRejected": "سجّل الدخول باستخدام حساب Microsoft الخاص بك في K Lab.",
+        "accountCollision": "يحتاج حسابك إلى ترحيل لمرة واحدة — تواصل مع قسم تقنية المعلومات.",
+        "network": "خطأ في الشبكة. تحقق من اتصالك.",
+        "tooManyRequests": "محاولات كثيرة جدًا. حاول مرة أخرى لاحقًا.",
+        "sessionFailed": "تعذر بدء الجلسة. حاول مرة أخرى أو تواصل مع قسم تقنية المعلومات.",
+        "signInFailed": "فشل تسجيل الدخول. حاول مرة أخرى."
+      }
     }
   },
   "common": {

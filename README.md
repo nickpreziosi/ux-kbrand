@@ -19,9 +19,13 @@ npm run dev                                  # http://localhost:3005 (or kbrand.
 Real brand files (logos, backgrounds, renders, the Sora typeface) are committed
 under `public/brand-files/` — no build step needed to see them.
 
-`.env` borrows the `gc-k-usa-business-core-dev` Firebase web config
-(temporary, per the prototype task) — sign in with any user from the shared
-core dev pool. Roles resolve from the mock directory by email
+`.env` points at the portal's own `klab-brand-center-dev` Firebase project
+(separate user pool from the SSO fleet). Sign-in is **Microsoft (Entra ID)
+only** — Firebase brokers the OAuth flow, and `/api/auth/session` only mints
+sessions from verified `microsoft.com`-provider tokens (verification uses
+Google's public certs — no service-account key needed; see `.env.example`).
+`NEXT_PUBLIC_ENTRA_TENANT_ID` is required. Roles resolve from the mock
+directory by email
 (`contexts/user-management/user/infrastructure/mock/seed-users.ts`); unknown
 authenticated emails default to `employee`.
 

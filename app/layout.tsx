@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const documentInit = createDocInitScript({
   applyLocale: false,
-  authPathPrefixes: ["/login", "/forgot-password", "/reset-password"],
+  authPathPrefixes: ["/login"],
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

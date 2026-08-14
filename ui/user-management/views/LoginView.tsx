@@ -2,24 +2,34 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { LoginPage } from "@k-lab/components";
+import { Button, LoginPage } from "@k-lab/components";
 import { useTranslations } from "next-intl";
 import { getAppAuthConfig } from "@/lib/auth/app-auth-config";
-import { signInWithEmailPasswordService } from "@/contexts/user-management/auth/application/user-management-auth-client-services";
+import { signInWithMicrosoftService } from "@/contexts/user-management/auth/application/user-management-auth-client-services";
+import { AuthSignInError } from "@/contexts/user-management/auth/domain/auth-sign-in-error";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import { safeInternalPath } from "@/lib/auth/safe-redirect";
 
+/** The four-square Microsoft mark (per Microsoft's sign-in branding guidelines). */
+function MicrosoftMark() {
+  return (
+    <svg aria-hidden width="18" height="18" viewBox="0 0 21 21" className="shrink-0">
+      <rect x="0" y="0" width="10" height="10" fill="#f25022" />
+      <rect x="11" y="0" width="10" height="10" fill="#7fba00" />
+      <rect x="0" y="11" width="10" height="10" fill="#00a4ef" />
+      <rect x="11" y="11" width="10" height="10" fill="#ffb900" />
+    </svg>
+  );
+}
+
 export function LoginView({ redirectTo = "/" }: { redirectTo?: string }) {
   const router = useRouter();
-  const t = useTranslations("auth");
+  const t = useTranslations("auth.login");
   const { user, loading } = useAuth();
   const nextPath = safeInternalPath(redirectTo);
   const config = React.useMemo(() => getAppAuthConfig(), []);
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [rememberMe, setRememberMe] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isSigningIn, setIsSigningIn] = React.useState(false);
   const [authError, setAuthError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -29,44 +39,44 @@ export function LoginView({ redirectTo = "/" }: { redirectTo?: string }) {
     }
   }, [loading, user, router, nextPath]);
 
-  const onSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!email || !password) return;
-
+  const onSignIn = async () => {
     setAuthError(null);
-    setIsSubmitting(true);
+    setIsSigningIn(true);
     try {
-      await signInWithEmailPasswordService.signInWithPresenceSession(email, password);
+      await signInWithMicrosoftService.signInWithPresenceSession();
       router.replace(nextPath);
     } catch (err) {
-      const message = err instanceof Error ? err.message : t("login.signInFailed");
-      setAuthError(message);
+      if (err instanceof AuthSignInError) {
+        // A closed popup is the user changing their mind — reset quietly.
+        if (err.code !== "popupClosed") {
+          setAuthError(t(`errors.${err.code}`));
+        }
+      } else {
+        setAuthError(t("errors.signInFailed"));
+      }
     } finally {
-      setIsSubmitting(false);
+      setIsSigningIn(false);
     }
   };
 
   return (
     <LoginPage config={config} formPlacement="right">
-      <LoginPage.FormPanel>
-        <LoginPage.Form onSubmit={onSubmit}>
-          <LoginPage.EmailInput value={email} onChange={setEmail} disabled={isSubmitting} />
-          <LoginPage.PasswordField>
-            <LoginPage.PasswordInput
-              value={password}
-              onChange={setPassword}
-              disabled={isSubmitting}
-            />
-            <LoginPage.ForgotPasswordLink />
-          </LoginPage.PasswordField>
-          <LoginPage.RememberMe
-            checked={rememberMe}
-            onCheckedChange={setRememberMe}
-            disabled={isSubmitting}
-          />
+      <LoginPage.FormPanel title={t("title")} subtitle={t("subtitle")}>
+        <div className="flex flex-col gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className="w-full"
+            icon={<MicrosoftMark />}
+            iconPosition="start"
+            loading={isSigningIn}
+            onClick={onSignIn}
+          >
+            {isSigningIn ? t("signingIn") : t("signInWithMicrosoft")}
+          </Button>
           <LoginPage.Error message={authError} />
-          <LoginPage.SubmitButton loading={isSubmitting} />
-        </LoginPage.Form>
+        </div>
       </LoginPage.FormPanel>
     </LoginPage>
   );
