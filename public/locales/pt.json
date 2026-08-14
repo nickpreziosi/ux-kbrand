@@ -317,6 +317,20 @@
       "updated": "Atualizado",
       "formats": "Formatos"
     },
+    "filters": {
+      "searchLabel": "Pesquisar recursos",
+      "categoryLabel": "Categoria",
+      "visibilityLabel": "Visibilidade",
+      "statusLabel": "Estado",
+      "allCategories": "Todas as categorias",
+      "allVisibility": "Toda a visibilidade",
+      "allStatuses": "Todos os estados",
+      "clear": "Limpar",
+      "clearAriaLabel": "Limpar todos os filtros",
+      "resultCount": "Mostrando {count} de {total, plural, one {# recurso} other {# recursos}}",
+      "totalCount": "{count, plural, one {# recurso} other {# recursos}}",
+      "emptyMessage": "Nenhum recurso corresponde à sua pesquisa ou filtros."
+    },
     "visibility": {
       "public": "Público",
       "employee": "Funcionários"

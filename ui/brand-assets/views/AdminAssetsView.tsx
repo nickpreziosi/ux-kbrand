@@ -42,6 +42,13 @@ import {
   groupBrandAssets,
   type AssetGroup,
 } from "@/contexts/brand-assets/domain/services/asset-grouping";
+import {
+  EMPTY_ASSET_GROUP_FILTER,
+  filterAssetGroups,
+  hasActiveAssetGroupFilter,
+  type AssetGroupFilter,
+} from "@/contexts/brand-assets/domain/services/asset-filtering";
+import { AssetTableToolbar } from "@/ui/brand-assets/components/asset-table-toolbar";
 import { useAssetAdmin } from "@/ui/brand-assets/hooks/use-asset-admin";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { groupDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
@@ -74,9 +81,17 @@ export function AdminAssetsView() {
     undefined,
   );
 
+  const [filter, setFilter] = React.useState<AssetGroupFilter>(
+    EMPTY_ASSET_GROUP_FILTER,
+  );
+
   // One row per artwork, not per file — the admin edits the same unit a
   // visitor downloads, so adding a format never means hunting for siblings.
   const groups = React.useMemo(() => groupBrandAssets(assets), [assets]);
+  const visibleGroups = React.useMemo(
+    () => filterAssetGroups(groups, filter),
+    [groups, filter],
+  );
 
   const openCreate = () => {
     setEditing(undefined);
@@ -342,10 +357,25 @@ export function AdminAssetsView() {
       ) : (
         <DataTableShell
           columns={columns}
-          data={groups}
+          data={visibleGroups}
           loading={loading}
-          emptyMessage={t("emptyMessage")}
+          emptyMessage={
+            hasActiveAssetGroupFilter(filter)
+              ? t("filters.emptyMessage")
+              : t("emptyMessage")
+          }
           getRowId={(group) => group.id}
+          // Narrowing while on page 3 would otherwise land on an empty page.
+          resetPageKey={JSON.stringify(filter)}
+          toolbar={
+            <AssetTableToolbar
+              filter={filter}
+              onFilterChange={setFilter}
+              resultCount={visibleGroups.length}
+              totalCount={groups.length}
+              disabled={loading}
+            />
+          }
         />
       )}
 

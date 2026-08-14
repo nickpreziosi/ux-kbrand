@@ -317,6 +317,20 @@
       "updated": "آخر تحديث",
       "formats": "الصيغ"
     },
+    "filters": {
+      "searchLabel": "البحث في الموارد",
+      "categoryLabel": "الفئة",
+      "visibilityLabel": "الظهور",
+      "statusLabel": "الحالة",
+      "allCategories": "كل الفئات",
+      "allVisibility": "كل مستويات الظهور",
+      "allStatuses": "كل الحالات",
+      "clear": "مسح",
+      "clearAriaLabel": "مسح كل عوامل التصفية",
+      "resultCount": "عرض {count} من {total, plural, one {# مورد} other {# موارد}}",
+      "totalCount": "{count, plural, one {# مورد} other {# موارد}}",
+      "emptyMessage": "لا توجد موارد تطابق البحث أو عوامل التصفية."
+    },
     "visibility": {
       "public": "عام",
       "employee": "الموظفون"

@@ -317,6 +317,20 @@
       "updated": "Updated",
       "formats": "Formats"
     },
+    "filters": {
+      "searchLabel": "Search assets",
+      "categoryLabel": "Category",
+      "visibilityLabel": "Visibility",
+      "statusLabel": "Status",
+      "allCategories": "All categories",
+      "allVisibility": "All visibility",
+      "allStatuses": "All statuses",
+      "clear": "Clear",
+      "clearAriaLabel": "Clear all filters",
+      "resultCount": "Showing {count} of {total, plural, one {# asset} other {# assets}}",
+      "totalCount": "{count, plural, one {# asset} other {# assets}}",
+      "emptyMessage": "No assets match your search or filters."
+    },
     "visibility": {
       "public": "Public",
       "employee": "Employees"
