@@ -70,7 +70,7 @@
       },
       "typography": {
         "title": "Tipografía",
-        "description": "Sora, la escala tipográfica y el kit de fuentes descargable."
+        "description": "Sora, la jerarquía tipográfica y los archivos de fuentes."
       },
       "imagery": {
         "title": "Imágenes",
@@ -179,25 +179,41 @@
     },
     "typography": {
       "title": "Tipografía",
-      "subtitle": "Una sola tipografía, una escala fija y los tokens que la acompañan.",
-      "typefaceLabel": "Tipografía de marca",
-      "typefaceDescription": "Sora sostiene todas las superficies de K Lab: interfaz de producto, presentaciones y marketing. Pesos de 300 a 700; los títulos usan 600–700 y el cuerpo 400.",
-      "weightsTitle": "Pesos",
-      "specimenText": "Finanzas al ritmo de tu negocio",
-      "scaleTitle": "Escala tipográfica",
-      "scaleDescription": "Tamaño, peso e interlineado de cada nivel. Descarga los tokens abajo para usarlos en código.",
-      "scale": {
-        "display": "Display",
-        "h1": "Título 1",
-        "h2": "Título 2",
-        "h3": "Título 3",
-        "bodyLarge": "Cuerpo grande",
-        "body": "Cuerpo",
-        "caption": "Leyenda",
-        "overline": "Antetítulo"
+      "subtitle": "La tipografía oficial de K Lab de las directrices de marca.",
+      "typefaceTitle": "Tipografía",
+      "typefaceDescription": "Nuestra tipografía de marca es limpia, moderna y muy legible. Sus formas reflejan la personalidad de la marca: segura, clara y cercana. Esta familia versátil se usa en todas las comunicaciones para crear una voz tipográfica consistente y unificada.",
+      "weights": {
+        "light": "Sora — Light",
+        "regular": "Sora — Regular",
+        "bold": "Sora — Bold",
+        "extraBold": "Sora — ExtraBold"
       },
-      "downloadsTitle": "Kit de fuentes y tokens",
-      "downloadsDescription": "Todo lo necesario para reproducir la tipografía de K Lab en una nueva superficie.",
+      "hierarchyTitle": "Jerarquía tipográfica",
+      "hierarchyDescription": "Nuestra jerarquía usa pesos y tamaños distintos para crear contenido claro y fácil de escanear. Sigue esta estructura para encabezados, subencabezados y cuerpo de texto para garantizar legibilidad y consistencia.",
+      "hierarchy": {
+        "header": {
+          "label": "Encabezado",
+          "specimen": "Keep it Short & Catchy"
+        },
+        "subHeader": {
+          "label": "Subencabezado",
+          "specimen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        "body": {
+          "label": "Texto de cuerpo",
+          "specimen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt."
+        },
+        "annotations": {
+          "label": "Anotaciones",
+          "specimen": "Visit K Lab.email to learn more"
+        },
+        "button": {
+          "label": "Botón",
+          "specimen": "Learn more"
+        }
+      },
+      "downloadsTitle": "Archivos de fuentes",
+      "downloadsDescription": "La familia Sora para usar en las comunicaciones de marca.",
       "loadError": "No pudimos cargar los archivos de fuentes. Inténtalo de nuevo."
     },
     "imagery": {

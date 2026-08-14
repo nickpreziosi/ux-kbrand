@@ -70,7 +70,7 @@
       },
       "typography": {
         "title": "Typography",
-        "description": "Sora, the type scale, and the downloadable font kit."
+        "description": "Sora, the type hierarchy, and the downloadable font files."
       },
       "imagery": {
         "title": "Imagery",
@@ -179,25 +179,41 @@
     },
     "typography": {
       "title": "Typography",
-      "subtitle": "One typeface, a fixed scale, and the tokens that ship with it.",
-      "typefaceLabel": "Brand typeface",
-      "typefaceDescription": "Sora carries every K Lab surface — product UI, decks, and marketing. Weights 300 to 700; headings sit at 600–700, body at 400.",
-      "weightsTitle": "Weights",
-      "specimenText": "Finance that moves at the speed of your business",
-      "scaleTitle": "Type scale",
-      "scaleDescription": "Size, weight, and line height for each step. Download the tokens below to use them in code.",
-      "scale": {
-        "display": "Display",
-        "h1": "Heading 1",
-        "h2": "Heading 2",
-        "h3": "Heading 3",
-        "bodyLarge": "Body large",
-        "body": "Body",
-        "caption": "Caption",
-        "overline": "Overline"
+      "subtitle": "The official K Lab typeface from the brand guidelines.",
+      "typefaceTitle": "Typeface",
+      "typefaceDescription": "Our brand typeface is clean, modern, and highly legible. Its letterforms reflect our brand's personality: confident, clear, and approachable. This versatile font family is used across all brand communications to create a consistent and unified typographic voice.",
+      "weights": {
+        "light": "Sora — Light",
+        "regular": "Sora — Regular",
+        "bold": "Sora — Bold",
+        "extraBold": "Sora — ExtraBold"
       },
-      "downloadsTitle": "Font kit & tokens",
-      "downloadsDescription": "Everything you need to reproduce K Lab typography in a new surface.",
+      "hierarchyTitle": "Type hierarchy",
+      "hierarchyDescription": "Our type hierarchy uses distinct weights and sizes to create clear and scannable content. Follow this structure for headers, sub-headers, and body text to ensure legibility and consistency.",
+      "hierarchy": {
+        "header": {
+          "label": "Header",
+          "specimen": "Keep it Short & Catchy"
+        },
+        "subHeader": {
+          "label": "Sub-header",
+          "specimen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        "body": {
+          "label": "Body text",
+          "specimen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt."
+        },
+        "annotations": {
+          "label": "Annotations",
+          "specimen": "Visit K Lab.email to learn more"
+        },
+        "button": {
+          "label": "Button",
+          "specimen": "Learn more"
+        }
+      },
+      "downloadsTitle": "Font files",
+      "downloadsDescription": "The Sora family for use across brand communications.",
       "loadError": "We couldn't load the font files. Please try again."
     },
     "imagery": {

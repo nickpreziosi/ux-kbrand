@@ -70,7 +70,7 @@
       },
       "typography": {
         "title": "الخطوط",
-        "description": "خط Sora، ومقياس الطباعة، وحزمة الخطوط القابلة للتنزيل."
+        "description": "خط Sora، والتسلسل الهرمي للطباعة، وملفات الخطوط القابلة للتنزيل."
       },
       "imagery": {
         "title": "الصور",
@@ -179,25 +179,41 @@
     },
     "typography": {
       "title": "الخطوط",
-      "subtitle": "خط واحد، ومقياس ثابت، والرموز المرافقة له.",
-      "typefaceLabel": "خط العلامة",
-      "typefaceDescription": "يحمل خط Sora كل واجهات K Lab: واجهة المنتج والعروض التقديمية والتسويق. الأوزان من ٣٠٠ إلى ٧٠٠؛ العناوين بوزن ٦٠٠–٧٠٠ والنص الأساسي بوزن ٤٠٠.",
-      "weightsTitle": "الأوزان",
-      "specimenText": "تمويل يواكب إيقاع أعمالك",
-      "scaleTitle": "مقياس الطباعة",
-      "scaleDescription": "الحجم والوزن وارتفاع السطر لكل مستوى. نزّل الرموز أدناه لاستخدامها في الكود.",
-      "scale": {
-        "display": "عرض",
-        "h1": "عنوان ١",
-        "h2": "عنوان ٢",
-        "h3": "عنوان ٣",
-        "bodyLarge": "نص كبير",
-        "body": "نص أساسي",
-        "caption": "تعليق",
-        "overline": "عنوان علوي"
+      "subtitle": "خط K Lab الرسمي من إرشادات العلامة.",
+      "typefaceTitle": "الخط",
+      "typefaceDescription": "خط علامتنا نظيف وحديث وواضح للغاية. تعكس أشكاله شخصية العلامة: واثقة وواضحة وقريبة. تُستخدم هذه العائلة متعددة الاستخدامات في جميع اتصالات العلامة لخلق صوت طباعي متسق وموحّد.",
+      "weights": {
+        "light": "Sora — Light",
+        "regular": "Sora — Regular",
+        "bold": "Sora — Bold",
+        "extraBold": "Sora — ExtraBold"
       },
-      "downloadsTitle": "حزمة الخطوط والرموز",
-      "downloadsDescription": "كل ما تحتاجه لتطبيق طباعة K Lab على واجهة جديدة.",
+      "hierarchyTitle": "التسلسل الهرمي للطباعة",
+      "hierarchyDescription": "يستخدم تسلسلنا الهرمي أوزاناً وأحجاماً مختلفة لإنشاء محتوى واضح وسهل المسح. اتبع هذا الهيكل للعناوين والعناوين الفرعية والنص الأساسي لضمان الوضوح والاتساق.",
+      "hierarchy": {
+        "header": {
+          "label": "عنوان",
+          "specimen": "Keep it Short & Catchy"
+        },
+        "subHeader": {
+          "label": "عنوان فرعي",
+          "specimen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        "body": {
+          "label": "نص أساسي",
+          "specimen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt."
+        },
+        "annotations": {
+          "label": "تعليقات",
+          "specimen": "Visit K Lab.email to learn more"
+        },
+        "button": {
+          "label": "زر",
+          "specimen": "Learn more"
+        }
+      },
+      "downloadsTitle": "ملفات الخطوط",
+      "downloadsDescription": "عائلة Sora للاستخدام في اتصالات العلامة.",
       "loadError": "تعذّر تحميل ملفات الخطوط. يرجى المحاولة مرة أخرى."
     },
     "imagery": {
