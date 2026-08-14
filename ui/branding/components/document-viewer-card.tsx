@@ -12,6 +12,7 @@ import {
 import { Download, ExternalLink, FileText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import { assetDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
 
 interface DocumentViewerCardProps {
   asset?: BrandAsset;
@@ -88,9 +89,7 @@ export function DocumentViewerCard({
             <Button
               variant="accent-brand"
               icon={<Download aria-hidden />}
-              href={asset.file.downloadUrl}
-              target="_blank"
-              rel="noopener"
+              href={assetDownloadHref(asset)}
             >
               {t("download")}
             </Button>
