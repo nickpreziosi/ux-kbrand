@@ -1,8 +1,9 @@
 /**
  * Colour reference for the branding section, in two layers:
  *
- *  - `identity` — K Lab brand colours sampled from the master logo and
- *    background artwork. These are literal values; they are not design tokens.
+ *  - `identity` — official K Lab palette from the brand guidelines (primary,
+ *    secondary, tertiary, and additional). These are literal values; they are
+ *    not design tokens.
  *  - `product` / `status` — the design tokens K Lab apps render with, defined
  *    in app/globals.css (aligned with @k-lab/components). Swatches render the
  *    live CSS variable so they stay true when a token is retuned.
@@ -30,10 +31,12 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
   {
     id: "identity",
     tokens: [
-      { id: "brandBlue", light: "218 58% 28%" },
-      { id: "electricBlue", light: "199 100% 50%" },
-      { id: "deepNavy", light: "214.3 91.3% 4.5%" },
-      { id: "brandWhite", light: "0 0% 100%" },
+      { id: "primaryColor", light: "0 0% 19%" },
+      { id: "secondaryColor", light: "218 58% 28.2%" },
+      { id: "tertiaryColor", light: "199.2 100% 49.6%" },
+      { id: "additionalColor1", light: "0 0% 64.7%" },
+      { id: "additionalColor2", light: "196 82% 71.6%" },
+      { id: "additionalColor3", light: "0 0% 0%" },
     ],
   },
   {
@@ -86,9 +89,19 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
   {
     id: "status",
     tokens: [
-      { id: "success", token: "success", light: "141.1 71.4% 45%" },
+      {
+        id: "success",
+        token: "success",
+        light: "141.1 71.4% 45%",
+        dark: "141.1 71.4% 42%",
+      },
       { id: "warning", token: "warning", light: "51.08 100% 56.47%" },
-      { id: "destructive", token: "destructive", light: "0 84.2% 56%" },
+      {
+        id: "destructive",
+        token: "destructive",
+        light: "0 84.2% 56%",
+        dark: "0 62.8% 50%",
+      },
     ],
   },
 ];

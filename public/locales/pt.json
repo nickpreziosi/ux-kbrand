@@ -139,7 +139,7 @@
       "groups": {
         "identity": {
           "title": "Identidade da marca",
-          "description": "As cores da K Lab, extraídas do logotipo principal e das imagens de fundo."
+          "description": "A paleta oficial da K Lab nas diretrizes da marca."
         },
         "product": {
           "title": "Tokens de design do produto",
@@ -147,25 +147,33 @@
         },
         "status": {
           "title": "Status",
-          "description": "Reservadas para feedback — nunca decorativas."
+          "description": "Reservadas para feedback — nunca decorativas. Sucesso e destrutivo mudam no modo escuro; atenção permanece igual."
         }
       },
       "tokens": {
-        "brandBlue": {
-          "name": "Azul da marca",
-          "usage": "A cor principal da identidade, presente no logotipo principal."
+        "primaryColor": {
+          "name": "Primário",
+          "usage": "A cor principal da identidade — carvão para texto, interface e a versão escura do logotipo."
         },
-        "electricBlue": {
-          "name": "Azul elétrico",
-          "usage": "O destaque nas peças da marca — brilho do chevron, gradientes e realces."
+        "secondaryColor": {
+          "name": "Secundário",
+          "usage": "O azul da K Lab. Logotipo e momentos de marca no tema claro."
         },
-        "deepNavy": {
-          "name": "Azul profundo",
-          "usage": "O fundo escuro por trás das imagens da marca e das versões invertidas."
+        "tertiaryColor": {
+          "name": "Terciário",
+          "usage": "Azul elétrico para destaques, gradientes e acentos no tema escuro."
         },
-        "brandWhite": {
-          "name": "Branco",
-          "usage": "Versões invertidas e fundo claro para o logotipo principal."
+        "additionalColor1": {
+          "name": "Adicional 1",
+          "usage": "Cinza médio para texto e interface de apoio."
+        },
+        "additionalColor2": {
+          "name": "Adicional 2",
+          "usage": "Ciano claro para momentos de marca de apoio."
+        },
+        "additionalColor3": {
+          "name": "Adicional 3",
+          "usage": "Preto puro."
         },
         "accentBrand": {
           "name": "Destaque da marca",

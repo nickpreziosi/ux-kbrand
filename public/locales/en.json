@@ -139,7 +139,7 @@
       "groups": {
         "identity": {
           "title": "Brand identity",
-          "description": "The K Lab colours, sampled from the master logo and background artwork."
+          "description": "The official K Lab palette from the brand guidelines."
         },
         "product": {
           "title": "Product design tokens",
@@ -147,25 +147,33 @@
         },
         "status": {
           "title": "Status",
-          "description": "Reserved for feedback — never decorative."
+          "description": "Reserved for feedback — never decorative. Success and destructive shift in dark mode; warning stays the same."
         }
       },
       "tokens": {
-        "brandBlue": {
-          "name": "Brand blue",
-          "usage": "The primary identity colour, carried by the main logo lockup."
+        "primaryColor": {
+          "name": "Primary",
+          "usage": "The core identity colour — charcoal for type, UI chrome, and the dark lockup."
         },
-        "electricBlue": {
-          "name": "Electric blue",
-          "usage": "The accent in brand artwork — chevron glow, gradients, and highlights."
+        "secondaryColor": {
+          "name": "Secondary",
+          "usage": "The K Lab blue. Logo lockup and light-theme brand moments."
         },
-        "deepNavy": {
-          "name": "Deep navy",
-          "usage": "The dark ground behind brand imagery and reversed lockups."
+        "tertiaryColor": {
+          "name": "Tertiary",
+          "usage": "Electric blue for highlights, gradients, and dark-theme accents."
         },
-        "brandWhite": {
-          "name": "White",
-          "usage": "Reversed lockups and the light ground for the primary logo."
+        "additionalColor1": {
+          "name": "Additional 1",
+          "usage": "Mid grey for supporting text and UI."
+        },
+        "additionalColor2": {
+          "name": "Additional 2",
+          "usage": "Light cyan for supporting brand moments."
+        },
+        "additionalColor3": {
+          "name": "Additional 3",
+          "usage": "Pure black."
         },
         "accentBrand": {
           "name": "Accent brand",
