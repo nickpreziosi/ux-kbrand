@@ -24,6 +24,9 @@ import {
 } from "@k-lab/components";
 import {
   BookOpen,
+  Boxes,
+  Briefcase,
+  Camera,
   FolderCog,
   House,
   Image as ImageIcon,
@@ -32,6 +35,9 @@ import {
   Palette,
   PenTool,
   Presentation,
+  Shapes,
+  Share2,
+  ShoppingBag,
   Type,
   Users,
 } from "lucide-react";
@@ -77,8 +83,11 @@ export function KBrandLayoutClient({
   const pathname = usePathname() ?? "/";
   const t = useTranslations("shell");
   const messages = useMessages();
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading: authLoading } = useAuth();
   const { viewerRole, devRoleOverride, isAdmin } = usePortalRole();
+  // Sign-in action is for settled anonymous sessions only — hidden while auth
+  // is restoring (no signed-in flash) and when a dev role override is active.
+  const showSignIn = !authLoading && !user && viewerRole === "public";
   const tDevRole = useTranslations("devTools.roleSwitcher");
   const { locale, changeLocale } = useAppLocaleChange();
 
@@ -123,7 +132,13 @@ export function KBrandLayoutClient({
           { href: "/branding/logo", label: t("nav.logo"), icon: PenTool },
           { href: "/branding/colors", label: t("nav.colors"), icon: Palette },
           { href: "/branding/typography", label: t("nav.typography"), icon: Type },
+          { href: "/branding/iconography", label: t("nav.iconography"), icon: Shapes },
           { href: "/branding/imagery", label: t("nav.imagery"), icon: ImageIcon },
+          { href: "/branding/photography", label: t("nav.photography"), icon: Camera },
+          { href: "/branding/corporate-assets", label: t("nav.corporateAssets"), icon: Briefcase },
+          { href: "/branding/social-media", label: t("nav.socialMedia"), icon: Share2 },
+          { href: "/branding/merchandise", label: t("nav.merchandise"), icon: ShoppingBag },
+          { href: "/branding/sub-brands", label: t("nav.subBrands"), icon: Boxes },
           { href: "/branding/guidelines", label: t("nav.guidelines"), icon: BookOpen },
         ],
       },
@@ -258,7 +273,7 @@ export function KBrandLayoutClient({
         brand={<KBrandSidebarBrand />}
         footer={footer}
         navbarRightSlot={
-          !user ? (
+          showSignIn ? (
             <Button
               variant="accent-brand"
               size="sm"

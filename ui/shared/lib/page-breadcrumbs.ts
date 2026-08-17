@@ -11,7 +11,13 @@ export const KBRAND_BREADCRUMB_ROUTES = [
   "/branding/logo",
   "/branding/colors",
   "/branding/typography",
+  "/branding/iconography",
   "/branding/imagery",
+  "/branding/photography",
+  "/branding/corporate-assets",
+  "/branding/social-media",
+  "/branding/merchandise",
+  "/branding/sub-brands",
   "/branding/guidelines",
   "/sales",
   "/admin/assets",
@@ -25,7 +31,13 @@ type NavMessages = Partial<{
   logo: string;
   colors: string;
   typography: string;
+  iconography: string;
   imagery: string;
+  photography: string;
+  corporateAssets: string;
+  socialMedia: string;
+  merchandise: string;
+  subBrands: string;
   guidelines: string;
   sales: string;
   admin: string;
@@ -50,10 +62,16 @@ export function useKBrandBreadcrumbConfig(): PageBreadcrumbConfig {
       rootLabel: nav.home ?? "Home",
       segmentLabelMap: {
         branding: nav.branding ?? "Branding",
-        logo: nav.logo ?? "Logo",
+        logo: nav.logo ?? "Logos",
         colors: nav.colors ?? "Colors",
         typography: nav.typography ?? "Typography",
+        iconography: nav.iconography ?? "Iconography",
         imagery: nav.imagery ?? "Imagery",
+        photography: nav.photography ?? "Photography",
+        "corporate-assets": nav.corporateAssets ?? "Corporate assets",
+        "social-media": nav.socialMedia ?? "Social media",
+        merchandise: nav.merchandise ?? "Merchandise",
+        "sub-brands": nav.subBrands ?? "Sub-brands",
         guidelines: nav.guidelines ?? "Brand guidelines",
         sales: nav.sales ?? "Sales resources",
         admin: nav.admin ?? "Admin",

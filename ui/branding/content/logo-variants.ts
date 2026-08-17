@@ -19,8 +19,25 @@ export const LOGO_VARIANTS: LogoVariant[] = [
   { id: "logomark", matchTags: ["mark"], surface: "light" },
 ];
 
-/** Do / don't entries rendered as two lists; copy keyed per locale. */
+/** Do / don't entries rendered as two lists; copy keyed per locale.
+ *  Don'ts mirror the six misuse cases documented in the brand guidelines. */
 export const LOGO_RULE_KEYS = {
   dos: ["clearspace", "approvedFiles", "contrast", "scaleProportionally"],
-  donts: ["recolor", "distort", "effects", "rebuild"],
+  donts: [
+    "stretch",
+    "rotate",
+    "containers",
+    "flipHorizontal",
+    "flipVertical",
+    "shear",
+  ],
 } as const;
+
+/** Primary logo treatments from the guidelines: each lockup on its only
+ *  approved surface. Resolved against the catalog by tag, like variants. */
+export const PRIMARY_LOGO_TREATMENTS = [
+  { id: "whiteOnBlack", matchTags: ["reversed", "logo"], surface: "dark" },
+  { id: "greyOnWhite", matchTags: ["dark", "logo"], surface: "light" },
+] as const;
+
+export type PrimaryLogoTreatment = (typeof PRIMARY_LOGO_TREATMENTS)[number];

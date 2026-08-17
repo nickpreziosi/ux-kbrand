@@ -41,6 +41,15 @@ export const SEED_PORTAL_USERS: PortalUser[] = [
     lastLoginAt: "2026-08-08T14:40:00.000Z",
   },
   {
+    id: "usr-009",
+    displayName: "Carolina",
+    email: "carolina@k-lab.ai",
+    role: "admin",
+    status: "active",
+    createdAt: "2026-08-17T09:00:00.000Z",
+    updatedAt: "2026-08-17T09:00:00.000Z",
+  },
+  {
     id: "usr-003",
     displayName: "Diego Fonseca",
     email: "diego.fonseca@k-lab.ai",

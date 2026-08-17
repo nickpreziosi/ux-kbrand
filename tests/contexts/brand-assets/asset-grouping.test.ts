@@ -138,9 +138,10 @@ describe("groupBrandAssets", () => {
     const logos = SEED_BRAND_ASSETS.filter((seed) => seed.category === "logos");
     const groups = groupBrandAssets(logos);
 
-    // 5 grouped lockups/marks plus 3 grouped product logos.
+    // 5 grouped K Lab lockups/marks plus 4 grouped product logos
+    // (dimensional + flat dark lockups for K Rails and K Talk; Kena retired).
     expect(logos.length).toBeGreaterThan(groups.length);
-    expect(groups).toHaveLength(8);
+    expect(groups).toHaveLength(9);
 
     const product = groups.find((group) => group.id === "k-rails-logo");
     expect(product?.title).toBe("K Rails — product logo");

@@ -6,10 +6,16 @@ import { Button, Hero, Tile } from "@k-lab/components";
 import {
   ArrowRight,
   BookOpen,
+  Boxes,
+  Briefcase,
+  Camera,
   Image as ImageIcon,
   Palette,
   PenTool,
   Presentation,
+  Shapes,
+  Share2,
+  ShoppingBag,
   Type,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -24,7 +30,13 @@ const BRANDING_TILES: { id: string; href: string; icon: LucideIcon }[] = [
   { id: "logo", href: "/branding/logo", icon: PenTool },
   { id: "colors", href: "/branding/colors", icon: Palette },
   { id: "typography", href: "/branding/typography", icon: Type },
+  { id: "iconography", href: "/branding/iconography", icon: Shapes },
   { id: "imagery", href: "/branding/imagery", icon: ImageIcon },
+  { id: "photography", href: "/branding/photography", icon: Camera },
+  { id: "corporateAssets", href: "/branding/corporate-assets", icon: Briefcase },
+  { id: "socialMedia", href: "/branding/social-media", icon: Share2 },
+  { id: "merchandise", href: "/branding/merchandise", icon: ShoppingBag },
+  { id: "subBrands", href: "/branding/sub-brands", icon: Boxes },
   { id: "guidelines", href: "/branding/guidelines", icon: BookOpen },
 ];
 
@@ -32,8 +44,12 @@ export function HomeView() {
   const t = useTranslations("home");
   const tSections = useTranslations("branding.sections");
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { viewerRole } = usePortalRole();
+  // Only invite anonymous visitors to sign in: hidden while the session is
+  // still restoring (avoids a signed-in flash) and when a dev role override
+  // is previewing an employee/admin session without a real user.
+  const showEmployeeSignIn = !authLoading && !user && viewerRole === "public";
 
   return (
     <div className="space-y-8">
@@ -54,7 +70,7 @@ export function HomeView() {
             >
               {t("browseAssets")}
             </Button>
-            {!user ? (
+            {showEmployeeSignIn ? (
               <Button
                 variant="outline"
                 size="lg"

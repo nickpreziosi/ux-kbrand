@@ -17,11 +17,16 @@ const EXPECTED_VARIANT_FORMATS: Record<string, LogoFormat[]> = {
   logomark: ["png", "svg", "pdf", "ai"],
 };
 
-const PRODUCT_TAGS = ["k-rails", "k-talk", "kena"] as const;
+const PRODUCT_TAGS = ["k-rails", "k-talk"] as const;
+
+/** Kena is retired (Brand & Sales Portal Expansion) — no asset may carry it. */
+const RETIRED_PRODUCT_TAGS = ["kena"] as const;
 
 const OBSOLETE_FILE_NAMES = [
   "k-lab-logo-2025.png",
   "k-lab-logomark-2025.png",
+  "kena.webp",
+  "kena-keyvisual.webp",
 ];
 
 describe("logo catalog (rebrand)", () => {
@@ -34,6 +39,28 @@ describe("logo catalog (rebrand)", () => {
       const match = logoAssets.find((asset) => asset.tags.includes(tag));
       expect(match).toBeDefined();
       expect(match!.tags).toContain("product");
+    }
+  });
+
+  it("ships flat dark lockups (png + svg) for K Rails and K Talk", () => {
+    for (const tag of PRODUCT_TAGS) {
+      const darkLockups = logoAssets.filter(
+        (asset) => asset.tags.includes(tag) && asset.tags.includes("dark"),
+      );
+      const formats = darkLockups.map((asset) => formatFromAsset(asset)).sort();
+      expect(formats).toEqual(["png", "svg"]);
+    }
+  });
+
+  it("carries no retired product brand anywhere in the catalog", () => {
+    for (const tag of RETIRED_PRODUCT_TAGS) {
+      const matches = SEED_BRAND_ASSETS.filter(
+        (asset) =>
+          asset.tags.includes(tag) ||
+          asset.title.toLowerCase().includes(tag) ||
+          asset.file.fileName.includes(tag),
+      );
+      expect(matches).toEqual([]);
     }
   });
 

@@ -4,7 +4,7 @@
       "home": "Inicio",
       "branding": "Marca",
       "overview": "Resumen",
-      "logo": "Logotipo",
+      "logo": "Logotipos",
       "colors": "Colores",
       "typography": "Tipografía",
       "imagery": "Imágenes",
@@ -12,7 +12,13 @@
       "sales": "Recursos de ventas",
       "admin": "Admin",
       "adminAssets": "Gestionar recursos",
-      "adminUsers": "Usuarios y accesos"
+      "adminUsers": "Usuarios y accesos",
+      "iconography": "Iconografía",
+      "photography": "Fotografía",
+      "corporateAssets": "Recursos corporativos",
+      "socialMedia": "Redes sociales",
+      "merchandise": "Merchandising",
+      "subBrands": "Submarcas"
     },
     "signIn": "Iniciar sesión",
     "userNameFallback": "Usuario",
@@ -61,8 +67,8 @@
   "branding": {
     "sections": {
       "logo": {
-        "title": "Logotipo",
-        "description": "Versiones, área de respeto, tamaños mínimos y reglas de uso."
+        "title": "Logotipos",
+        "description": "Composiciones, área de protección, tamaños mínimos y reglas de uso."
       },
       "colors": {
         "title": "Colores",
@@ -79,6 +85,30 @@
       "guidelines": {
         "title": "Guías de marca",
         "description": "Consulta o descarga el documento completo de guías de marca."
+      },
+      "iconography": {
+        "title": "Iconografía",
+        "description": "El set de iconos de producto, estilo de trazo y reglas de uso."
+      },
+      "photography": {
+        "title": "Fotografía",
+        "description": "Principios fotográficos, renders aprobados y pautas de uso."
+      },
+      "corporateAssets": {
+        "title": "Recursos corporativos",
+        "description": "Papel membretado, portadas de documentos y tarjetas de visita."
+      },
+      "socialMedia": {
+        "title": "Redes sociales",
+        "description": "Avatares de perfil y banners para los canales sociales."
+      },
+      "merchandise": {
+        "title": "Merchandising",
+        "description": "Tratamientos aprobados para ropa, artículos de bebida y papelería."
+      },
+      "subBrands": {
+        "title": "Submarcas",
+        "description": "Las composiciones de la familia de productos: K Rails, K Talk, K Risk y K Leads."
       }
     },
     "overview": {
@@ -100,14 +130,14 @@
       "openInNewTab": "Abrir en una pestaña nueva"
     },
     "logo": {
-      "title": "Logotipo",
+      "title": "Logotipos",
       "subtitle": "Versiones aprobadas y las reglas que las mantienen reconocibles.",
       "loadError": "No pudimos cargar los archivos del logotipo. Inténtalo de nuevo.",
       "clearspaceFullLabel": "Lockup completo",
       "clearspaceIconLabel": "Icono",
       "clearspaceTitle": "Área de respeto y tamaño mínimo",
-      "clearspaceDescription": "Mantén un área de respeto de al menos 1× la altura de la K en cada lado. Nada —texto, imágenes o bordes— debe invadir ese espacio.",
-      "minimumSize": "Tamaño mínimo: 24 px de alto en pantalla y 10 mm en impresión. El ícono puede reducirse hasta 16 px.",
+      "clearspaceDescription": "Mantén un área de protección de al menos el 50% de la altura del símbolo en cada lado. Nada — texto, imágenes o bordes — entra en ese espacio.",
+      "minimumSize": "Tamaño mínimo: nunca reproduzcas el logotipo o la composición completa por debajo de 150px de ancho, ni el símbolo por debajo de 40px.",
       "rulesTitle": "Qué hacer y qué evitar",
       "rules": {
         "dos": {
@@ -117,14 +147,35 @@
           "scaleProportionally": "Escala proporcionalmente desde la esquina."
         },
         "donts": {
-          "recolor": "No cambies el color del logotipo ni le apliques degradados.",
-          "distort": "No estires, comprimas, rotes ni inclines el logotipo.",
-          "effects": "No agregues sombras, contornos ni otros efectos.",
-          "rebuild": "No vuelvas a escribir ni redibujes el logotipo: descárgalo."
+          "stretch": "No estires ni aplastes el logotipo.",
+          "rotate": "No rotes el logotipo.",
+          "containers": "No coloques el logotipo dentro de contenedores o formas.",
+          "flipHorizontal": "No voltees el logotipo horizontalmente.",
+          "flipVertical": "No voltees el logotipo verticalmente.",
+          "shear": "No inclines ni deformes el logotipo."
         }
       },
       "allFilesTitle": "Todos los archivos del logotipo",
-      "allFilesDescription": "Todos los logotipos de K Lab y de producto del catálogo, incluidos los vectoriales para impresión."
+      "allFilesDescription": "Todos los logotipos de K Lab y de producto del catálogo, incluidos los vectoriales para impresión.",
+      "primaryTitle": "Logotipos principales",
+      "primaryDescription": "Los dos tratamientos principales de las guías de marca. Usa cada composición sobre su superficie — nunca las intercambies.",
+      "primaryTreatments": {
+        "whiteOnBlack": {
+          "label": "Blanco sobre negro",
+          "description": "La composición blanca invertida sobre negro y otras superficies oscuras."
+        },
+        "greyOnWhite": {
+          "label": "Gris sobre blanco",
+          "description": "La composición gris carbón sobre blanco y otras superficies claras."
+        }
+      },
+      "cobrandingTitle": "Co-branding",
+      "cobrandingDescription": "Las composiciones con socios combinan el logotipo de K Lab con el del socio a ambos lados de un divisor vertical fino.",
+      "cobranding": {
+        "divider": "Separa los dos logotipos con un divisor vertical fino de la altura del símbolo de K Lab.",
+        "spacing": "Mantén un espacio del 50% del ancho del símbolo entre cada logotipo y el divisor.",
+        "parity": "Escala el logotipo del socio para que ambos nombres se lean a la misma altura."
+      }
     },
     "colors": {
       "title": "Colores",
@@ -154,6 +205,10 @@
         "gradients": {
           "title": "Degradados",
           "description": "Los degradados aportan profundidad al lenguaje visual. Úsalos para destacar interacciones o como fondos inmersivos, nunca en el texto."
+        },
+        "statusColors": {
+          "title": "Colores de estado",
+          "description": "Colores de estado para dashboards de producto — estados aprobado, pendiente, en disputa, crítico, informativo y archivado. Se mantienen separados de la paleta de marca: comunican estado, nunca marca."
         }
       },
       "swatches": {
@@ -169,7 +224,13 @@
         "black": "Negro",
         "primaryGradient": "Degradado primario",
         "secondaryGradient": "Degradado secundario",
-        "tertiaryGradient": "Degradado terciario"
+        "tertiaryGradient": "Degradado terciario",
+        "statusSuccess": "Éxito / Aprobado",
+        "statusPending": "Pendiente",
+        "statusDispute": "En disputa",
+        "statusCritical": "Error crítico",
+        "statusInfo": "Informativo",
+        "statusNeutral": "Neutral / Archivado"
       },
       "gradientUsage": {
         "darkMode": "Para modo oscuro",
@@ -243,6 +304,195 @@
       "companionTitle": "Documentos complementarios",
       "companionDescription": "Material de referencia que acompaña a las guías principales.",
       "sourceNote": "Este documento es la fuente de verdad. Los resúmenes del portal remiten a él."
+    },
+    "iconography": {
+      "title": "Iconografía",
+      "subtitle": "El lenguaje de iconos que mantiene la interfaz del producto coherente con la marca.",
+      "styleTitle": "Estilo de iconos",
+      "placeholderBadge": "Set provisional",
+      "styleDescription": "Un set creado para el ciclo de vida del pago. Los iconos siguen la geometría del símbolo K: trazos geométricos redondeados, un grosor uniforme y sin decoración. Los glifos de Lucide sirven de referencia hasta que llegue el set propio de K Lab.",
+      "samples": {
+        "contract": "Contrato",
+        "purchaseOrder": "Orden de compra",
+        "invoice": "Factura",
+        "approval": "Aprobación",
+        "payment": "Pago",
+        "settlement": "Liquidación",
+        "auditTrail": "Pista de auditoría",
+        "blockchainRecord": "Registro blockchain",
+        "government": "Gobierno",
+        "bankPartner": "Banco socio",
+        "company": "Empresa"
+      },
+      "doTitle": "Sí",
+      "dontTitle": "No",
+      "dos": {
+        "set": "Usa iconos del set aprobado con su grosor de trazo nativo.",
+        "stroke": "Mantén un solo estilo de trazo por pantalla — nunca mezcles iconos rellenos y de contorno.",
+        "size": "Alinea los iconos a la retícula de 16 / 20 / 24px.",
+        "color": "Colorea los iconos con el color de texto de su contexto."
+      },
+      "donts": {
+        "mix": "No mezcles familias de iconos en una misma interfaz.",
+        "fill": "No rellenes iconos de contorno ni redibujes sus formas.",
+        "effects": "No añadas sombras, degradados ni contornos a los iconos.",
+        "logo": "No uses el símbolo de K Lab como icono de interfaz."
+      },
+      "libraryTitle": "Descargas de iconos",
+      "libraryDescription": "Archivos de iconos publicados, con todos los formatos disponibles."
+    },
+    "corporateAssets": {
+      "title": "Recursos corporativos",
+      "subtitle": "Papelería y plantillas de documentos que llevan la marca al día a día del negocio.",
+      "systemTitle": "Sistema de papelería",
+      "placeholderBadge": "Plantillas en preparación",
+      "systemDescription": "Los diseños siguientes reflejan las guías de marca. El equipo de diseño está preparando las plantillas listas para imprimir — usa estas referencias para revisar los diseños hasta que estén disponibles.",
+      "items": {
+        "letterhead": {
+          "title": "Papel membretado",
+          "description": "Hoja blanca con la composición gris carbón arriba a la izquierda, líneas técnicas en la cabecera y amplio espacio en blanco."
+        },
+        "cover": {
+          "title": "Portada de documento",
+          "description": "Portada azul marino oscuro con el key visual y la composición blanca abajo a la izquierda."
+        },
+        "businessCard": {
+          "title": "Tarjeta de visita",
+          "description": "Un diseño limpio con los elementos centrales de la marca — cara oscura con la composición blanca, cara clara con la composición gris carbón."
+        }
+      },
+      "rulesTitle": "Uso",
+      "rules": {
+        "templates": "Parte de las plantillas aprobadas — no reconstruyas documentos desde cero.",
+        "clearspace": "Respeta el área de protección y los tamaños mínimos del logotipo en cada documento.",
+        "typography": "Compón los documentos con Sora para títulos y Arial para el cuerpo de texto."
+      },
+      "libraryTitle": "Plantillas y descargas",
+      "libraryDescription": "Plantillas de papelería publicadas, listas para usar."
+    },
+    "photography": {
+      "title": "Fotografía",
+      "subtitle": "El estilo fotográfico de la marca y los visuales aprobados para usar hoy.",
+      "principlesTitle": "Principios",
+      "placeholderBadge": "Biblioteca en preparación",
+      "principlesDescription": "La biblioteca fotográfica está en producción. Hasta que llegue, sigue estos principios de las guías de marca y usa los renders aprobados de abajo.",
+      "principles": {
+        "mood": {
+          "title": "Ambiente oscuro y técnico",
+          "description": "Escenas azul marino profundo con acentos azules fríos — seguras, precisas, de ingeniería."
+        },
+        "light": {
+          "title": "Luz de neón",
+          "description": "Luz de borde cian y brillo reservados para el símbolo y las superficies clave."
+        },
+        "space": {
+          "title": "Espacio para texto",
+          "description": "Las composiciones mantienen espacio negativo tranquilo para titulares y logotipos."
+        },
+        "people": {
+          "title": "Trabajo real",
+          "description": "Las personas aparecen en contexto — manos, pantallas y momentos reales de producto, nunca poses de stock."
+        }
+      },
+      "doTitle": "Sí",
+      "dontTitle": "No",
+      "dos": {
+        "palette": "Ajusta el color de las imágenes hacia la paleta de marca — azul marino, cian, grises neutros.",
+        "overlay": "Añade una capa oscura cuando el texto se sitúe sobre imágenes.",
+        "focal": "Recorta hacia un punto focal claro y mantén los fondos tranquilos."
+      },
+      "donts": {
+        "stock": "No uses fotografía de stock genérica.",
+        "filters": "No apliques filtros cálidos ni efectos pesados.",
+        "busy": "No acumules imágenes recargadas detrás de textos o logotipos."
+      },
+      "rendersTitle": "Renders aprobados",
+      "rendersDescription": "Renders de producto aprobados para marketing y presentaciones — descárgalos a máxima resolución.",
+      "loadError": "No pudimos cargar las imágenes. Inténtalo de nuevo."
+    },
+    "socialMedia": {
+      "title": "Redes sociales",
+      "subtitle": "Tratamientos de avatar y banner para los canales sociales de K Lab.",
+      "avatarsTitle": "Avatares de perfil",
+      "placeholderBadge": "Maquetas de referencia",
+      "avatarsDescription": "Tres tratamientos aprobados de las guías: el símbolo sobre degradado azul o grafito, y el nombre sobre superficies oscuras con textura. Mantén el símbolo centrado y con tamaño generoso.",
+      "avatars": {
+        "gradientIcon": "Símbolo sobre degradado azul",
+        "graphiteIcon": "Símbolo sobre grafito",
+        "navyWordmark": "Nombre sobre azul marino oscuro"
+      },
+      "bannersTitle": "Banners y portadas",
+      "bannersDescription": "Los banners combinan un fondo de marca con la composición blanca y como máximo un titular corto. Mantén el área segura despejada — las plataformas recortan agresivamente.",
+      "bannerDarkLabel": "Ejemplo de banner oscuro",
+      "bannerGradientLabel": "Ejemplo de banner con degradado",
+      "bannerRulesTitle": "Reglas de banners",
+      "bannerRules": {
+        "lockup": "Usa la composición blanca sobre fondos oscuros o con degradado.",
+        "copySpace": "Un titular como máximo — deja respirar el fondo.",
+        "contrast": "Comprueba el contraste tras el recorte y las capas de cada plataforma."
+      },
+      "specsTitle": "Formatos por plataforma",
+      "specsDescription": "Tamaños de exportación para cada canal.",
+      "libraryTitle": "Descargas para redes",
+      "libraryDescription": "Exportaciones publicadas de avatares y banners para cada canal."
+    },
+    "merchandise": {
+      "title": "Merchandising",
+      "subtitle": "Cómo se muestra la marca en lo que vestimos, usamos y regalamos.",
+      "itemsTitle": "Artículos aprobados",
+      "placeholderBadge": "Fotografía en preparación",
+      "itemsDescription": "La gama de las guías cubre ropa, artículos de bebida y papelería. La fotografía de producto está en camino — los tratamientos siguientes coinciden con las guías.",
+      "items": {
+        "tshirt": {
+          "title": "Camiseta",
+          "description": "Camiseta negra con la insignia de la composición blanca y la K azul facetada con líneas de contorno."
+        },
+        "cap": {
+          "title": "Gorra",
+          "description": "Gorra azul marino con la insignia de la composición bordada en blanco en el frente."
+        },
+        "drinkware": {
+          "title": "Artículos de bebida",
+          "description": "Vasos y tazas azul marino mate con la composición blanca y finas líneas técnicas."
+        },
+        "notebook": {
+          "title": "Libreta",
+          "description": "Libreta de tapa dura envuelta en el key visual de la K de neón con la composición blanca abajo a la izquierda."
+        },
+        "tote": {
+          "title": "Bolsa tote",
+          "description": "Bolsa azul marino con la composición blanca y finas líneas técnicas."
+        }
+      },
+      "rulesTitle": "Reglas de producción",
+      "rules": {
+        "surface": "Produce el merchandising sobre superficies azul marino o negras — nunca materiales brillantes o estampados.",
+        "lockup": "Usa la composición blanca y mantén bordados e impresiones en tamaños legibles.",
+        "linework": "Las líneas técnicas de plano son el único elemento decorativo aprobado.",
+        "approval": "Los nuevos conceptos de merchandising necesitan la aprobación del equipo de marca antes de producirse."
+      },
+      "libraryTitle": "Descargas de arte",
+      "libraryDescription": "Arte de merchandising y archivos de producción publicados."
+    },
+    "subBrands": {
+      "title": "Submarcas",
+      "subtitle": "La familia de productos y el sistema de composiciones que la une a K Lab.",
+      "systemTitle": "El sistema de composición con chevrón",
+      "systemDescription": "Cada submarca combina el símbolo chevrón — derivado de la flecha de la K — con su nombre en la tipografía de marca. Las composiciones son monocromas: gris carbón sobre superficies claras, blanco sobre oscuras. Ninguna submarca tiene color propio.",
+      "rosterTitle": "Familia de productos",
+      "rosterDescription": "Las cuatro submarcas aprobadas. Las marcas retiradas (Kena) no deben aparecer en trabajos nuevos.",
+      "brands": {
+        "kRails": "Capa central de autorización de la plataforma K Lab.",
+        "kRisk": "Motor de crédito y riesgo con IA.",
+        "kLeads": "Descubrimiento de prospectos impulsado por IA.",
+        "kTalk": "Interfaz de IA conversacional."
+      },
+      "assetsPendingBadge": "Recursos pendientes",
+      "downloadsTitle": "Descargas de logotipos",
+      "downloadsDescription": "Todos los logotipos de submarcas aprobados del catálogo, con todos los formatos disponibles.",
+      "keyvisualsTitle": "Key visuals",
+      "keyvisualsDescription": "Arte de campaña de cada submarca, a máxima resolución.",
+      "loadError": "No pudimos cargar los recursos. Inténtalo de nuevo."
     }
   },
   "brand": {
@@ -264,6 +514,21 @@
       },
       "sales-materials": {
         "title": "Materiales de ventas"
+      },
+      "iconography": {
+        "title": "Iconografía"
+      },
+      "photography": {
+        "title": "Fotografía"
+      },
+      "corporate-assets": {
+        "title": "Recursos corporativos"
+      },
+      "social-media": {
+        "title": "Redes sociales"
+      },
+      "merchandise": {
+        "title": "Merchandising"
       }
     }
   },

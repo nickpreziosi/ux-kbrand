@@ -4,7 +4,7 @@
       "home": "Home",
       "branding": "Branding",
       "overview": "Overview",
-      "logo": "Logo",
+      "logo": "Logos",
       "colors": "Colors",
       "typography": "Typography",
       "imagery": "Imagery",
@@ -12,7 +12,13 @@
       "sales": "Sales resources",
       "admin": "Admin",
       "adminAssets": "Manage assets",
-      "adminUsers": "Users & access"
+      "adminUsers": "Users & access",
+      "iconography": "Iconography",
+      "photography": "Photography",
+      "corporateAssets": "Corporate assets",
+      "socialMedia": "Social media",
+      "merchandise": "Merchandise",
+      "subBrands": "Sub-brands"
     },
     "signIn": "Sign in",
     "userNameFallback": "User",
@@ -61,7 +67,7 @@
   "branding": {
     "sections": {
       "logo": {
-        "title": "Logo",
+        "title": "Logos",
         "description": "Lockups, clearspace, minimum sizes, and usage rules."
       },
       "colors": {
@@ -79,6 +85,30 @@
       "guidelines": {
         "title": "Brand guidelines",
         "description": "View or download the complete brand guidelines document."
+      },
+      "iconography": {
+        "title": "Iconography",
+        "description": "The product icon set, stroke style, and usage rules."
+      },
+      "photography": {
+        "title": "Photography",
+        "description": "Photography principles, approved renders, and usage guidance."
+      },
+      "corporateAssets": {
+        "title": "Corporate assets",
+        "description": "Letterhead, document covers, and business cards."
+      },
+      "socialMedia": {
+        "title": "Social media",
+        "description": "Profile avatars and banner treatments for social channels."
+      },
+      "merchandise": {
+        "title": "Merchandise",
+        "description": "Approved apparel, drinkware, and stationery treatments."
+      },
+      "subBrands": {
+        "title": "Sub-brands",
+        "description": "The product family lockups: K Rails, K Talk, K Risk, and K Leads."
       }
     },
     "overview": {
@@ -100,14 +130,14 @@
       "openInNewTab": "Open in a new tab"
     },
     "logo": {
-      "title": "Logo",
+      "title": "Logos",
       "subtitle": "Approved lockups and the rules that keep them recognizable.",
       "loadError": "We couldn't load the logo files. Please try again.",
       "clearspaceFullLabel": "Full lockup",
       "clearspaceIconLabel": "Icon",
       "clearspaceTitle": "Clearspace & minimum size",
-      "clearspaceDescription": "Keep clearspace of at least 1× the height of the K on every side. Nothing — text, imagery, or edges — enters that space.",
-      "minimumSize": "Minimum size: 24px height on screen, 10mm in print. The icon mark may go down to 16px.",
+      "clearspaceDescription": "Keep clearspace of at least 50% of the logomark height on every side. Nothing — text, imagery, or edges — enters that space.",
+      "minimumSize": "Minimum size: never render the wordmark or the full lockup below 150px wide, or the logomark below 40px.",
       "rulesTitle": "Do & don't",
       "rules": {
         "dos": {
@@ -117,14 +147,35 @@
           "scaleProportionally": "Scale proportionally from the corner."
         },
         "donts": {
-          "recolor": "Don't recolor the logo or apply gradients to it.",
-          "distort": "Don't stretch, squash, rotate, or skew the lockup.",
-          "effects": "Don't add shadows, outlines, or other effects.",
-          "rebuild": "Don't retype or redraw the wordmark — download it."
+          "stretch": "Don't stretch or squash the logo.",
+          "rotate": "Don't rotate the logo.",
+          "containers": "Don't place the logo inside containers or holding shapes.",
+          "flipHorizontal": "Don't flip the logo horizontally.",
+          "flipVertical": "Don't flip the logo vertically.",
+          "shear": "Don't shear or skew the logo."
         }
       },
       "allFilesTitle": "All logo files",
-      "allFilesDescription": "Every K Lab and product logo in the catalog, including vector masters for print."
+      "allFilesDescription": "Every K Lab and product logo in the catalog, including vector masters for print.",
+      "primaryTitle": "Primary logos",
+      "primaryDescription": "The two core treatments from the brand guidelines. Match the lockup to its surface — never swap them.",
+      "primaryTreatments": {
+        "whiteOnBlack": {
+          "label": "White on black",
+          "description": "The reversed white lockup on black and other dark surfaces."
+        },
+        "greyOnWhite": {
+          "label": "Grey on white",
+          "description": "The charcoal grey lockup on white and other light surfaces."
+        }
+      },
+      "cobrandingTitle": "Co-branding",
+      "cobrandingDescription": "Partner lockups pair the K Lab logo with the partner logo on either side of a thin vertical divider.",
+      "cobranding": {
+        "divider": "Separate the two logos with a thin vertical divider the height of the K Lab logomark.",
+        "spacing": "Keep a gap of 50% of the logomark width between each logo and the divider.",
+        "parity": "Scale the partner logo so both wordmarks read at the same height."
+      }
     },
     "colors": {
       "title": "Colors",
@@ -154,6 +205,10 @@
         "gradients": {
           "title": "Gradients",
           "description": "Gradients add depth and dimension to our visual language. They should be used to highlight key interactions or as immersive backgrounds, never for body text."
+        },
+        "statusColors": {
+          "title": "Status colors",
+          "description": "Data-viz state colors for product dashboards — approved, pending, disputed, critical, informational, and archived states. Kept separate from the brand palette: they signal state, never brand."
         }
       },
       "swatches": {
@@ -169,7 +224,13 @@
         "black": "Black",
         "primaryGradient": "Primary gradient",
         "secondaryGradient": "Secondary gradient",
-        "tertiaryGradient": "Tertiary gradient"
+        "tertiaryGradient": "Tertiary gradient",
+        "statusSuccess": "Success / Approved",
+        "statusPending": "Pending",
+        "statusDispute": "In dispute",
+        "statusCritical": "Critical error",
+        "statusInfo": "Informational",
+        "statusNeutral": "Neutral / Archived"
       },
       "gradientUsage": {
         "darkMode": "For dark mode",
@@ -243,6 +304,195 @@
       "companionTitle": "Companion documents",
       "companionDescription": "Reference material that sits alongside the main guidelines.",
       "sourceNote": "This document is the source of truth. The summaries elsewhere in the portal point back to it."
+    },
+    "iconography": {
+      "title": "Iconography",
+      "subtitle": "The icon language that keeps product UI consistent with the brand.",
+      "styleTitle": "Icon style",
+      "placeholderBadge": "Placeholder set",
+      "styleDescription": "A set built for the payment lifecycle. Icons follow the geometry of the K mark: rounded geometric strokes, one consistent weight, no decoration. Lucide glyphs stand in below until the bespoke K Lab set ships.",
+      "samples": {
+        "contract": "Contract",
+        "purchaseOrder": "Purchase Order",
+        "invoice": "Invoice",
+        "approval": "Approval",
+        "payment": "Payment",
+        "settlement": "Settlement",
+        "auditTrail": "Audit Trail",
+        "blockchainRecord": "Blockchain Record",
+        "government": "Government",
+        "bankPartner": "Bank Partner",
+        "company": "Company"
+      },
+      "doTitle": "Do",
+      "dontTitle": "Don't",
+      "dos": {
+        "set": "Use icons from the approved set at their native stroke weight.",
+        "stroke": "Keep one stroke style per screen — never mix filled and outlined icons.",
+        "size": "Align icons to the 16 / 20 / 24px grid.",
+        "color": "Color icons with the text color of their context."
+      },
+      "donts": {
+        "mix": "Don't mix icon families in one interface.",
+        "fill": "Don't fill outlined icons or redraw their shapes.",
+        "effects": "Don't add shadows, gradients, or outlines to icons.",
+        "logo": "Don't use the K Lab logomark as an interface icon."
+      },
+      "libraryTitle": "Icon downloads",
+      "libraryDescription": "Published icon files, with every available format."
+    },
+    "corporateAssets": {
+      "title": "Corporate assets",
+      "subtitle": "Stationery and document templates that carry the brand into daily business.",
+      "systemTitle": "Stationery system",
+      "placeholderBadge": "Templates pending",
+      "systemDescription": "The layouts below mirror the brand guidelines. Print-ready templates are being prepared by the design team — use these references to review layouts until they ship.",
+      "items": {
+        "letterhead": {
+          "title": "Letterhead",
+          "description": "White sheet with the charcoal lockup top-left, blueprint linework across the header, and generous white body space."
+        },
+        "cover": {
+          "title": "Document cover",
+          "description": "Dark navy cover with the key visual artwork and the white lockup bottom-left."
+        },
+        "businessCard": {
+          "title": "Business card",
+          "description": "A clean layout with core brand elements — dark face with the white lockup, light face with the charcoal lockup."
+        }
+      },
+      "rulesTitle": "Usage",
+      "rules": {
+        "templates": "Start from the approved templates — don't rebuild documents from scratch.",
+        "clearspace": "Respect logo clearspace and minimum sizes on every document.",
+        "typography": "Set documents in Sora for headings and Arial for body text."
+      },
+      "libraryTitle": "Templates & downloads",
+      "libraryDescription": "Published stationery templates, ready to use."
+    },
+    "photography": {
+      "title": "Photography",
+      "subtitle": "The photographic mood of the brand and the approved visuals to use today.",
+      "principlesTitle": "Principles",
+      "placeholderBadge": "Library pending",
+      "principlesDescription": "The photography library is in production. Until it ships, follow these principles from the brand guidelines and use the approved renders below.",
+      "principles": {
+        "mood": {
+          "title": "Dark, technical mood",
+          "description": "Deep navy scenes with cool blue accents — confident, precise, engineered."
+        },
+        "light": {
+          "title": "Neon light",
+          "description": "Cyan edge-light and glow reserved for the brandmark and key surfaces."
+        },
+        "space": {
+          "title": "Copy space",
+          "description": "Compositions keep calm negative space for headlines and lockups."
+        },
+        "people": {
+          "title": "Real work",
+          "description": "People appear in context — hands, screens, and real product moments, never staged stock poses."
+        }
+      },
+      "doTitle": "Do",
+      "dontTitle": "Don't",
+      "dos": {
+        "palette": "Grade imagery toward the brand palette — navy, cyan, neutral greys.",
+        "overlay": "Add a dark overlay when text sits on imagery.",
+        "focal": "Crop to a clear focal point and keep backgrounds calm."
+      },
+      "donts": {
+        "stock": "Don't use generic stock photography.",
+        "filters": "Don't apply warm filters or heavy effects.",
+        "busy": "Don't stack busy imagery behind text or logos."
+      },
+      "rendersTitle": "Approved renders",
+      "rendersDescription": "Product renders cleared for marketing and deck use — download at full resolution.",
+      "loadError": "We couldn't load the imagery. Please try again."
+    },
+    "socialMedia": {
+      "title": "Social media",
+      "subtitle": "Avatar and banner treatments for K Lab's social channels.",
+      "avatarsTitle": "Profile avatars",
+      "placeholderBadge": "Reference mockups",
+      "avatarsDescription": "Three approved treatments from the guidelines: the logomark on the blue gradient or graphite field, and the wordmark on dark textured surfaces. Keep the mark centered and generously sized.",
+      "avatars": {
+        "gradientIcon": "Logomark on blue gradient",
+        "graphiteIcon": "Logomark on graphite",
+        "navyWordmark": "Wordmark on dark navy"
+      },
+      "bannersTitle": "Banners & covers",
+      "bannersDescription": "Banners pair a brand background with the white lockup and at most one short headline. Keep the safe area clear — platforms crop aggressively.",
+      "bannerDarkLabel": "Dark banner example",
+      "bannerGradientLabel": "Gradient banner example",
+      "bannerRulesTitle": "Banner rules",
+      "bannerRules": {
+        "lockup": "Use the white lockup on dark or gradient backgrounds.",
+        "copySpace": "One headline maximum — let the background breathe.",
+        "contrast": "Check contrast after platform cropping and overlays."
+      },
+      "specsTitle": "Platform formats",
+      "specsDescription": "Export sizes for each channel.",
+      "libraryTitle": "Social downloads",
+      "libraryDescription": "Published avatar and banner exports for each channel."
+    },
+    "merchandise": {
+      "title": "Merchandise",
+      "subtitle": "How the brand shows up on the things we wear, use, and give away.",
+      "itemsTitle": "Approved items",
+      "placeholderBadge": "Photography pending",
+      "itemsDescription": "The guideline range covers apparel, drinkware, and stationery. Product photography is on the way — the treatments below match the guideline artboards.",
+      "items": {
+        "tshirt": {
+          "title": "T-shirt",
+          "description": "Black tee with the white lockup badge and the faceted blue K artwork with contour linework."
+        },
+        "cap": {
+          "title": "Cap",
+          "description": "Navy cap with the white embroidered lockup badge on the front."
+        },
+        "drinkware": {
+          "title": "Drinkware",
+          "description": "Matte navy tumblers and mugs with the white lockup and fine technical linework."
+        },
+        "notebook": {
+          "title": "Notebook",
+          "description": "Hardcover notebook wrapped in the neon K key visual with the white lockup bottom-left."
+        },
+        "tote": {
+          "title": "Tote Bag",
+          "description": "Navy tote with the white lockup and fine technical linework."
+        }
+      },
+      "rulesTitle": "Production rules",
+      "rules": {
+        "surface": "Produce merchandise on navy or black surfaces — never bright or patterned stock.",
+        "lockup": "Use the white lockup and keep embroidery and prints at legible sizes.",
+        "linework": "Technical blueprint linework is the only approved decorative element.",
+        "approval": "New merchandise concepts need brand-team approval before production."
+      },
+      "libraryTitle": "Artwork downloads",
+      "libraryDescription": "Published merchandise artwork and production files."
+    },
+    "subBrands": {
+      "title": "Sub-brands",
+      "subtitle": "The product family and the lockup system that binds it to K Lab.",
+      "systemTitle": "The chevron lockup system",
+      "systemDescription": "Every sub-brand pairs the chevron mark — drawn from the arrow of the K — with its name in the brand typeface. Lockups are monochrome: charcoal on light surfaces, white on dark. No sub-brand carries its own color.",
+      "rosterTitle": "Product family",
+      "rosterDescription": "The four approved sub-brands. Retired marks (Kena) must not appear in new work.",
+      "brands": {
+        "kRails": "Core authorization layer of the K Lab platform.",
+        "kRisk": "AI credit and risk engine.",
+        "kLeads": "AI-powered prospect discovery.",
+        "kTalk": "Conversational AI interface."
+      },
+      "assetsPendingBadge": "Assets pending",
+      "downloadsTitle": "Logo downloads",
+      "downloadsDescription": "Every approved sub-brand logo in the catalog, with all available formats.",
+      "keyvisualsTitle": "Key visuals",
+      "keyvisualsDescription": "Campaign artwork for each sub-brand, at full resolution.",
+      "loadError": "We couldn't load the assets. Please try again."
     }
   },
   "brand": {
@@ -264,6 +514,21 @@
       },
       "sales-materials": {
         "title": "Sales materials"
+      },
+      "iconography": {
+        "title": "Iconography"
+      },
+      "photography": {
+        "title": "Photography"
+      },
+      "corporate-assets": {
+        "title": "Corporate assets"
+      },
+      "social-media": {
+        "title": "Social media"
+      },
+      "merchandise": {
+        "title": "Merchandise"
       }
     }
   },

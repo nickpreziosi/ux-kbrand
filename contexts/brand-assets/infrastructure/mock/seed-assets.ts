@@ -54,7 +54,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-blue.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 347196,
+      sizeBytes: 347396,
       storagePath: "assets/logos/vector/k-lab-logo-blue.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-blue.svg"
     },
@@ -136,7 +136,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-dark.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 10263,
+      sizeBytes: 10472,
       storagePath: "assets/logos/vector/k-lab-logo-dark.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-dark.svg"
     },
@@ -217,7 +217,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logo-white.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 8942,
+      sizeBytes: 9114,
       storagePath: "assets/logos/vector/k-lab-logo-white.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logo-white.svg"
     },
@@ -300,7 +300,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logomark.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 4776,
+      sizeBytes: 4877,
       storagePath: "assets/logos/vector/k-lab-logomark.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark.svg"
     },
@@ -410,7 +410,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     file: {
       fileName: "k-lab-logomark-white.svg",
       contentType: "image/svg+xml",
-      sizeBytes: 3451,
+      sizeBytes: 3515,
       storagePath: "assets/logos/vector/k-lab-logomark-white.svg",
       downloadUrl: "/brand-files/logos/vector/k-lab-logomark-white.svg"
     },
@@ -536,30 +536,115 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     createdBy: "usr-001"
   },
   {
-    id: "ast-032",
-    title: "Kena — product logo, WEBP",
-    description: "Dimensional product lockup for Kena.",
+    id: "ast-033",
+    title: "K Rails — logo dark, PNG",
+    description: "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
     category: "logos",
     visibility: "public",
     status: "active",
-    groupId: "kena-logo",
-    groupTitle: "Kena — product logo",
-    groupDescription: "Dimensional product lockup for Kena.",
+    groupId: "k-rails-logo-dark",
+    groupTitle: "K Rails — logo, dark",
+    groupDescription: "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
     file: {
-      fileName: "kena.webp",
-      contentType: "image/webp",
-      sizeBytes: 28474,
-      storagePath: "assets/sub-brands/kena.webp",
-      downloadUrl: "/brand-files/sub-brands/kena.webp"
+      fileName: "k-rails-logo-dark.png",
+      contentType: "image/png",
+      sizeBytes: 57311,
+      storagePath: "assets/sub-brands/k-rails-logo-dark.png",
+      downloadUrl: "/brand-files/sub-brands/k-rails-logo-dark.png"
     },
-    previewUrl: "/brand-files/sub-brands/kena.webp",
+    previewUrl: "/brand-files/sub-brands/k-rails-logo-dark.png",
     tags: [
       "product",
-      "kena",
-      "webp"
+      "k-rails",
+      "dark",
+      "png"
     ],
-    createdAt: "2026-02-10T11:02:00.000Z",
-    updatedAt: "2026-02-10T11:02:00.000Z",
+    createdAt: "2026-08-17T10:00:00.000Z",
+    updatedAt: "2026-08-17T10:00:00.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-033-svg",
+    title: "K Rails — logo dark, SVG",
+    description: "Scalable SVG of the dark K Rails lockup.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    groupId: "k-rails-logo-dark",
+    groupTitle: "K Rails — logo, dark",
+    groupDescription: "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    file: {
+      fileName: "k-rails-logo-dark.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 4328,
+      storagePath: "assets/sub-brands/k-rails-logo-dark.svg",
+      downloadUrl: "/brand-files/sub-brands/k-rails-logo-dark.svg"
+    },
+    previewUrl: "/brand-files/sub-brands/k-rails-logo-dark.svg",
+    tags: [
+      "product",
+      "k-rails",
+      "dark",
+      "svg"
+    ],
+    createdAt: "2026-08-17T10:00:01.000Z",
+    updatedAt: "2026-08-17T10:00:01.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-034",
+    title: "K Talk — logo dark, PNG",
+    description: "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    groupId: "k-talk-logo-dark",
+    groupTitle: "K Talk — logo, dark",
+    groupDescription: "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    file: {
+      fileName: "k-talk-logo-dark.png",
+      contentType: "image/png",
+      sizeBytes: 48825,
+      storagePath: "assets/sub-brands/k-talk-logo-dark.png",
+      downloadUrl: "/brand-files/sub-brands/k-talk-logo-dark.png"
+    },
+    previewUrl: "/brand-files/sub-brands/k-talk-logo-dark.png",
+    tags: [
+      "product",
+      "k-talk",
+      "dark",
+      "png"
+    ],
+    createdAt: "2026-08-17T10:00:02.000Z",
+    updatedAt: "2026-08-17T10:00:02.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-034-svg",
+    title: "K Talk — logo dark, SVG",
+    description: "Scalable SVG of the dark K Talk lockup.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    groupId: "k-talk-logo-dark",
+    groupTitle: "K Talk — logo, dark",
+    groupDescription: "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    file: {
+      fileName: "k-talk-logo-dark.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 3013,
+      storagePath: "assets/sub-brands/k-talk-logo-dark.svg",
+      downloadUrl: "/brand-files/sub-brands/k-talk-logo-dark.svg"
+    },
+    previewUrl: "/brand-files/sub-brands/k-talk-logo-dark.svg",
+    tags: [
+      "product",
+      "k-talk",
+      "dark",
+      "svg"
+    ],
+    createdAt: "2026-08-17T10:00:03.000Z",
+    updatedAt: "2026-08-17T10:00:03.000Z",
     createdBy: "usr-001"
   },
   {
@@ -814,7 +899,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     id: "ast-050",
     title: "Product render 01, WEBP",
     description: "Device render for product marketing and deck covers.",
-    category: "brand-imagery",
+    category: "photography",
     visibility: "public",
     status: "active",
     groupId: "k-lab-screen-01",
@@ -842,7 +927,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     id: "ast-051",
     title: "Product render 02, WEBP",
     description: "Alternate device render with the platform interface in context.",
-    category: "brand-imagery",
+    category: "photography",
     visibility: "public",
     status: "active",
     groupId: "k-lab-screen-02",
@@ -870,7 +955,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     id: "ast-052",
     title: "Product render 03, WEBP",
     description: "Wide product render for hero sections and landing pages.",
-    category: "brand-imagery",
+    category: "photography",
     visibility: "public",
     status: "active",
     groupId: "k-lab-screen-03",
@@ -948,34 +1033,6 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     ],
     createdAt: "2026-02-20T14:01:00.000Z",
     updatedAt: "2026-02-20T14:01:00.000Z",
-    createdBy: "usr-001"
-  },
-  {
-    id: "ast-055",
-    title: "Kena — key visual, WEBP",
-    description: "Campaign key visual for Kena.",
-    category: "brand-imagery",
-    visibility: "public",
-    status: "active",
-    groupId: "kena-keyvisual",
-    groupTitle: "Kena — key visual",
-    groupDescription: "Campaign key visual for Kena.",
-    file: {
-      fileName: "kena-keyvisual.webp",
-      contentType: "image/webp",
-      sizeBytes: 28862,
-      storagePath: "assets/sub-brands/kena-keyvisual.webp",
-      downloadUrl: "/brand-files/sub-brands/kena-keyvisual.webp"
-    },
-    previewUrl: "/brand-files/sub-brands/kena-keyvisual.webp",
-    tags: [
-      "keyvisual",
-      "kena",
-      "campaign",
-      "webp"
-    ],
-    createdAt: "2026-02-20T14:02:00.000Z",
-    updatedAt: "2026-02-20T14:02:00.000Z",
     createdBy: "usr-001"
   },
   {

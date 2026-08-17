@@ -1,6 +1,7 @@
 import {
   BRAND_COLOR_GROUPS,
   BRAND_GRADIENTS,
+  STATUS_COLORS,
   colorValue,
 } from "@/ui/branding/content/brand-palette";
 
@@ -39,6 +40,32 @@ describe("brand palette", () => {
       "#DDDDDD",
       "#000000",
     ]);
+  });
+
+  it("keeps the reference data-viz states separate from the brand groups", () => {
+    // The six status states from the Brand Center reference document.
+    expect(STATUS_COLORS.map((color) => color.id)).toEqual([
+      "statusSuccess",
+      "statusPending",
+      "statusDispute",
+      "statusCritical",
+      "statusInfo",
+      "statusNeutral",
+    ]);
+    expect(STATUS_COLORS.map((color) => color.hex)).toEqual([
+      "#1A8A4A",
+      "#C98A1E",
+      "#C8433F",
+      "#8F1F1F",
+      "#00ACFD",
+      "#8A8A88",
+    ]);
+    const groupIds = BRAND_COLOR_GROUPS.flatMap((group) =>
+      group.colors.map((color) => color.id),
+    );
+    for (const status of STATUS_COLORS) {
+      expect(groupIds).not.toContain(status.id);
+    }
   });
 
   it("exposes primary, secondary, and tertiary gradients", () => {

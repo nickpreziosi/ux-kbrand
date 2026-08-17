@@ -7,6 +7,11 @@ export const ASSET_CATEGORIES = [
   "brand-guidelines",
   "logos",
   "brand-imagery",
+  "iconography",
+  "photography",
+  "corporate-assets",
+  "social-media",
+  "merchandise",
   "fonts",
   "pitch-decks",
   "sales-materials",
@@ -19,6 +24,11 @@ export const PUBLIC_CATEGORIES: readonly AssetCategory[] = [
   "brand-guidelines",
   "logos",
   "brand-imagery",
+  "iconography",
+  "photography",
+  "corporate-assets",
+  "social-media",
+  "merchandise",
   "fonts",
 ];
 

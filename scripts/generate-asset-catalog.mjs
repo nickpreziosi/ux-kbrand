@@ -65,9 +65,15 @@ const GROUPS = {
     title: "K Talk — product logo",
     description: "Dimensional product lockup for K Talk.",
   },
-  "kena-logo": {
-    title: "Kena — product logo",
-    description: "Dimensional product lockup for Kena.",
+  "k-rails-logo-dark": {
+    title: "K Rails — logo, dark",
+    description:
+      "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+  },
+  "k-talk-logo-dark": {
+    title: "K Talk — logo, dark",
+    description:
+      "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
   },
   "k-lab-bg-001": {
     title: "Chevron neon — deep navy",
@@ -124,10 +130,6 @@ const GROUPS = {
   "k-talk-keyvisual": {
     title: "K Talk — key visual",
     description: "Campaign key visual for K Talk.",
-  },
-  "kena-keyvisual": {
-    title: "Kena — key visual",
-    description: "Campaign key visual for Kena.",
   },
 };
 
@@ -354,14 +356,46 @@ const CATALOG = [
     created: "2026-02-10T11:01:00.000Z",
   },
   {
-    id: "ast-032",
-    group: "kena-logo",
-    path: "sub-brands/kena.webp",
+    id: "ast-033",
+    group: "k-rails-logo-dark",
+    path: "sub-brands/k-rails-logo-dark.png",
     category: "logos",
-    title: "Kena — product logo, WEBP",
-    description: "Dimensional product lockup for Kena.",
-    tags: ["product", "kena", "webp"],
-    created: "2026-02-10T11:02:00.000Z",
+    title: "K Rails — logo dark, PNG",
+    description:
+      "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    tags: ["product", "k-rails", "dark", "png"],
+    created: "2026-08-17T10:00:00.000Z",
+  },
+  {
+    id: "ast-033-svg",
+    group: "k-rails-logo-dark",
+    path: "sub-brands/k-rails-logo-dark.svg",
+    category: "logos",
+    title: "K Rails — logo dark, SVG",
+    description: "Scalable SVG of the dark K Rails lockup.",
+    tags: ["product", "k-rails", "dark", "svg"],
+    created: "2026-08-17T10:00:01.000Z",
+  },
+  {
+    id: "ast-034",
+    group: "k-talk-logo-dark",
+    path: "sub-brands/k-talk-logo-dark.png",
+    category: "logos",
+    title: "K Talk — logo dark, PNG",
+    description:
+      "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    tags: ["product", "k-talk", "dark", "png"],
+    created: "2026-08-17T10:00:02.000Z",
+  },
+  {
+    id: "ast-034-svg",
+    group: "k-talk-logo-dark",
+    path: "sub-brands/k-talk-logo-dark.svg",
+    category: "logos",
+    title: "K Talk — logo dark, SVG",
+    description: "Scalable SVG of the dark K Talk lockup.",
+    tags: ["product", "k-talk", "dark", "svg"],
+    created: "2026-08-17T10:00:03.000Z",
   },
 
   // ── Brand imagery: backgrounds (add another format as a CATALOG row on the same group)
@@ -456,12 +490,12 @@ const CATALOG = [
     created: "2025-12-02T12:08:00.000Z",
   },
 
-  // ── Brand imagery: product renders ───────────────────────────────────────
+  // ── Photography: product renders (approved stand-ins until the photo library ships) ───────────────────────────────────────
   {
     id: "ast-050",
     group: "k-lab-screen-01",
     path: "screens/k-lab-screen-01.webp",
-    category: "brand-imagery",
+    category: "photography",
     title: "Product render 01, WEBP",
     description: "Device render for product marketing and deck covers.",
     tags: ["render", "product", "marketing", "webp"],
@@ -471,7 +505,7 @@ const CATALOG = [
     id: "ast-051",
     group: "k-lab-screen-02",
     path: "screens/k-lab-screen-02.webp",
-    category: "brand-imagery",
+    category: "photography",
     title: "Product render 02, WEBP",
     description: "Alternate device render with the platform interface in context.",
     tags: ["render", "product", "marketing", "webp"],
@@ -481,7 +515,7 @@ const CATALOG = [
     id: "ast-052",
     group: "k-lab-screen-03",
     path: "screens/k-lab-screen-03.webp",
-    category: "brand-imagery",
+    category: "photography",
     title: "Product render 03, WEBP",
     description: "Wide product render for hero sections and landing pages.",
     tags: ["render", "product", "marketing", "webp"],
@@ -506,16 +540,6 @@ const CATALOG = [
     description: "Campaign key visual for K Talk.",
     tags: ["keyvisual", "k-talk", "campaign", "webp"],
     created: "2026-02-20T14:01:00.000Z",
-  },
-  {
-    id: "ast-055",
-    group: "kena-keyvisual",
-    path: "sub-brands/kena-keyvisual.webp",
-    category: "brand-imagery",
-    title: "Kena — key visual, WEBP",
-    description: "Campaign key visual for Kena.",
-    tags: ["keyvisual", "kena", "campaign", "webp"],
-    created: "2026-02-20T14:02:00.000Z",
   },
 
   // ── Fonts ────────────────────────────────────────────────────────────────
