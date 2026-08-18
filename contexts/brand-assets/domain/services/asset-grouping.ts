@@ -18,6 +18,7 @@ export const ASSET_FORMAT_ORDER: readonly string[] = [
   "jpg",
   "jpeg",
   "gif",
+  "ico",
   "pdf",
   "ai",
   "eps",

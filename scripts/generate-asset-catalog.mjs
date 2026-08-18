@@ -25,6 +25,7 @@ const CONTENT_TYPES = {
   ai: "application/postscript",
   css: "text/css",
   ttf: "font/ttf",
+  ico: "image/x-icon",
 };
 
 /**
@@ -184,6 +185,16 @@ const CATALOG = [
     tags: ["primary", "logo", "blue", "ai"],
     created: "2026-08-13T14:00:01.000Z",
   },
+  {
+    id: "ast-010-ico",
+    group: "k-lab-logo-blue",
+    path: "logos/favicons/k-lab-logo-blue.ico",
+    category: "logos",
+    title: "K Lab logo — primary (blue), ICO",
+    description: "Favicon-ready ICO of the primary mark for browser tabs and pinned sites.",
+    tags: ["primary", "logo", "blue", "favicon", "ico"],
+    created: "2026-08-18T09:00:00.000Z",
+  },
 
   // ── Logos: K Lab dark — PNG / SVG / AI ───────────────────────────────────
   {
@@ -291,6 +302,16 @@ const CATALOG = [
     tags: ["mark", "logomark", "ai"],
     created: "2026-08-13T14:00:08.000Z",
   },
+  {
+    id: "ast-014-ico",
+    group: "k-lab-logomark",
+    path: "logos/favicons/k-lab-logomark.ico",
+    category: "logos",
+    title: "K Lab logomark, ICO",
+    description: "Favicon-ready ICO of the grey logomark for browser tabs and pinned sites.",
+    tags: ["mark", "icon", "logomark", "favicon", "ico"],
+    created: "2026-08-18T09:00:02.000Z",
+  },
 
   // ── Logos: logomark variants (extra catalog files) ───────────────────────
   {
@@ -332,6 +353,16 @@ const CATALOG = [
     description: "Illustrator master of the reversed logomark.",
     tags: ["logomark", "reversed", "white", "ai"],
     created: "2026-08-13T14:00:11.000Z",
+  },
+  {
+    id: "ast-015-ico",
+    group: "k-lab-logomark-white",
+    path: "logos/favicons/k-lab-logomark-white.ico",
+    category: "logos",
+    title: "K Lab logomark — white, ICO",
+    description: "Favicon-ready ICO of the reversed logomark for dark browser themes.",
+    tags: ["logomark", "reversed", "white", "favicon", "ico"],
+    created: "2026-08-18T09:00:01.000Z",
   },
 
   // ── Logos: product brands (add PNG/SVG/AI as extra CATALOG rows on the same group)
@@ -646,7 +677,7 @@ const CATALOG = [
 /** Keep in step with SALES_CATEGORIES in the domain category model. */
 const SALES_CATEGORIES = ["pitch-decks", "sales-materials"];
 
-const PREVIEWABLE = /\.(png|webp|jpg|jpeg|svg|gif)$/i;
+const PREVIEWABLE = /\.(png|webp|jpg|jpeg|svg|gif|ico)$/i;
 const missing = [];
 const entries = [];
 const privateFiles = [];

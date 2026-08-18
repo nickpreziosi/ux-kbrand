@@ -6,7 +6,7 @@ import { assetFormat } from "@/contexts/brand-assets/domain/services/asset-group
  * nothing rather than as a finished picture. These are the files that need a
  * surface put behind them and clearspace around them.
  */
-const TRANSPARENT_FORMATS = ["svg", "png", "pdf", "ai", "eps"];
+const TRANSPARENT_FORMATS = ["svg", "png", "pdf", "ai", "eps", "ico"];
 
 /** Tags that mark artwork drawn to sit on a dark surface. */
 const REVERSED_TAGS = ["reversed", "white"];

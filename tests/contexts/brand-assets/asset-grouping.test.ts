@@ -152,6 +152,7 @@ describe("groupBrandAssets", () => {
     expect(logomark?.assets.map((member) => assetFormat(member))).toEqual([
       "png",
       "svg",
+      "ico",
       "pdf",
       "ai",
     ]);

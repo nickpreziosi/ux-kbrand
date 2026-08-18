@@ -97,6 +97,35 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     createdBy: "usr-001"
   },
   {
+    id: "ast-010-ico",
+    title: "K Lab logo — primary (blue), ICO",
+    description: "Favicon-ready ICO of the primary mark for browser tabs and pinned sites.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    groupId: "k-lab-logo-blue",
+    groupTitle: "K Lab logo — primary (blue)",
+    groupDescription: "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
+    file: {
+      fileName: "k-lab-logo-blue.ico",
+      contentType: "image/x-icon",
+      sizeBytes: 4286,
+      storagePath: "assets/logos/favicons/k-lab-logo-blue.ico",
+      downloadUrl: "/brand-files/logos/favicons/k-lab-logo-blue.ico"
+    },
+    previewUrl: "/brand-files/logos/favicons/k-lab-logo-blue.ico",
+    tags: [
+      "primary",
+      "logo",
+      "blue",
+      "favicon",
+      "ico"
+    ],
+    createdAt: "2026-08-18T09:00:00.000Z",
+    updatedAt: "2026-08-18T09:00:00.000Z",
+    createdBy: "usr-001"
+  },
+  {
     id: "ast-011",
     title: "K Lab logo — dark, PNG",
     description: "Dark lockup for light backgrounds where the blue would compete with artwork.",
@@ -370,6 +399,35 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     createdBy: "usr-001"
   },
   {
+    id: "ast-014-ico",
+    title: "K Lab logomark, ICO",
+    description: "Favicon-ready ICO of the grey logomark for browser tabs and pinned sites.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    groupId: "k-lab-logomark",
+    groupTitle: "K Lab logomark",
+    groupDescription: "The standalone mark in its rounded container — avatars, app icons, and favicons.",
+    file: {
+      fileName: "k-lab-logomark.ico",
+      contentType: "image/x-icon",
+      sizeBytes: 4286,
+      storagePath: "assets/logos/favicons/k-lab-logomark.ico",
+      downloadUrl: "/brand-files/logos/favicons/k-lab-logomark.ico"
+    },
+    previewUrl: "/brand-files/logos/favicons/k-lab-logomark.ico",
+    tags: [
+      "mark",
+      "icon",
+      "logomark",
+      "favicon",
+      "ico"
+    ],
+    createdAt: "2026-08-18T09:00:02.000Z",
+    updatedAt: "2026-08-18T09:00:02.000Z",
+    createdBy: "usr-001"
+  },
+  {
     id: "ast-015",
     title: "K Lab logomark — white, PNG",
     description: "Reversed logomark for dark surfaces.",
@@ -479,6 +537,35 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     ],
     createdAt: "2026-08-13T14:00:11.000Z",
     updatedAt: "2026-08-13T14:00:11.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "ast-015-ico",
+    title: "K Lab logomark — white, ICO",
+    description: "Favicon-ready ICO of the reversed logomark for dark browser themes.",
+    category: "logos",
+    visibility: "public",
+    status: "active",
+    groupId: "k-lab-logomark-white",
+    groupTitle: "K Lab logomark — white",
+    groupDescription: "Reversed logomark for dark surfaces.",
+    file: {
+      fileName: "k-lab-logomark-white.ico",
+      contentType: "image/x-icon",
+      sizeBytes: 4286,
+      storagePath: "assets/logos/favicons/k-lab-logomark-white.ico",
+      downloadUrl: "/brand-files/logos/favicons/k-lab-logomark-white.ico"
+    },
+    previewUrl: "/brand-files/logos/favicons/k-lab-logomark-white.ico",
+    tags: [
+      "logomark",
+      "reversed",
+      "white",
+      "favicon",
+      "ico"
+    ],
+    createdAt: "2026-08-18T09:00:01.000Z",
+    updatedAt: "2026-08-18T09:00:01.000Z",
     createdBy: "usr-001"
   },
   {
