@@ -722,8 +722,9 @@
   "auth": {
     "login": {
       "title": "Iniciar sesión",
-      "subtitle": "Use su cuenta Microsoft de K Lab para continuar.",
+      "subtitle": "Inicie sesión con su cuenta Microsoft de K Lab, o continúe como invitado.",
       "signInWithMicrosoft": "Iniciar sesión con Microsoft",
+      "signInAsGuest": "Iniciar sesión como invitado",
       "signingIn": "Iniciando sesión...",
       "errors": {
         "popupBlocked": "Su navegador bloqueó la ventana de inicio de sesión. Permita las ventanas emergentes para este sitio e inténtelo de nuevo.",

@@ -722,8 +722,9 @@
   "auth": {
     "login": {
       "title": "Entrar",
-      "subtitle": "Use sua conta Microsoft da K Lab para continuar.",
+      "subtitle": "Entre com sua conta Microsoft da K Lab, ou continue como convidado.",
       "signInWithMicrosoft": "Entrar com a Microsoft",
+      "signInAsGuest": "Entrar como convidado",
       "signingIn": "Entrando...",
       "errors": {
         "popupBlocked": "Seu navegador bloqueou a janela de login. Permita pop-ups para este site e tente novamente.",

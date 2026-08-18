@@ -23,6 +23,7 @@ import { useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
 import { logoRightBrandLayers } from "@/lib/brand/auth-brand-layers";
 import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
+import { shouldShowGuestChrome } from "@/lib/auth/guest-chrome";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 
@@ -49,7 +50,11 @@ export function HomeView() {
   // Only invite anonymous visitors to sign in: hidden while the session is
   // still restoring (avoids a signed-in flash) and when a dev role override
   // is previewing an employee/admin session without a real user.
-  const showEmployeeSignIn = !authLoading && !user && viewerRole === "public";
+  const showEmployeeSignIn = shouldShowGuestChrome({
+    authLoading,
+    user,
+    viewerRole,
+  });
 
   return (
     <div className="space-y-8">

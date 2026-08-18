@@ -722,8 +722,9 @@
   "auth": {
     "login": {
       "title": "Sign in",
-      "subtitle": "Use your K Lab Microsoft account to continue.",
+      "subtitle": "Sign in with your K Lab Microsoft account, or continue as a guest.",
       "signInWithMicrosoft": "Sign in with Microsoft",
+      "signInAsGuest": "Sign in as Guest",
       "signingIn": "Signing in...",
       "errors": {
         "popupBlocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",

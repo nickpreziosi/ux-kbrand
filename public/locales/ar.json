@@ -722,8 +722,9 @@
   "auth": {
     "login": {
       "title": "تسجيل الدخول",
-      "subtitle": "استخدم حساب Microsoft الخاص بك في K Lab للمتابعة.",
+      "subtitle": "سجّل الدخول بحساب Microsoft الخاص بك في K Lab، أو تابع كضيف.",
       "signInWithMicrosoft": "تسجيل الدخول باستخدام Microsoft",
+      "signInAsGuest": "تسجيل الدخول كضيف",
       "signingIn": "جارٍ تسجيل الدخول...",
       "errors": {
         "popupBlocked": "حظر المتصفح نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة لهذا الموقع وحاول مرة أخرى.",

@@ -44,13 +44,15 @@ import {
 import { useMessages, useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
 import type { ViewerRole } from "@/contexts/shared/domain/viewer-role";
+import { shouldShowGuestChrome } from "@/lib/auth/guest-chrome";
+import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import {
   DEV_ROLE_OVERRIDE_ENABLED,
   writeDevRoleOverride,
 } from "@/ui/user-management/dev/dev-role-override";
+import { GuestSidebarSignIn } from "@/ui/user-management/components/guest-sidebar-sign-in";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
-import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAppLocaleChange } from "@/app/providers/app-intl-provider";
 import { KBrandSidebarBrand } from "@/ui/shared/components/k-brand-sidebar-brand";
 import { KLabBrandLogo } from "@/ui/shared/components/k-lab-brand-logo";
@@ -87,7 +89,11 @@ export function KBrandLayoutClient({
   const { viewerRole, devRoleOverride, isAdmin } = usePortalRole();
   // Sign-in action is for settled anonymous sessions only — hidden while auth
   // is restoring (no signed-in flash) and when a dev role override is active.
-  const showSignIn = !authLoading && !user && viewerRole === "public";
+  const showSignIn = shouldShowGuestChrome({
+    authLoading,
+    user,
+    viewerRole,
+  });
   const tDevRole = useTranslations("devTools.roleSwitcher");
   const { locale, changeLocale } = useAppLocaleChange();
 
@@ -167,7 +173,7 @@ export function KBrandLayoutClient({
 
   const handleLogoutClick = async () => {
     await signOut();
-    router.replace("/");
+    router.replace("/login");
   };
 
   const shellUser = user
@@ -252,38 +258,42 @@ export function KBrandLayoutClient({
       defaultEmail={shellUser?.email ?? undefined}
       onSubmit={async () => undefined}
     >
-      <AppLayoutClient
-        currentPath={pathname}
-        homeHref="/"
-        initialCollapsed={initialSidebarCollapsed}
-        sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
-        preferences={preferences}
-        primaryNav={primaryNav}
-        accordions={brandingAccordion}
-        bottomNav={secondaryNav}
-        user={shellUser}
-        onProfileClick={() => undefined}
-        onSettingsClick={() => router.push("/settings")}
-        onLogoutClick={handleLogoutClick}
-        locale={locale}
-        onLocaleChange={(code) => {
-          void changeLocale(code);
-        }}
-        languages={DEFAULT_LANGUAGE_OPTIONS}
-        brand={<KBrandSidebarBrand />}
-        footer={footer}
-        navbarRightSlot={
-          showSignIn ? (
-            <Button
-              variant="accent-brand"
-              size="sm"
-              icon={<LogIn aria-hidden />}
-              href={`/login?next=${encodeURIComponent(pathname)}`}
-            >
-              {t("signIn")}
-            </Button>
-          ) : undefined
-        }
+      <div {...(showSignIn ? { "data-kbrand-guest": "" } : {})} className="contents">
+        {showSignIn ? <GuestSidebarSignIn pathname={pathname} /> : null}
+        <AppLayoutClient
+          className={showSignIn ? "kbrand-guest-chrome" : undefined}
+          currentPath={pathname}
+          homeHref="/"
+          initialCollapsed={initialSidebarCollapsed}
+          sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
+          preferences={preferences}
+          primaryNav={primaryNav}
+          accordions={brandingAccordion}
+          bottomNav={secondaryNav}
+          user={showSignIn ? undefined : shellUser}
+          onProfileClick={showSignIn ? undefined : () => undefined}
+          onSettingsClick={showSignIn ? undefined : () => router.push("/settings")}
+          onLogoutClick={showSignIn ? undefined : handleLogoutClick}
+          locale={locale}
+          onLocaleChange={(code) => {
+            void changeLocale(code);
+          }}
+          languages={DEFAULT_LANGUAGE_OPTIONS}
+          brand={<KBrandSidebarBrand />}
+          footer={footer}
+          navbarRightSlot={
+            showSignIn ? (
+              <Button
+                variant="accent-brand"
+                size="icon"
+                className="h-11 w-11 shrink-0"
+                icon={<LogIn aria-hidden />}
+                href={`/login?next=${encodeURIComponent(pathname)}`}
+                aria-label={t("signIn")}
+                title={t("signIn")}
+              />
+            ) : undefined
+          }
         mobileHeader={
           <Link
             href="/"
@@ -303,6 +313,7 @@ export function KBrandLayoutClient({
       >
         <div className="mx-auto w-full max-w-[1800px]">{children}</div>
       </AppLayoutClient>
+      </div>
     </SupportDialogProvider>
   );
 }
