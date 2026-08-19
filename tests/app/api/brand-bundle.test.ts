@@ -7,6 +7,7 @@ import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asse
 
 const mockGetById = jest.fn();
 const mockReadFile = jest.fn();
+const mockViewerRole = jest.fn<"public" | "employee" | "admin", []>();
 
 jest.mock("@/contexts/brand-assets/application/brand-assets-server-services", () => ({
   getServerBrandAssetRepository: () => ({
@@ -16,6 +17,10 @@ jest.mock("@/contexts/brand-assets/application/brand-assets-server-services", ()
 
 jest.mock("node:fs/promises", () => ({
   readFile: (...args: unknown[]) => mockReadFile(...args),
+}));
+
+jest.mock("@/lib/api/viewer", () => ({
+  resolveApiViewer: async () => ({ role: mockViewerRole(), user: null }),
 }));
 
 import { GET } from "@/app/api/brand-bundle/[groupId]/route";
@@ -95,6 +100,8 @@ describe("GET /api/brand-bundle/[groupId]", () => {
   beforeEach(() => {
     mockGetById.mockReset();
     mockReadFile.mockReset();
+    mockViewerRole.mockReset();
+    mockViewerRole.mockReturnValue("public");
   });
 
   it("zips every format in the asset as one attachment", async () => {
@@ -201,6 +208,8 @@ describe("POST /api/brand-bundle", () => {
   beforeEach(() => {
     mockGetById.mockReset();
     mockReadFile.mockReset();
+    mockViewerRole.mockReset();
+    mockViewerRole.mockReturnValue("public");
     mockReadFile.mockResolvedValue(Buffer.from("file-bytes"));
   });
 
@@ -267,5 +276,35 @@ describe("POST /api/brand-bundle", () => {
 
     expect(response.status).toBe(401);
     expect(mockReadFile).not.toHaveBeenCalled();
+  });
+
+  it("zips employee sales files for a signed-in employee", async () => {
+    mockViewerRole.mockReturnValue("employee");
+    mockGetById.mockResolvedValue(
+      artwork({
+        id: "ast-100",
+        resourceType: "sales",
+        category: "pitch-decks",
+        visibility: "employee",
+        files: [
+          file("ast-100", "k-lab-platform-pitch-2026.pdf", {
+            contentType: "application/pdf",
+            storagePath: "assets/pitch-decks/k-lab-platform-pitch-2026.pdf",
+            downloadUrl: "/api/sales-files/ast-100",
+          }),
+        ],
+      }),
+    );
+    mockReadFile.mockResolvedValue(Buffer.from("%PDF-1.4"));
+
+    const response = await POST(postRequest({ assetIds: ["ast-100"] }));
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Disposition")).toBe(
+      'attachment; filename="sales-resources.zip"',
+    );
+    expect(namesIn(new Uint8Array(await response.arrayBuffer()))).toEqual([
+      "k-lab-platform-pitch-2026.pdf",
+    ]);
   });
 });

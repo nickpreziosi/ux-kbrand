@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { getServerBrandAssetRepository } from "@/contexts/brand-assets/application/brand-assets-server-services";
+import { canViewAsset } from "@/contexts/brand-assets/domain/services/asset-access";
 import { sortedFiles } from "@/contexts/brand-assets/domain/services/asset-files";
+import { resolveApiViewer } from "@/lib/api/viewer";
 import { zipBrandFiles } from "@/app/api/brand-bundle/zip-brand-files";
 
 /**
  * Zips every format of an asset into one download — the "Download all"
- * action on a catalog card. Gating matches /api/brand-download.
+ * action on a catalog card. Gating matches /api/brand-download: the viewer
+ * must be allowed to see the asset.
  */
 export async function GET(
-  _request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ groupId: string }> },
 ) {
   const { groupId } = await params;
@@ -21,7 +25,8 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  if (asset.visibility !== "public") {
+  const viewer = await resolveApiViewer(request);
+  if (!canViewAsset(viewer.role, asset)) {
     return NextResponse.json({ error: "Authentication required" }, { status: 401 });
   }
 

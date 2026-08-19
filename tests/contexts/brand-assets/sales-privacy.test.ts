@@ -191,4 +191,21 @@ describe("catalog listings for anonymous visitors", () => {
       expect(Object.values(grouped).flat().length).toBeGreaterThan(0);
     }
   });
+
+  it("lists sales through the shared library filter for employees, not guests", async () => {
+    const catalog = new BrandAssetCatalogService(new MockBrandAssetRepository(0));
+    const salesFilter = {
+      search: "",
+      category: "all" as const,
+      format: "all" as const,
+      product: "all" as const,
+      resourceType: "sales" as const,
+    };
+
+    expect(await catalog.listLibrary("public", salesFilter)).toEqual([]);
+
+    const employee = await catalog.listLibrary("employee", salesFilter);
+    expect(employee.length).toBeGreaterThan(0);
+    expect(employee.every((asset) => asset.resourceType === "sales")).toBe(true);
+  });
 });

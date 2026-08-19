@@ -4,7 +4,10 @@ import * as React from "react";
 import { Button, FloatingLabelInput } from "@k-lab/components";
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { PUBLIC_CATEGORIES } from "@/contexts/brand-assets/domain/models/asset-category.model";
+import {
+  PUBLIC_CATEGORIES,
+  type AssetCategory,
+} from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { ASSET_PRODUCTS } from "@/contexts/brand-assets/domain/models/asset-product.model";
 import { ASSET_FORMAT_ORDER } from "@/contexts/brand-assets/domain/services/asset-files";
 import {
@@ -18,6 +21,7 @@ import { readFloatingLabelInputValue } from "@/ui/shared/lib/floating-label-inpu
 interface AssetLibraryToolbarProps {
   filter: LibraryFilter;
   onFilterChange: (filter: LibraryFilter) => void;
+  categories?: readonly AssetCategory[];
   resultCount: number;
   totalCount: number;
   disabled?: boolean;
@@ -30,6 +34,7 @@ interface AssetLibraryToolbarProps {
 export function AssetLibraryToolbar({
   filter,
   onFilterChange,
+  categories = PUBLIC_CATEGORIES,
   resultCount,
   totalCount,
   disabled = false,
@@ -43,12 +48,12 @@ export function AssetLibraryToolbar({
   const categoryOptions = React.useMemo(
     () => [
       { value: ANY, label: t("allCategories") },
-      ...PUBLIC_CATEGORIES.map((value) => ({
+      ...categories.map((value) => ({
         value,
         label: tCategories(`${value}.title`),
       })),
     ],
-    [t, tCategories],
+    [t, tCategories, categories],
   );
 
   const formatOptions = React.useMemo(

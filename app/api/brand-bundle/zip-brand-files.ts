@@ -2,13 +2,14 @@ import { readFile } from "node:fs/promises";
 import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { getUpload } from "@/contexts/brand-assets/infrastructure/mock/server-upload-store";
 import { resolveBrandFilePath } from "@/lib/brand/brand-file-path";
+import { resolveSalesFilePath } from "@/lib/brand/private-asset-path";
 import { createZip, uniqueZipEntryName, type ZipEntry } from "@/lib/zip/create-zip";
 
 /**
- * A file's bytes can come from two places: files shipped under
- * public/brand-files, and admin uploads held in the mock storage backend. Both
- * belong in the bundle — otherwise a freshly uploaded format would 404 the
- * whole download.
+ * A file's bytes can come from three places: files shipped under
+ * public/brand-files, private sales files under private-assets, and admin
+ * uploads held in the mock storage backend. All belong in the bundle —
+ * otherwise a freshly uploaded format would 404 the whole download.
  */
 export async function readBrandFileBytes(
   file: AssetFile,
@@ -20,7 +21,8 @@ export async function readBrandFileBytes(
     return getUpload(decodeURIComponent(uploadId))?.bytes ?? null;
   }
 
-  const filePath = resolveBrandFilePath(file.downloadUrl);
+  const filePath =
+    resolveBrandFilePath(file.downloadUrl) ?? resolveSalesFilePath(file.downloadUrl);
   if (!filePath) return null;
   try {
     return new Uint8Array(await readFile(filePath));

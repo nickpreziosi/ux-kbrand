@@ -593,11 +593,7 @@
   "sales": {
     "title": "Recursos de vendas",
     "subtitle": "Apresentações e materiais de vendas aprovados — apenas para uso interno.",
-    "loadError": "Não foi possível carregar os recursos de vendas. Tente novamente.",
-    "tabs": {
-      "pitchDecks": "Apresentações",
-      "salesMaterials": "Materiais de vendas"
-    }
+    "loadError": "Não foi possível carregar os recursos de vendas. Tente novamente."
   },
   "admin": {
     "unauthorized": {

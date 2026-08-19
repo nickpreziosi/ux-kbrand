@@ -593,11 +593,7 @@
   "sales": {
     "title": "Sales resources",
     "subtitle": "Approved pitch decks and sales materials — internal use only.",
-    "loadError": "We couldn't load the sales resources. Please try again.",
-    "tabs": {
-      "pitchDecks": "Pitch decks",
-      "salesMaterials": "Sales materials"
-    }
+    "loadError": "We couldn't load the sales resources. Please try again."
   },
   "admin": {
     "unauthorized": {
