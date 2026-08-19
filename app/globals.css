@@ -527,14 +527,16 @@ body {
 }
 
 /* Disable transitions during theme/branding switches */
-/* Exclude elements with [data-allow-transition] to preserve specific animations (e.g., toggle icons) */
+/* [data-allow-transition] preserves the element + descendants (e.g. toggle icons).
+   [data-allow-animation] preserves only that element's animation (e.g. accordion height)
+   so children still snap colors instead of transitioning. */
 html.no-transitions,
 html.no-transitions
-  *:not([data-allow-transition]):not([data-allow-transition] *),
+  *:not([data-allow-transition]):not([data-allow-transition] *):not([data-allow-animation]),
 html.no-transitions
-  *:not([data-allow-transition]):not([data-allow-transition] *)::before,
+  *:not([data-allow-transition]):not([data-allow-transition] *):not([data-allow-animation])::before,
 html.no-transitions
-  *:not([data-allow-transition]):not([data-allow-transition] *)::after {
+  *:not([data-allow-transition]):not([data-allow-transition] *):not([data-allow-animation])::after {
   transition: none !important;
   animation: none !important;
 }
