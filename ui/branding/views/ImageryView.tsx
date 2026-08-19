@@ -6,7 +6,8 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Image as ImageIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 const IMAGERY_DO_KEYS = ["approvedSets", "contrast", "crop"] as const;
 const IMAGERY_DONT_KEYS = ["stretch", "recolor", "clutter"] as const;
@@ -56,24 +57,17 @@ export function ImageryView() {
         </CardContent>
       </Card>
 
-      <section className="@container space-y-4" aria-label={t("libraryTitle")}>
-        <div>
-          <h2 className="text-xl font-semibold">{t("libraryTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("libraryDescription")}
-          </p>
-        </div>
-        {loadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid
-            assets={assets}
-            loading={loading}
-            skeletonCount={3}
-            expandPreview
-          />
-        )}
-      </section>
+      <GuidelineDownloadsSection
+        title={t("libraryTitle")}
+        description={t("libraryDescription")}
+        category="brand-imagery"
+        assets={featuredAssetsForCategory(assets, "brand-imagery")}
+        loading={loading}
+        loadError={loadError}
+        errorMessage={t("loadError")}
+        expandPreview
+        skeletonCount={3}
+      />
     </div>
   );
 }

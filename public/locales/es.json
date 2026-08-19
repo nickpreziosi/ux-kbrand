@@ -550,7 +550,8 @@
     "visibility": {
       "public": "Público",
       "employee": "Empleados"
-    }
+    },
+    "viewAll": "Ver todos: {category}"
   },
   "assetLibrary": {
     "title": "Biblioteca de recursos",

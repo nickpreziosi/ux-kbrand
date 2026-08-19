@@ -6,7 +6,8 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Camera, Check, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 const PRINCIPLE_KEYS = ["mood", "light", "space", "people"] as const;
 const PHOTO_DO_KEYS = ["palette", "overlay", "focal"] as const;
@@ -86,24 +87,17 @@ export function PhotographyView() {
         </CardContent>
       </Card>
 
-      <section className="@container space-y-4" aria-label={t("rendersTitle")}>
-        <div>
-          <h2 className="text-xl font-semibold">{t("rendersTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("rendersDescription")}
-          </p>
-        </div>
-        {loadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid
-            assets={renders}
-            loading={loading}
-            skeletonCount={3}
-            expandPreview
-          />
-        )}
-      </section>
+      <GuidelineDownloadsSection
+        title={t("rendersTitle")}
+        description={t("rendersDescription")}
+        category="photography"
+        assets={featuredAssetsForCategory(renders, "photography")}
+        loading={loading}
+        loadError={loadError}
+        errorMessage={t("loadError")}
+        expandPreview
+        skeletonCount={3}
+      />
     </div>
   );
 }

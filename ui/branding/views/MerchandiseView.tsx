@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
  * Merchandise families from the guidelines. Product photography is pending —
@@ -102,20 +103,13 @@ export function MerchandiseView() {
         </CardContent>
       </Card>
 
-      {!loading && assets.length > 0 ? (
-        <section
-          className="@container space-y-4"
-          aria-label={t("libraryTitle")}
-        >
-          <div>
-            <h2 className="text-xl font-semibold">{t("libraryTitle")}</h2>
-            <p className="text-sm text-muted-foreground">
-              {t("libraryDescription")}
-            </p>
-          </div>
-          <AssetGrid assets={assets} loading={false} />
-        </section>
-      ) : null}
+      <GuidelineDownloadsSection
+        title={t("libraryTitle")}
+        description={t("libraryDescription")}
+        category="merchandise"
+        assets={featuredAssetsForCategory(assets, "merchandise")}
+        loading={loading}
+      />
     </div>
   );
 }

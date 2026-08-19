@@ -6,7 +6,8 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Type as TypeIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 import {
   ARIAL_STACK,
   TYPE_HIERARCHY,
@@ -107,19 +108,16 @@ export function TypographyView() {
         </Card>
       </section>
 
-      <section className="space-y-4" aria-label={t("downloadsTitle")}>
-        <div>
-          <h2 className="text-xl font-semibold">{t("downloadsTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("downloadsDescription")}
-          </p>
-        </div>
-        {loadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid assets={fontFiles} loading={loading} skeletonCount={2} />
-        )}
-      </section>
+      <GuidelineDownloadsSection
+        title={t("downloadsTitle")}
+        description={t("downloadsDescription")}
+        category="fonts"
+        assets={featuredAssetsForCategory(fontFiles, "fonts")}
+        loading={loading}
+        loadError={loadError}
+        errorMessage={t("loadError")}
+        skeletonCount={2}
+      />
     </div>
   );
 }

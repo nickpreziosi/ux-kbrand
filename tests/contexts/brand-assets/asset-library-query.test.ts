@@ -1,6 +1,7 @@
 import {
   ANY,
   EMPTY_LIBRARY_FILTER,
+  assetLibraryHref,
   filterLibraryAssets,
   filesForBulkDownload,
   hasActiveLibraryFilter,
@@ -136,5 +137,14 @@ describe("filesForBulkDownload", () => {
     expect(
       filesForBulkDownload(catalog.slice(0, 1), "svg").map((file) => file.id),
     ).toEqual(["svg"]);
+  });
+});
+
+describe("assetLibraryHref", () => {
+  it("builds a category deep-link for guideline View all actions", () => {
+    expect(assetLibraryHref({ category: "logos" })).toBe("/assets?category=logos");
+    expect(assetLibraryHref({ category: "brand-imagery", product: "k-talk" })).toBe(
+      "/assets?category=brand-imagery&product=k-talk",
+    );
   });
 });

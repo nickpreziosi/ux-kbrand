@@ -40,12 +40,21 @@ jest.mock("next-intl", () => ({
         "rules.donts.effects": "Don't add effects.",
         "rules.donts.rebuild": "Don't rebuild.",
       },
-      "brandAssets.assetCard": {
-        download: "Download",
+      assets: {
+        viewAll: "View all {category}",
+      },
+      "brand.categories": {
+        "logos.title": "Logos",
       },
     };
     const table = catalog[namespace ?? ""] ?? {};
-    const t = (key: string) => table[key] ?? key;
+    const t = (key: string, values?: Record<string, string | number>) => {
+      const message = table[key] ?? key;
+      if (!values) return message;
+      return message.replace(/\{(\w+)\}/g, (_match, name: string) =>
+        String(values[name] ?? ""),
+      );
+    };
     return t;
   },
 }));
@@ -54,8 +63,13 @@ jest.mock("@/ui/brand-assets/hooks/use-category-assets", () => ({
   useCategoryAssets: (...args: unknown[]) => mockUseCategoryAssets(...args),
 }));
 
+const capturedGrids: BrandAsset[][] = [];
+
 jest.mock("@/ui/brand-assets/components/asset-grid", () => ({
-  AssetGrid: () => <div data-testid="asset-grid" />,
+  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => {
+    capturedGrids.push(assets);
+    return <div data-testid="asset-grid">{assets.length}</div>;
+  },
 }));
 
 jest.mock("@/ui/shared/components/k-brand-page-header", () => ({
@@ -178,10 +192,35 @@ const fixtureAssets: BrandAsset[] = [
     tags: ["mark", "icon", "logomark", "png"],
     title: "Mark PNG",
   }),
+  asset({
+    id: "ast-dark",
+    fileName: "k-lab-logo-dark.png",
+    tags: ["dark", "logo"],
+    title: "Dark",
+  }),
+  asset({
+    id: "ast-reversed",
+    fileName: "k-lab-logo-white.png",
+    tags: ["reversed", "logo"],
+    title: "Reversed",
+  }),
+  asset({
+    id: "ast-extra-1",
+    fileName: "k-lab-favicon.png",
+    tags: ["favicon"],
+    title: "Favicon",
+  }),
+  asset({
+    id: "ast-extra-2",
+    fileName: "k-lab-app-icon.png",
+    tags: ["app-icon"],
+    title: "App icon",
+  }),
 ];
 
 describe("LogoGuidelinesView", () => {
   beforeEach(() => {
+    capturedGrids.length = 0;
     mockUseCategoryAssets.mockReturnValue({
       assets: fixtureAssets,
       loading: false,
@@ -208,5 +247,22 @@ describe("LogoGuidelinesView", () => {
       "/brand-files/logos/k-lab-logomark.png",
     );
     expect(within(clearspaceSection).queryByText("K Lab")).not.toBeInTheDocument();
+  });
+
+  it("caps the downloadable section and links View all to the library", () => {
+    render(<LogoGuidelinesView />);
+
+    expect(capturedGrids).toHaveLength(1);
+    expect(capturedGrids[0]).toHaveLength(4);
+    expect(capturedGrids[0].map((row) => row.id)).toEqual([
+      "ast-primary-png",
+      "ast-dark",
+      "ast-reversed",
+      "ast-mark-png",
+    ]);
+    expect(screen.getByRole("link", { name: "View all Logos" })).toHaveAttribute(
+      "href",
+      "/assets?category=logos",
+    );
   });
 });

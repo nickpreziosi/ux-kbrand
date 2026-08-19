@@ -550,7 +550,8 @@
     "visibility": {
       "public": "عام",
       "employee": "الموظفون"
-    }
+    },
+    "viewAll": "عرض كل {category}"
   },
   "assetLibrary": {
     "title": "مكتبة الموارد",

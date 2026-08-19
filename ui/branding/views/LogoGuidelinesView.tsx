@@ -7,7 +7,8 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, PenTool, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 import { previewAssetForVariant } from "@/ui/branding/content/logo-formats";
 import {
   LOGO_RULE_KEYS,
@@ -233,18 +234,13 @@ export function LogoGuidelinesView() {
             </Card>
           </section>
 
-          <section
-            className="@container space-y-4"
-            aria-label={t("allFilesTitle")}
-          >
-            <div>
-              <h2 className="text-xl font-semibold">{t("allFilesTitle")}</h2>
-              <p className="text-sm text-muted-foreground">
-                {t("allFilesDescription")}
-              </p>
-            </div>
-            <AssetGrid assets={assets} loading={loading} />
-          </section>
+          <GuidelineDownloadsSection
+            title={t("allFilesTitle")}
+            description={t("allFilesDescription")}
+            category="logos"
+            assets={featuredAssetsForCategory(assets, "logos")}
+            loading={loading}
+          />
         </>
       )}
     </div>

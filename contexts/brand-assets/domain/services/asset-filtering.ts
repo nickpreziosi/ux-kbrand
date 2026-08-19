@@ -148,6 +148,20 @@ export function serializeLibraryFilter(filter: LibraryFilter): URLSearchParams {
   return params;
 }
 
+/** Deep-link into the Asset Library. `resourceType` stays off the URL — the
+ *  /assets route is brand-only. */
+export function assetLibraryHref(
+  filter: Partial<Pick<LibraryFilter, "category" | "product" | "format" | "search">>,
+): string {
+  const params = serializeLibraryFilter({
+    ...EMPTY_LIBRARY_FILTER,
+    ...filter,
+    resourceType: ANY,
+  });
+  const query = params.toString();
+  return query ? `/assets?${query}` : "/assets";
+}
+
 export function filterLibraryAssets(
   assets: BrandAsset[],
   filter: LibraryFilter,

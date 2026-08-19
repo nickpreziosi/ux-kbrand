@@ -7,7 +7,8 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Briefcase, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
  * CSS mockups of the stationery system documented in the brand guidelines
@@ -175,20 +176,13 @@ export function CorporateAssetsView() {
         </CardContent>
       </Card>
 
-      {!loading && assets.length > 0 ? (
-        <section
-          className="@container space-y-4"
-          aria-label={t("libraryTitle")}
-        >
-          <div>
-            <h2 className="text-xl font-semibold">{t("libraryTitle")}</h2>
-            <p className="text-sm text-muted-foreground">
-              {t("libraryDescription")}
-            </p>
-          </div>
-          <AssetGrid assets={assets} loading={false} />
-        </section>
-      ) : null}
+      <GuidelineDownloadsSection
+        title={t("libraryTitle")}
+        description={t("libraryDescription")}
+        category="corporate-assets"
+        assets={featuredAssetsForCategory(assets, "corporate-assets")}
+        loading={loading}
+      />
     </div>
   );
 }

@@ -550,7 +550,8 @@
     "visibility": {
       "public": "Public",
       "employee": "Employees"
-    }
+    },
+    "viewAll": "View all {category}"
   },
   "assetLibrary": {
     "title": "Asset library",

@@ -7,7 +7,7 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Boxes } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
  * The approved sub-brand roster. Kena is deliberately absent (retired from
@@ -125,44 +125,27 @@ export function SubBrandsView() {
         </div>
       </section>
 
-      <section
-        className="@container space-y-4"
-        aria-label={t("downloadsTitle")}
-      >
-        <div>
-          <h2 className="text-xl font-semibold">{t("downloadsTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("downloadsDescription")}
-          </p>
-        </div>
-        {loadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid assets={productAssets} loading={loading} />
-        )}
-      </section>
+      <GuidelineDownloadsSection
+        title={t("downloadsTitle")}
+        description={t("downloadsDescription")}
+        category="logos"
+        assets={productAssets.slice(0, 4)}
+        loading={loading}
+        loadError={loadError}
+        errorMessage={t("loadError")}
+      />
 
-      <section
-        className="@container space-y-4"
-        aria-label={t("keyvisualsTitle")}
-      >
-        <div>
-          <h2 className="text-xl font-semibold">{t("keyvisualsTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("keyvisualsDescription")}
-          </p>
-        </div>
-        {imageryLoadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid
-            assets={keyvisuals}
-            loading={imageryLoading}
-            skeletonCount={2}
-            expandPreview
-          />
-        )}
-      </section>
+      <GuidelineDownloadsSection
+        title={t("keyvisualsTitle")}
+        description={t("keyvisualsDescription")}
+        category="brand-imagery"
+        assets={keyvisuals.slice(0, 4)}
+        loading={imageryLoading}
+        loadError={imageryLoadError}
+        errorMessage={t("loadError")}
+        expandPreview
+        skeletonCount={2}
+      />
     </div>
   );
 }

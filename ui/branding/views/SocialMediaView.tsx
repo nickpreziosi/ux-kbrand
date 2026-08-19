@@ -7,7 +7,8 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Share2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
  * Avatar treatments from the guidelines: icon-only marks on gradient or
@@ -197,20 +198,13 @@ export function SocialMediaView() {
         </Card>
       </section>
 
-      {!loading && assets.length > 0 ? (
-        <section
-          className="@container space-y-4"
-          aria-label={t("libraryTitle")}
-        >
-          <div>
-            <h2 className="text-xl font-semibold">{t("libraryTitle")}</h2>
-            <p className="text-sm text-muted-foreground">
-              {t("libraryDescription")}
-            </p>
-          </div>
-          <AssetGrid assets={assets} loading={false} />
-        </section>
-      ) : null}
+      <GuidelineDownloadsSection
+        title={t("libraryTitle")}
+        description={t("libraryDescription")}
+        category="social-media"
+        assets={featuredAssetsForCategory(assets, "social-media")}
+        loading={loading}
+      />
     </div>
   );
 }
