@@ -1,126 +1,141 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { Button, Hero, Tile } from "@k-lab/components";
+import { Hero, LaunchPage } from "@k-lab/components";
+import type { AuthBrandPanelLayer } from "@k-lab/components";
 import {
-  ArrowRight,
   BookOpen,
-  Boxes,
-  Briefcase,
-  Camera,
-  Image as ImageIcon,
-  Palette,
-  PenTool,
+  Images,
+  LogIn,
   Presentation,
-  Shapes,
-  Share2,
-  ShoppingBag,
-  Type,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
-import { logoRightBrandLayers } from "@/lib/brand/auth-brand-layers";
+import { BRAND_IMAGE_OVERLAY_OPACITY } from "@/lib/brand/auth-brand-layers";
 import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
 import { shouldShowGuestChrome } from "@/lib/auth/guest-chrome";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 
-const BRANDING_TILES: { id: string; href: string; icon: LucideIcon }[] = [
-  { id: "logo", href: "/branding/logo", icon: PenTool },
-  { id: "colors", href: "/branding/colors", icon: Palette },
-  { id: "typography", href: "/branding/typography", icon: Type },
-  { id: "iconography", href: "/branding/iconography", icon: Shapes },
-  { id: "imagery", href: "/branding/imagery", icon: ImageIcon },
-  { id: "photography", href: "/branding/photography", icon: Camera },
-  { id: "corporateAssets", href: "/branding/corporate-assets", icon: Briefcase },
-  { id: "socialMedia", href: "/branding/social-media", icon: Share2 },
-  { id: "merchandise", href: "/branding/merchandise", icon: ShoppingBag },
-  { id: "subBrands", href: "/branding/sub-brands", icon: Boxes },
-  { id: "guidelines", href: "/branding/guidelines", icon: BookOpen },
-];
+/** Catalog backgrounds (non-dot treatments) — one approved image per slide. */
+const HOME_HERO_BACKGROUNDS = [
+  "/brand-files/backgrounds/k-lab-bg-001.webp",
+  "/brand-files/backgrounds/k-lab-bg-003.webp",
+  "/brand-files/backgrounds/k-lab-bg-005.webp",
+] as const;
+
+function heroBackgroundLayers(src: string): AuthBrandPanelLayer[] {
+  return [
+    {
+      type: "image",
+      src,
+      position: "center",
+      priority: "high",
+      loading: "eager",
+    },
+    {
+      type: "overlay",
+      color: "#000000",
+      opacity: BRAND_IMAGE_OVERLAY_OPACITY,
+    },
+  ];
+}
 
 export function HomeView() {
   const t = useTranslations("home");
-  const tSections = useTranslations("branding.sections");
-  const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const { viewerRole } = usePortalRole();
-  // Only invite anonymous visitors to sign in: hidden while the session is
-  // still restoring (avoids a signed-in flash) and when a dev role override
-  // is previewing an employee/admin session without a real user.
-  const showEmployeeSignIn = shouldShowGuestChrome({
+  const showEmployeeLogin = shouldShowGuestChrome({
     authLoading,
     user,
     viewerRole,
   });
+  const showSales = canSeeSalesSection(viewerRole);
 
   return (
-    <div className="space-y-8">
-      <Hero
-        className="overflow-hidden rounded-app-radius"
-        layers={logoRightBrandLayers()}
-        logo={<KLabBrandLogoMark variant="white" className="h-8 w-auto" />}
-        title={t("heroTitle")}
-        description={t("heroDescription")}
-        actions={
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              variant="accent-brand"
-              size="lg"
-              icon={<ArrowRight aria-hidden />}
-              iconPosition="end"
-              onClick={() => router.push("/branding")}
-            >
-              {t("browseAssets")}
-            </Button>
-            {showEmployeeSignIn ? (
-              <Button
-                variant="outline"
-                size="lg"
-                href="/login"
-                className="bg-background/80"
-              >
-                {t("employeeSignIn")}
-              </Button>
-            ) : null}
-          </div>
-        }
-      />
-
-      <section
-        className="@container space-y-4"
-        aria-label={t("categoriesAriaLabel")}
-      >
-        <div>
-          <h2 className="text-xl font-semibold">{t("categoriesTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("categoriesSubtitle")}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3">
-          {BRANDING_TILES.map(({ id, href, icon }) => (
-            <Tile.Navigation
-              key={id}
-              href={href}
-              icon={icon}
-              title={tSections(`${id}.title`)}
-              description={tSections(`${id}.description`)}
-              cta={t("openCategory")}
-            />
+    <LaunchPage>
+      <LaunchPage.Hero className="overflow-hidden rounded-app-radius">
+        <Hero.Carousel>
+          {HOME_HERO_BACKGROUNDS.map((src) => (
+            <Hero.Slide key={src}>
+              <Hero.Media layers={heroBackgroundLayers(src)} />
+              <Hero.Logo>
+                <KLabBrandLogoMark variant="white" className="h-8 w-auto" />
+              </Hero.Logo>
+              <Hero.Title>{t("heroTitle")}</Hero.Title>
+              <Hero.Description>{t("heroDescription")}</Hero.Description>
+            </Hero.Slide>
           ))}
-          {canSeeSalesSection(viewerRole) ? (
-            <Tile.Navigation
-              href="/sales"
-              icon={Presentation}
-              title={t("categories.sales.title")}
-              description={t("categories.sales.description")}
-              cta={t("openCategory")}
-            />
-          ) : null}
-        </div>
-      </section>
-    </div>
+        </Hero.Carousel>
+      </LaunchPage.Hero>
+      <LaunchPage.Body>
+        <LaunchPage.Main>
+          <LaunchPage.Section
+            title={t("tilesTitle")}
+            description={t("tilesSubtitle")}
+            aria-label={t("tilesAriaLabel")}
+          >
+            <LaunchPage.Cards>
+              {showEmployeeLogin ? (
+                <LaunchPage.Tile href="/login">
+                  <LaunchPage.Tile.Header>
+                    <LaunchPage.Tile.Icon>
+                      <LogIn className="h-5 w-5" aria-hidden />
+                    </LaunchPage.Tile.Icon>
+                    <LaunchPage.Tile.Title>
+                      {t("tiles.employeeLogin.title")}
+                    </LaunchPage.Tile.Title>
+                    <LaunchPage.Tile.Description>
+                      {t("tiles.employeeLogin.description")}
+                    </LaunchPage.Tile.Description>
+                  </LaunchPage.Tile.Header>
+                </LaunchPage.Tile>
+              ) : null}
+              <LaunchPage.Tile href="/branding">
+                <LaunchPage.Tile.Header>
+                  <LaunchPage.Tile.Icon>
+                    <BookOpen className="h-5 w-5" aria-hidden />
+                  </LaunchPage.Tile.Icon>
+                  <LaunchPage.Tile.Title>
+                    {t("tiles.brandGuidelines.title")}
+                  </LaunchPage.Tile.Title>
+                  <LaunchPage.Tile.Description>
+                    {t("tiles.brandGuidelines.description")}
+                  </LaunchPage.Tile.Description>
+                </LaunchPage.Tile.Header>
+              </LaunchPage.Tile>
+              <LaunchPage.Tile href="/assets">
+                <LaunchPage.Tile.Header>
+                  <LaunchPage.Tile.Icon>
+                    <Images className="h-5 w-5" aria-hidden />
+                  </LaunchPage.Tile.Icon>
+                  <LaunchPage.Tile.Title>
+                    {t("tiles.brandAssets.title")}
+                  </LaunchPage.Tile.Title>
+                  <LaunchPage.Tile.Description>
+                    {t("tiles.brandAssets.description")}
+                  </LaunchPage.Tile.Description>
+                </LaunchPage.Tile.Header>
+              </LaunchPage.Tile>
+              {showSales ? (
+                <LaunchPage.Tile href="/sales">
+                  <LaunchPage.Tile.Header>
+                    <LaunchPage.Tile.Icon>
+                      <Presentation className="h-5 w-5" aria-hidden />
+                    </LaunchPage.Tile.Icon>
+                    <LaunchPage.Tile.Title>
+                      {t("tiles.sales.title")}
+                    </LaunchPage.Tile.Title>
+                    <LaunchPage.Tile.Description>
+                      {t("tiles.sales.description")}
+                    </LaunchPage.Tile.Description>
+                  </LaunchPage.Tile.Header>
+                </LaunchPage.Tile>
+              ) : null}
+            </LaunchPage.Cards>
+          </LaunchPage.Section>
+        </LaunchPage.Main>
+      </LaunchPage.Body>
+    </LaunchPage>
   );
 }

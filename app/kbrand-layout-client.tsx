@@ -30,6 +30,7 @@ import {
   FolderCog,
   House,
   Image as ImageIcon,
+  Images,
   LayoutGrid,
   LogIn,
   Palette,
@@ -127,46 +128,59 @@ export function KBrandLayoutClient({
 
   /** Branding standards live under one expandable group; the full guidelines
    *  document is the last entry, as the source of truth behind the summaries. */
-  const brandingAccordion = React.useMemo<AppSidebarAccordionItem[]>(
-    () => [
-      {
-        id: "branding",
-        label: t("nav.branding"),
-        icon: Palette,
-        items: [
-          { href: "/branding", label: t("nav.overview"), icon: LayoutGrid },
-          { href: "/branding/logo", label: t("nav.logo"), icon: PenTool },
-          { href: "/branding/colors", label: t("nav.colors"), icon: Palette },
-          { href: "/branding/typography", label: t("nav.typography"), icon: Type },
-          { href: "/branding/iconography", label: t("nav.iconography"), icon: Shapes },
-          { href: "/branding/imagery", label: t("nav.imagery"), icon: ImageIcon },
-          { href: "/branding/photography", label: t("nav.photography"), icon: Camera },
-          { href: "/branding/corporate-assets", label: t("nav.corporateAssets"), icon: Briefcase },
-          { href: "/branding/social-media", label: t("nav.socialMedia"), icon: Share2 },
-          { href: "/branding/merchandise", label: t("nav.merchandise"), icon: ShoppingBag },
-          { href: "/branding/sub-brands", label: t("nav.subBrands"), icon: Boxes },
-          { href: "/branding/guidelines", label: t("nav.guidelines"), icon: BookOpen },
-        ],
-      },
-    ],
+  const brandingAccordion = React.useMemo<AppSidebarAccordionItem>(
+    () => ({
+      id: "branding",
+      label: t("nav.guidelines"),
+      icon: Palette,
+      items: [
+        { href: "/branding", label: t("nav.overview"), icon: LayoutGrid },
+        { href: "/branding/logo", label: t("nav.logo"), icon: PenTool },
+        { href: "/branding/colors", label: t("nav.colors"), icon: Palette },
+        { href: "/branding/typography", label: t("nav.typography"), icon: Type },
+        { href: "/branding/iconography", label: t("nav.iconography"), icon: Shapes },
+        { href: "/branding/imagery", label: t("nav.imagery"), icon: ImageIcon },
+        { href: "/branding/photography", label: t("nav.photography"), icon: Camera },
+        { href: "/branding/corporate-assets", label: t("nav.corporateAssets"), icon: Briefcase },
+        { href: "/branding/social-media", label: t("nav.socialMedia"), icon: Share2 },
+        { href: "/branding/merchandise", label: t("nav.merchandise"), icon: ShoppingBag },
+        { href: "/branding/sub-brands", label: t("nav.subBrands"), icon: Boxes },
+        { href: "/branding/guidelines", label: t("nav.guidelines"), icon: BookOpen },
+      ],
+    }),
     [t]
   );
 
-  // Public visitors don't see the Sales section at all; admins additionally
-  // get the management area (see asset-access domain rules).
+  const resourcesAccordion = React.useMemo<AppSidebarAccordionItem>(
+    () => ({
+      id: "resources",
+      label: t("nav.resources"),
+      icon: Images,
+      items: [
+        { href: "/assets", label: t("nav.assetLibrary"), icon: Images },
+        ...(canSeeSalesSection(viewerRole)
+          ? [{ href: "/sales", label: t("nav.sales"), icon: Presentation }]
+          : []),
+      ],
+    }),
+    [t, viewerRole]
+  );
+
+  const shellAccordions = React.useMemo(
+    () => [brandingAccordion, resourcesAccordion],
+    [brandingAccordion, resourcesAccordion]
+  );
+
+  // Admins keep management links in the bottom nav; Sales lives under Resources.
   const secondaryNav = React.useMemo<AppSidebarNavLink[]>(
-    () => [
-      ...(canSeeSalesSection(viewerRole)
-        ? [{ href: "/sales", label: t("nav.sales"), icon: Presentation }]
-        : []),
-      ...(isAdmin
+    () =>
+      isAdmin
         ? [
             { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
             { href: "/admin/users", label: t("nav.adminUsers"), icon: Users },
           ]
-        : []),
-    ],
-    [viewerRole, isAdmin, t]
+        : [],
+    [isAdmin, t]
   );
 
   const isAuthPage = isPublicPath(pathname);
@@ -268,7 +282,7 @@ export function KBrandLayoutClient({
           sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
           preferences={preferences}
           primaryNav={primaryNav}
-          accordions={brandingAccordion}
+          accordions={shellAccordions}
           bottomNav={secondaryNav}
           user={showSignIn ? undefined : shellUser}
           onProfileClick={showSignIn ? undefined : () => undefined}

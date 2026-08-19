@@ -9,6 +9,7 @@
       "typography": "الخطوط",
       "imagery": "الصور",
       "guidelines": "إرشادات العلامة",
+      "resources": "الموارد",
       "sales": "موارد المبيعات",
       "assetLibrary": "مكتبة الموارد",
       "admin": "الإدارة",
@@ -52,13 +53,22 @@
   "home": {
     "heroTitle": "علامة K Lab جاهزة للاستخدام",
     "heroDescription": "نزّل إرشادات العلامة والشعارات والصور والخطوط المعتمدة — دون طلبات أو انتظار. يسجّل الموظفون الدخول للوصول إلى العروض التقديمية ومواد المبيعات.",
-    "browseAssets": "تصفّح الموارد",
-    "employeeSignIn": "دخول الموظفين",
-    "categoriesAriaLabel": "فئات الموارد",
-    "categoriesTitle": "استكشف المكتبة",
-    "categoriesSubtitle": "فئات منسّقة: محدّثة دائمًا ومعتمدة دائمًا.",
-    "openCategory": "فتح",
-    "categories": {
+    "tilesAriaLabel": "وجهات البوابة",
+    "tilesTitle": "ابدأ من هنا",
+    "tilesSubtitle": "إرشادات وملفات وموارد داخلية.",
+    "tiles": {
+      "employeeLogin": {
+        "title": "دخول الموظفين",
+        "description": "سجّل الدخول عبر Microsoft للوصول إلى موارد المبيعات والأدوات الداخلية."
+      },
+      "brandGuidelines": {
+        "title": "إرشادات العلامة",
+        "description": "قواعد الاستخدام والتركيبات والألوان والخطوط."
+      },
+      "brandAssets": {
+        "title": "موارد العلامة",
+        "description": "ابحث وصفِّ ونزّل الملفات المعتمدة."
+      },
       "sales": {
         "title": "موارد المبيعات",
         "description": "عروض تقديمية ومواد مبيعات للموظفين."

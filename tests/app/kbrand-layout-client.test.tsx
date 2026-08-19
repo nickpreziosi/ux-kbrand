@@ -137,6 +137,103 @@ jest.mock("@k-lab/components", () => ({
 
 import { KBrandLayoutClient } from "@/app/kbrand-layout-client";
 
+describe("KBrandLayoutClient resources nav", () => {
+  beforeEach(() => {
+    captured.props = null;
+    authState = { user: null, loading: false, signOut: jest.fn() };
+    portalState = { viewerRole: "public", devRoleOverride: null, isAdmin: false };
+  });
+
+  it("keeps Branding as Brand guidelines and adds a Resources accordion with the Asset Library", () => {
+    render(
+      <KBrandLayoutClient>
+        <div>page</div>
+      </KBrandLayoutClient>,
+    );
+
+    const accordions = captured.props?.accordions as Array<{
+      id: string;
+      label: string;
+      items: Array<{ href: string; label: string }>;
+    }>;
+
+    expect(accordions.map((item) => item.id)).toEqual(["branding", "resources"]);
+    expect(accordions[0].label).toBe("Brand guidelines");
+    expect(accordions[1].label).toBe("Resources");
+    expect(accordions[1].items).toEqual([
+      expect.objectContaining({ href: "/assets", label: "Asset library" }),
+    ]);
+    expect(accordions[1].items.some((item) => item.href === "/sales")).toBe(false);
+    expect(captured.props?.bottomNav).toEqual([]);
+  });
+
+  it("shows Sales resources in Resources for employees, not in the bottom nav", () => {
+    portalState = { viewerRole: "employee", devRoleOverride: null, isAdmin: false };
+    authState = {
+      user: {
+        uid: "u1",
+        displayName: "Ada",
+        email: "ada@k-lab.ai",
+        photoUrl: null,
+      },
+      loading: false,
+      signOut: jest.fn(),
+    };
+
+    render(
+      <KBrandLayoutClient>
+        <div>page</div>
+      </KBrandLayoutClient>,
+    );
+
+    const accordions = captured.props?.accordions as Array<{
+      id: string;
+      items: Array<{ href: string; label: string }>;
+    }>;
+    const resources = accordions.find((item) => item.id === "resources");
+
+    expect(resources?.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ href: "/assets", label: "Asset library" }),
+        expect.objectContaining({ href: "/sales", label: "Sales resources" }),
+      ]),
+    );
+    expect(captured.props?.bottomNav).toEqual([]);
+  });
+
+  it("keeps admin destinations in the bottom nav", () => {
+    portalState = { viewerRole: "admin", devRoleOverride: null, isAdmin: true };
+    authState = {
+      user: {
+        uid: "u1",
+        displayName: "Ada",
+        email: "ada@k-lab.ai",
+        photoUrl: null,
+      },
+      loading: false,
+      signOut: jest.fn(),
+    };
+
+    render(
+      <KBrandLayoutClient>
+        <div>page</div>
+      </KBrandLayoutClient>,
+    );
+
+    const accordions = captured.props?.accordions as Array<{
+      id: string;
+      items: Array<{ href: string }>;
+    }>;
+    const resources = accordions.find((item) => item.id === "resources");
+
+    expect(resources?.items.some((item) => item.href === "/sales")).toBe(true);
+    expect(captured.props?.bottomNav).toEqual([
+      expect.objectContaining({ href: "/admin/assets", label: "Manage assets" }),
+      expect.objectContaining({ href: "/admin/users", label: "Users & access" }),
+    ]);
+  });
+});
+
 describe("KBrandLayoutClient guest chrome", () => {
   beforeEach(() => {
     captured.props = null;

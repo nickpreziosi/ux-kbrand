@@ -9,6 +9,7 @@
       "typography": "Typography",
       "imagery": "Imagery",
       "guidelines": "Brand guidelines",
+      "resources": "Resources",
       "sales": "Sales resources",
       "assetLibrary": "Asset library",
       "admin": "Admin",
@@ -52,13 +53,22 @@
   "home": {
     "heroTitle": "The K Lab brand, ready to use",
     "heroDescription": "Download approved brand guidelines, logos, imagery, and fonts — no requests, no waiting. Employees sign in for pitch decks and sales materials.",
-    "browseAssets": "Browse assets",
-    "employeeSignIn": "Employee sign in",
-    "categoriesAriaLabel": "Asset categories",
-    "categoriesTitle": "Explore the library",
-    "categoriesSubtitle": "Curated categories — always current, always approved.",
-    "openCategory": "Open",
-    "categories": {
+    "tilesAriaLabel": "Portal destinations",
+    "tilesTitle": "Get started",
+    "tilesSubtitle": "Guidelines, files, and internal resources.",
+    "tiles": {
+      "employeeLogin": {
+        "title": "Employee login",
+        "description": "Sign in with Microsoft for sales resources and internal tools."
+      },
+      "brandGuidelines": {
+        "title": "Brand guidelines",
+        "description": "Usage rules, lockups, color, and type."
+      },
+      "brandAssets": {
+        "title": "Brand assets",
+        "description": "Search, filter, and download approved files."
+      },
       "sales": {
         "title": "Sales resources",
         "description": "Pitch decks and sales materials for employees."

@@ -9,6 +9,7 @@
       "typography": "Tipografía",
       "imagery": "Imágenes",
       "guidelines": "Guías de marca",
+      "resources": "Recursos",
       "sales": "Recursos de ventas",
       "assetLibrary": "Biblioteca de recursos",
       "admin": "Admin",
@@ -52,13 +53,22 @@
   "home": {
     "heroTitle": "La marca K Lab, lista para usar",
     "heroDescription": "Descarga guías de marca, logotipos, imágenes y tipografías aprobadas — sin solicitudes ni esperas. El personal inicia sesión para acceder a presentaciones y materiales de ventas.",
-    "browseAssets": "Explorar recursos",
-    "employeeSignIn": "Acceso para empleados",
-    "categoriesAriaLabel": "Categorías de recursos",
-    "categoriesTitle": "Explora la biblioteca",
-    "categoriesSubtitle": "Categorías seleccionadas: siempre vigentes, siempre aprobadas.",
-    "openCategory": "Abrir",
-    "categories": {
+    "tilesAriaLabel": "Destinos del portal",
+    "tilesTitle": "Empieza aquí",
+    "tilesSubtitle": "Guías, archivos y recursos internos.",
+    "tiles": {
+      "employeeLogin": {
+        "title": "Acceso para empleados",
+        "description": "Inicia sesión con Microsoft para materiales de ventas y herramientas internas."
+      },
+      "brandGuidelines": {
+        "title": "Guías de marca",
+        "description": "Reglas de uso, composiciones, color y tipografía."
+      },
+      "brandAssets": {
+        "title": "Recursos de marca",
+        "description": "Busca, filtra y descarga archivos aprobados."
+      },
       "sales": {
         "title": "Recursos de ventas",
         "description": "Presentaciones y materiales de ventas para empleados."
