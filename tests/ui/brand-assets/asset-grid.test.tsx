@@ -317,11 +317,107 @@ describe("AssetGrid expandPreview", () => {
     ).toBe(true);
   });
 
+  it("expands photography the same way as brand imagery", async () => {
+    const user = userEvent.setup();
+    const photo = asset({
+      id: "ast-photo",
+      title: "Studio portrait",
+      category: "photography",
+      previewUrl: "/brand-files/photography/portrait.webp",
+    });
+    render(<AssetGrid assets={[photo]} expandPreview />);
+
+    await user.click(screen.getByRole("button", { name: "Studio portrait" }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
   it("does not make thumbnails expandable unless expandPreview is set", () => {
     render(<AssetGrid assets={[chevron]} />);
 
     expect(
       screen.queryByRole("button", { name: "Chevron neon" }),
     ).not.toBeInTheDocument();
+  });
+});
+
+describe("AssetGrid presentation kinds", () => {
+  it("shows a logo preview without a full-screen expand control", () => {
+    render(<AssetGrid assets={[logoAsset]} expandPreview />);
+
+    expect(
+      screen.getByRole("img", { name: "K Lab logo — primary (blue)" }),
+    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-blue.png");
+    expect(
+      screen.queryByRole("button", { name: "K Lab logo — primary (blue)" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows font name and sample text instead of an image, even with a previewUrl", () => {
+    const font = asset({
+      id: "ast-060",
+      title: "Sora — variable font",
+      category: "fonts",
+      previewUrl: "/brand-files/fonts/sora-specimen.png",
+      fileName: "sora-variable.ttf",
+    });
+    render(<AssetGrid assets={[font]} expandPreview />);
+
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Sora — variable font" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Aa Bb Cc 123")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Sora — variable font" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows a document thumbnail when one exists, without expanding", () => {
+    const doc = asset({
+      id: "ast-001",
+      title: "Brand guidelines",
+      category: "brand-guidelines",
+      previewUrl: "/brand-files/docs/guidelines-cover.png",
+      fileName: "guidelines.pdf",
+    });
+    render(<AssetGrid assets={[doc]} expandPreview />);
+
+    expect(screen.getByRole("img", { name: "Brand guidelines" })).toHaveAttribute(
+      "src",
+      "/brand-files/docs/guidelines-cover.png",
+    );
+    expect(
+      screen.queryByRole("button", { name: "Brand guidelines" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("falls back to a file-type treatment when a document has no thumbnail", () => {
+    const deck = asset({
+      id: "ast-100",
+      title: "Platform pitch",
+      category: "pitch-decks",
+      fileName: "pitch.pdf",
+    });
+    render(<AssetGrid assets={[deck]} expandPreview />);
+
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.getByText("Platform pitch")).toBeInTheDocument();
+  });
+
+  it("shows an icon preview without expanding", () => {
+    const icon = asset({
+      id: "ast-icon",
+      title: "App icon",
+      category: "iconography",
+      previewUrl: "/brand-files/icons/app-icon.svg",
+      fileName: "app-icon.svg",
+    });
+    render(<AssetGrid assets={[icon]} expandPreview />);
+
+    expect(screen.getByRole("img", { name: "App icon" })).toHaveAttribute(
+      "src",
+      "/brand-files/icons/app-icon.svg",
+    );
+    expect(screen.queryByRole("button", { name: "App icon" })).not.toBeInTheDocument();
   });
 });

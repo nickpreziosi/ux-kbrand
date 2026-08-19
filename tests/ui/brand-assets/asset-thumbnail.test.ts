@@ -102,6 +102,40 @@ describe("assetThumbnail", () => {
     });
   });
 
+  it("contains icons and documents so marks and page previews are not cropped", () => {
+    expect(
+      assetThumbnail(
+        asset({
+          id: "icon",
+          fileName: "k-lab-icon.svg",
+          category: "iconography",
+        }),
+      ).fit,
+    ).toBe("contain");
+
+    expect(
+      assetThumbnail(
+        asset({
+          id: "letterhead",
+          fileName: "letterhead.pdf",
+          category: "corporate-assets",
+        }),
+      ).fit,
+    ).toBe("contain");
+  });
+
+  it("fills the frame for photography the same way as brand imagery", () => {
+    expect(
+      assetThumbnail(
+        asset({
+          id: "photo",
+          fileName: "portrait.webp",
+          category: "photography",
+        }),
+      ).fit,
+    ).toBe("cover");
+  });
+
   it("contains every logo in the seeded catalog", () => {
     const logos = SEED_BRAND_ASSETS.filter((seed) => seed.category === "logos");
 

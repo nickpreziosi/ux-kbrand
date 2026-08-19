@@ -1,5 +1,9 @@
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { fileFormat } from "@/contexts/brand-assets/domain/services/asset-files";
+import {
+  assetPresentationKind,
+  presentationImageFit,
+} from "@/contexts/brand-assets/domain/services/asset-presentation";
 
 /**
  * Formats that carry an alpha channel, so the artwork arrives as a lockup on
@@ -24,8 +28,13 @@ export interface AssetThumbnail {
  * How an asset's artwork meets its frame.
  */
 export function assetThumbnail(asset: BrandAsset): AssetThumbnail {
-  if (asset.category !== "logos") {
-    return { fit: "cover", surfaceClassName: "bg-secondary", clearspace: false };
+  const kind = assetPresentationKind(asset.category);
+  if (kind !== "logo") {
+    return {
+      fit: presentationImageFit(kind),
+      surfaceClassName: "bg-secondary",
+      clearspace: false,
+    };
   }
 
   const format = fileFormat(asset.files[0] ?? { fileName: "" });

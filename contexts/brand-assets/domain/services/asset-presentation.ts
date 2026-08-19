@@ -32,3 +32,17 @@ export function assetPresentationKind(
 export function presentationAllowsExpand(kind: AssetPresentationKind): boolean {
   return kind === "imagery";
 }
+
+/** Imagery fills the frame; everything else keeps its full artwork visible. */
+export function presentationImageFit(
+  kind: AssetPresentationKind,
+): "contain" | "cover" {
+  return kind === "imagery" ? "cover" : "contain";
+}
+
+/** Fonts render as name + sample text, never a bitmap even if one is stored. */
+export function presentationShowsImagePreview(
+  kind: AssetPresentationKind,
+): boolean {
+  return kind !== "font";
+}

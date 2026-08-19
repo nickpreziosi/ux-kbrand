@@ -15,6 +15,7 @@ import { canSeeAssetGating } from "@/contexts/brand-assets/domain/services/asset
 import {
   assetPresentationKind,
   presentationAllowsExpand,
+  presentationShowsImagePreview,
 } from "@/contexts/brand-assets/domain/services/asset-presentation";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { AssetCard } from "./asset-card";
@@ -80,6 +81,7 @@ export function AssetGrid({
           const kind = assetPresentationKind(asset.category);
           const canExpand =
             expandPreview &&
+            presentationShowsImagePreview(kind) &&
             Boolean(asset.previewUrl) &&
             presentationAllowsExpand(kind);
           return (

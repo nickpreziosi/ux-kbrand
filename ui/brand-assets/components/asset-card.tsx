@@ -40,6 +40,7 @@ import {
 import {
   assetPresentationKind,
   presentationAllowsExpand,
+  presentationShowsImagePreview,
 } from "@/contexts/brand-assets/domain/services/asset-presentation";
 import { brandBundleUrl } from "@/ui/branding/content/logo-formats";
 import { fileDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
@@ -52,8 +53,13 @@ function formatLabel(file: AssetFile): string {
 function PreviewFallbackIcon({ kind, contentType }: { kind: string; contentType: string }) {
   const className = "h-10 w-10 text-muted-foreground";
   if (kind === "font") return <Type className={className} aria-hidden />;
-  if (contentType.startsWith("image/")) return <ImageIcon className={className} aria-hidden />;
-  return <FileText className={className} aria-hidden />;
+  if (kind === "icon" || kind === "logo" || kind === "imagery") {
+    return <ImageIcon className={className} aria-hidden />;
+  }
+  if (kind === "document" || !contentType.startsWith("image/")) {
+    return <FileText className={className} aria-hidden />;
+  }
+  return <ImageIcon className={className} aria-hidden />;
 }
 
 function FormatSizeLabel({
@@ -105,8 +111,10 @@ export function AssetCard({
   const expand = onPreview && presentationAllowsExpand(kind);
   const { fit, surfaceClassName, clearspace } = assetThumbnail(asset);
   const previewFile = files[0];
+  const showImage =
+    Boolean(asset.previewUrl) && presentationShowsImagePreview(kind);
 
-  const previewImage = asset.previewUrl ? (
+  const previewImage = showImage && asset.previewUrl ? (
     <Image
       src={asset.previewUrl}
       alt={asset.title}
