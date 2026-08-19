@@ -10,6 +10,7 @@
       "imagery": "Imágenes",
       "guidelines": "Guías de marca",
       "sales": "Recursos de ventas",
+      "assetLibrary": "Biblioteca de recursos",
       "admin": "Admin",
       "adminAssets": "Gestionar recursos",
       "adminUsers": "Usuarios y accesos",
@@ -549,6 +550,33 @@
     "visibility": {
       "public": "Público",
       "employee": "Empleados"
+    }
+  },
+  "assetLibrary": {
+    "title": "Biblioteca de recursos",
+    "subtitle": "Busca, filtra y descarga los archivos de marca aprobados.",
+    "loadError": "No pudimos cargar la biblioteca de recursos. Inténtalo de nuevo.",
+    "searchLabel": "Buscar recursos",
+    "categoryLabel": "Categoría",
+    "formatLabel": "Formato",
+    "productLabel": "Producto",
+    "allCategories": "Todas las categorías",
+    "allFormats": "Todos los formatos",
+    "allProducts": "Todos los productos",
+    "clear": "Borrar",
+    "clearAriaLabel": "Borrar todos los filtros",
+    "resultCount": "Mostrando {count} de {total, plural, one {# recurso} other {# recursos}}",
+    "totalCount": "{count, plural, one {# recurso} other {# recursos}}",
+    "selectAll": "Seleccionar todo",
+    "deselectAll": "Deseleccionar todo",
+    "selectedCount": "{count, plural, one {# seleccionado} other {# seleccionados}}",
+    "downloadSelectedAllFormats": "Descargar selección (todos los formatos)",
+    "downloadSelectedFormat": "Descargar selección ({format})",
+    "downloadSelectedHint": "Si no hay un filtro de formato, se incluyen todos los archivos de cada recurso seleccionado.",
+    "products": {
+      "k-lab": "K Lab",
+      "k-talk": "K Talk",
+      "k-rails": "K Rails"
     }
   },
   "sales": {

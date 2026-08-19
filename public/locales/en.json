@@ -10,6 +10,7 @@
       "imagery": "Imagery",
       "guidelines": "Brand guidelines",
       "sales": "Sales resources",
+      "assetLibrary": "Asset library",
       "admin": "Admin",
       "adminAssets": "Manage assets",
       "adminUsers": "Users & access",
@@ -549,6 +550,33 @@
     "visibility": {
       "public": "Public",
       "employee": "Employees"
+    }
+  },
+  "assetLibrary": {
+    "title": "Asset library",
+    "subtitle": "Search, filter, and download approved brand files.",
+    "loadError": "We couldn't load the asset library. Please try again.",
+    "searchLabel": "Search assets",
+    "categoryLabel": "Category",
+    "formatLabel": "Format",
+    "productLabel": "Product",
+    "allCategories": "All categories",
+    "allFormats": "All formats",
+    "allProducts": "All products",
+    "clear": "Clear",
+    "clearAriaLabel": "Clear all filters",
+    "resultCount": "Showing {count} of {total, plural, one {# asset} other {# assets}}",
+    "totalCount": "{count, plural, one {# asset} other {# assets}}",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "selectedCount": "{count, plural, one {# selected} other {# selected}}",
+    "downloadSelectedAllFormats": "Download selected (all formats)",
+    "downloadSelectedFormat": "Download selected ({format})",
+    "downloadSelectedHint": "When no format filter is set, every file on each selected asset is included.",
+    "products": {
+      "k-lab": "K Lab",
+      "k-talk": "K Talk",
+      "k-rails": "K Rails"
     }
   },
   "sales": {

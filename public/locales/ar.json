@@ -10,6 +10,7 @@
       "imagery": "الصور",
       "guidelines": "إرشادات العلامة",
       "sales": "موارد المبيعات",
+      "assetLibrary": "مكتبة الموارد",
       "admin": "الإدارة",
       "adminAssets": "إدارة الموارد",
       "adminUsers": "المستخدمون والصلاحيات",
@@ -549,6 +550,33 @@
     "visibility": {
       "public": "عام",
       "employee": "الموظفون"
+    }
+  },
+  "assetLibrary": {
+    "title": "مكتبة الموارد",
+    "subtitle": "ابحث وصفِّ وحمّل ملفات العلامة المعتمدة.",
+    "loadError": "تعذّر تحميل مكتبة الموارد. يرجى المحاولة مرة أخرى.",
+    "searchLabel": "البحث في الموارد",
+    "categoryLabel": "الفئة",
+    "formatLabel": "الصيغة",
+    "productLabel": "المنتج",
+    "allCategories": "كل الفئات",
+    "allFormats": "كل الصيغ",
+    "allProducts": "كل المنتجات",
+    "clear": "مسح",
+    "clearAriaLabel": "مسح كل عوامل التصفية",
+    "resultCount": "عرض {count} من {total, plural, one {# مورد} other {# موارد}}",
+    "totalCount": "{count, plural, one {# مورد} other {# موارد}}",
+    "selectAll": "تحديد الكل",
+    "deselectAll": "إلغاء تحديد الكل",
+    "selectedCount": "{count, plural, one {# محدد} other {# محددة}}",
+    "downloadSelectedAllFormats": "تنزيل المحدد (كل الصيغ)",
+    "downloadSelectedFormat": "تنزيل المحدد ({format})",
+    "downloadSelectedHint": "عند عدم تعيين عامل تصفية للصيغة، يُضمَّن كل ملف في كل مورد محدد.",
+    "products": {
+      "k-lab": "K Lab",
+      "k-talk": "K Talk",
+      "k-rails": "K Rails"
     }
   },
   "sales": {

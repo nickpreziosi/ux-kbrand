@@ -37,6 +37,27 @@ export function crc32(bytes: Uint8Array): number {
   return (crc ^ 0xffffffff) >>> 0;
 }
 
+/**
+ * Two files in one zip can share a basename (PNG + PNG from different
+ * artworks, or a duplicate format on one asset). Keep both, distinctly named.
+ */
+export function uniqueZipEntryName(taken: Set<string>, fileName: string): string {
+  if (!taken.has(fileName)) {
+    taken.add(fileName);
+    return fileName;
+  }
+  const dot = fileName.lastIndexOf(".");
+  const stem = dot > 0 ? fileName.slice(0, dot) : fileName;
+  const extension = dot > 0 ? fileName.slice(dot) : "";
+  for (let n = 2; ; n += 1) {
+    const candidate = `${stem}-${n}${extension}`;
+    if (!taken.has(candidate)) {
+      taken.add(candidate);
+      return candidate;
+    }
+  }
+}
+
 /** MS-DOS date for 1980-01-01 — the epoch of the format, and stable. */
 const DOS_DATE = 0x0021;
 const DOS_TIME = 0x0000;

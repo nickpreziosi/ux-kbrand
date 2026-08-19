@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { usePathname } from "next/navigation";
 import type { PageBreadcrumbConfig } from "@k-lab/components";
 import { useMessages } from "next-intl";
 
 /** Reachable prefixes for intermediate crumb links — mirrors shell nav. */
 export const KBRAND_BREADCRUMB_ROUTES = [
   "/",
+  "/assets",
   "/branding",
   "/branding/logo",
   "/branding/colors",
@@ -27,6 +29,7 @@ export const KBRAND_BREADCRUMB_ROUTES = [
 
 type NavMessages = Partial<{
   home: string;
+  assetLibrary: string;
   branding: string;
   logo: string;
   colors: string;
@@ -52,11 +55,15 @@ type NavMessages = Partial<{
  */
 export function useKBrandBreadcrumbConfig(): PageBreadcrumbConfig {
   const messages = useMessages();
+  const pathname = usePathname() ?? "/";
 
   return React.useMemo(() => {
     const shell = (messages as { shell?: { nav?: NavMessages } } | undefined)?.shell;
     const nav = shell?.nav ?? {};
     const settings = (messages as { settings?: { title?: string } } | undefined)?.settings;
+    const assetsLabel = pathname.startsWith("/admin")
+      ? (nav.adminAssets ?? "Manage assets")
+      : (nav.assetLibrary ?? "Asset library");
 
     return {
       rootLabel: nav.home ?? "Home",
@@ -75,11 +82,11 @@ export function useKBrandBreadcrumbConfig(): PageBreadcrumbConfig {
         guidelines: nav.guidelines ?? "Brand guidelines",
         sales: nav.sales ?? "Sales resources",
         admin: nav.admin ?? "Admin",
-        assets: nav.adminAssets ?? "Manage assets",
+        assets: assetsLabel,
         users: nav.adminUsers ?? "Users & access",
         settings: settings?.title ?? "Settings",
       },
       reachableRoutes: [...KBRAND_BREADCRUMB_ROUTES],
     };
-  }, [messages]);
+  }, [messages, pathname]);
 }

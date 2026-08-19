@@ -19,6 +19,7 @@ jest.mock("node:fs/promises", () => ({
 }));
 
 import { GET } from "@/app/api/brand-bundle/[groupId]/route";
+import { POST } from "@/app/api/brand-bundle/route";
 
 function file(id: string, fileName: string, overrides: Partial<AssetFile> = {}): AssetFile {
   return {
@@ -185,5 +186,86 @@ describe("GET /api/brand-bundle/[groupId]", () => {
       "k-lab-logomark.pdf",
       "k-lab-logomark-2.pdf",
     ]);
+  });
+});
+
+function postRequest(body: unknown) {
+  return new Request("http://localhost/api/brand-bundle", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+describe("POST /api/brand-bundle", () => {
+  beforeEach(() => {
+    mockGetById.mockReset();
+    mockReadFile.mockReset();
+    mockReadFile.mockResolvedValue(Buffer.from("file-bytes"));
+  });
+
+  it("zips every file on the selected assets", async () => {
+    const logo = artwork();
+    const mark = artwork({
+      id: "k-lab-logomark",
+      files: [file("ast-014", "k-lab-logomark.pdf")],
+    });
+    mockGetById.mockImplementation(async (id: string) => {
+      if (id === logo.id) return logo;
+      if (id === mark.id) return mark;
+      return null;
+    });
+
+    const response = await POST(
+      postRequest({ assetIds: [logo.id, mark.id] }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toBe("application/zip");
+    expect(response.headers.get("Content-Disposition")).toBe(
+      'attachment; filename="brand-assets.zip"',
+    );
+    expect(namesIn(new Uint8Array(await response.arrayBuffer()))).toEqual([
+      "k-lab-logo-blue.png",
+      "k-lab-logo-blue.svg",
+      "k-lab-logomark.pdf",
+    ]);
+  });
+
+  it("keeps only the requested format when a format filter is set", async () => {
+    mockGetById.mockResolvedValue(artwork());
+
+    const response = await POST(
+      postRequest({ assetIds: ["k-lab-logo-blue"], format: "svg" }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(namesIn(new Uint8Array(await response.arrayBuffer()))).toEqual([
+      "k-lab-logo-blue.svg",
+    ]);
+  });
+
+  it("returns 400 when no asset ids are given", async () => {
+    const response = await POST(postRequest({ assetIds: [] }));
+
+    expect(response.status).toBe(400);
+    expect(mockGetById).not.toHaveBeenCalled();
+  });
+
+  it("returns 404 when an asset id is missing", async () => {
+    mockGetById.mockResolvedValue(null);
+
+    const response = await POST(postRequest({ assetIds: ["missing"] }));
+
+    expect(response.status).toBe(404);
+  });
+
+  it("refuses a bundle that includes an employee-gated asset", async () => {
+    mockGetById.mockResolvedValue(artwork({ visibility: "employee" }));
+
+    const response = await POST(postRequest({ assetIds: ["k-lab-logo-blue"] }));
+
+    expect(response.status).toBe(401);
+    expect(mockReadFile).not.toHaveBeenCalled();
   });
 });

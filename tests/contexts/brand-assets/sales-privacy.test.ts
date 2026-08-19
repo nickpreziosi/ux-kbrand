@@ -163,6 +163,26 @@ describe("catalog listings for anonymous visitors", () => {
     expect(Object.values(grouped).flat()).toEqual([]);
   });
 
+  it("keeps the brand library free of sales and employee-gated assets", async () => {
+    const repository = new MockBrandAssetRepository(0);
+    const catalog = new BrandAssetCatalogService(repository);
+    const [logo] = await repository.list({ category: "logos" });
+    await repository.update(logo.id, { visibility: "employee" });
+
+    const library = await catalog.listLibrary("public", {
+      search: "",
+      category: "all",
+      format: "all",
+      product: "all",
+      resourceType: "brand",
+    });
+
+    expect(library.length).toBeGreaterThan(0);
+    expect(library.every((asset) => asset.resourceType === "brand")).toBe(true);
+    expect(library.every((asset) => asset.visibility === "public")).toBe(true);
+    expect(library.map((asset) => asset.id)).not.toContain(logo.id);
+  });
+
   it("returns them to employees and admins", async () => {
     const catalog = new BrandAssetCatalogService(new MockBrandAssetRepository(0));
 
