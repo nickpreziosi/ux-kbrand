@@ -39,6 +39,32 @@ jest.mock("next-intl", () => ({
         "rules.donts.distort": "Don't distort.",
         "rules.donts.effects": "Don't add effects.",
         "rules.donts.rebuild": "Don't rebuild.",
+        backgroundsTitle: "Logo backgrounds",
+        backgroundsDescription: "Pick contrast.",
+        "backgrounds.photoGradient.label": "Reversed on photography",
+        "backgrounds.photoGradient.description": "White on a gradient.",
+        "backgrounds.neonField.label": "Reversed on brand imagery",
+        "backgrounds.neonField.description": "White on neon.",
+        "backgrounds.solidWhite.label": "Primary on white",
+        "backgrounds.solidWhite.description": "Blue on white.",
+        "backgrounds.greyOnWhite.label": "Grey on white",
+        "backgrounds.greyOnWhite.description": "Charcoal on white.",
+        cobrandingTitle: "Co-branding",
+        cobrandingDescription: "Equal weight.",
+        "cobranding.divider": "Use a divider.",
+        "cobranding.spacing": "Keep 0.5× gaps.",
+        "cobranding.parity": "Match wordmark height.",
+        cobrandingSpacingLabel: "Spacing",
+        cobrandingFinalLabel: "Partner lockup",
+        cobrandingPartnerLabel: "Partner",
+        misuseTitle: "Logo misuse",
+        misuseDescription: "Never alter the logo.",
+        "misuse.stretch": "Do not stretch the logo",
+        "misuse.rotate": "Do not rotate the logo",
+        "misuse.containers": "Do not add containers",
+        "misuse.flipHorizontal": "Do not flip horizontally",
+        "misuse.flipVertical": "Do not flip vertically",
+        "misuse.shear": "Do not shear the logo",
       },
       assets: {
         viewAll: "View all {category}",
@@ -264,5 +290,31 @@ describe("LogoGuidelinesView", () => {
       "href",
       "/assets?category=logos",
     );
+  });
+
+  it("recreates background, co-branding, and misuse examples from catalog lockups", () => {
+    render(<LogoGuidelinesView />);
+
+    expect(
+      screen.getByRole("heading", { name: "Logo backgrounds" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Reversed on photography" }),
+    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-white.png");
+    expect(
+      screen.getByRole("img", { name: "Primary on white" }),
+    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-blue.png");
+
+    expect(screen.getByRole("img", { name: "Spacing" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Partner lockup" }),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("heading", { name: "Logo misuse" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Do not stretch the logo")).toBeInTheDocument();
+    expect(screen.getByText("Do not add containers")).toBeInTheDocument();
+    expect(screen.getByText("Do not shear the logo")).toBeInTheDocument();
   });
 });

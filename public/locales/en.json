@@ -192,11 +192,44 @@
         }
       },
       "cobrandingTitle": "Co-branding",
-      "cobrandingDescription": "Partner lockups pair the K Lab logo with the partner logo on either side of a thin vertical divider.",
+      "cobrandingDescription": "When the logo appears alongside a partner, keep equal visual weight and a clear separation. Partner lockups sit on either side of a thin vertical divider.",
       "cobranding": {
         "divider": "Separate the two logos with a thin vertical divider the height of the K Lab logomark.",
         "spacing": "Keep a gap of 50% of the logomark width between each logo and the divider.",
         "parity": "Scale the partner logo so both wordmarks read at the same height."
+      },
+      "cobrandingSpacingLabel": "Spacing",
+      "cobrandingFinalLabel": "Partner lockup",
+      "cobrandingPartnerLabel": "Partner",
+      "backgroundsTitle": "Logo backgrounds",
+      "backgroundsDescription": "The logo is designed for versatility. Always choose a background color or image with enough contrast so the lockup stays clearly visible and intact.",
+      "backgrounds": {
+        "photoGradient": {
+          "label": "Reversed on photography",
+          "description": "White lockup on a calm brand gradient or photographic field."
+        },
+        "neonField": {
+          "label": "Reversed on brand imagery",
+          "description": "White lockup on dark neon and technical artwork."
+        },
+        "solidWhite": {
+          "label": "Primary on white",
+          "description": "The blue lockup on a clean white surface."
+        },
+        "greyOnWhite": {
+          "label": "Grey on white",
+          "description": "The charcoal lockup on a clean white surface."
+        }
+      },
+      "misuseTitle": "Logo misuse",
+      "misuseDescription": "To protect the brand, the logo must never be altered. Don't stretch, rotate, recolor, or add effects — consistent use is essential.",
+      "misuse": {
+        "stretch": "Do not stretch the logo",
+        "rotate": "Do not rotate the logo",
+        "containers": "Do not add containers",
+        "flipHorizontal": "Do not flip horizontally",
+        "flipVertical": "Do not flip vertically",
+        "shear": "Do not shear the logo"
       }
     },
     "colors": {

@@ -192,11 +192,44 @@
         }
       },
       "cobrandingTitle": "Co-branding",
-      "cobrandingDescription": "As composições com parceiros combinam o logotipo da K Lab com o do parceiro em ambos os lados de um divisor vertical fino.",
+      "cobrandingDescription": "Quando o logotipo aparece ao lado do de um parceiro, mantenha o mesmo peso visual e uma separação clara. As composições ficam dos dois lados de um divisor vertical fino.",
       "cobranding": {
         "divider": "Separe os dois logotipos com um divisor vertical fino da altura do símbolo da K Lab.",
         "spacing": "Mantenha um espaço de 50% da largura do símbolo entre cada logotipo e o divisor.",
         "parity": "Dimensione o logotipo do parceiro para que ambos os nomes tenham a mesma altura."
+      },
+      "cobrandingSpacingLabel": "Espaçamento",
+      "cobrandingFinalLabel": "Composição com parceiro",
+      "cobrandingPartnerLabel": "Parceiro",
+      "backgroundsTitle": "Fundos do logotipo",
+      "backgroundsDescription": "O logotipo foi pensado para ser versátil. Sempre escolha uma cor ou imagem de fundo com contraste suficiente para que a composição permaneça nítida e íntegra.",
+      "backgrounds": {
+        "photoGradient": {
+          "label": "Invertido sobre fotografia",
+          "description": "Composição branca sobre um degradê da marca ou um campo fotográfico calmo."
+        },
+        "neonField": {
+          "label": "Invertido sobre imagem da marca",
+          "description": "Composição branca sobre arte técnica e neon escuro."
+        },
+        "solidWhite": {
+          "label": "Principal sobre branco",
+          "description": "A composição azul sobre uma superfície branca limpa."
+        },
+        "greyOnWhite": {
+          "label": "Cinza sobre branco",
+          "description": "A composição cinza-carvão sobre uma superfície branca limpa."
+        }
+      },
+      "misuseTitle": "Uso incorreto do logotipo",
+      "misuseDescription": "Para proteger a marca, o logotipo nunca deve ser alterado. Não estique, rotacione, recolora nem adicione efeitos — o uso consistente é essencial.",
+      "misuse": {
+        "stretch": "Não estique o logotipo",
+        "rotate": "Não rotacione o logotipo",
+        "containers": "Não adicione contêineres",
+        "flipHorizontal": "Não espelhe horizontalmente",
+        "flipVertical": "Não espelhe verticalmente",
+        "shear": "Não incline o logotipo"
       }
     },
     "colors": {
