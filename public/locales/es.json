@@ -137,11 +137,82 @@
       "title": "Marca",
       "subtitle": "Los estándares que más se consultan, junto al documento completo que los respalda.",
       "sectionsAriaLabel": "Secciones de marca",
+      "sectionsTitle": "Secciones de marca",
+      "sectionsDescription": "Abre una sección para composiciones, color, tipografía y el resto del sistema.",
       "openSection": "Abrir",
       "sourceOfTruthAriaLabel": "Guías de marca completas",
       "sourceOfTruthTitle": "La fuente de verdad",
       "sourceOfTruthDescription": "Estas páginas resumen los estándares que los equipos consultan a diario. El documento completo de guías de marca sigue siendo la referencia autorizada: ante la duda, consúltalo.",
-      "openGuidelines": "Abrir guías de marca"
+      "openGuidelines": "Abrir guías de marca",
+      "welcomeKicker": "Introducción",
+      "welcomeTitle": "Bienvenido a las Guías de marca de K Lab.",
+      "welcomeDescription": "Esta guía existe para que cualquiera — diseño, producto, ventas o una agencia externa — pueda crear una pieza de K Lab que suene y se vea como K Lab, sin tener que preguntar. Es un documento vivo: cuando algo cambia, se actualiza aquí primero.",
+      "aboutTitle": "Sobre K Lab",
+      "aboutDescription": "Estas declaraciones definen quiénes somos y guían nuestra cultura interna y la comunicación externa. Esta es nuestra base.",
+      "aboutStatement": "K Lab es una empresa de tecnología que construye la infraestructura de confianza sobre la que gobiernos, instituciones financieras y compañías mueven su dinero.",
+      "visionTitle": "Visión de marca",
+      "visionDescription": "Nuestra visión describe las aspiraciones de futuro. Es el norte que dirige la estrategia y el crecimiento a largo plazo.",
+      "vision": {
+        "purpose": {
+          "statement": "Proteger el dinero que gobiernos, instituciones financieras y compañías mueven entre sí — y modernizar cómo pagan, contratan y rinden cuentas.",
+          "caption": "El norte de la estrategia y el crecimiento a largo plazo."
+        },
+        "world": {
+          "statement": "Un mundo en el que ninguna organización tenga que elegir entre moverse rápido y poder demostrar cada decisión.",
+          "caption": "Dónde nos situamos en el mercado y cómo nos relacionamos con la audiencia, emocional y funcionalmente."
+        }
+      },
+      "fundamentalsTitle": "Fundamentos",
+      "fundamentalsKicker": "Por qué existimos",
+      "fundamentalsHeading": "Por qué existe K Rails",
+      "fundamentals": {
+        "challenge": {
+          "label": "El reto",
+          "body": "El reto compartido por toda organización que mueve el dinero de otros es la gobernanza: crear y mantener evidencia de que cada decisión se tomó correctamente, en el momento en que alguien la cuestiona — no meses después, reconstruyendo correos y hojas de cálculo."
+        },
+        "solution": {
+          "label": "La solución",
+          "body": "K Rails ofrece una nueva capa: gobernanza programable que se sitúa sobre los sistemas ya existentes, conectando contratos, aprobaciones, pagos y auditoría en un único registro verificable — sin reemplazar nada."
+        },
+        "result": {
+          "label": "El resultado",
+          "body": "Con K Rails, gobiernos e instituciones pueden explicar cualquier pago en minutos, con evidencia clara. Y las empresas que les suministran bienes o servicios cobran de inmediato — no en 30, 60 o 120 días — porque el pago ya ha sido validado en la blockchain."
+        }
+      },
+      "valuesTitle": "Valores de marca",
+      "valuesDescription": "Nuestro tono de voz se define por un conjunto de principios clave.",
+      "values": {
+        "trust": {
+          "title": "Confianza",
+          "traits": "Fiabilidad. Transparencia. Consistencia.",
+          "description": "La confianza no se pide: se demuestra con evidencia verificable en cada transacción."
+        },
+        "rigor": {
+          "title": "Rigor",
+          "traits": "Precisión. Disciplina. Excelencia técnica.",
+          "description": "El dinero de gobiernos, instituciones financieras y compañías no admite errores. Cuidamos cada detalle."
+        },
+        "clarity": {
+          "title": "Claridad",
+          "traits": "Simplicidad. Honestidad.",
+          "description": "Hacer lo complejo — gobernanza, cumplimiento, blockchain — comprensible en una sola frase."
+        },
+        "responsibility": {
+          "title": "Responsabilidad",
+          "traits": "Rendición de cuentas. Ética.",
+          "description": "Tratamos el dinero de los demás con el mismo cuidado que el nuestro."
+        },
+        "collaboration": {
+          "title": "Colaboración",
+          "traits": "Integración. Respeto.",
+          "description": "K Rails se construye sobre lo que ya existe, no en su lugar."
+        },
+        "progress": {
+          "title": "Progreso",
+          "traits": "Mejora continua.",
+          "description": "Modernizar no es una tendencia, es una responsabilidad."
+        }
+      }
     },
     "document": {
       "view": "Ver",
