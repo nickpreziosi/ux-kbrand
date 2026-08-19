@@ -137,6 +137,29 @@ jest.mock("@k-lab/components", () => ({
 
 import { KBrandLayoutClient } from "@/app/kbrand-layout-client";
 
+const brandingAccordionHrefs = [
+  "/branding",
+  "/branding/logo",
+  "/branding/colors",
+  "/branding/typography",
+  "/branding/iconography",
+  "/branding/imagery",
+  "/branding/photography",
+  "/branding/corporate-assets",
+  "/branding/social-media",
+  "/branding/merchandise",
+  "/branding/sub-brands",
+  "/branding/guidelines",
+];
+
+function brandingAccordion() {
+  return expect.objectContaining({
+    id: "branding",
+    label: "Brand guidelines",
+    items: brandingAccordionHrefs.map((href) => expect.objectContaining({ href })),
+  });
+}
+
 describe("KBrandLayoutClient resources nav", () => {
   beforeEach(() => {
     captured.props = null;
@@ -144,30 +167,22 @@ describe("KBrandLayoutClient resources nav", () => {
     portalState = { viewerRole: "public", devRoleOverride: null, isAdmin: false };
   });
 
-  it("keeps Branding as Brand guidelines and adds a Resources accordion with the Asset Library", () => {
+  it("keeps Brand guidelines as an accordion after Home and Asset library", () => {
     render(
       <KBrandLayoutClient>
         <div>page</div>
       </KBrandLayoutClient>,
     );
 
-    const accordions = captured.props?.accordions as Array<{
-      id: string;
-      label: string;
-      items: Array<{ href: string; label: string }>;
-    }>;
-
-    expect(accordions.map((item) => item.id)).toEqual(["branding", "resources"]);
-    expect(accordions[0].label).toBe("Brand guidelines");
-    expect(accordions[1].label).toBe("Resources");
-    expect(accordions[1].items).toEqual([
+    expect(captured.props?.primaryNav).toEqual([
+      expect.objectContaining({ href: "/", label: "Home" }),
       expect.objectContaining({ href: "/assets", label: "Asset library" }),
     ]);
-    expect(accordions[1].items.some((item) => item.href === "/sales")).toBe(false);
+    expect(captured.props?.accordions).toEqual([brandingAccordion()]);
     expect(captured.props?.bottomNav).toEqual([]);
   });
 
-  it("shows Sales resources in Resources for employees, not in the bottom nav", () => {
+  it("adds Sales resources for Microsoft-signed-in employees", () => {
     portalState = { viewerRole: "employee", devRoleOverride: null, isAdmin: false };
     authState = {
       user: {
@@ -186,22 +201,16 @@ describe("KBrandLayoutClient resources nav", () => {
       </KBrandLayoutClient>,
     );
 
-    const accordions = captured.props?.accordions as Array<{
-      id: string;
-      items: Array<{ href: string; label: string }>;
-    }>;
-    const resources = accordions.find((item) => item.id === "resources");
-
-    expect(resources?.items).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ href: "/assets", label: "Asset library" }),
-        expect.objectContaining({ href: "/sales", label: "Sales resources" }),
-      ]),
-    );
+    expect(captured.props?.primaryNav).toEqual([
+      expect.objectContaining({ href: "/", label: "Home" }),
+      expect.objectContaining({ href: "/assets", label: "Asset library" }),
+      expect.objectContaining({ href: "/sales", label: "Sales resources" }),
+    ]);
+    expect(captured.props?.accordions).toEqual([brandingAccordion()]);
     expect(captured.props?.bottomNav).toEqual([]);
   });
 
-  it("keeps admin destinations in the bottom nav", () => {
+  it("keeps Admin as the last accordion", () => {
     portalState = { viewerRole: "admin", devRoleOverride: null, isAdmin: true };
     authState = {
       user: {
@@ -220,17 +229,23 @@ describe("KBrandLayoutClient resources nav", () => {
       </KBrandLayoutClient>,
     );
 
-    const accordions = captured.props?.accordions as Array<{
-      id: string;
-      items: Array<{ href: string }>;
-    }>;
-    const resources = accordions.find((item) => item.id === "resources");
-
-    expect(resources?.items.some((item) => item.href === "/sales")).toBe(true);
-    expect(captured.props?.bottomNav).toEqual([
-      expect.objectContaining({ href: "/admin/assets", label: "Manage assets" }),
-      expect.objectContaining({ href: "/admin/users", label: "Users & access" }),
+    expect(captured.props?.primaryNav).toEqual([
+      expect.objectContaining({ href: "/", label: "Home" }),
+      expect.objectContaining({ href: "/assets", label: "Asset library" }),
+      expect.objectContaining({ href: "/sales", label: "Sales resources" }),
     ]);
+    expect(captured.props?.accordions).toEqual([
+      brandingAccordion(),
+      expect.objectContaining({
+        id: "admin",
+        label: "Admin",
+        items: [
+          expect.objectContaining({ href: "/admin/assets", label: "Manage assets" }),
+          expect.objectContaining({ href: "/admin/users", label: "Users & access" }),
+        ],
+      }),
+    ]);
+    expect(captured.props?.bottomNav).toEqual([]);
   });
 });
 

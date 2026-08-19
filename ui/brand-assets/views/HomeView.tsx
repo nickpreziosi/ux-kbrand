@@ -1,27 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { Hero, LaunchPage } from "@k-lab/components";
+import { Button, Hero, LaunchPage, cn } from "@k-lab/components";
 import type { AuthBrandPanelLayer } from "@k-lab/components";
 import {
   BookOpen,
   Images,
-  LogIn,
   Presentation,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
-import { BRAND_IMAGE_OVERLAY_OPACITY } from "@/lib/brand/auth-brand-layers";
 import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
 import { shouldShowGuestChrome } from "@/lib/auth/guest-chrome";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 
-/** Catalog backgrounds (non-dot treatments) — one approved image per slide. */
 const HOME_HERO_BACKGROUNDS = [
-  "/brand-files/backgrounds/k-lab-bg-001.webp",
   "/brand-files/backgrounds/k-lab-bg-003.webp",
   "/brand-files/backgrounds/k-lab-bg-005.webp",
+  "/brand-files/backgrounds/k-lab-bg-001.webp",
+  "/brand-files/backgrounds/k-lab-bg-004.webp",
 ] as const;
 
 function heroBackgroundLayers(src: string): AuthBrandPanelLayer[] {
@@ -33,37 +31,137 @@ function heroBackgroundLayers(src: string): AuthBrandPanelLayer[] {
       priority: "high",
       loading: "eager",
     },
-    {
-      type: "overlay",
-      color: "#000000",
-      opacity: BRAND_IMAGE_OVERLAY_OPACITY,
-    },
   ];
+}
+
+function HomeTile({
+  href,
+  icon: Icon,
+  title,
+  description,
+}: {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+}) {
+  return (
+    <LaunchPage.Tile href={href}>
+      <LaunchPage.Tile.Header>
+        <LaunchPage.Tile.Icon>
+          <Icon className="h-5 w-5" aria-hidden />
+        </LaunchPage.Tile.Icon>
+        <div className="space-y-1.5">
+          <LaunchPage.Tile.Title>{title}</LaunchPage.Tile.Title>
+          <LaunchPage.Tile.Description>{description}</LaunchPage.Tile.Description>
+        </div>
+      </LaunchPage.Tile.Header>
+      <LaunchPage.Tile.Footer>
+        <LaunchPage.Tile.Action />
+      </LaunchPage.Tile.Footer>
+    </LaunchPage.Tile>
+  );
 }
 
 export function HomeView() {
   const t = useTranslations("home");
+  const tNav = useTranslations("shell.nav");
   const { user, loading: authLoading } = useAuth();
-  const { viewerRole } = usePortalRole();
-  const showEmployeeLogin = shouldShowGuestChrome({
+  const { viewerRole, isAdmin } = usePortalRole();
+  const [index, setIndex] = React.useState(0);
+  const showEmployeeSignIn = shouldShowGuestChrome({
     authLoading,
     user,
     viewerRole,
   });
   const showSales = canSeeSalesSection(viewerRole);
 
+  const slides = React.useMemo(() => {
+    const items = [
+      {
+        id: "guidelines",
+        background: HOME_HERO_BACKGROUNDS[0],
+        title: t("guidelinesTitle"),
+        description: t("guidelinesDescription"),
+        cta: t("guidelinesCta"),
+        href: "/branding",
+      },
+      {
+        id: "assets",
+        background: HOME_HERO_BACKGROUNDS[1],
+        title: t("assetsTitle"),
+        description: t("assetsDescription"),
+        cta: t("assetsCta"),
+        href: "/assets",
+      },
+    ];
+    if (showSales) {
+      items.push({
+        id: "sales",
+        background: HOME_HERO_BACKGROUNDS[2],
+        title: t("salesTitle"),
+        description: t("salesDescription"),
+        cta: t("salesCta"),
+        href: "/sales",
+      });
+    }
+    if (isAdmin) {
+      items.push({
+        id: "admin",
+        background: HOME_HERO_BACKGROUNDS[3],
+        title: t("adminTitle"),
+        description: t("adminDescription"),
+        cta: t("adminCta"),
+        href: "/admin/assets",
+      });
+    }
+    return items;
+  }, [t, showSales, isAdmin]);
+
   return (
     <LaunchPage>
-      <LaunchPage.Hero className="overflow-hidden rounded-app-radius">
+      <LaunchPage.Hero
+        className="overflow-hidden rounded-app-radius"
+        index={index}
+        onIndexChange={setIndex}
+      >
+        <div className="absolute inset-0" aria-hidden>
+          {slides.map((slide, slideIndex) => (
+            <div
+              key={slide.id}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-500 ease-in-out",
+                slideIndex === index
+                  ? "z-0 opacity-100"
+                  : "pointer-events-none z-0 opacity-0",
+              )}
+            >
+              <Hero.Media layers={heroBackgroundLayers(slide.background)} />
+            </div>
+          ))}
+        </div>
         <Hero.Carousel>
-          {HOME_HERO_BACKGROUNDS.map((src) => (
-            <Hero.Slide key={src}>
-              <Hero.Media layers={heroBackgroundLayers(src)} />
+          {slides.map((slide) => (
+            <Hero.Slide key={slide.id}>
               <Hero.Logo>
                 <KLabBrandLogoMark variant="white" className="h-8 w-auto" />
               </Hero.Logo>
-              <Hero.Title>{t("heroTitle")}</Hero.Title>
-              <Hero.Description>{t("heroDescription")}</Hero.Description>
+              <Hero.Title>{slide.title}</Hero.Title>
+              <Hero.Description>{slide.description}</Hero.Description>
+              <Hero.Actions>
+                <Button size="lg" variant="accent-brand" className="w-fit" href={slide.href}>
+                  {slide.cta}
+                </Button>
+                {showEmployeeSignIn ? (
+                  <Button
+                    size="lg"
+                    className="w-fit bg-white text-black hover:bg-white/80"
+                    href="/login"
+                  >
+                    {t("employeeSignIn")}
+                  </Button>
+                ) : null}
+              </Hero.Actions>
             </Hero.Slide>
           ))}
         </Hero.Carousel>
@@ -76,61 +174,25 @@ export function HomeView() {
             aria-label={t("tilesAriaLabel")}
           >
             <LaunchPage.Cards>
-              {showEmployeeLogin ? (
-                <LaunchPage.Tile href="/login">
-                  <LaunchPage.Tile.Header>
-                    <LaunchPage.Tile.Icon>
-                      <LogIn className="h-5 w-5" aria-hidden />
-                    </LaunchPage.Tile.Icon>
-                    <LaunchPage.Tile.Title>
-                      {t("tiles.employeeLogin.title")}
-                    </LaunchPage.Tile.Title>
-                    <LaunchPage.Tile.Description>
-                      {t("tiles.employeeLogin.description")}
-                    </LaunchPage.Tile.Description>
-                  </LaunchPage.Tile.Header>
-                </LaunchPage.Tile>
-              ) : null}
-              <LaunchPage.Tile href="/branding">
-                <LaunchPage.Tile.Header>
-                  <LaunchPage.Tile.Icon>
-                    <BookOpen className="h-5 w-5" aria-hidden />
-                  </LaunchPage.Tile.Icon>
-                  <LaunchPage.Tile.Title>
-                    {t("tiles.brandGuidelines.title")}
-                  </LaunchPage.Tile.Title>
-                  <LaunchPage.Tile.Description>
-                    {t("tiles.brandGuidelines.description")}
-                  </LaunchPage.Tile.Description>
-                </LaunchPage.Tile.Header>
-              </LaunchPage.Tile>
-              <LaunchPage.Tile href="/assets">
-                <LaunchPage.Tile.Header>
-                  <LaunchPage.Tile.Icon>
-                    <Images className="h-5 w-5" aria-hidden />
-                  </LaunchPage.Tile.Icon>
-                  <LaunchPage.Tile.Title>
-                    {t("tiles.brandAssets.title")}
-                  </LaunchPage.Tile.Title>
-                  <LaunchPage.Tile.Description>
-                    {t("tiles.brandAssets.description")}
-                  </LaunchPage.Tile.Description>
-                </LaunchPage.Tile.Header>
-              </LaunchPage.Tile>
+              <HomeTile
+                href="/branding"
+                icon={BookOpen}
+                title={t("tiles.brandGuidelines.title")}
+                description={t("tiles.brandGuidelines.description")}
+              />
+              <HomeTile
+                href="/assets"
+                icon={Images}
+                title={tNav("assetLibrary")}
+                description={t("tiles.brandAssets.description")}
+              />
               {showSales ? (
-                <LaunchPage.Tile href="/sales">
-                  <LaunchPage.Tile.Header>
-                    <LaunchPage.Tile.Icon>
-                      <Presentation className="h-5 w-5" aria-hidden />
-                    </LaunchPage.Tile.Icon>
-                    <LaunchPage.Tile.Title>
-                      {t("tiles.sales.title")}
-                    </LaunchPage.Tile.Title>
-                    <LaunchPage.Tile.Description>
-                      {t("tiles.sales.description")}
-                    </LaunchPage.Tile.Description>
-                  </LaunchPage.Tile.Header>
-                </LaunchPage.Tile>
+                <HomeTile
+                  href="/sales"
+                  icon={Presentation}
+                  title={t("tiles.sales.title")}
+                  description={t("tiles.sales.description")}
+                />
               ) : null}
             </LaunchPage.Cards>
           </LaunchPage.Section>

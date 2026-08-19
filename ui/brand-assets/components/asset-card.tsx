@@ -134,7 +134,7 @@ export function AssetCard({
     <Card
       className={cn(
         "flex h-full flex-col overflow-hidden",
-        selected && "ring-2 ring-ring",
+        selected && "ring-2 ring-accent-brand",
         className,
       )}
     >
@@ -148,6 +148,7 @@ export function AssetCard({
         {selectable ? (
           <div className="absolute start-2 top-2 z-20">
             <Checkbox
+              variant="accent-brand"
               checked={selected}
               onCheckedChange={(value) => onSelectedChange?.(value === true)}
               aria-label={asset.title}
@@ -189,7 +190,7 @@ export function AssetCard({
         {showVisibility ? (
           <Badge
             variant={asset.visibility === "public" ? "success-soft" : "warning-soft"}
-            className="pointer-events-none absolute start-2 top-2 z-10 gap-1"
+            className="pointer-events-none absolute end-2 top-2 z-10 gap-1"
           >
             {asset.visibility === "public" ? (
               <Globe className="h-3 w-3" aria-hidden />

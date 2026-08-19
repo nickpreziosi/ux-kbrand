@@ -51,11 +51,22 @@
     "socialYoutube": "K Lab no YouTube"
   },
   "home": {
-    "heroTitle": "A marca K Lab, pronta para usar",
-    "heroDescription": "Baixe diretrizes de marca, logotipos, imagens e tipografias aprovadas — sem solicitações, sem espera. Funcionários entram para acessar apresentações e materiais de vendas.",
+    "employeeSignIn": "Acesso para funcionários",
     "tilesAriaLabel": "Destinos do portal",
     "tilesTitle": "Comece por aqui",
     "tilesSubtitle": "Diretrizes, arquivos e recursos internos.",
+    "guidelinesTitle": "A marca K Lab, pronta para usar",
+    "guidelinesDescription": "Composições, cor, tipografia e regras de uso — leia as diretrizes antes de usar a marca.",
+    "guidelinesCta": "Diretrizes da marca",
+    "assetsTitle": "Biblioteca de recursos",
+    "assetsDescription": "Pesquise, filtre e baixe logotipos, imagens, fontes e arquivos aprovados.",
+    "assetsCta": "Biblioteca de recursos",
+    "salesTitle": "Recursos de vendas",
+    "salesDescription": "Apresentações, one-pagers e estudos de caso apenas para funcionários.",
+    "salesCta": "Recursos de vendas",
+    "adminTitle": "Admin",
+    "adminDescription": "Gerencie o catálogo de recursos e quem pode acessar o portal.",
+    "adminCta": "Admin",
     "tiles": {
       "employeeLogin": {
         "title": "Acesso para funcionários",

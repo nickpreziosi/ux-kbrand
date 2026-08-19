@@ -122,12 +122,16 @@ export function KBrandLayoutClient({
   }, [messages]);
 
   const primaryNav = React.useMemo<AppSidebarNavLink[]>(
-    () => [{ href: "/", label: t("nav.home"), icon: House }],
-    [t]
+    () => [
+      { href: "/", label: t("nav.home"), icon: House },
+      { href: "/assets", label: t("nav.assetLibrary"), icon: Images },
+      ...(canSeeSalesSection(viewerRole)
+        ? [{ href: "/sales", label: t("nav.sales"), icon: Presentation }]
+        : []),
+    ],
+    [t, viewerRole]
   );
 
-  /** Branding standards live under one expandable group; the full guidelines
-   *  document is the last entry, as the source of truth behind the summaries. */
   const brandingAccordion = React.useMemo<AppSidebarAccordionItem>(
     () => ({
       id: "branding",
@@ -151,33 +155,19 @@ export function KBrandLayoutClient({
     [t]
   );
 
-  const resourcesAccordion = React.useMemo<AppSidebarAccordionItem>(
-    () => ({
-      id: "resources",
-      label: t("nav.resources"),
-      icon: Images,
-      items: [
-        { href: "/assets", label: t("nav.assetLibrary"), icon: Images },
-        ...(canSeeSalesSection(viewerRole)
-          ? [{ href: "/sales", label: t("nav.sales"), icon: Presentation }]
-          : []),
-      ],
-    }),
-    [t, viewerRole]
-  );
-
-  const shellAccordions = React.useMemo(
-    () => [brandingAccordion, resourcesAccordion],
-    [brandingAccordion, resourcesAccordion]
-  );
-
-  // Admins keep management links in the bottom nav; Sales lives under Resources.
-  const secondaryNav = React.useMemo<AppSidebarNavLink[]>(
+  const adminAccordion = React.useMemo<AppSidebarAccordionItem[]>(
     () =>
       isAdmin
         ? [
-            { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
-            { href: "/admin/users", label: t("nav.adminUsers"), icon: Users },
+            {
+              id: "admin",
+              label: t("nav.admin"),
+              icon: FolderCog,
+              items: [
+                { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
+                { href: "/admin/users", label: t("nav.adminUsers"), icon: Users },
+              ],
+            },
           ]
         : [],
     [isAdmin, t]
@@ -282,8 +272,8 @@ export function KBrandLayoutClient({
           sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
           preferences={preferences}
           primaryNav={primaryNav}
-          accordions={shellAccordions}
-          bottomNav={secondaryNav}
+          accordions={[brandingAccordion, ...adminAccordion]}
+          bottomNav={[]}
           user={showSignIn ? undefined : shellUser}
           onProfileClick={showSignIn ? undefined : () => undefined}
           onSettingsClick={showSignIn ? undefined : () => router.push("/settings")}
