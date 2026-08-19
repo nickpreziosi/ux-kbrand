@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isAssetCategory, type AssetFile } from "@/contexts/brand-assets/domain";
+import type { AssetFileDraft } from "@/contexts/brand-assets/domain";
 import {
   saveUpload,
   uploadDownloadUrl,
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     bytes,
   });
 
-  const assetFile: AssetFile = {
+  const assetFile: AssetFileDraft = {
     fileName: upload.fileName,
     contentType: upload.contentType,
     sizeBytes: upload.sizeBytes,

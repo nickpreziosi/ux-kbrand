@@ -1,27 +1,27 @@
 import { readFile } from "node:fs/promises";
 import { NextResponse } from "next/server";
-import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { getServerBrandAssetRepository } from "@/contexts/brand-assets/application/brand-assets-server-services";
-import { groupBrandAssets } from "@/contexts/brand-assets/domain/services/asset-grouping";
 import { getUpload } from "@/contexts/brand-assets/infrastructure/mock/server-upload-store";
 import { resolveBrandFilePath } from "@/lib/brand/brand-file-path";
 import { createZip, type ZipEntry } from "@/lib/zip/create-zip";
+import { sortedFiles } from "@/contexts/brand-assets/domain/services/asset-files";
 
 /**
- * A group's bytes can come from two places: files shipped under
+ * A file's bytes can come from two places: files shipped under
  * public/brand-files, and admin uploads held in the mock storage backend. Both
  * belong in the bundle — otherwise a freshly uploaded format would 404 the
  * whole "Download all".
  */
-async function readAssetBytes(asset: BrandAsset): Promise<Uint8Array | null> {
-  const uploadId = asset.file.downloadUrl.startsWith("/api/uploads/")
-    ? asset.file.downloadUrl.slice("/api/uploads/".length)
+async function readFileBytes(file: AssetFile): Promise<Uint8Array | null> {
+  const uploadId = file.downloadUrl.startsWith("/api/uploads/")
+    ? file.downloadUrl.slice("/api/uploads/".length)
     : null;
   if (uploadId) {
     return getUpload(decodeURIComponent(uploadId))?.bytes ?? null;
   }
 
-  const filePath = resolveBrandFilePath(asset.file.downloadUrl);
+  const filePath = resolveBrandFilePath(file.downloadUrl);
   if (!filePath) return null;
   try {
     return new Uint8Array(await readFile(filePath));
@@ -30,7 +30,7 @@ async function readAssetBytes(asset: BrandAsset): Promise<Uint8Array | null> {
   }
 }
 
-/** Two files in one group can share a basename; keep both, distinctly named. */
+/** Two files on one asset can share a basename; keep both, distinctly named. */
 function uniqueName(taken: Set<string>, fileName: string): string {
   if (!taken.has(fileName)) {
     taken.add(fileName);
@@ -49,10 +49,8 @@ function uniqueName(taken: Set<string>, fileName: string): string {
 }
 
 /**
- * Zips every format in an asset group into one download — the "Download all"
- * action on a catalog card. Gating matches /api/brand-download: a group is
- * only downloadable when every member is public, so a bundle can never be a
- * way around an employee-gated file.
+ * Zips every format of an asset into one download — the "Download all"
+ * action on a catalog card. Gating matches /api/brand-download.
  */
 export async function GET(
   _request: Request,
@@ -63,25 +61,24 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const assets = await getServerBrandAssetRepository().list();
-  const group = groupBrandAssets(assets).find((candidate) => candidate.id === groupId);
-  if (!group || group.assets.length === 0) {
+  const asset = await getServerBrandAssetRepository().getById(groupId);
+  if (!asset || asset.files.length === 0) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  if (group.visibility !== "public") {
+  if (asset.visibility !== "public") {
     return NextResponse.json({ error: "Authentication required" }, { status: 401 });
   }
 
   const taken = new Set<string>();
   const entries: ZipEntry[] = [];
 
-  for (const asset of group.assets) {
-    const bytes = await readAssetBytes(asset);
+  for (const file of sortedFiles(asset.files)) {
+    const bytes = await readFileBytes(file);
     if (!bytes) {
       return NextResponse.json({ error: "File unavailable" }, { status: 404 });
     }
-    entries.push({ name: uniqueName(taken, asset.file.fileName), data: bytes });
+    entries.push({ name: uniqueName(taken, file.fileName), data: bytes });
   }
 
   return new NextResponse(createZip(entries), {

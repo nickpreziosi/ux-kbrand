@@ -639,6 +639,12 @@
       "titleLabel": "العنوان",
       "descriptionLabel": "الوصف",
       "categoryLabel": "الفئة",
+      "productLabel": "المنتج",
+      "products": {
+        "k-lab": "K Lab",
+        "k-talk": "K Talk",
+        "k-rails": "K Rails"
+      },
       "visibilityLabel": "الرؤية",
       "tagsLabel": "الوسوم (مفصولة بفواصل)",
       "visibilityPublic": "عام",

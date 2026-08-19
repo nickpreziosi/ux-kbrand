@@ -1,5 +1,6 @@
+import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
-import { assetFormat } from "@/contexts/brand-assets/domain/services/asset-grouping";
+import { fileFormat } from "@/contexts/brand-assets/domain/services/asset-files";
 import type { LogoVariant } from "@/ui/branding/content/logo-variants";
 
 /** Downloadable logo file formats, in display order. */
@@ -14,29 +15,29 @@ export const LOGO_FORMAT_ORDER: readonly LogoFormat[] = [
 
 export interface LogoFormatOption {
   format: LogoFormat;
+  file: AssetFile;
   asset: BrandAsset;
 }
 
-/** Attachment download URL for a catalog asset (forces save, not navigate). */
-export function brandDownloadUrl(assetId: string): string {
-  return `/api/brand-download/${assetId}`;
+export function brandDownloadUrl(fileId: string): string {
+  return `/api/brand-download/${fileId}`;
 }
 
-/** Zip of every format in an asset group (the card's "Download all"). */
-export function brandBundleUrl(groupId: string): string {
-  return `/api/brand-bundle/${groupId}`;
+export function brandBundleUrl(assetId: string): string {
+  return `/api/brand-bundle/${assetId}`;
 }
 
-/** Narrow an asset's format to the four the logo pages offer. */
-export function formatFromAsset(asset: BrandAsset): LogoFormat | null {
-  const format = assetFormat(asset);
+export function formatFromFile(file: AssetFile): LogoFormat | null {
+  const format = fileFormat(file);
   return LOGO_FORMAT_ORDER.find((candidate) => candidate === format) ?? null;
 }
 
-/**
- * Formats available for a logo variant card. Only returns formats that have a
- * matching catalog asset; order is PNG → SVG → PDF → AI.
- */
+/** @deprecated Use formatFromFile. */
+export function formatFromAsset(asset: BrandAsset): LogoFormat | null {
+  const [file] = asset.files;
+  return file ? formatFromFile(file) : null;
+}
+
 export function getFormatsForVariant(
   assets: BrandAsset[],
   variant: LogoVariant,
@@ -45,19 +46,20 @@ export function getFormatsForVariant(
     variant.matchTags.every((tag) => asset.tags.includes(tag)),
   );
 
-  const byFormat = new Map<LogoFormat, BrandAsset>();
+  const byFormat = new Map<LogoFormat, LogoFormatOption>();
   for (const asset of matched) {
-    const format = formatFromAsset(asset);
-    if (!format || byFormat.has(format)) continue;
-    byFormat.set(format, asset);
+    for (const file of asset.files) {
+      const format = formatFromFile(file);
+      if (!format || byFormat.has(format)) continue;
+      byFormat.set(format, { format, file, asset });
+    }
   }
 
   return LOGO_FORMAT_ORDER.filter((format) => byFormat.has(format)).map(
-    (format) => ({ format, asset: byFormat.get(format)! }),
+    (format) => byFormat.get(format)!,
   );
 }
 
-/** Prefer PNG (then SVG) for on-page previews. */
 export function previewAssetForVariant(
   assets: BrandAsset[],
   variant: LogoVariant,

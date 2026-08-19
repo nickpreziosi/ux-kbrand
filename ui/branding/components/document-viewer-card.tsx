@@ -69,7 +69,7 @@ export function DocumentViewerCard({
               <h3 className="text-lg font-semibold leading-snug">{asset.title}</h3>
               <p className="text-sm text-muted-foreground">{asset.description}</p>
               <p className="text-xs text-muted-foreground">
-                {asset.file.fileName} · {formatFileSize(asset.file.sizeBytes)} ·{" "}
+                {asset.files[0]?.fileName} · {formatFileSize(asset.files[0]?.sizeBytes ?? 0)} ·{" "}
                 {t("updated", {
                   date: new Date(asset.updatedAt).toLocaleDateString(),
                 })}
@@ -80,7 +80,7 @@ export function DocumentViewerCard({
             <Button
               variant="outline"
               icon={<ExternalLink aria-hidden />}
-              href={asset.file.downloadUrl}
+              href={asset.files[0]?.downloadUrl}
               target="_blank"
               rel="noopener"
             >
@@ -99,8 +99,8 @@ export function DocumentViewerCard({
         {showPreview ? (
           <div className="overflow-hidden rounded-app-radius border border-border bg-secondary">
             <object
-              data={asset.file.downloadUrl}
-              type={asset.file.contentType}
+              data={asset.files[0]?.downloadUrl}
+              type={asset.files[0]?.contentType}
               aria-label={asset.title}
               className="h-[70vh] max-h-[860px] min-h-[420px] w-full"
             >
@@ -108,7 +108,7 @@ export function DocumentViewerCard({
                 <p className="text-sm text-muted-foreground">{t("previewFallback")}</p>
                 <Button
                   variant="outline"
-                  href={asset.file.downloadUrl}
+                  href={asset.files[0]?.downloadUrl}
                   target="_blank"
                   rel="noopener"
                 >

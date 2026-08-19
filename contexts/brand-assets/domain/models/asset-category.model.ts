@@ -46,6 +46,15 @@ export function isSalesCategory(category: AssetCategory): boolean {
   return SALES_CATEGORIES.includes(category);
 }
 
+/** Which library an asset belongs to — derived from category, never chosen. */
+export type AssetResourceType = "brand" | "sales";
+
+export function resourceTypeForCategory(
+  category: AssetCategory,
+): AssetResourceType {
+  return isSalesCategory(category) ? "sales" : "brand";
+}
+
 /**
  * Sales material is employee-only by definition: pitch decks, one-pagers, and
  * case studies are never served to anonymous visitors, whatever visibility the

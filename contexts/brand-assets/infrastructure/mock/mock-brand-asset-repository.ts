@@ -1,22 +1,20 @@
 import type {
-  AssetGroupFileInput,
+  AssetFile,
+  AssetFileInput,
   BrandAsset,
-  CreateBrandAssetGroupInput,
   CreateBrandAssetInput,
-  SaveBrandAssetGroupInput,
   UpdateBrandAssetInput,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import { resourceTypeForCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import type {
   BrandAssetRepository,
   ListBrandAssetsParams,
 } from "@/contexts/brand-assets/domain/repositories/brandAssetRepository.interface";
 import {
-  groupKey,
-  makeGroupId,
-  memberTitle,
-  withFormatTag,
+  fileFormat,
+  makeAssetId,
   withoutFormatTags,
-} from "@/contexts/brand-assets/domain/services/asset-grouping";
+} from "@/contexts/brand-assets/domain/services/asset-files";
 import { SEED_BRAND_ASSETS } from "./seed-assets";
 
 const MOCK_LATENCY_MS = 250;
@@ -37,6 +35,27 @@ function definedOnly<T extends object>(input: T): Partial<T> {
   ) as Partial<T>;
 }
 
+function persistFile(entry: AssetFileInput, sequence: number): AssetFile {
+  const draft = entry.file;
+  return {
+    id: draft.id && draft.id.length > 0 ? draft.id : `fil-local-${sequence}`,
+    fileName: draft.fileName,
+    contentType: draft.contentType,
+    sizeBytes: draft.sizeBytes,
+    storagePath: draft.storagePath,
+    downloadUrl: draft.downloadUrl,
+  };
+}
+
+function previewFrom(
+  files: AssetFileInput[],
+  explicit?: string,
+): string | undefined {
+  if (explicit) return explicit;
+  const withPreview = files.find((entry) => entry.previewUrl);
+  return withPreview?.previewUrl;
+}
+
 /**
  * In-memory catalog seeded from SEED_BRAND_ASSETS. Mutations survive client
  * navigation (module scope) but reset on reload — enough for the prototype.
@@ -55,7 +74,19 @@ export class MockBrandAssetRepository implements BrandAssetRepository {
       this.assets.filter((asset) => {
         if (!params?.includeArchived && asset.status === "archived") return false;
         if (params?.category && asset.category !== params.category) return false;
-        if (params?.visibilities && !params.visibilities.includes(asset.visibility)) return false;
+        if (params?.visibilities && !params.visibilities.includes(asset.visibility)) {
+          return false;
+        }
+        if (params?.resourceType && asset.resourceType !== params.resourceType) {
+          return false;
+        }
+        if (params?.product && asset.product !== params.product) return false;
+        if (params?.format) {
+          const hasFormat = asset.files.some(
+            (file) => fileFormat(file) === params.format,
+          );
+          if (!hasFormat) return false;
+        }
         return true;
       }),
     );
@@ -69,20 +100,25 @@ export class MockBrandAssetRepository implements BrandAssetRepository {
 
   async create(input: CreateBrandAssetInput): Promise<BrandAsset> {
     await delay(this.latencyMs);
+    if (input.files.length === 0) throw new Error("errors.assets.groupEmpty");
+
     const now = new Date().toISOString();
+    const files = input.files.map((entry) => persistFile(entry, ++this.sequence));
     const asset: BrandAsset = {
-      id: `ast-local-${++this.sequence}-${Date.now()}`,
+      id: makeAssetId(
+        input.title,
+        this.assets.map((row) => row.id),
+      ),
       title: input.title,
       description: input.description,
+      resourceType: resourceTypeForCategory(input.category),
       category: input.category,
+      product: input.product,
       visibility: input.visibility,
       status: "active",
-      file: input.file,
-      previewUrl: input.previewUrl,
-      groupId: input.groupId,
-      groupTitle: input.groupTitle,
-      groupDescription: input.groupDescription,
-      tags: input.tags ?? [],
+      files,
+      previewUrl: previewFrom(input.files, input.previewUrl),
+      tags: withoutFormatTags(input.tags ?? [], files),
       createdAt: now,
       updatedAt: now,
       createdBy: input.createdBy,
@@ -95,11 +131,41 @@ export class MockBrandAssetRepository implements BrandAssetRepository {
     await delay(this.latencyMs);
     const existing = this.assets.find((a) => a.id === id);
     if (!existing) throw new Error("errors.assets.notFound");
+
+    const removing = new Set(input.removeFileIds ?? []);
+    const kept = existing.files.filter((file) => !removing.has(file.id));
+    const added = (input.addFiles ?? []).map((entry) =>
+      persistFile(entry, ++this.sequence),
+    );
+    const files = [...kept, ...added];
+    if (files.length === 0) throw new Error("errors.assets.groupEmpty");
+
+    const category = input.category ?? existing.category;
+    const tags = withoutFormatTags(
+      input.tags ?? existing.tags,
+      files,
+    );
+
     const updated: BrandAsset = {
       ...existing,
-      ...definedOnly(input),
+      ...definedOnly({
+        title: input.title,
+        description: input.description,
+        visibility: input.visibility,
+        product: input.product,
+        previewUrl: input.previewUrl,
+      }),
+      category,
+      resourceType: resourceTypeForCategory(category),
+      files,
+      tags,
+      previewUrl:
+        input.previewUrl !== undefined
+          ? input.previewUrl || undefined
+          : previewFrom(input.addFiles ?? [], existing.previewUrl),
       updatedAt: new Date().toISOString(),
     };
+
     this.assets = this.assets.map((a) => (a.id === id ? updated : a));
     return clone(updated);
   }
@@ -123,184 +189,5 @@ export class MockBrandAssetRepository implements BrandAssetRepository {
       throw new Error("errors.assets.notFound");
     }
     this.assets = this.assets.filter((a) => a.id !== id);
-  }
-
-  async createGroup(input: CreateBrandAssetGroupInput): Promise<BrandAsset[]> {
-    await delay(this.latencyMs);
-    if (input.files.length === 0) throw new Error("errors.assets.groupEmpty");
-
-    const groupId = makeGroupId(input.title, this.assets.map(groupKey));
-    const created = input.files.map((entry) =>
-      this.buildMember(entry, {
-        groupId,
-        groupTitle: input.title,
-        groupDescription: input.description,
-        category: input.category,
-        visibility: input.visibility,
-        tags: input.tags ?? [],
-        createdBy: input.createdBy,
-        multiFormat: input.files.length > 1,
-      }),
-    );
-
-    this.assets = [...created, ...this.assets];
-    return clone(created);
-  }
-
-  /**
-   * One transaction over a whole group: shared metadata, added formats, dropped
-   * formats. Member titles and format tags are re-derived from the result, so a
-   * rename or a new format can never leave the set inconsistent.
-   */
-  async saveGroup(
-    groupId: string,
-    input: SaveBrandAssetGroupInput,
-  ): Promise<BrandAsset[]> {
-    await delay(this.latencyMs);
-    const members = this.assets.filter((a) => groupKey(a) === groupId);
-    if (members.length === 0) throw new Error("errors.assets.notFound");
-
-    const removing = new Set(input.removeAssetIds ?? []);
-    const kept = members.filter((a) => !removing.has(a.id));
-    const addFiles = input.addFiles ?? [];
-    if (kept.length + addFiles.length === 0) {
-      throw new Error("errors.assets.groupEmpty");
-    }
-
-    const [primary] = members;
-    const title = input.title?.trim() || primary.groupTitle || primary.title;
-    const description =
-      input.description ?? primary.groupDescription ?? primary.description;
-    const category = input.category ?? primary.category;
-    const visibility = input.visibility ?? primary.visibility;
-    const files = [...kept.map((a) => a.file), ...addFiles.map((f) => f.file)];
-    const tags = withoutFormatTags(
-      input.tags ?? primary.tags,
-      files.map((file) => ({ file })),
-    );
-    const multiFormat = files.length > 1;
-    const now = new Date().toISOString();
-
-    const updated = new Map(
-      kept.map((asset) => [
-        asset.id,
-        {
-          ...asset,
-          title: memberTitle(title, asset.file.fileName, multiFormat),
-          description: asset.description,
-          category,
-          visibility,
-          groupId,
-          groupTitle: title,
-          groupDescription: description,
-          tags: withFormatTag(tags, asset.file.fileName),
-          updatedAt: now,
-        } satisfies BrandAsset,
-      ]),
-    );
-
-    const added = addFiles.map((entry) =>
-      this.buildMember(entry, {
-        groupId,
-        groupTitle: title,
-        groupDescription: description,
-        category,
-        visibility,
-        tags,
-        createdBy: input.createdBy ?? primary.createdBy,
-        multiFormat,
-        // Formats joining an archived group stay in step with it.
-        status: kept.every((a) => a.status === "archived") && kept.length > 0
-          ? "archived"
-          : "active",
-      }),
-    );
-
-    // Keep the group where it sits in the catalog: members are replaced in
-    // place and new formats land right after the last surviving one.
-    const lastIndex = this.assets.reduce(
-      (index, asset, at) => (groupKey(asset) === groupId ? at : index),
-      -1,
-    );
-    const next: BrandAsset[] = [];
-    this.assets.forEach((asset, index) => {
-      if (groupKey(asset) === groupId) {
-        const member = updated.get(asset.id);
-        if (member) next.push(member);
-      } else {
-        next.push(asset);
-      }
-      if (index === lastIndex) next.push(...added);
-    });
-    this.assets = next;
-
-    return clone(this.assets.filter((a) => groupKey(a) === groupId));
-  }
-
-  async setGroupArchived(
-    groupId: string,
-    archived: boolean,
-  ): Promise<BrandAsset[]> {
-    await delay(this.latencyMs);
-    const members = this.assets.filter((a) => groupKey(a) === groupId);
-    if (members.length === 0) throw new Error("errors.assets.notFound");
-
-    const now = new Date().toISOString();
-    this.assets = this.assets.map((asset) =>
-      groupKey(asset) === groupId
-        ? {
-            ...asset,
-            status: archived ? "archived" : "active",
-            updatedAt: now,
-          }
-        : asset,
-    );
-    return clone(this.assets.filter((a) => groupKey(a) === groupId));
-  }
-
-  async removeGroup(groupId: string): Promise<void> {
-    await delay(this.latencyMs);
-    if (!this.assets.some((a) => groupKey(a) === groupId)) {
-      throw new Error("errors.assets.notFound");
-    }
-    this.assets = this.assets.filter((a) => groupKey(a) !== groupId);
-  }
-
-  private buildMember(
-    entry: AssetGroupFileInput,
-    shared: {
-      groupId: string;
-      groupTitle: string;
-      groupDescription: string;
-      category: BrandAsset["category"];
-      visibility: BrandAsset["visibility"];
-      tags: string[];
-      createdBy: string;
-      multiFormat: boolean;
-      status?: BrandAsset["status"];
-    },
-  ): BrandAsset {
-    const now = new Date().toISOString();
-    return {
-      id: `ast-local-${++this.sequence}-${Date.now()}`,
-      title: memberTitle(
-        shared.groupTitle,
-        entry.file.fileName,
-        shared.multiFormat,
-      ),
-      description: shared.groupDescription,
-      category: shared.category,
-      visibility: shared.visibility,
-      status: shared.status ?? "active",
-      file: entry.file,
-      previewUrl: entry.previewUrl || undefined,
-      groupId: shared.groupId,
-      groupTitle: shared.groupTitle,
-      groupDescription: shared.groupDescription,
-      tags: withFormatTag(shared.tags, entry.file.fileName),
-      createdAt: now,
-      updatedAt: now,
-      createdBy: shared.createdBy,
-    };
   }
 }

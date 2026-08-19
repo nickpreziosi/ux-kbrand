@@ -639,6 +639,12 @@
       "titleLabel": "Título",
       "descriptionLabel": "Descripción",
       "categoryLabel": "Categoría",
+      "productLabel": "Producto",
+      "products": {
+        "k-lab": "K Lab",
+        "k-talk": "K Talk",
+        "k-rails": "K Rails"
+      },
       "visibilityLabel": "Visibilidad",
       "tagsLabel": "Etiquetas (separadas por comas)",
       "visibilityPublic": "Público",

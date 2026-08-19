@@ -2,7 +2,6 @@ import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
-import { groupBrandAssets } from "@/contexts/brand-assets/domain/services/asset-grouping";
 
 jest.mock("next-intl", () => ({
   useTranslations: () => {
@@ -16,6 +15,10 @@ jest.mock("next-intl", () => ({
       categoryLabel: "Category",
       visibilityLabel: "Visibility",
       tagsLabel: "Tags",
+      productLabel: "Product",
+      "products.k-lab": "K Lab",
+      "products.k-talk": "K Talk",
+      "products.k-rails": "K Rails",
       visibilityPublic: "Public",
       visibilityEmployee: "Employees only",
       filesLabel: "Drop files here",
@@ -169,36 +172,36 @@ import {
   type AssetFormValues,
 } from "@/ui/brand-assets/components/asset-form-dialog";
 
-function member(fileName: string, id: string, sizeBytes = 1000): BrandAsset {
+function artwork(files: Array<{ fileName: string; id: string; sizeBytes?: number }>): BrandAsset {
   return {
-    id,
-    title: `Partner lockup, ${fileName.split(".").pop()!.toUpperCase()}`,
+    id: "partner-lockup",
+    title: "Partner lockup",
     description: "Co-branded lockup.",
+    resourceType: "brand",
     category: "logos",
+    product: "k-lab",
     visibility: "public",
     status: "active",
-    file: {
-      fileName,
+    files: files.map((item) => ({
+      id: item.id,
+      fileName: item.fileName,
       contentType: "application/octet-stream",
-      sizeBytes,
-      storagePath: `assets/logos/${fileName}`,
-      downloadUrl: `/brand-files/logos/${fileName}`,
-    },
-    groupId: "partner-lockup",
-    groupTitle: "Partner lockup",
-    groupDescription: "Co-branded lockup.",
-    tags: ["partner", fileName.split(".").pop()!],
+      sizeBytes: item.sizeBytes ?? 1000,
+      storagePath: `assets/logos/${item.fileName}`,
+      downloadUrl: `/brand-files/logos/${item.fileName}`,
+    })),
+    tags: ["partner"],
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
     createdBy: "usr-001",
   };
 }
 
-const [twoFormatGroup] = groupBrandAssets([
-  member("partner-lockup.png", "ast-1", 900),
-  member("partner-lockup.svg", "ast-2", 300),
+const twoFormatAsset = artwork([
+  { fileName: "partner-lockup.png", id: "ast-1", sizeBytes: 900 },
+  { fileName: "partner-lockup.svg", id: "ast-2", sizeBytes: 300 },
 ]);
-const [oneFormatGroup] = groupBrandAssets([member("solo.pdf", "ast-3", 500)]);
+const oneFormatAsset = artwork([{ fileName: "solo.pdf", id: "ast-3", sizeBytes: 500 }]);
 
 function renderDialog(
   props: Partial<React.ComponentProps<typeof AssetFormDialog>> = {},
@@ -238,7 +241,7 @@ describe("AssetFormDialog — publishing several formats at once", () => {
     expect(values.addFiles[0].previewUrl).toBe(
       "/api/uploads/upl-partner-lockup.png",
     );
-    expect(values.removeAssetIds).toEqual([]);
+    expect(values.removeFileIds).toEqual([]);
   });
 
   it("refuses to publish an artwork with no file", async () => {
@@ -257,7 +260,7 @@ describe("AssetFormDialog — publishing several formats at once", () => {
 
 describe("AssetFormDialog — adding formats to an existing artwork", () => {
   it("lists the formats already published, with their own sizes", () => {
-    renderDialog({ group: twoFormatGroup });
+    renderDialog({ asset: twoFormatAsset });
 
     expect(screen.getByText("Published formats")).toBeInTheDocument();
     expect(screen.getByText("partner-lockup.png")).toBeInTheDocument();
@@ -268,7 +271,7 @@ describe("AssetFormDialog — adding formats to an existing artwork", () => {
 
   it("submits the missing format as an addition, keeping the rest", async () => {
     const user = userEvent.setup();
-    const onSubmit = renderDialog({ group: twoFormatGroup });
+    const onSubmit = renderDialog({ asset: twoFormatAsset });
 
     await user.upload(
       screen.getByLabelText("Upload"),
@@ -280,13 +283,13 @@ describe("AssetFormDialog — adding formats to an existing artwork", () => {
     expect(values.addFiles.map((entry) => entry.file.fileName)).toEqual([
       "partner-lockup.pdf",
     ]);
-    expect(values.removeAssetIds).toEqual([]);
+    expect(values.removeFileIds).toEqual([]);
     expect(values.title).toBe("Partner lockup");
   });
 
   it("blocks a format the artwork already publishes", async () => {
     const user = userEvent.setup();
-    const onSubmit = renderDialog({ group: twoFormatGroup });
+    const onSubmit = renderDialog({ asset: twoFormatAsset });
 
     await user.upload(
       screen.getByLabelText("Upload"),
@@ -302,7 +305,7 @@ describe("AssetFormDialog — adding formats to an existing artwork", () => {
 
   it("marks a dropped format for deletion, and lets it be put back", async () => {
     const user = userEvent.setup();
-    const onSubmit = renderDialog({ group: twoFormatGroup });
+    const onSubmit = renderDialog({ asset: twoFormatAsset });
 
     await user.click(screen.getByRole("button", { name: "Remove SVG" }));
     expect(screen.getByText("1 pending removals")).toBeInTheDocument();
@@ -313,11 +316,11 @@ describe("AssetFormDialog — adding formats to an existing artwork", () => {
     await user.click(screen.getByRole("button", { name: "Remove SVG" }));
     await user.click(screen.getByRole("button", { name: "Save changes" }));
 
-    expect(onSubmit.mock.calls[0][0].removeAssetIds).toEqual(["ast-2"]);
+    expect(onSubmit.mock.calls[0][0].removeFileIds).toEqual(["ast-2"]);
   });
 
   it("will not let the last remaining file be removed", () => {
-    renderDialog({ group: oneFormatGroup });
+    renderDialog({ asset: oneFormatAsset });
 
     expect(screen.getByRole("button", { name: "Remove PDF" })).toBeDisabled();
   });

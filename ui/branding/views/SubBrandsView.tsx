@@ -43,7 +43,7 @@ export function SubBrandsView() {
   } = useCategoryAssets("brand-imagery");
 
   const productAssets = React.useMemo(
-    () => assets.filter((asset) => asset.tags.includes("product")),
+    () => assets.filter((asset) => asset.product !== "k-lab"),
     [assets],
   );
   const keyvisuals = React.useMemo(
@@ -56,7 +56,7 @@ export function SubBrandsView() {
     (tag: string) =>
       productAssets.find(
         (asset) =>
-          asset.tags.includes(tag) &&
+          asset.product === tag &&
           asset.tags.includes("dark") &&
           asset.previewUrl,
       ),

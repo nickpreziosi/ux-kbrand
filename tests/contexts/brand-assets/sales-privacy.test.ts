@@ -12,6 +12,7 @@ import { SEED_BRAND_ASSETS } from "@/contexts/brand-assets/infrastructure/mock/s
 import type { CreateBrandAssetInput } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 
 const file = {
+  id: "fil-deck",
   fileName: "deck.pdf",
   contentType: "application/pdf",
   sizeBytes: 10,
@@ -26,8 +27,9 @@ function createInput(
     title: "New deck",
     description: "",
     category: "pitch-decks",
+    product: "k-lab",
     visibility: "public",
-    file,
+    files: [{ file }],
     tags: [],
     createdBy: "usr-001",
     ...overrides,

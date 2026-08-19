@@ -1,18 +1,15 @@
 import type {
   AssetFile,
-  AssetGroupFileInput,
-  CreateBrandAssetGroupInput,
+  AssetFileInput,
+  CreateBrandAssetInput,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { MockBrandAssetRepository } from "@/contexts/brand-assets/infrastructure/mock/mock-brand-asset-repository";
 import { SEED_BRAND_ASSETS } from "@/contexts/brand-assets/infrastructure/mock/seed-assets";
-import {
-  assetFormat,
-  groupBrandAssets,
-  groupMembers,
-} from "@/contexts/brand-assets/domain/services/asset-grouping";
+import { fileFormat } from "@/contexts/brand-assets/domain/services/asset-files";
 
 function file(fileName: string, sizeBytes = 100): AssetFile {
   return {
+    id: fileName,
     fileName,
     contentType: "application/octet-stream",
     sizeBytes,
@@ -21,257 +18,153 @@ function file(fileName: string, sizeBytes = 100): AssetFile {
   };
 }
 
-function entry(fileName: string, sizeBytes = 100): AssetGroupFileInput {
+function entry(fileName: string, sizeBytes = 100): AssetFileInput {
   return { file: file(fileName, sizeBytes) };
 }
 
-const CREATE: Omit<CreateBrandAssetGroupInput, "files"> = {
+const CREATE: Omit<CreateBrandAssetInput, "files"> = {
   title: "Partner lockup",
   description: "Co-branded lockup for joint campaigns.",
   category: "logos",
+  product: "k-lab",
   visibility: "public",
   tags: ["partner", "logo"],
   createdBy: "usr-001",
 };
 
-describe("MockBrandAssetRepository.createGroup", () => {
-  it("publishes one record per format, all under one group id", async () => {
+describe("MockBrandAssetRepository.create", () => {
+  it("publishes one artwork with every format on files[]", async () => {
     const repository = new MockBrandAssetRepository(0);
 
-    const created = await repository.createGroup({
+    const created = await repository.create({
       ...CREATE,
       files: [entry("partner-lockup.png", 900), entry("partner-lockup.svg", 300)],
     });
 
-    expect(created).toHaveLength(2);
-    expect(new Set(created.map((asset) => asset.groupId))).toEqual(
-      new Set(["partner-lockup"]),
-    );
-    expect(created.map((asset) => asset.id)).toEqual([
-      ...new Set(created.map((asset) => asset.id)),
-    ]);
-
-    const [group] = groupBrandAssets(
-      await repository.list({ category: "logos" }),
-    ).filter((candidate) => candidate.id === "partner-lockup");
-    expect(group.title).toBe("Partner lockup");
-    expect(group.assets.map((asset) => assetFormat(asset))).toEqual([
-      "png",
-      "svg",
-    ]);
-    expect(group.totalBytes).toBe(1200);
+    expect(created.id).toBe("partner-lockup");
+    expect(created.files).toHaveLength(2);
+    expect(created.files.map((item) => fileFormat(item))).toEqual(["png", "svg"]);
+    expect(created.resourceType).toBe("brand");
+    expect(created.product).toBe("k-lab");
   });
 
-  it("titles and tags each format so a file is identifiable on its own", async () => {
+  it("strips format tags so they do not leak onto the artwork", async () => {
     const repository = new MockBrandAssetRepository(0);
 
-    const created = await repository.createGroup({
+    const created = await repository.create({
       ...CREATE,
+      tags: ["partner", "logo", "png"],
       files: [entry("partner-lockup.png"), entry("partner-lockup.svg")],
     });
 
-    expect(created.map((asset) => asset.title)).toEqual([
-      "Partner lockup, PNG",
-      "Partner lockup, SVG",
-    ]);
-    expect(created[0].tags).toEqual(["partner", "logo", "png"]);
-    expect(created[1].tags).toEqual(["partner", "logo", "svg"]);
-    // Group copy is denormalized so a card never has to fetch a sibling.
-    expect(created.every((asset) => asset.groupTitle === "Partner lockup")).toBe(
-      true,
-    );
+    expect(created.tags).toEqual(["partner", "logo"]);
   });
 
-  it("leaves a single-format upload with the plain artwork title", async () => {
+  it("does not reuse an id another artwork already holds", async () => {
     const repository = new MockBrandAssetRepository(0);
 
-    const [created] = await repository.createGroup({
-      ...CREATE,
-      files: [entry("partner-lockup.pdf")],
-    });
-
-    expect(created.title).toBe("Partner lockup");
-    expect(created.groupId).toBe("partner-lockup");
-  });
-
-  it("does not reuse a group id another artwork already holds", async () => {
-    const repository = new MockBrandAssetRepository(0);
-
-    const first = await repository.createGroup({
+    const first = await repository.create({
       ...CREATE,
       files: [entry("a.png")],
     });
-    const second = await repository.createGroup({
+    const second = await repository.create({
       ...CREATE,
       files: [entry("b.png")],
     });
 
-    expect(first[0].groupId).toBe("partner-lockup");
-    expect(second[0].groupId).toBe("partner-lockup-2");
+    expect(first.id).toBe("partner-lockup");
+    expect(second.id).toBe("partner-lockup-2");
   });
 
-  it("refuses a group with no files", async () => {
+  it("refuses an artwork with no files", async () => {
     const repository = new MockBrandAssetRepository(0);
 
-    await expect(
-      repository.createGroup({ ...CREATE, files: [] }),
-    ).rejects.toThrow("errors.assets.groupEmpty");
+    await expect(repository.create({ ...CREATE, files: [] })).rejects.toThrow(
+      "errors.assets.groupEmpty",
+    );
   });
 });
 
-describe("MockBrandAssetRepository.saveGroup", () => {
+describe("MockBrandAssetRepository.update", () => {
   it("adds a missing format to an artwork that already has some", async () => {
     const repository = new MockBrandAssetRepository(0);
-    const seeded = SEED_BRAND_ASSETS.find((asset) => asset.groupId)!;
-    const groupId = seeded.groupId!;
-    const before = groupMembers(
-      await repository.list({ includeArchived: true }),
-      groupId,
-    ).length;
+    const seeded = SEED_BRAND_ASSETS.find((asset) => asset.files.length > 1)!;
+    const before = seeded.files.length;
 
-    const members = await repository.saveGroup(groupId, {
+    const updated = await repository.update(seeded.id, {
       addFiles: [entry("late-addition.eps", 4096)],
     });
 
-    expect(members).toHaveLength(before + 1);
-    const added = members.find(
-      (asset) => asset.file.fileName === "late-addition.eps",
-    )!;
-    expect(added.groupId).toBe(groupId);
-    expect(added.groupTitle).toBe(seeded.groupTitle);
-    expect(added.category).toBe(seeded.category);
-    expect(added.visibility).toBe(seeded.visibility);
-    expect(added.tags).toContain("eps");
-  });
-
-  it("promotes a lone asset into a group when a second format arrives", async () => {
-    const repository = new MockBrandAssetRepository(0);
-    // Pre-grouping assets carry no groupId; they group under their own id.
-    const lone = await repository.create({
-      title: "Legacy mark",
-      description: "Uploaded before groups existed.",
-      category: "logos",
-      visibility: "public",
-      file: file("legacy-mark.png"),
-      tags: ["legacy"],
-      createdBy: "usr-001",
-    });
-
-    const members = await repository.saveGroup(lone.id, {
-      addFiles: [entry("legacy-mark.svg")],
-    });
-
-    expect(members).toHaveLength(2);
-    expect(members.every((asset) => asset.groupId === lone.id)).toBe(true);
-    expect(members.map((asset) => asset.title).sort()).toEqual([
-      "Legacy mark, PNG",
-      "Legacy mark, SVG",
-    ]);
-    expect(groupBrandAssets(await repository.list()).filter(
-      (group) => group.id === lone.id,
-    )).toHaveLength(1);
-  });
-
-  it("renames every format when the artwork is renamed", async () => {
-    const repository = new MockBrandAssetRepository(0);
-    const created = await repository.createGroup({
-      ...CREATE,
-      files: [entry("partner-lockup.png"), entry("partner-lockup.svg")],
-    });
-
-    const members = await repository.saveGroup(created[0].groupId!, {
-      title: "Partner lockup (2026)",
-      description: "Refreshed for the new identity.",
-      category: "brand-imagery",
-      visibility: "employee",
-      tags: ["partner"],
-    });
-
-    expect(members.map((asset) => asset.title)).toEqual([
-      "Partner lockup (2026), PNG",
-      "Partner lockup (2026), SVG",
-    ]);
-    expect(members.every((asset) => asset.category === "brand-imagery")).toBe(
+    expect(updated.files).toHaveLength(before + 1);
+    expect(updated.files.some((item) => item.fileName === "late-addition.eps")).toBe(
       true,
     );
-    expect(members.every((asset) => asset.visibility === "employee")).toBe(true);
-    // The group's own tags never pick up a sibling's format marker.
-    expect(members[0].tags).toEqual(["partner", "png"]);
-    expect(members[1].tags).toEqual(["partner", "svg"]);
   });
 
-  it("drops the formats an admin removed and re-titles what is left", async () => {
+  it("drops a format an admin removed", async () => {
     const repository = new MockBrandAssetRepository(0);
-    const created = await repository.createGroup({
+    const created = await repository.create({
       ...CREATE,
       files: [entry("partner-lockup.png"), entry("partner-lockup.svg")],
     });
 
-    const members = await repository.saveGroup(created[0].groupId!, {
-      removeAssetIds: [created[1].id],
+    const updated = await repository.update(created.id, {
+      removeFileIds: [created.files[1].id],
     });
 
-    expect(members).toHaveLength(1);
-    expect(members[0].id).toBe(created[0].id);
-    expect(members[0].title).toBe("Partner lockup");
-    expect(await repository.getById(created[1].id)).toBeNull();
+    expect(updated.files).toHaveLength(1);
+    expect(updated.files[0].id).toBe(created.files[0].id);
   });
 
   it("refuses an edit that would leave the artwork with no files", async () => {
     const repository = new MockBrandAssetRepository(0);
-    const created = await repository.createGroup({
+    const created = await repository.create({
       ...CREATE,
       files: [entry("partner-lockup.png")],
     });
 
     await expect(
-      repository.saveGroup(created[0].groupId!, {
-        removeAssetIds: [created[0].id],
-      }),
+      repository.update(created.id, { removeFileIds: [created.files[0].id] }),
     ).rejects.toThrow("errors.assets.groupEmpty");
-    expect(await repository.getById(created[0].id)).not.toBeNull();
+    expect(await repository.getById(created.id)).not.toBeNull();
   });
 
-  it("404s on a group that does not exist", async () => {
+  it("404s on an asset that does not exist", async () => {
     const repository = new MockBrandAssetRepository(0);
 
-    await expect(repository.saveGroup("nope", { title: "x" })).rejects.toThrow(
+    await expect(repository.update("nope", { title: "x" })).rejects.toThrow(
       "errors.assets.notFound",
     );
   });
 });
 
-describe("MockBrandAssetRepository group archive and delete", () => {
-  it("archives and restores every format at once", async () => {
+describe("MockBrandAssetRepository archive and delete", () => {
+  it("archives and restores the artwork", async () => {
     const repository = new MockBrandAssetRepository(0);
-    const created = await repository.createGroup({
+    const created = await repository.create({
       ...CREATE,
       files: [entry("partner-lockup.png"), entry("partner-lockup.svg")],
     });
-    const groupId = created[0].groupId!;
 
-    const archived = await repository.setGroupArchived(groupId, true);
-    expect(archived.every((asset) => asset.status === "archived")).toBe(true);
+    const archived = await repository.setArchived(created.id, true);
+    expect(archived.status).toBe("archived");
     expect(
-      groupMembers(await repository.list(), groupId),
-    ).toHaveLength(0);
+      (await repository.list()).some((asset) => asset.id === created.id),
+    ).toBe(false);
 
-    const restored = await repository.setGroupArchived(groupId, false);
-    expect(restored.every((asset) => asset.status === "active")).toBe(true);
+    const restored = await repository.setArchived(created.id, false);
+    expect(restored.status).toBe("active");
   });
 
-  it("deletes every format of the artwork", async () => {
+  it("deletes the artwork", async () => {
     const repository = new MockBrandAssetRepository(0);
-    const created = await repository.createGroup({
+    const created = await repository.create({
       ...CREATE,
-      files: [entry("partner-lockup.png"), entry("partner-lockup.svg")],
+      files: [entry("partner-lockup.png")],
     });
 
-    await repository.removeGroup(created[0].groupId!);
+    await repository.remove(created.id);
 
-    const remaining = await repository.list({ includeArchived: true });
-    expect(remaining.some((asset) => asset.groupId === "partner-lockup")).toBe(
-      false,
-    );
+    expect(await repository.getById(created.id)).toBeNull();
   });
 });

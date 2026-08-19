@@ -9,7 +9,9 @@ function asset(
   return {
     title: partial.id,
     description: "",
+    resourceType: "brand",
     category: "logos",
+    product: "k-lab",
     visibility: "public",
     status: "active",
     tags: [],
@@ -17,14 +19,17 @@ function asset(
     updatedAt: "2026-01-01T00:00:00.000Z",
     createdBy: "usr-001",
     ...rest,
-    file: {
-      fileName,
-      contentType: "application/octet-stream",
-      sizeBytes: 100,
-      storagePath: `assets/logos/${fileName}`,
-      downloadUrl: `/brand-files/logos/${fileName}`,
-      ...partial.file,
-    },
+    files: [
+      {
+        id: partial.id,
+        fileName,
+        contentType: "application/octet-stream",
+        sizeBytes: 100,
+        storagePath: `assets/logos/${fileName}`,
+        downloadUrl: `/brand-files/logos/${fileName}`,
+        ...partial.files?.[0],
+      },
+    ],
   };
 }
 
@@ -59,14 +64,17 @@ describe("assetThumbnail", () => {
       asset({
         id: "a",
         fileName: "k-rails.webp",
-        tags: ["product"],
-        file: {
-          fileName: "k-rails.webp",
-          contentType: "image/webp",
-          sizeBytes: 100,
-          storagePath: "assets/logos/k-rails.webp",
-          downloadUrl: "/brand-files/sub-brands/k-rails.webp",
-        },
+        tags: [],
+        files: [
+          {
+            id: "a",
+            fileName: "k-rails.webp",
+            contentType: "image/webp",
+            sizeBytes: 100,
+            storagePath: "assets/logos/k-rails.webp",
+            downloadUrl: "/brand-files/sub-brands/k-rails.webp",
+          },
+        ],
       }),
     );
 

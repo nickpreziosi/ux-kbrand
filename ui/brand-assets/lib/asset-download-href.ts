@@ -1,5 +1,5 @@
+import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
-import type { AssetGroup } from "@/contexts/brand-assets/domain/services/asset-grouping";
 import { brandBundleUrl, brandDownloadUrl } from "@/ui/branding/content/logo-formats";
 
 /**
@@ -7,16 +7,25 @@ import { brandBundleUrl, brandDownloadUrl } from "@/ui/branding/content/logo-for
  * /api/brand-download so the browser saves them instead of navigating to them;
  * uploaded files already have a URL that serves their own bytes.
  */
-export function assetDownloadHref(asset: BrandAsset): string {
-  if (asset.file.downloadUrl.startsWith("/brand-files/")) {
-    return brandDownloadUrl(asset.id);
+export function fileDownloadHref(file: AssetFile): string {
+  if (file.downloadUrl.startsWith("/brand-files/")) {
+    return brandDownloadUrl(file.id);
   }
-  return asset.file.downloadUrl;
+  return file.downloadUrl;
 }
 
-/** One file downloads directly; several come as a zip of the whole group. */
-export function groupDownloadHref(group: AssetGroup): string {
-  return group.assets.length > 1
-    ? brandBundleUrl(group.id)
-    : assetDownloadHref(group.preview);
+/** @deprecated Use fileDownloadHref. */
+export function assetDownloadHref(asset: BrandAsset): string {
+  const [file] = asset.files;
+  return file ? fileDownloadHref(file) : "#";
 }
+
+/** One file downloads directly; several come as a zip of the whole asset. */
+export function assetBundleHref(asset: BrandAsset): string {
+  return asset.files.length > 1
+    ? brandBundleUrl(asset.id)
+    : assetDownloadHref(asset);
+}
+
+/** @deprecated Use assetBundleHref. */
+export const groupDownloadHref = assetBundleHref;

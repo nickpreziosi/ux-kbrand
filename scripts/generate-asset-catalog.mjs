@@ -29,11 +29,9 @@ const CONTENT_TYPES = {
 };
 
 /**
- * Assets that are the same artwork in different formats. The key is the
- * `group` referenced by catalog entries below; title/description are the copy
- * the grouped card shows, so each member keeps its own format-specific title
- * for the admin table. Adding a format to a group is one CATALOG entry — the
- * card picks it up with no UI change.
+ * Shared title/description for a multi-file artwork. Catalog rows that share
+ * a `group` key collapse into one BrandAsset whose `files` are those rows.
+ * The asset id is the group key.
  */
 const GROUPS = {
   "k-lab-logo-blue": {
@@ -676,11 +674,25 @@ const CATALOG = [
 
 /** Keep in step with SALES_CATEGORIES in the domain category model. */
 const SALES_CATEGORIES = ["pitch-decks", "sales-materials"];
+const FORMAT_TAGS = new Set([
+  "png", "svg", "webp", "jpg", "jpeg", "gif", "ico", "pdf", "ai", "eps", "ttf", "otf", "css",
+]);
+const PRODUCT_TAGS = new Set(["k-talk", "k-rails", "product"]);
 
 const PREVIEWABLE = /\.(png|webp|jpg|jpeg|svg|gif|ico)$/i;
 const missing = [];
-const entries = [];
+const fileRows = [];
 const privateFiles = [];
+
+function productFromTags(tags) {
+  if (tags.includes("k-talk")) return "k-talk";
+  if (tags.includes("k-rails")) return "k-rails";
+  return "k-lab";
+}
+
+function resourceTypeForCategory(category) {
+  return SALES_CATEGORIES.includes(category) ? "sales" : "brand";
+}
 
 for (const item of CATALOG) {
   const visibility = SALES_CATEGORIES.includes(item.category)
@@ -694,28 +706,23 @@ for (const item of CATALOG) {
     continue;
   }
 
+  if (item.group && !GROUPS[item.group]) {
+    console.error(`Unknown group "${item.group}" on ${item.id} — add it to GROUPS.`);
+    process.exit(1);
+  }
+
   const fileName = item.path.split("/").pop();
   const extension = fileName.split(".").pop().toLowerCase();
   const downloadUrl = isPrivate ? `/api/sales-files/${item.id}` : `/brand-files/${item.path}`;
   const categoryFolder = isPrivate ? item.category : item.path.split("/").slice(0, -1).join("/");
 
-  const group = item.group ? GROUPS[item.group] : undefined;
-  if (item.group && !group) {
-    console.error(`Unknown group "${item.group}" on ${item.id} — add it to GROUPS.`);
-    process.exit(1);
-  }
-
-  entries.push({
-    id: item.id,
-    title: item.title,
-    description: item.description,
-    category: item.category,
+  fileRows.push({
+    item,
     visibility,
-    status: item.status ?? "active",
-    groupId: item.group,
-    groupTitle: group?.title,
-    groupDescription: group?.description,
+    isPrivate,
+    fileName,
     file: {
+      id: item.id,
       fileName,
       contentType: CONTENT_TYPES[extension] ?? "application/octet-stream",
       sizeBytes: statSync(absolute).size,
@@ -723,13 +730,53 @@ for (const item of CATALOG) {
       downloadUrl,
     },
     previewUrl: !isPrivate && PREVIEWABLE.test(fileName) ? `/brand-files/${item.path}` : undefined,
-    tags: item.tags,
-    createdAt: item.created,
-    updatedAt: item.created,
-    createdBy: isPrivate ? "usr-002" : "usr-001",
   });
 
   if (isPrivate) privateFiles.push([item.id, fileName]);
+}
+
+const grouped = new Map();
+for (const row of fileRows) {
+  const key = row.item.group ?? row.item.id;
+  const existing = grouped.get(key);
+  if (existing) existing.push(row);
+  else grouped.set(key, [row]);
+}
+
+const entries = [];
+for (const [id, rows] of grouped) {
+  const [primary] = rows;
+  const meta = primary.item.group ? GROUPS[primary.item.group] : undefined;
+  const allTags = [...new Set(rows.flatMap((row) => row.item.tags))];
+  const tags = allTags.filter(
+    (tag) => !FORMAT_TAGS.has(tag.toLowerCase()) && !PRODUCT_TAGS.has(tag),
+  );
+  const previewUrl = rows.find((row) => row.previewUrl)?.previewUrl;
+  const createdAt = rows.reduce(
+    (earliest, row) => (row.item.created < earliest ? row.item.created : earliest),
+    primary.item.created,
+  );
+  const updatedAt = rows.reduce(
+    (latest, row) => (row.item.created > latest ? row.item.created : latest),
+    primary.item.created,
+  );
+
+  entries.push({
+    id,
+    title: meta?.title ?? primary.item.title,
+    description: meta?.description ?? primary.item.description,
+    resourceType: resourceTypeForCategory(primary.item.category),
+    category: primary.item.category,
+    product: productFromTags(allTags),
+    visibility: primary.visibility,
+    status: primary.item.status ?? "active",
+    files: rows.map((row) => row.file),
+    previewUrl,
+    tags,
+    createdAt,
+    updatedAt,
+    createdBy: primary.isPrivate ? "usr-002" : "usr-001",
+  });
 }
 
 if (missing.length) {

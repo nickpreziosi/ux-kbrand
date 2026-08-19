@@ -20,7 +20,7 @@ export function TypographyView() {
   const t = useTranslations("branding.typography");
   const { assets, loading, loadError } = useCategoryAssets("fonts");
   const fontFiles = assets.filter(
-    (asset) => asset.file.fileName !== TYPOGRAPHY_TOKEN_FILE,
+    (asset) => !asset.files.some((file) => file.fileName === TYPOGRAPHY_TOKEN_FILE),
   );
 
   return (

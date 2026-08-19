@@ -123,6 +123,22 @@ jest.mock("@k-lab/components", () => {
     ),
     EmptyIcon: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
     EmptyTitle: ({ children }: React.PropsWithChildren) => <h2>{children}</h2>,
+    Checkbox: ({
+      checked,
+      onCheckedChange,
+      "aria-label": ariaLabel,
+    }: {
+      checked?: boolean;
+      onCheckedChange?: (value: boolean) => void;
+      "aria-label"?: string;
+    }) => (
+      <input
+        type="checkbox"
+        checked={Boolean(checked)}
+        aria-label={ariaLabel}
+        onChange={(event) => onCheckedChange?.(event.target.checked)}
+      />
+    ),
     Skeleton: ({ className }: { className?: string }) => (
       <div data-testid="skeleton" className={className} />
     ),
@@ -138,29 +154,30 @@ function asset(partial: {
   description?: string;
   fileName?: string;
   sizeBytes?: number;
-  groupId?: string;
-  groupTitle?: string;
-  groupDescription?: string;
+  category?: BrandAsset["category"];
+  files?: BrandAsset["files"];
 }): BrandAsset {
   const fileName = partial.fileName ?? `${partial.id}.webp`;
   return {
     id: partial.id,
     title: partial.title,
     description: partial.description ?? "Hero background.",
-    category: "brand-imagery",
+    resourceType: "brand",
+    category: partial.category ?? "brand-imagery",
+    product: "k-lab",
     visibility: "public",
     status: "active",
-    file: {
-      fileName,
-      contentType: "image/webp",
-      sizeBytes: partial.sizeBytes ?? 1024,
-      storagePath: `assets/backgrounds/${fileName}`,
-      downloadUrl: `/brand-files/backgrounds/${fileName}`,
-    },
+    files: partial.files ?? [
+      {
+        id: partial.id,
+        fileName,
+        contentType: "image/webp",
+        sizeBytes: partial.sizeBytes ?? 1024,
+        storagePath: `assets/backgrounds/${fileName}`,
+        downloadUrl: `/brand-files/backgrounds/${fileName}`,
+      },
+    ],
     previewUrl: partial.previewUrl,
-    groupId: partial.groupId,
-    groupTitle: partial.groupTitle,
-    groupDescription: partial.groupDescription,
     tags: ["background"],
     createdAt: "2026-01-01T00:00:00.000Z",
     updatedAt: "2026-01-01T00:00:00.000Z",
@@ -174,40 +191,43 @@ const chevron = asset({
   previewUrl: "/brand-files/backgrounds/k-lab-bg-001.webp",
 });
 
-const logoGroup = [
-  asset({
-    id: "ast-010",
-    title: "K Lab logo — primary (blue), PNG",
-    fileName: "k-lab-logo-blue.png",
-    sizeBytes: 1000,
-    previewUrl: "/brand-files/logos/k-lab-logo-blue.png",
-    groupId: "k-lab-logo-blue",
-    groupTitle: "K Lab logo — primary (blue)",
-    groupDescription: "The default lockup.",
-  }),
-  asset({
-    id: "ast-010-ai",
-    title: "K Lab logo — primary (blue), AI",
-    fileName: "k-lab-logo-blue.ai",
-    sizeBytes: 20,
-    groupId: "k-lab-logo-blue",
-    groupTitle: "K Lab logo — primary (blue)",
-    groupDescription: "The default lockup.",
-  }),
-  asset({
-    id: "ast-010-svg",
-    title: "K Lab logo — primary (blue), SVG",
-    fileName: "k-lab-logo-blue.svg",
-    sizeBytes: 300,
-    groupId: "k-lab-logo-blue",
-    groupTitle: "K Lab logo — primary (blue)",
-    groupDescription: "The default lockup.",
-  }),
-];
+const logoAsset = asset({
+  id: "k-lab-logo-blue",
+  title: "K Lab logo — primary (blue)",
+  description: "The default lockup.",
+  category: "logos",
+  previewUrl: "/brand-files/logos/k-lab-logo-blue.png",
+  files: [
+    {
+      id: "ast-010",
+      fileName: "k-lab-logo-blue.png",
+      contentType: "image/png",
+      sizeBytes: 1000,
+      storagePath: "assets/logos/k-lab-logo-blue.png",
+      downloadUrl: "/brand-files/logos/k-lab-logo-blue.png",
+    },
+    {
+      id: "ast-010-svg",
+      fileName: "k-lab-logo-blue.svg",
+      contentType: "image/svg+xml",
+      sizeBytes: 300,
+      storagePath: "assets/logos/k-lab-logo-blue.svg",
+      downloadUrl: "/brand-files/logos/k-lab-logo-blue.svg",
+    },
+    {
+      id: "ast-010-ai",
+      fileName: "k-lab-logo-blue.ai",
+      contentType: "application/postscript",
+      sizeBytes: 20,
+      storagePath: "assets/logos/k-lab-logo-blue.ai",
+      downloadUrl: "/brand-files/logos/k-lab-logo-blue.ai",
+    },
+  ],
+});
 
 describe("AssetGrid download menu", () => {
   it("renders one card for a group", () => {
-    render(<AssetGrid assets={logoGroup} />);
+    render(<AssetGrid assets={[logoAsset]} />);
 
     expect(
       screen.getAllByRole("heading", { name: "K Lab logo — primary (blue)" }),
@@ -218,7 +238,7 @@ describe("AssetGrid download menu", () => {
   });
 
   it("puts every format and an All option in one Download menu", () => {
-    render(<AssetGrid assets={logoGroup} />);
+    render(<AssetGrid assets={[logoAsset]} />);
 
     expect(screen.getByRole("button", { name: "Download" })).toBeInTheDocument();
 
@@ -243,7 +263,7 @@ describe("AssetGrid download menu", () => {
   });
 
   it("orders formats raster first, editable masters last, All at the end", () => {
-    render(<AssetGrid assets={logoGroup} />);
+    render(<AssetGrid assets={[logoAsset]} />);
 
     const formats = screen
       .getAllByRole("link")
