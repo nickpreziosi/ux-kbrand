@@ -160,6 +160,7 @@ export function ResourceLibraryView({
             loading={loading}
             selectable
             selectedIds={selectedIds}
+            format={formatFilter}
             onSelectedChange={(id, selected) => {
               setSelectedIds((current) => {
                 const next = new Set(current);

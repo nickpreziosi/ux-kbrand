@@ -30,7 +30,7 @@ export function AssetPreviewDialog({
   const label = title ?? asset?.title ?? "";
   const surface = asset
     ? assetThumbnail(asset)
-    : { surfaceClassName: "", clearspace: false };
+    : { surfaceClassName: "", clearspace: false, paddingClassName: "" };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -42,13 +42,14 @@ export function AssetPreviewDialog({
         {asset && previewUrl ? (
           <>
             <DialogTitle className="sr-only">{label}</DialogTitle>
-            {/* Transparent artwork gets the same brand surface it has on the
-                card — over a dim overlay alone, the reversed logo reads as a
-                blank rectangle and the dark one all but disappears. */}
+            {/* Transparent artwork gets the same white/black surface it has on
+                the card — over a dim overlay alone, the reversed logo reads as
+                a blank rectangle and the dark one all but disappears. */}
             <div
               className={cn(
                 "flex items-center justify-center sm:rounded-md",
-                surface.clearspace && `${surface.surfaceClassName} p-8`,
+                surface.clearspace && surface.surfaceClassName,
+                surface.paddingClassName,
               )}
             >
               <Image

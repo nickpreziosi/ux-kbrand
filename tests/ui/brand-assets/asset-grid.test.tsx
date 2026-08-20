@@ -291,6 +291,20 @@ describe("AssetGrid download menu", () => {
       screen.queryByRole("link", { name: "Download all" }),
     ).not.toBeInTheDocument();
   });
+
+  it("shows the filtered file's size and a direct download when a format is selected", () => {
+    render(<AssetGrid assets={[logoAsset]} format="svg" />);
+
+    expect(screen.getByText("300 B")).toBeInTheDocument();
+    expect(screen.queryByText("3 files")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Download" })).not.toBeInTheDocument();
+
+    const download = screen.getByRole("link", { name: "Download SVG" });
+    expect(download).toHaveAttribute("href", "/api/brand-download/ast-010-svg");
+    expect(download).toHaveTextContent("Download");
+    expect(screen.queryByRole("link", { name: "Download PNG" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Download all" })).not.toBeInTheDocument();
+  });
 });
 
 describe("AssetGrid expandPreview", () => {

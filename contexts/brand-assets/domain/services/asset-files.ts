@@ -42,6 +42,15 @@ function formatRank(file: Pick<AssetFile, "fileName">): number {
   return index === -1 ? ASSET_FORMAT_ORDER.length : index;
 }
 
+/** The first file whose extension matches `format`, or undefined. */
+export function fileForFormat(
+  files: AssetFile[],
+  format: string,
+): AssetFile | undefined {
+  const wanted = format.toLowerCase();
+  return files.find((file) => fileFormat(file) === wanted);
+}
+
 /** Files in `ASSET_FORMAT_ORDER`; the first is the default download. */
 export function sortedFiles(files: AssetFile[]): AssetFile[] {
   return [...files].sort((a, b) => {

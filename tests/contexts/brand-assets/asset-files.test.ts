@@ -2,6 +2,7 @@ import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asse
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import {
   fileFormat,
+  fileForFormat,
   formatFromFileName,
   makeAssetId,
   sortedFiles,
@@ -28,6 +29,15 @@ describe("formatFromFileName / fileFormat", () => {
   it("returns null when the name has no extension", () => {
     expect(formatFromFileName("logo")).toBeNull();
     expect(fileFormat(file("logo"))).toBeNull();
+  });
+});
+
+describe("fileForFormat", () => {
+  it("returns the file whose extension matches", () => {
+    const files = [file("lockup.png", "png", 1000), file("lockup.svg", "svg", 300)];
+    expect(fileForFormat(files, "svg")?.id).toBe("svg");
+    expect(fileForFormat(files, "SVG")?.sizeBytes).toBe(300);
+    expect(fileForFormat(files, "ai")).toBeUndefined();
   });
 });
 

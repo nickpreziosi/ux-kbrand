@@ -1,6 +1,10 @@
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { SEED_BRAND_ASSETS } from "@/contexts/brand-assets/infrastructure/mock/seed-assets";
-import { assetThumbnail } from "@/ui/brand-assets/lib/asset-thumbnail";
+import {
+  assetThumbnail,
+  LOCKUP_INSET_CLASS,
+  LOGOMARK_INSET_CLASS,
+} from "@/ui/brand-assets/lib/asset-thumbnail";
 
 function asset(
   partial: Partial<BrandAsset> & { id: string; fileName: string },
@@ -40,30 +44,45 @@ describe("assetThumbnail", () => {
     ).toBe("contain");
   });
 
-  it("gives transparent logo artwork a light brand surface and clearspace", () => {
+  it("gives logo artwork a white surface and clearspace", () => {
     const thumbnail = assetThumbnail(
       asset({ id: "a", fileName: "k-lab-logo-blue.svg", tags: ["primary", "logo"] }),
     );
 
-    expect(thumbnail.surfaceClassName).toBe("bg-brand-surface-light");
+    expect(thumbnail.surfaceClassName).toBe("bg-white");
     expect(thumbnail.clearspace).toBe(true);
+    expect(thumbnail.insetClassName).toBe(LOCKUP_INSET_CLASS);
   });
 
-  it("puts reversed artwork on the dark surface so it is not white on white", () => {
+  it("gives standalone logomarks 0.5× clearspace so they do not fill the frame height", () => {
+    const thumbnail = assetThumbnail(
+      asset({
+        id: "mark",
+        fileName: "k-lab-logomark.png",
+        tags: ["mark", "logomark"],
+      }),
+    );
+
+    expect(thumbnail.clearspace).toBe(true);
+    expect(thumbnail.insetClassName).toBe(LOGOMARK_INSET_CLASS);
+  });
+
+  it("puts reversed artwork on black so it is not white on white", () => {
     for (const tag of ["reversed", "white"]) {
       expect(
         assetThumbnail(
           asset({ id: "a", fileName: "k-lab-logo-white.svg", tags: [tag] }),
         ).surfaceClassName,
-      ).toBe("bg-brand-surface-dark");
+      ).toBe("bg-black");
     }
   });
 
-  it("leaves an opaque logo image uncropped but un-inset — it composes its own background", () => {
+  it("lets composed product lockups fill the frame — they already have a background", () => {
     const thumbnail = assetThumbnail(
       asset({
         id: "a",
         fileName: "k-rails.webp",
+        previewUrl: "/brand-files/sub-brands/k-rails.webp",
         tags: [],
         files: [
           {
@@ -80,8 +99,10 @@ describe("assetThumbnail", () => {
 
     expect(thumbnail).toEqual({
       fit: "contain",
-      surfaceClassName: "bg-secondary",
+      surfaceClassName: "bg-white",
       clearspace: false,
+      insetClassName: "inset-0",
+      paddingClassName: "",
     });
   });
 
@@ -97,31 +118,40 @@ describe("assetThumbnail", () => {
 
     expect(thumbnail).toEqual({
       fit: "cover",
-      surfaceClassName: "bg-secondary",
+      surfaceClassName: "bg-background",
       clearspace: false,
+      insetClassName: "inset-0",
+      paddingClassName: "",
     });
   });
 
-  it("contains icons and documents so marks and page previews are not cropped", () => {
-    expect(
-      assetThumbnail(
-        asset({
-          id: "icon",
-          fileName: "k-lab-icon.svg",
-          category: "iconography",
-        }),
-      ).fit,
-    ).toBe("contain");
+  it("puts fonts, documents, and icons on the page background", () => {
+    const font = assetThumbnail(
+      asset({ id: "font", fileName: "sora.ttf", category: "fonts" }),
+    );
+    expect(font.surfaceClassName).toBe("bg-background");
+    expect(font.fit).toBe("contain");
 
-    expect(
-      assetThumbnail(
-        asset({
-          id: "letterhead",
-          fileName: "letterhead.pdf",
-          category: "corporate-assets",
-        }),
-      ).fit,
-    ).toBe("contain");
+    const document = assetThumbnail(
+      asset({
+        id: "letterhead",
+        fileName: "letterhead.pdf",
+        category: "corporate-assets",
+      }),
+    );
+    expect(document.surfaceClassName).toBe("bg-background");
+    expect(document.fit).toBe("contain");
+
+    const icon = assetThumbnail(
+      asset({
+        id: "icon",
+        fileName: "k-lab-icon.svg",
+        category: "iconography",
+      }),
+    );
+    expect(icon.surfaceClassName).toBe("bg-background");
+    expect(icon.fit).toBe("contain");
+    expect(icon.insetClassName).toBe(LOGOMARK_INSET_CLASS);
   });
 
   it("fills the frame for photography the same way as brand imagery", () => {
@@ -136,12 +166,27 @@ describe("assetThumbnail", () => {
     ).toBe("cover");
   });
 
-  it("contains every logo in the seeded catalog", () => {
+  it("contains every logo in the seeded catalog, with clearspace except composed shots", () => {
     const logos = SEED_BRAND_ASSETS.filter((seed) => seed.category === "logos");
 
     expect(logos.length).toBeGreaterThan(0);
     for (const logo of logos) {
-      expect(assetThumbnail(logo).fit).toBe("contain");
+      const thumbnail = assetThumbnail(logo);
+      expect(thumbnail.fit).toBe("contain");
+      const composed = ["webp", "jpg", "jpeg", "gif"].some((ext) =>
+        (logo.previewUrl ?? logo.files[0]?.fileName ?? "").toLowerCase().endsWith(`.${ext}`),
+      );
+      const logomark = logo.tags.some((tag) =>
+        ["logomark", "mark"].includes(tag.toLowerCase()),
+      );
+      expect(thumbnail.clearspace).toBe(!composed);
+      expect(thumbnail.insetClassName).toBe(
+        composed
+          ? "inset-0"
+          : logomark
+            ? LOGOMARK_INSET_CLASS
+            : LOCKUP_INSET_CLASS,
+      );
     }
   });
 });

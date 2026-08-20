@@ -275,12 +275,6 @@ a {
     --amex-brand-l: 40.98%;
     --amex-brand: var(--amex-brand-h) var(--amex-brand-s) var(--amex-brand-l);
 
-    /* Brand preview surfaces - the backdrops the logo lockups are designed
-       against. Fixed in both themes on purpose: a logo swatch has to show the
-       real surface, not the current UI theme, so .dark does not override these. */
-    --brand-surface-light: 0 0% 100%;
-    --brand-surface-dark: 210 100% 5%;
-
     /* Core colors */
     --background: 0 0% 100%;
     --foreground: var(--base);

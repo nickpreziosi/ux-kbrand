@@ -23,7 +23,6 @@ import {
   ChevronDown,
   Download,
   FileText,
-  Globe,
   Image as ImageIcon,
   Lock,
   Maximize2,
@@ -35,6 +34,7 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
 import {
   assetTotalBytes,
   fileFormat,
+  fileForFormat,
   sortedFiles,
 } from "@/contexts/brand-assets/domain/services/asset-files";
 import {
@@ -88,6 +88,8 @@ interface AssetCardProps {
   selected?: boolean;
   onSelectedChange?: (selected: boolean) => void;
   className?: string;
+  /** When the library is filtered to one format, download that file directly. */
+  format?: string;
 }
 
 /**
@@ -103,13 +105,15 @@ export function AssetCard({
   selected = false,
   onSelectedChange,
   className,
+  format,
 }: AssetCardProps) {
   const t = useTranslations("assets");
   const files = sortedFiles(asset.files);
+  const filteredFile = format ? fileForFormat(files, format) : undefined;
   const multiFormat = files.length > 1;
   const kind = assetPresentationKind(asset.category);
   const expand = onPreview && presentationAllowsExpand(kind);
-  const { fit, surfaceClassName, clearspace } = assetThumbnail(asset);
+  const { fit, surfaceClassName, insetClassName } = assetThumbnail(asset);
   const previewFile = files[0];
   const showImage =
     Boolean(asset.previewUrl) && presentationShowsImagePreview(kind);
@@ -157,7 +161,7 @@ export function AssetCard({
         ) : null}
         {previewImage ? (
           <>
-            <div className={cn("absolute", clearspace ? "inset-6" : "inset-0")}>
+            <div className={cn("absolute", insetClassName)}>
               {previewImage}
             </div>
             {expand ? (
@@ -187,16 +191,12 @@ export function AssetCard({
             contentType={previewFile?.contentType ?? ""}
           />
         )}
-        {showVisibility ? (
+        {showVisibility && asset.visibility !== "public" ? (
           <Badge
-            variant={asset.visibility === "public" ? "success-soft" : "warning-soft"}
+            variant="warning-soft"
             className="pointer-events-none absolute end-2 top-2 z-10 gap-1"
           >
-            {asset.visibility === "public" ? (
-              <Globe className="h-3 w-3" aria-hidden />
-            ) : (
-              <Lock className="h-3 w-3" aria-hidden />
-            )}
+            <Lock className="h-3 w-3" aria-hidden />
             {t(`visibility.${asset.visibility}`)}
           </Badge>
         ) : null}
@@ -206,10 +206,12 @@ export function AssetCard({
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-base leading-snug">{asset.title}</CardTitle>
           <Badge variant="accent-brand-soft" className="shrink-0">
-            {t(
-              files.length === 1 ? "fileCount.one" : "fileCount.other",
-              { count: files.length },
-            )}
+            {filteredFile
+              ? formatFileSize(filteredFile.sizeBytes)
+              : t(
+                  files.length === 1 ? "fileCount.one" : "fileCount.other",
+                  { count: files.length },
+                )}
           </Badge>
         </div>
         <CardDescription className="line-clamp-2 text-sm">
@@ -218,57 +220,71 @@ export function AssetCard({
       </CardContent>
 
       <CardFooter className="flex items-center justify-end gap-2 p-4 pt-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="accent-brand"
-              size="sm"
-              icon={<Download aria-hidden />}
-            >
-              {t("download")}
-              <ChevronDown className="h-3.5 w-3.5 opacity-80" aria-hidden />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {files.map((file) => (
-              <DropdownMenuItem key={file.id} asChild>
-                <a
-                  href={fileDownloadHref(file)}
-                  className="flex items-center gap-1.5"
-                  aria-label={t("downloadFormat", {
-                    format: formatLabel(file),
-                  })}
-                >
-                  <FormatSizeLabel
-                    label={formatLabel(file)}
-                    sizeBytes={file.sizeBytes}
-                  />
-                </a>
-              </DropdownMenuItem>
-            ))}
-            {multiFormat ? (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
+        {filteredFile ? (
+          <Button
+            href={fileDownloadHref(filteredFile)}
+            variant="accent-brand"
+            size="sm"
+            icon={<Download aria-hidden />}
+            aria-label={t("downloadFormat", {
+              format: formatLabel(filteredFile),
+            })}
+          >
+            {t("download")}
+          </Button>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="accent-brand"
+                size="sm"
+                icon={<Download aria-hidden />}
+              >
+                {t("download")}
+                <ChevronDown className="h-3.5 w-3.5 opacity-80" aria-hidden />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {files.map((file) => (
+                <DropdownMenuItem key={file.id} asChild>
                   <a
-                    href={assetBundleUrl(asset.id)}
+                    href={fileDownloadHref(file)}
                     className="flex items-center gap-1.5"
-                    aria-label={t("downloadAll")}
+                    aria-label={t("downloadFormat", {
+                      format: formatLabel(file),
+                    })}
                   >
                     <FormatSizeLabel
-                      label={
-                        t.has("downloadAllOption")
-                          ? t("downloadAllOption")
-                          : t("downloadAll")
-                      }
-                      sizeBytes={assetTotalBytes(asset)}
+                      label={formatLabel(file)}
+                      sizeBytes={file.sizeBytes}
                     />
                   </a>
                 </DropdownMenuItem>
-              </>
-            ) : null}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              ))}
+              {multiFormat ? (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <a
+                      href={assetBundleUrl(asset.id)}
+                      className="flex items-center gap-1.5"
+                      aria-label={t("downloadAll")}
+                    >
+                      <FormatSizeLabel
+                        label={
+                          t.has("downloadAllOption")
+                            ? t("downloadAllOption")
+                            : t("downloadAll")
+                        }
+                        sizeBytes={assetTotalBytes(asset)}
+                      />
+                    </a>
+                  </DropdownMenuItem>
+                </>
+              ) : null}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </CardFooter>
     </Card>
   );

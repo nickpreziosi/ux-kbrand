@@ -30,6 +30,8 @@ interface AssetGridProps {
   selectable?: boolean;
   selectedIds?: ReadonlySet<string>;
   onSelectedChange?: (id: string, selected: boolean) => void;
+  /** Library format facet — when set, cards download that file directly. */
+  format?: string;
 }
 
 export function AssetGrid({
@@ -40,6 +42,7 @@ export function AssetGrid({
   selectable = false,
   selectedIds,
   onSelectedChange,
+  format,
 }: AssetGridProps) {
   const t = useTranslations("assets");
   const { viewerRole } = usePortalRole();
@@ -97,6 +100,7 @@ export function AssetGrid({
                   ? (selected) => onSelectedChange(asset.id, selected)
                   : undefined
               }
+              format={format}
               onPreview={canExpand ? () => setPreviewAsset(asset) : undefined}
             />
           );
