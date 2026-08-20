@@ -5,5 +5,4 @@ export * from "./services/asset-access";
 export * from "./services/asset-files";
 export * from "./services/asset-filtering";
 export * from "./services/asset-presentation";
-export * from "./services/asset-featured";
 export type * from "./repositories/brandAssetRepository.interface";

@@ -1,8 +1,9 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 
-const gridAssets: BrandAsset[][] = [];
+const mockDownloadAssetBundle = jest.fn();
 
 jest.mock("next-intl", () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -29,19 +30,30 @@ jest.mock("next-intl", () => {
   };
 });
 
-jest.mock("@/ui/brand-assets/components/asset-grid", () => ({
-  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => {
-    gridAssets.push(assets);
-    return <div data-testid="asset-grid">{assets.length} cards</div>;
-  },
+jest.mock("@/ui/brand-assets/lib/download-asset-bundle", () => ({
+  downloadAssetBundle: (...args: unknown[]) => mockDownloadAssetBundle(...args),
 }));
 
 jest.mock("@k-lab/components", () => ({
   Button: ({
     children,
     href,
-  }: React.PropsWithChildren<{ href?: string }>) =>
-    href ? <a href={href}>{children}</a> : <button type="button">{children}</button>,
+    onClick,
+    disabled,
+    type,
+  }: React.PropsWithChildren<{
+    href?: string;
+    onClick?: () => void;
+    disabled?: boolean;
+    type?: "button" | "submit";
+  }>) =>
+    href ? (
+      <a href={href}>{children}</a>
+    ) : (
+      <button type={type ?? "button"} onClick={onClick} disabled={disabled}>
+        {children}
+      </button>
+    ),
 }));
 
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
@@ -75,34 +87,43 @@ function asset(id: string): BrandAsset {
 
 describe("GuidelineDownloadsSection", () => {
   beforeEach(() => {
-    gridAssets.length = 0;
+    mockDownloadAssetBundle.mockReset();
+    mockDownloadAssetBundle.mockResolvedValue(undefined);
   });
 
-  it("renders the given cards and a View all link into the library", () => {
+  it("offers a category package and View all into the library, with no featured grid", async () => {
+    const user = userEvent.setup();
     render(
       <GuidelineDownloadsSection
-        title="Image library"
-        description="Approved backgrounds."
         category="brand-imagery"
         assets={[asset("a"), asset("b")]}
         loading={false}
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Image library" })).toBeInTheDocument();
-    expect(screen.getByText("Approved backgrounds.")).toBeInTheDocument();
-    expect(screen.getByTestId("asset-grid")).toHaveTextContent("2 cards");
+    expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View all Brand imagery" })).toHaveAttribute(
       "href",
       "/assets?category=brand-imagery",
     );
+
+    const viewAll = screen.getByRole("link", { name: "View all Brand imagery" });
+    const download = screen.getByRole("button", { name: "Download Brand imagery package" });
+    expect(viewAll.compareDocumentPosition(download) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    await user.click(
+      screen.getByRole("button", { name: "Download Brand imagery package" }),
+    );
+    expect(mockDownloadAssetBundle).toHaveBeenCalledWith({
+      assetIds: ["a", "b"],
+      filename: "brand-imagery.zip",
+    });
   });
 
-  it("does not dump an empty grid when there are no featured assets", () => {
+  it("disables the package button when there are no assets", () => {
     render(
       <GuidelineDownloadsSection
-        title="Templates"
-        description="Print files."
         category="corporate-assets"
         assets={[]}
         loading={false}
@@ -110,9 +131,26 @@ describe("GuidelineDownloadsSection", () => {
     );
 
     expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Download Corporate assets package" }),
+    ).toBeDisabled();
     expect(screen.getByRole("link", { name: "View all Corporate assets" })).toHaveAttribute(
       "href",
       "/assets?category=corporate-assets",
     );
+  });
+
+  it("disables the package button while assets are loading", () => {
+    render(
+      <GuidelineDownloadsSection
+        category="brand-imagery"
+        assets={[asset("a")]}
+        loading
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Download Brand imagery package" }),
+    ).toBeDisabled();
   });
 });

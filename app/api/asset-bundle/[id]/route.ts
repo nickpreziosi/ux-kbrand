@@ -4,7 +4,7 @@ import { getServerBrandAssetRepository } from "@/contexts/brand-assets/applicati
 import { canViewAsset } from "@/contexts/brand-assets/domain/services/asset-access";
 import { sortedFiles } from "@/contexts/brand-assets/domain/services/asset-files";
 import { resolveApiViewer } from "@/lib/api/viewer";
-import { zipBrandFiles } from "@/app/api/brand-bundle/zip-brand-files";
+import { zipBrandFiles } from "@/app/api/asset-bundle/zip-brand-files";
 
 /**
  * Zips every format of an asset into one download — the "Download all"
@@ -13,14 +13,14 @@ import { zipBrandFiles } from "@/app/api/brand-bundle/zip-brand-files";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ groupId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { groupId } = await params;
-  if (!groupId || groupId.includes("..") || groupId.includes("/") || groupId.includes("\\")) {
+  const { id } = await params;
+  if (!id || id.includes("..") || id.includes("/") || id.includes("\\")) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const asset = await getServerBrandAssetRepository().getById(groupId);
+  const asset = await getServerBrandAssetRepository().getById(id);
   if (!asset || asset.files.length === 0) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -38,7 +38,7 @@ export async function GET(
   return new NextResponse(archive, {
     headers: {
       "Content-Type": "application/zip",
-      "Content-Disposition": `attachment; filename="${groupId}.zip"`,
+      "Content-Disposition": `attachment; filename="${id}.zip"`,
       "Cache-Control": "private, no-store",
     },
   });

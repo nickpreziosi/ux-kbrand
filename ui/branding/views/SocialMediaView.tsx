@@ -7,7 +7,6 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Share2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
@@ -61,6 +60,13 @@ export function SocialMediaView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Share2 className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="social-media"
+            assets={assets}
+            loading={loading}
+          />
+        }
       />
 
       <section className="@container space-y-4" aria-label={t("avatarsTitle")}>
@@ -197,14 +203,6 @@ export function SocialMediaView() {
           </CardContent>
         </Card>
       </section>
-
-      <GuidelineDownloadsSection
-        title={t("libraryTitle")}
-        description={t("libraryDescription")}
-        category="social-media"
-        assets={featuredAssetsForCategory(assets, "social-media")}
-        loading={loading}
-      />
     </div>
   );
 }

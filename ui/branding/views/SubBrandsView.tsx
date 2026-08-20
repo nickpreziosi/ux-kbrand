@@ -7,7 +7,6 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Boxes } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
  * The approved sub-brand roster. Kena is deliberately absent (retired from
@@ -35,20 +34,11 @@ function LockupPlaceholder({ name }: { name: string }) {
 
 export function SubBrandsView() {
   const t = useTranslations("branding.subBrands");
-  const { assets, loading, loadError } = useCategoryAssets("logos");
-  const {
-    assets: imageryAssets,
-    loading: imageryLoading,
-    loadError: imageryLoadError,
-  } = useCategoryAssets("brand-imagery");
+  const { assets, loadError } = useCategoryAssets("logos");
 
   const productAssets = React.useMemo(
     () => assets.filter((asset) => asset.product !== "k-lab"),
     [assets],
-  );
-  const keyvisuals = React.useMemo(
-    () => imageryAssets.filter((asset) => asset.tags.includes("keyvisual")),
-    [imageryAssets],
   );
 
   /** Dark flat lockup previews for the roster cards, by sub-brand tag. */
@@ -70,6 +60,10 @@ export function SubBrandsView() {
         subtitle={t("subtitle")}
         icon={<Boxes className="h-8 w-8" aria-hidden />}
       />
+
+      {loadError ? (
+        <p className="text-sm text-destructive">{t("loadError")}</p>
+      ) : null}
 
       <Card>
         <CardContent className="space-y-2 p-6">
@@ -124,28 +118,6 @@ export function SubBrandsView() {
           })}
         </div>
       </section>
-
-      <GuidelineDownloadsSection
-        title={t("downloadsTitle")}
-        description={t("downloadsDescription")}
-        category="logos"
-        assets={productAssets.slice(0, 4)}
-        loading={loading}
-        loadError={loadError}
-        errorMessage={t("loadError")}
-      />
-
-      <GuidelineDownloadsSection
-        title={t("keyvisualsTitle")}
-        description={t("keyvisualsDescription")}
-        category="brand-imagery"
-        assets={keyvisuals.slice(0, 4)}
-        loading={imageryLoading}
-        loadError={imageryLoadError}
-        errorMessage={t("loadError")}
-        expandPreview
-        skeletonCount={2}
-      />
     </div>
   );
 }

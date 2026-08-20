@@ -6,9 +6,6 @@ import { Card, CardContent } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, ShoppingBag } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
-import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
  * Merchandise families from the guidelines, shown with product renders.
@@ -25,9 +22,6 @@ const MERCH_RULE_KEYS = ["surface", "lockup", "linework", "approval"] as const;
 
 export function MerchandiseView() {
   const t = useTranslations("branding.merchandise");
-  // Production files land in the merchandise category; the section below
-  // stays hidden until an admin publishes the first one.
-  const { assets, loading } = useCategoryAssets("merchandise");
 
   return (
     <div className="space-y-8">
@@ -85,14 +79,6 @@ export function MerchandiseView() {
           </ul>
         </CardContent>
       </Card>
-
-      <GuidelineDownloadsSection
-        title={t("libraryTitle")}
-        description={t("libraryDescription")}
-        category="merchandise"
-        assets={featuredAssetsForCategory(assets, "merchandise")}
-        loading={loading}
-      />
     </div>
   );
 }

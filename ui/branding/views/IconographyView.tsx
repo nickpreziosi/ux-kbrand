@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /** The payment-lifecycle icon set from the Brand Center reference, stood in
@@ -56,6 +55,13 @@ export function IconographyView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Shapes className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="iconography"
+            assets={assets}
+            loading={loading}
+          />
+        }
       />
 
       <section className="@container space-y-4" aria-label={t("styleTitle")}>
@@ -117,14 +123,6 @@ export function IconographyView() {
           </div>
         </CardContent>
       </Card>
-
-      <GuidelineDownloadsSection
-        title={t("libraryTitle")}
-        description={t("libraryDescription")}
-        category="iconography"
-        assets={featuredAssetsForCategory(assets, "iconography")}
-        loading={loading}
-      />
     </div>
   );
 }

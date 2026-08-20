@@ -52,8 +52,8 @@ jest.mock("@/ui/brand-assets/hooks/use-library-assets", () => ({
   useLibraryAssets: (...args: unknown[]) => mockUseLibraryAssets(...args),
 }));
 
-jest.mock("@/ui/brand-assets/lib/download-brand-bundle", () => ({
-  downloadBrandBundle: (...args: unknown[]) => mockDownloadBrandBundle(...args),
+jest.mock("@/ui/brand-assets/lib/download-asset-bundle", () => ({
+  downloadAssetBundle: (...args: unknown[]) => mockDownloadBrandBundle(...args),
 }));
 
 jest.mock("@/ui/shared/components/k-brand-page-header", () => ({

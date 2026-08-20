@@ -23,8 +23,8 @@ jest.mock("@/lib/api/viewer", () => ({
   resolveApiViewer: async () => ({ role: mockViewerRole(), user: null }),
 }));
 
-import { GET } from "@/app/api/brand-bundle/[groupId]/route";
-import { POST } from "@/app/api/brand-bundle/route";
+import { GET } from "@/app/api/asset-bundle/[id]/route";
+import { POST } from "@/app/api/asset-bundle/route";
 
 function file(id: string, fileName: string, overrides: Partial<AssetFile> = {}): AssetFile {
   return {
@@ -60,12 +60,12 @@ function artwork(overrides: Partial<BrandAsset> = {}): BrandAsset {
   };
 }
 
-function requestFor(groupId: string) {
-  return new Request(`http://localhost/api/brand-bundle/${groupId}`) as never;
+function requestFor(id: string) {
+  return new Request(`http://localhost/api/asset-bundle/${id}`) as never;
 }
 
-function call(groupId: string) {
-  return GET(requestFor(groupId), { params: Promise.resolve({ groupId }) });
+function call(id: string) {
+  return GET(requestFor(id), { params: Promise.resolve({ id }) });
 }
 
 function namesIn(archive: Uint8Array): string[] {
@@ -96,7 +96,7 @@ function firstEntryBytes(archive: Uint8Array): Buffer {
   return method === 8 ? inflateRawSync(body) : body;
 }
 
-describe("GET /api/brand-bundle/[groupId]", () => {
+describe("GET /api/asset-bundle/[id]", () => {
   beforeEach(() => {
     mockGetById.mockReset();
     mockReadFile.mockReset();
@@ -197,14 +197,14 @@ describe("GET /api/brand-bundle/[groupId]", () => {
 });
 
 function postRequest(body: unknown) {
-  return new Request("http://localhost/api/brand-bundle", {
+  return new Request("http://localhost/api/asset-bundle", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
 }
 
-describe("POST /api/brand-bundle", () => {
+describe("POST /api/asset-bundle", () => {
   beforeEach(() => {
     mockGetById.mockReset();
     mockReadFile.mockReset();

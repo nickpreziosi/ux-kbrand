@@ -23,8 +23,8 @@ export function brandDownloadUrl(fileId: string): string {
   return `/api/brand-download/${fileId}`;
 }
 
-export function brandBundleUrl(assetId: string): string {
-  return `/api/brand-bundle/${assetId}`;
+export function assetBundleUrl(assetId: string): string {
+  return `/api/asset-bundle/${assetId}`;
 }
 
 export function formatFromFile(file: AssetFile): LogoFormat | null {

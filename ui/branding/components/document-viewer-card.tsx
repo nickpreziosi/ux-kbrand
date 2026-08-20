@@ -19,7 +19,33 @@ interface DocumentViewerCardProps {
   loading?: boolean;
   /** Renders the inline preview frame; off for compact reference cards. */
   showPreview?: boolean;
+  /** View/Download in the card; off when those live in the page header. */
+  showActions?: boolean;
   className?: string;
+}
+
+export function BrandBookActions({ asset }: { asset: BrandAsset }) {
+  const t = useTranslations("branding.document");
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button
+        variant="outline"
+        icon={<ExternalLink aria-hidden />}
+        href={asset.files[0]?.downloadUrl}
+        target="_blank"
+        rel="noopener"
+      >
+        {t("view")}
+      </Button>
+      <Button
+        variant="accent-brand"
+        icon={<Download aria-hidden />}
+        href={assetDownloadHref(asset)}
+      >
+        {t("download")}
+      </Button>
+    </div>
+  );
 }
 
 /**
@@ -31,6 +57,7 @@ export function DocumentViewerCard({
   asset,
   loading = false,
   showPreview = true,
+  showActions = true,
   className,
 }: DocumentViewerCardProps) {
   const t = useTranslations("branding.document");
@@ -76,24 +103,7 @@ export function DocumentViewerCard({
               </p>
             </div>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button
-              variant="outline"
-              icon={<ExternalLink aria-hidden />}
-              href={asset.files[0]?.downloadUrl}
-              target="_blank"
-              rel="noopener"
-            >
-              {t("view")}
-            </Button>
-            <Button
-              variant="accent-brand"
-              icon={<Download aria-hidden />}
-              href={assetDownloadHref(asset)}
-            >
-              {t("download")}
-            </Button>
-          </div>
+          {showActions ? <BrandBookActions asset={asset} /> : null}
         </div>
 
         {showPreview ? (

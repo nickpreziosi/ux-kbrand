@@ -257,7 +257,7 @@ describe("AssetGrid download menu", () => {
     );
 
     const all = screen.getByRole("link", { name: "Download all" });
-    expect(all).toHaveAttribute("href", "/api/brand-bundle/k-lab-logo-blue");
+    expect(all).toHaveAttribute("href", "/api/asset-bundle/k-lab-logo-blue");
     expect(all).toHaveTextContent("All");
     expect(all).toHaveTextContent("1320 B");
   });

@@ -6,7 +6,6 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Type as TypeIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 import {
   ARIAL_STACK,
@@ -30,7 +29,18 @@ export function TypographyView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<TypeIcon className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="fonts"
+            assets={fontFiles}
+            loading={loading}
+          />
+        }
       />
+
+      {loadError ? (
+        <p className="text-sm text-destructive">{t("loadError")}</p>
+      ) : null}
 
       <section className="space-y-4" aria-label={t("typefaceTitle")}>
         <div>
@@ -107,17 +117,6 @@ export function TypographyView() {
           </CardContent>
         </Card>
       </section>
-
-      <GuidelineDownloadsSection
-        title={t("downloadsTitle")}
-        description={t("downloadsDescription")}
-        category="fonts"
-        assets={featuredAssetsForCategory(fontFiles, "fonts")}
-        loading={loading}
-        loadError={loadError}
-        errorMessage={t("loadError")}
-        skeletonCount={2}
-      />
     </div>
   );
 }

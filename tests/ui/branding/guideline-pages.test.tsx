@@ -1,11 +1,12 @@
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { AssetCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { TYPOGRAPHY_TOKEN_FILE } from "@/ui/branding/content/typeface";
 
 const mockUseCategoryAssets = jest.fn();
-const capturedGrids: BrandAsset[][] = [];
+const mockDownloadAssetBundle = jest.fn();
 
 jest.mock("next/image", () => ({
   __esModule: true,
@@ -44,25 +45,52 @@ jest.mock("@/ui/brand-assets/hooks/use-category-assets", () => ({
   useCategoryAssets: (...args: unknown[]) => mockUseCategoryAssets(...args),
 }));
 
+jest.mock("@/ui/brand-assets/lib/download-asset-bundle", () => ({
+  downloadAssetBundle: (...args: unknown[]) => mockDownloadAssetBundle(...args),
+}));
+
 jest.mock("@/ui/brand-assets/components/asset-grid", () => ({
-  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => {
-    capturedGrids.push(assets);
-    return <div data-testid="asset-grid">{assets.length}</div>;
-  },
+  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => (
+    <div data-testid="asset-grid">{assets.length}</div>
+  ),
 }));
 
 jest.mock("@/ui/shared/components/k-brand-page-header", () => ({
-  KBrandPageHeader: ({ title }: { title: string }) => <h1>{title}</h1>,
+  KBrandPageHeader: ({
+    title,
+    actions,
+  }: {
+    title: string;
+    actions?: React.ReactNode;
+  }) => (
+    <header>
+      <h1>{title}</h1>
+      {actions}
+    </header>
+  ),
 }));
 
 jest.mock("@k-lab/components", () => ({
   cn: (...parts: Array<string | false | undefined>) => parts.filter(Boolean).join(" "),
+  formatFileSize: (bytes: number) => `${bytes} B`,
   Badge: ({ children }: React.PropsWithChildren) => <span>{children}</span>,
   Button: ({
     children,
     href,
-  }: React.PropsWithChildren<{ href?: string }>) =>
-    href ? <a href={href}>{children}</a> : <button type="button">{children}</button>,
+    onClick,
+    disabled,
+  }: React.PropsWithChildren<{
+    href?: string;
+    onClick?: () => void;
+    disabled?: boolean;
+  }>) =>
+    href ? (
+      <a href={href}>{children}</a>
+    ) : (
+      <button type="button" onClick={onClick} disabled={disabled}>
+        {children}
+      </button>
+    ),
   Card: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
   CardContent: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
   CardTitle: ({ children }: React.PropsWithChildren) => <h3>{children}</h3>,
@@ -77,6 +105,7 @@ import { IconographyView } from "@/ui/branding/views/IconographyView";
 import { SocialMediaView } from "@/ui/branding/views/SocialMediaView";
 import { MerchandiseView } from "@/ui/branding/views/MerchandiseView";
 import { SubBrandsView } from "@/ui/branding/views/SubBrandsView";
+import { BrandGuidelinesDocView } from "@/ui/branding/views/BrandGuidelinesDocView";
 
 function asset(
   id: string,
@@ -126,25 +155,34 @@ function stubCategory(assets: BrandAsset[]) {
   }));
 }
 
-describe("guideline pages featured downloads", () => {
+describe("guideline pages category packages", () => {
   beforeEach(() => {
-    capturedGrids.length = 0;
     mockUseCategoryAssets.mockReset();
+    mockDownloadAssetBundle.mockReset();
+    mockDownloadAssetBundle.mockResolvedValue(undefined);
   });
 
-  it("keeps imagery usage rules and caps the library dump", () => {
+  it("keeps imagery usage rules and zips the full category", async () => {
+    const user = userEvent.setup();
     stubCategory(many("brand-imagery", 6));
     render(<ImageryView />);
 
     expect(screen.getByRole("heading", { name: "Do" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
+    expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View all Brand imagery" })).toHaveAttribute(
       "href",
       "/assets?category=brand-imagery",
     );
+
+    await user.click(screen.getByRole("button", { name: "Download Brand imagery package" }));
+    expect(mockDownloadAssetBundle).toHaveBeenCalledWith({
+      assetIds: many("brand-imagery", 6).map((row) => row.id),
+      filename: "brand-imagery.zip",
+    });
   });
 
-  it("keeps the typeface specimen and caps font downloads", () => {
+  it("keeps the typeface specimen and zips fonts without the token file", async () => {
+    const user = userEvent.setup();
     stubCategory([
       ...many("fonts", 5),
       asset("tokens", "fonts", {
@@ -163,75 +201,100 @@ describe("guideline pages featured downloads", () => {
     render(<TypographyView />);
 
     expect(screen.getByRole("heading", { name: "Typeface" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
-    expect(capturedGrids[0].every((row) => row.id !== "tokens")).toBe(true);
+    expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View all Fonts" })).toHaveAttribute(
       "href",
       "/assets?category=fonts",
     );
+
+    await user.click(screen.getByRole("button", { name: "Download Fonts package" }));
+    expect(mockDownloadAssetBundle).toHaveBeenCalledWith({
+      assetIds: many("fonts", 5).map((row) => row.id),
+      filename: "fonts.zip",
+    });
   });
 
-  it("keeps photography principles and caps approved renders", () => {
-    stubCategory(many("photography", 6));
+  it("keeps photography principles without a category package", () => {
     render(<PhotographyView />);
 
     expect(screen.getByRole("heading", { name: "Principles" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
-    expect(screen.getByRole("link", { name: "View all Photography" })).toHaveAttribute(
-      "href",
-      "/assets?category=photography",
-    );
+    expect(
+      screen.queryByRole("button", { name: "Download Photography package" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "View all Photography" }),
+    ).not.toBeInTheDocument();
   });
 
-  it("keeps corporate stationery mockups and caps template downloads", () => {
+  it("keeps corporate stationery mockups and zips templates", async () => {
+    const user = userEvent.setup();
     stubCategory(many("corporate-assets", 6));
     render(<CorporateAssetsView />);
 
     expect(screen.getByRole("heading", { name: "Stationery system" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
     expect(screen.getByRole("link", { name: "View all Corporate assets" })).toHaveAttribute(
       "href",
       "/assets?category=corporate-assets",
     );
+
+    await user.click(
+      screen.getByRole("button", { name: "Download Corporate assets package" }),
+    );
+    expect(mockDownloadAssetBundle).toHaveBeenCalledWith({
+      assetIds: many("corporate-assets", 6).map((row) => row.id),
+      filename: "corporate-assets.zip",
+    });
   });
 
-  it("keeps icon style samples and caps icon downloads", () => {
+  it("keeps icon style samples and zips icons", async () => {
+    const user = userEvent.setup();
     stubCategory(many("iconography", 6));
     render(<IconographyView />);
 
     expect(screen.getByRole("heading", { name: "Icon style" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
     expect(screen.getByRole("link", { name: "View all Iconography" })).toHaveAttribute(
       "href",
       "/assets?category=iconography",
     );
+
+    await user.click(screen.getByRole("button", { name: "Download Iconography package" }));
+    expect(mockDownloadAssetBundle).toHaveBeenCalledWith({
+      assetIds: many("iconography", 6).map((row) => row.id),
+      filename: "iconography.zip",
+    });
   });
 
-  it("keeps social avatar mockups and caps social downloads", () => {
+  it("keeps social avatar mockups and zips social files", async () => {
+    const user = userEvent.setup();
     stubCategory(many("social-media", 6));
     render(<SocialMediaView />);
 
     expect(screen.getByRole("heading", { name: "Profile avatars" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
     expect(screen.getByRole("link", { name: "View all Social media" })).toHaveAttribute(
       "href",
       "/assets?category=social-media",
     );
+
+    await user.click(screen.getByRole("button", { name: "Download Social media package" }));
+    expect(mockDownloadAssetBundle).toHaveBeenCalledWith({
+      assetIds: many("social-media", 6).map((row) => row.id),
+      filename: "social-media.zip",
+    });
   });
 
-  it("keeps merchandise treatments and caps artwork downloads", () => {
-    stubCategory(many("merchandise", 6));
+  it("keeps merchandise treatments without a category package", () => {
     render(<MerchandiseView />);
 
     expect(screen.getByRole("heading", { name: "Approved items" })).toBeInTheDocument();
-    expect(capturedGrids[0]).toHaveLength(4);
-    expect(screen.getByRole("link", { name: "View all Merchandise" })).toHaveAttribute(
-      "href",
-      "/assets?category=merchandise",
-    );
+    expect(
+      screen.queryByRole("button", { name: "Download Merchandise package" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "View all Merchandise" }),
+    ).not.toBeInTheDocument();
   });
 
-  it("keeps the sub-brand roster and caps both download grids", () => {
+  it("keeps the sub-brand roster without category packages", () => {
     stubCategory([
       ...Array.from({ length: 5 }, (_, index) =>
         asset(`talk-${index}`, "logos", {
@@ -239,23 +302,43 @@ describe("guideline pages featured downloads", () => {
           tags: ["dark"],
         }),
       ),
-      ...Array.from({ length: 5 }, (_, index) =>
-        asset(`kv-${index}`, "brand-imagery", { tags: ["keyvisual"] }),
-      ),
     ]);
     render(<SubBrandsView />);
 
     expect(screen.getByRole("heading", { name: "Product family" })).toBeInTheDocument();
-    expect(capturedGrids).toHaveLength(2);
-    expect(capturedGrids[0]).toHaveLength(4);
-    expect(capturedGrids[1]).toHaveLength(4);
-    expect(screen.getByRole("link", { name: "View all Logos" })).toHaveAttribute(
+    expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Download Logos package" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Download Brand imagery package" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("puts brand-book View and Download in the page header", () => {
+    stubCategory([
+      asset("ast-001", "brand-guidelines", {
+        title: "K Lab Brand Guidelines (WIP)",
+        tags: ["brand-book"],
+        files: [
+          {
+            id: "ast-001",
+            fileName: "k-lab-brand-guidelines-wip.pdf",
+            contentType: "application/pdf",
+            sizeBytes: 1783,
+            storagePath: "assets/docs/k-lab-brand-guidelines-wip.pdf",
+            downloadUrl: "/brand-files/docs/k-lab-brand-guidelines-wip.pdf",
+          },
+        ],
+      }),
+    ]);
+    render(<BrandGuidelinesDocView />);
+
+    expect(screen.getByRole("link", { name: "View" })).toHaveAttribute(
       "href",
-      "/assets?category=logos",
+      "/brand-files/docs/k-lab-brand-guidelines-wip.pdf",
     );
-    expect(screen.getByRole("link", { name: "View all Brand imagery" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Download" })).toHaveAttribute(
       "href",
-      "/assets?category=brand-imagery",
+      "/api/brand-download/ast-001",
     );
   });
 });

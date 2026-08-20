@@ -675,7 +675,8 @@
       "public": "عام",
       "employee": "الموظفون"
     },
-    "viewAll": "عرض كل {category}"
+    "viewAll": "عرض كل {category}",
+    "downloadPackage": "تنزيل حزمة {category}"
   },
   "assetLibrary": {
     "title": "مكتبة الموارد",

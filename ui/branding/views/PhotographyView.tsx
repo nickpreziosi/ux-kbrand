@@ -5,9 +5,6 @@ import { Badge, Card, CardContent } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Camera, Check, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
-import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 const PRINCIPLE_KEYS = ["mood", "light", "space", "people"] as const;
 const PHOTO_DO_KEYS = ["palette", "overlay", "focal"] as const;
@@ -15,9 +12,6 @@ const PHOTO_DONT_KEYS = ["stock", "filters", "busy"] as const;
 
 export function PhotographyView() {
   const t = useTranslations("branding.photography");
-  // The photography category holds the approved product renders today;
-  // admin uploads land here and appear without a code change.
-  const { assets: renders, loading, loadError } = useCategoryAssets("photography");
 
   return (
     <div className="space-y-8">
@@ -86,18 +80,6 @@ export function PhotographyView() {
           </div>
         </CardContent>
       </Card>
-
-      <GuidelineDownloadsSection
-        title={t("rendersTitle")}
-        description={t("rendersDescription")}
-        category="photography"
-        assets={featuredAssetsForCategory(renders, "photography")}
-        loading={loading}
-        loadError={loadError}
-        errorMessage={t("loadError")}
-        expandPreview
-        skeletonCount={3}
-      />
     </div>
   );
 }

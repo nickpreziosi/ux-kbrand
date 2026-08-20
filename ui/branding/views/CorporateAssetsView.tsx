@@ -7,7 +7,6 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Briefcase, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
@@ -130,6 +129,13 @@ export function CorporateAssetsView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<Briefcase className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="corporate-assets"
+            assets={assets}
+            loading={loading}
+          />
+        }
       />
 
       <section className="@container space-y-4" aria-label={t("title")}>
@@ -175,14 +181,6 @@ export function CorporateAssetsView() {
           </ul>
         </CardContent>
       </Card>
-
-      <GuidelineDownloadsSection
-        title={t("libraryTitle")}
-        description={t("libraryDescription")}
-        category="corporate-assets"
-        assets={featuredAssetsForCategory(assets, "corporate-assets")}
-        loading={loading}
-      />
     </div>
   );
 }

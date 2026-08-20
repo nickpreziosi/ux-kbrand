@@ -42,7 +42,7 @@ import {
   presentationAllowsExpand,
   presentationShowsImagePreview,
 } from "@/contexts/brand-assets/domain/services/asset-presentation";
-import { brandBundleUrl } from "@/ui/branding/content/logo-formats";
+import { assetBundleUrl } from "@/ui/branding/content/logo-formats";
 import { fileDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
 import { assetThumbnail } from "@/ui/brand-assets/lib/asset-thumbnail";
 
@@ -251,7 +251,7 @@ export function AssetCard({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <a
-                    href={brandBundleUrl(asset.id)}
+                    href={assetBundleUrl(asset.id)}
                     className="flex items-center gap-1.5"
                     aria-label={t("downloadAll")}
                   >

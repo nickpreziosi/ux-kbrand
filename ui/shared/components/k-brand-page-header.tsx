@@ -6,6 +6,7 @@ import {
   PageHeader,
   buildPageBreadcrumbItems,
   shouldHideAutoBreadcrumbTrail,
+  cn,
   type PageHeaderProps,
 } from "@k-lab/components";
 import { useKBrandBreadcrumbConfig } from "@/ui/shared/lib/page-breadcrumbs";
@@ -18,6 +19,8 @@ export function KBrandPageHeader({
   breadcrumbs,
   breadcrumbConfig,
   autoBreadcrumbs: _autoBreadcrumbs,
+  actions,
+  className,
   ...props
 }: PageHeaderProps) {
   const pathname = usePathname();
@@ -38,5 +41,12 @@ export function KBrandPageHeader({
     return items;
   }, [breadcrumbs, pathname, config]);
 
-  return <PageHeader {...props} breadcrumbs={resolvedBreadcrumbs} />;
+  return (
+    <PageHeader
+      {...props}
+      className={cn(actions && "@sm:items-end sm:items-end", className)}
+      breadcrumbs={resolvedBreadcrumbs}
+      actions={actions ? <div className="pe-4">{actions}</div> : actions}
+    />
+  );
 }

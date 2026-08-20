@@ -68,6 +68,7 @@ jest.mock("next-intl", () => ({
       },
       assets: {
         viewAll: "View all {category}",
+        downloadPackage: "Download {category} package",
       },
       "brand.categories": {
         "logos.title": "Logos",
@@ -89,20 +90,26 @@ jest.mock("@/ui/brand-assets/hooks/use-category-assets", () => ({
   useCategoryAssets: (...args: unknown[]) => mockUseCategoryAssets(...args),
 }));
 
-const capturedGrids: BrandAsset[][] = [];
-
 jest.mock("@/ui/brand-assets/components/asset-grid", () => ({
-  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => {
-    capturedGrids.push(assets);
-    return <div data-testid="asset-grid">{assets.length}</div>;
-  },
+  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => (
+    <div data-testid="asset-grid">{assets.length}</div>
+  ),
 }));
 
 jest.mock("@/ui/shared/components/k-brand-page-header", () => ({
-  KBrandPageHeader: ({ title, subtitle }: { title: string; subtitle?: string }) => (
+  KBrandPageHeader: ({
+    title,
+    subtitle,
+    actions,
+  }: {
+    title: string;
+    subtitle?: string;
+    actions?: React.ReactNode;
+  }) => (
     <header>
       <h1>{title}</h1>
       {subtitle ? <p>{subtitle}</p> : null}
+      {actions}
     </header>
   ),
 }));
@@ -246,7 +253,6 @@ const fixtureAssets: BrandAsset[] = [
 
 describe("LogoGuidelinesView", () => {
   beforeEach(() => {
-    capturedGrids.length = 0;
     mockUseCategoryAssets.mockReturnValue({
       assets: fixtureAssets,
       loading: false,
@@ -275,17 +281,11 @@ describe("LogoGuidelinesView", () => {
     expect(within(clearspaceSection).queryByText("K Lab")).not.toBeInTheDocument();
   });
 
-  it("caps the downloadable section and links View all to the library", () => {
+  it("offers a logo package and links View all to the library", () => {
     render(<LogoGuidelinesView />);
 
-    expect(capturedGrids).toHaveLength(1);
-    expect(capturedGrids[0]).toHaveLength(4);
-    expect(capturedGrids[0].map((row) => row.id)).toEqual([
-      "ast-primary-png",
-      "ast-dark",
-      "ast-reversed",
-      "ast-mark-png",
-    ]);
+    expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Download Logos package" })).toBeEnabled();
     expect(screen.getByRole("link", { name: "View all Logos" })).toHaveAttribute(
       "href",
       "/assets?category=logos",

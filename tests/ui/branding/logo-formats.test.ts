@@ -1,6 +1,7 @@
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import {
+  assetBundleUrl,
   brandDownloadUrl,
   formatFromFile,
   getFormatsForVariant,
@@ -79,6 +80,12 @@ const fixture: BrandAsset[] = [
 describe("logo-formats", () => {
   it("builds an attachment download URL from the file id", () => {
     expect(brandDownloadUrl("ast-010")).toBe("/api/brand-download/ast-010");
+  });
+
+  it("builds a zip URL from the asset id", () => {
+    expect(assetBundleUrl("k-lab-logo-blue")).toBe(
+      "/api/asset-bundle/k-lab-logo-blue",
+    );
   });
 
   it("infers format from file extension", () => {

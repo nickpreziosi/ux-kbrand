@@ -19,7 +19,7 @@ import {
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
 import { AssetLibraryToolbar } from "@/ui/brand-assets/components/asset-library-toolbar";
 import { useLibraryAssets } from "@/ui/brand-assets/hooks/use-library-assets";
-import { downloadBrandBundle } from "@/ui/brand-assets/lib/download-brand-bundle";
+import { downloadAssetBundle } from "@/ui/brand-assets/lib/download-asset-bundle";
 
 export interface ResourceLibraryViewProps {
   resourceType: AssetResourceType;
@@ -90,7 +90,7 @@ export function ResourceLibraryView({
     if (selectedIds.size === 0) return;
     setDownloading(true);
     try {
-      await downloadBrandBundle({
+      await downloadAssetBundle({
         assetIds: assets
           .filter((asset) => selectedIds.has(asset.id))
           .map((asset) => asset.id),

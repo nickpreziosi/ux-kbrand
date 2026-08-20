@@ -7,13 +7,13 @@ import { filesForBulkDownload } from "@/contexts/brand-assets/domain/services/as
 import { isRecord } from "@/contexts/shared/domain/is-record";
 import { readAssetIds } from "@/lib/api/asset-group-wire";
 import { resolveApiViewer } from "@/lib/api/viewer";
-import { zipBrandFiles } from "@/app/api/brand-bundle/zip-brand-files";
+import { zipBrandFiles } from "@/app/api/asset-bundle/zip-brand-files";
 
 /**
  * Zips files from many assets into one download — the library "Download
- * selected" action. Gating matches GET /api/brand-bundle/[id]: the viewer
- * must be allowed to see every selected asset. A format filter keeps just
- * that extension; otherwise every file.
+ * selected" action and guideline category packages. Gating matches GET
+ * /api/asset-bundle/[id]: the viewer must be allowed to see every selected
+ * asset. A format filter keeps just that extension; otherwise every file.
  */
 export async function POST(request: NextRequest) {
   const viewer = await resolveApiViewer(request);

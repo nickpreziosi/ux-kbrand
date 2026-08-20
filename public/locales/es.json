@@ -675,7 +675,8 @@
       "public": "Público",
       "employee": "Empleados"
     },
-    "viewAll": "Ver todos: {category}"
+    "viewAll": "Ver todos: {category}",
+    "downloadPackage": "Descargar paquete de {category}"
   },
   "assetLibrary": {
     "title": "Biblioteca de recursos",

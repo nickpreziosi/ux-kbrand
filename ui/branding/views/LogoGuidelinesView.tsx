@@ -7,7 +7,6 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, PenTool, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 import { previewAssetForVariant } from "@/ui/branding/content/logo-formats";
 import {
@@ -331,6 +330,13 @@ export function LogoGuidelinesView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<PenTool className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="logos"
+            assets={assets}
+            loading={loading}
+          />
+        }
       />
 
       {loadError ? (
@@ -532,14 +538,6 @@ export function LogoGuidelinesView() {
               )}
             </div>
           </section>
-
-          <GuidelineDownloadsSection
-            title={t("allFilesTitle")}
-            description={t("allFilesDescription")}
-            category="logos"
-            assets={featuredAssetsForCategory(assets, "logos")}
-            loading={loading}
-          />
         </>
       )}
     </div>

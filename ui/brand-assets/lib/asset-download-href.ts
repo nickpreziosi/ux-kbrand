@@ -1,6 +1,6 @@
 import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
-import { brandBundleUrl, brandDownloadUrl } from "@/ui/branding/content/logo-formats";
+import { assetBundleUrl, brandDownloadUrl } from "@/ui/branding/content/logo-formats";
 
 /**
  * Where a single file downloads from. Statically served brand files go through
@@ -23,7 +23,7 @@ export function assetDownloadHref(asset: BrandAsset): string {
 /** One file downloads directly; several come as a zip of the whole asset. */
 export function assetBundleHref(asset: BrandAsset): string {
   return asset.files.length > 1
-    ? brandBundleUrl(asset.id)
+    ? assetBundleUrl(asset.id)
     : assetDownloadHref(asset);
 }
 

@@ -2,7 +2,6 @@ import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-ass
 import type { AssetCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { SALES_CATEGORIES } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import { visibilitiesForViewer } from "@/contexts/brand-assets/domain/services/asset-access";
-import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import {
   EMPTY_LIBRARY_FILTER,
   filterLibraryAssets,
@@ -54,14 +53,5 @@ export class BrandAssetCatalogService {
       format: filter.format === "all" ? undefined : filter.format,
     });
     return filterLibraryAssets(listed, filter);
-  }
-
-  async listFeatured(
-    category: AssetCategory,
-    viewer: ViewerRole,
-    limit = 4,
-  ): Promise<BrandAsset[]> {
-    const assets = await this.listCategory(category, viewer);
-    return featuredAssetsForCategory(assets, category, limit);
   }
 }
