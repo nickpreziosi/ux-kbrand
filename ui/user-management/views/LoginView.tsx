@@ -81,11 +81,10 @@ export function LoginView({ redirectTo = "/" }: { redirectTo?: string }) {
               variant="outline"
               size="lg"
               className="h-10 w-full min-w-0"
-              icon={<MicrosoftMark />}
-              iconPosition="start"
               loading={isSigningIn}
               onClick={onSignIn}
             >
+              {!isSigningIn ? <MicrosoftMark /> : null}
               {isSigningIn ? t("signingIn") : t("signInWithMicrosoft")}
             </Button>
             <Button
@@ -93,11 +92,10 @@ export function LoginView({ redirectTo = "/" }: { redirectTo?: string }) {
               variant="outline"
               size="lg"
               className="h-10 w-full min-w-0"
-              icon={<UserRound aria-hidden />}
-              iconPosition="start"
               disabled={isSigningIn}
               onClick={onGuestSignIn}
             >
+              <UserRound aria-hidden />
               {t("signInAsGuest")}
             </Button>
           </div>

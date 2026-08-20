@@ -124,6 +124,35 @@ describe("LoginView", () => {
     expect(guest.querySelector("svg")).not.toBeNull();
   });
 
+  it("hides the Microsoft mark while the button is loading", async () => {
+    let finishSignIn!: () => void;
+    mockSignIn.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          finishSignIn = resolve;
+        }),
+    );
+    const user = userEvent.setup();
+    render(<LoginView />);
+
+    const microsoft = screen.getByRole("button", {
+      name: /sign in with microsoft/i,
+    });
+    expect(microsoft.querySelector("svg")).not.toBeNull();
+
+    await user.click(microsoft);
+
+    expect(
+      screen.getByRole("button", { name: /signing in/i }).querySelector("svg"),
+    ).toBeNull();
+    finishSignIn();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /sign in with microsoft/i }),
+      ).toBeInTheDocument();
+    });
+  });
+
   it("sets the guest cookie and hard-navigates home on Guest click", async () => {
     const user = userEvent.setup();
     render(<LoginView />);
