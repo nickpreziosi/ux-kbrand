@@ -133,6 +133,10 @@
         "description": "The product family lockups: K Rails, K Talk, K Risk, and K Leads."
       }
     },
+    "pager": {
+      "previous": "Previous",
+      "next": "Next"
+    },
     "overview": {
       "title": "Branding",
       "subtitle": "The standards you reach for most, plus the complete guidelines behind them.",

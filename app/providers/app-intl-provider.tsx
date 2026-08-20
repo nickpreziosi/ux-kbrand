@@ -9,7 +9,6 @@ import {
   PLATFORM_LANGUAGE_STORAGE_KEY,
 } from "@/lib/platform-preferences/constants";
 import { setPlatformPreferenceCookie } from "@/lib/platform-preferences/shared-cookies";
-import type { AppLanguageCode } from "@/lib/app-languages";
 
 type AppIntlContextValue = {
   locale: string;
@@ -27,16 +26,13 @@ type LocaleOverride = {
 };
 
 async function loadLocaleMessages(code: string): Promise<AbstractIntlMessages> {
-  switch (code as AppLanguageCode) {
-    case "es":
-      return (await import("@/public/locales/es.json")).default as AbstractIntlMessages;
-    case "pt":
-      return (await import("@/public/locales/pt.json")).default as AbstractIntlMessages;
-    case "ar":
-      return (await import("@/public/locales/ar.json")).default as AbstractIntlMessages;
-    default:
-      return (await import("@/public/locales/en.json")).default as AbstractIntlMessages;
+  const locale = code === "es" || code === "pt" || code === "ar" ? code : "en";
+  const url = `/locales/${locale}.json?t=${Date.now()}`;
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`Failed to load ${url}`);
   }
+  return (await response.json()) as AbstractIntlMessages;
 }
 
 function syncDocumentLocale(locale: string) {
@@ -62,6 +58,8 @@ export function AppIntlProvider({
 
   // Prefer live server props so Fast Refresh / RSC updates are not stuck in
   // useState from the first paint (that snapshot was missing newly added keys).
+  // Do not overlay a client fetch of /locales/*.json: that snapshot can stay
+  // stale and hide a fresher disk catalog from getRequestConfig.
   const locale = override?.locale ?? serverLocale ?? "en";
   const messages = override?.messages ?? serverMessages ?? {};
 

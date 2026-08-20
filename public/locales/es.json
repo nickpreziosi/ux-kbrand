@@ -133,6 +133,10 @@
         "description": "Las composiciones de la familia de productos: K Rails, K Talk, K Risk y K Leads."
       }
     },
+    "pager": {
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
     "overview": {
       "title": "Marca",
       "subtitle": "Los estándares que más se consultan, junto al documento completo que los respalda.",

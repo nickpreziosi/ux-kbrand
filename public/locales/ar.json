@@ -133,6 +133,10 @@
         "description": "تكوينات عائلة المنتجات: K Rails وK Talk وK Risk وK Leads."
       }
     },
+    "pager": {
+      "previous": "السابق",
+      "next": "التالي"
+    },
     "overview": {
       "title": "الهوية",
       "subtitle": "المعايير الأكثر استخدامًا، إلى جانب المستند الكامل الذي تستند إليه.",
