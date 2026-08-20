@@ -566,8 +566,7 @@
       "title": "Merchandising",
       "subtitle": "Cómo se muestra la marca en lo que vestimos, usamos y regalamos.",
       "itemsTitle": "Artículos aprobados",
-      "placeholderBadge": "Fotografía en preparación",
-      "itemsDescription": "La gama de las guías cubre ropa, artículos de bebida y papelería. La fotografía de producto está en camino — los tratamientos siguientes coinciden con las guías.",
+      "itemsDescription": "Ropa, artículos de bebida y papelería de las guías de marca.",
       "items": {
         "tshirt": {
           "title": "Camiseta",

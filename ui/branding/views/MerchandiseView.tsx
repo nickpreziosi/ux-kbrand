@@ -2,41 +2,32 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Badge, Card, CardContent } from "@k-lab/components";
+import { Card, CardContent } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
-import type { LucideIcon } from "lucide-react";
-import {
-  Check,
-  Coffee,
-  GraduationCap,
-  NotebookPen,
-  Shirt,
-  ShoppingBag,
-} from "lucide-react";
+import { Check, ShoppingBag } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/services/asset-featured";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
- * Merchandise families from the guidelines. Product photography is pending —
- * each card pairs the item with its documented logo/color treatment on the
- * navy surface the artwork uses.
+ * Merchandise families from the guidelines, shown with the product renders
+ * from those artboards.
  */
-const MERCH_ITEMS: { id: string; icon: LucideIcon }[] = [
-  { id: "tshirt", icon: Shirt },
-  { id: "cap", icon: GraduationCap },
-  { id: "drinkware", icon: Coffee },
-  { id: "tote", icon: ShoppingBag },
-  { id: "notebook", icon: NotebookPen },
-];
+const MERCH_ITEMS = [
+  { id: "tshirt", src: "/brand-files/merchandise/k-lab-merch-tshirt.png" },
+  { id: "cap", src: "/brand-files/merchandise/k-lab-merch-cap.png" },
+  { id: "drinkware", src: "/brand-files/merchandise/k-lab-merch-drinkware.png" },
+  { id: "tote", src: "/brand-files/merchandise/k-lab-merch-tote.png" },
+  { id: "notebook", src: "/brand-files/merchandise/k-lab-merch-notebook.png" },
+] as const;
 
 const MERCH_RULE_KEYS = ["surface", "lockup", "linework", "approval"] as const;
 
 export function MerchandiseView() {
   const t = useTranslations("branding.merchandise");
-  // Merch artwork and photography land in the merchandise category; the
-  // section below stays hidden until an admin publishes the first one.
+  // Production files land in the merchandise category; the section below
+  // stays hidden until an admin publishes the first one.
   const { assets, loading } = useCategoryAssets("merchandise");
 
   return (
@@ -48,37 +39,30 @@ export function MerchandiseView() {
       />
 
       <section className="@container space-y-4" aria-label={t("itemsTitle")}>
-        <div className="flex flex-wrap items-center gap-2">
+        <div>
           <h2 className="text-xl font-semibold">{t("itemsTitle")}</h2>
-          <Badge variant="outline">{t("placeholderBadge")}</Badge>
+          <p className="max-w-3xl text-sm text-muted-foreground">
+            {t("itemsDescription")}
+          </p>
         </div>
-        <p className="max-w-3xl text-sm text-muted-foreground">
-          {t("itemsDescription")}
-        </p>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3">
-          {MERCH_ITEMS.map(({ id, icon: Icon }) => (
-            <Card key={id} className="flex h-full flex-col overflow-hidden">
-              <div className="relative flex aspect-[4/3] items-center justify-center bg-[#0a1428]">
-                <Icon
-                  className="h-14 w-14 text-sky-200/80"
-                  strokeWidth={1.25}
-                  aria-hidden
+          {MERCH_ITEMS.map((item) => (
+            <Card key={item.id} className="flex h-full flex-col overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden bg-black">
+                <Image
+                  src={item.src}
+                  alt={t(`items.${item.id}.title`)}
+                  fill
+                  unoptimized
+                  className="object-contain p-4"
                 />
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
-                  <Image
-                    src="/brand-files/logos/k-lab-logo-white.png"
-                    alt=""
-                    width={88}
-                    height={28}
-                    unoptimized
-                    className="h-4 w-auto"
-                  />
-                </div>
               </div>
               <CardContent className="flex flex-1 flex-col gap-1 p-4">
-                <h3 className="text-sm font-semibold">{t(`items.${id}.title`)}</h3>
+                <h3 className="text-sm font-semibold">
+                  {t(`items.${item.id}.title`)}
+                </h3>
                 <p className="text-sm text-muted-foreground">
-                  {t(`items.${id}.description`)}
+                  {t(`items.${item.id}.description`)}
                 </p>
               </CardContent>
             </Card>

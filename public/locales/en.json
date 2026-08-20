@@ -566,8 +566,7 @@
       "title": "Merchandise",
       "subtitle": "How the brand shows up on the things we wear, use, and give away.",
       "itemsTitle": "Approved items",
-      "placeholderBadge": "Photography pending",
-      "itemsDescription": "The guideline range covers apparel, drinkware, and stationery. Product photography is on the way — the treatments below match the guideline artboards.",
+      "itemsDescription": "Apparel, drinkware, and stationery from the brand guidelines.",
       "items": {
         "tshirt": {
           "title": "T-shirt",

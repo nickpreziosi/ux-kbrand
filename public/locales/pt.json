@@ -566,8 +566,7 @@
       "title": "Brindes",
       "subtitle": "Como a marca aparece no que vestimos, usamos e presenteamos.",
       "itemsTitle": "Itens aprovados",
-      "placeholderBadge": "Fotografia em preparação",
-      "itemsDescription": "A linha das diretrizes cobre vestuário, copos e papelaria. A fotografia de produto está a caminho — os tratamentos abaixo correspondem às diretrizes.",
+      "itemsDescription": "Vestuário, copos e papelaria das diretrizes da marca.",
       "items": {
         "tshirt": {
           "title": "Camiseta",
