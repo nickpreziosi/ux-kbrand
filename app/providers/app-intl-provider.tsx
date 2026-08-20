@@ -18,6 +18,14 @@ type AppIntlContextValue = {
 
 const AppIntlContext = React.createContext<AppIntlContextValue | null>(null);
 
+/** Must match `i18n/request.ts`. Inherited only if NextIntlClientProvider is a Server Component. */
+const INTL_TIME_ZONE = "UTC";
+
+type LocaleOverride = {
+  locale: string;
+  messages: AbstractIntlMessages;
+};
+
 async function loadLocaleMessages(code: string): Promise<AbstractIntlMessages> {
   switch (code as AppLanguageCode) {
     case "es":
@@ -50,16 +58,18 @@ export function AppIntlProvider({
   locale?: string;
   messages?: AbstractIntlMessages;
 }) {
-  const initialLocale = serverLocale ?? "en";
-  const initialMessages = serverMessages ?? {};
+  const [override, setOverride] = React.useState<LocaleOverride | null>(null);
 
-  const [locale, setLocale] = React.useState(initialLocale);
-  const [messages, setMessages] = React.useState<AbstractIntlMessages>(initialMessages);
+  // Prefer live server props so Fast Refresh / RSC updates are not stuck in
+  // useState from the first paint (that snapshot was missing newly added keys).
+  const locale = override?.locale ?? serverLocale ?? "en";
+  const messages = override?.messages ?? serverMessages ?? {};
 
   React.useEffect(() => {
-    setLocale(serverLocale ?? "en");
-    setMessages(serverMessages ?? {});
-  }, [serverLocale, serverMessages]);
+    if (override && serverLocale && override.locale === serverLocale) {
+      setOverride(null);
+    }
+  }, [override, serverLocale]);
 
   const changeLocale = React.useCallback(async (code: string) => {
     setPlatformPreferenceCookie(PLATFORM_LANGUAGE_COOKIE, code);
@@ -69,8 +79,7 @@ export function AppIntlProvider({
       // ignore
     }
     const nextMessages = await loadLocaleMessages(code);
-    setLocale(code);
-    setMessages(nextMessages);
+    setOverride({ locale: code, messages: nextMessages });
     syncDocumentLocale(code);
   }, []);
 
@@ -81,7 +90,7 @@ export function AppIntlProvider({
 
   return (
     <AppIntlContext.Provider value={value}>
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider locale={locale} messages={messages} timeZone={INTL_TIME_ZONE}>
         {children}
       </NextIntlClientProvider>
     </AppIntlContext.Provider>

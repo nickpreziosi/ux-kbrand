@@ -28,6 +28,10 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
+    // Client NextIntlClientProvider is not rendered from a Server Component, so
+    // this is also passed explicitly on the provider. UTC avoids server/browser
+    // timezone mismatches that next-intl reports as ENVIRONMENT_FALLBACK.
+    timeZone: "UTC",
     messages: messages as Record<string, unknown>,
   };
 });
