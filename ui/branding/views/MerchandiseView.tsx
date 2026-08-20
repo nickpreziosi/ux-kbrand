@@ -11,8 +11,7 @@ import { featuredAssetsForCategory } from "@/contexts/brand-assets/domain/servic
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 /**
- * Merchandise families from the guidelines, shown with the product renders
- * from those artboards.
+ * Merchandise families from the guidelines, shown with product renders.
  */
 const MERCH_ITEMS = [
   { id: "tshirt", src: "/brand-files/merchandise/k-lab-merch-tshirt.png" },
