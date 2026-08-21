@@ -66,8 +66,8 @@ export function previewAssetForVariant(
 ): BrandAsset | undefined {
   const formats = getFormatsForVariant(assets, variant);
   return (
-    formats.find((entry) => entry.format === "png")?.asset ??
     formats.find((entry) => entry.format === "svg")?.asset ??
+    formats.find((entry) => entry.format === "png")?.asset ??
     formats[0]?.asset
   );
 }

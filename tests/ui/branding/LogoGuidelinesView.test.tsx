@@ -272,7 +272,7 @@ describe("LogoGuidelinesView", () => {
     expect(images).toHaveLength(2);
     expect(images[0]).toHaveAttribute(
       "src",
-      "/brand-files/logos/k-lab-logo-blue.png",
+      "/brand-files/logos/k-lab-logo-blue.svg",
     );
     expect(images[1]).toHaveAttribute(
       "src",
@@ -303,7 +303,7 @@ describe("LogoGuidelinesView", () => {
     ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-white.png");
     expect(
       screen.getByRole("img", { name: "Primary on white" }),
-    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-blue.png");
+    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-blue.svg");
 
     expect(screen.getByRole("img", { name: "Spacing" })).toBeInTheDocument();
     expect(

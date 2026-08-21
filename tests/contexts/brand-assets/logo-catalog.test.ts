@@ -9,14 +9,16 @@ import { LOGO_VARIANTS } from "@/ui/branding/content/logo-variants";
 
 const publicBrandFiles = join(process.cwd(), "public", "brand-files");
 
+const ALL_LOGO_FORMATS: LogoFormat[] = ["png", "svg", "pdf", "ai"];
+
 const EXPECTED_VARIANT_FORMATS: Record<string, LogoFormat[]> = {
-  primary: ["png", "svg", "ai"],
-  dark: ["png", "svg", "ai"],
-  reversed: ["png", "svg", "ai"],
-  logomark: ["png", "svg", "pdf", "ai"],
+  primary: ALL_LOGO_FORMATS,
+  dark: ALL_LOGO_FORMATS,
+  reversed: ALL_LOGO_FORMATS,
+  logomark: ALL_LOGO_FORMATS,
 };
 
-const PRODUCT_VALUES = ["k-rails", "k-talk"] as const;
+const PRODUCT_VALUES = ["k-rails", "k-talk", "k-risk"] as const;
 const RETIRED_PRODUCT_TAGS = ["kena"] as const;
 
 const OBSOLETE_FILE_NAMES = [
@@ -24,6 +26,11 @@ const OBSOLETE_FILE_NAMES = [
   "k-lab-logomark-2025.png",
   "kena.webp",
   "kena-keyvisual.webp",
+  "k-lab-logo-blue.png",
+  "k-lab-logo-white.png",
+  "k-lab-logomark.png",
+  "k-rails-logo-dark.png",
+  "k-talk-logo-dark.png",
 ];
 
 describe("logo catalog (rebrand)", () => {
@@ -38,15 +45,15 @@ describe("logo catalog (rebrand)", () => {
     }
   });
 
-  it("ships flat dark lockups (png + svg) for K Rails and K Talk", () => {
+  it("ships flat lockups (png + svg + pdf + ai) for K Rails, K Talk, and K Risk", () => {
     for (const product of PRODUCT_VALUES) {
       const darkLockups = logoAssets.filter(
         (asset) => asset.product === product && asset.tags.includes("dark"),
       );
-      const formats = darkLockups.flatMap((asset) =>
-        asset.files.map((file) => formatFromFile(file)),
-      );
-      expect(formats.sort()).toEqual(["png", "svg"]);
+      const formats = darkLockups
+        .flatMap((asset) => asset.files.map((file) => formatFromFile(file)))
+        .filter((format): format is LogoFormat => format !== null);
+      expect(formats.sort()).toEqual(["ai", "pdf", "png", "svg"]);
     }
   });
 
@@ -113,13 +120,15 @@ describe("logo catalog (rebrand)", () => {
   });
 
   it("is one record per artwork", () => {
-    expect(logoAssets).toHaveLength(9);
+    expect(logoAssets).toHaveLength(16);
   });
 
-  it("points every logo file at a path under public/brand-files", () => {
+  it("stores logos under public/brand-files/logos/{product}/", () => {
     for (const asset of logoAssets) {
       for (const file of asset.files) {
         expect(file.downloadUrl.startsWith("/brand-files/")).toBe(true);
+        expect(file.downloadUrl).toContain(`/logos/${asset.product}/`);
+        expect(file.downloadUrl).not.toContain("/logos/vector/");
         const relative = file.downloadUrl.replace(/^\/brand-files\//, "");
         expect(existsSync(join(publicBrandFiles, relative))).toBe(true);
       }

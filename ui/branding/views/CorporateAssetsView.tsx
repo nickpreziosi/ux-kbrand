@@ -23,7 +23,7 @@ function LetterheadMockup({ label }: { label: string }) {
       aria-label={label}
     >
       <Image
-        src="/brand-files/logos/k-lab-logo-dark.png"
+        src="/brand-files/logos/k-lab/klab_full_logo_dark.svg"
         alt=""
         width={120}
         height={40}
@@ -65,7 +65,7 @@ function CoverMockup({ label }: { label: string }) {
       />
       <div className="absolute bottom-4 left-4">
         <Image
-          src="/brand-files/logos/k-lab-logo-white.png"
+          src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
           alt=""
           width={120}
           height={40}
@@ -86,7 +86,7 @@ function BusinessCardMockup({ label }: { label: string }) {
     >
       <div className="flex aspect-[17/10] w-full max-w-56 items-center justify-center rounded-md bg-black shadow-sm">
         <Image
-          src="/brand-files/logos/k-lab-logo-white.png"
+          src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
           alt=""
           width={120}
           height={40}
@@ -96,7 +96,7 @@ function BusinessCardMockup({ label }: { label: string }) {
       </div>
       <div className="flex aspect-[17/10] w-full max-w-56 items-center justify-center rounded-md border border-border bg-white p-4 shadow-sm">
         <Image
-          src="/brand-files/logos/k-lab-logo-dark.png"
+          src="/brand-files/logos/k-lab/klab_full_logo_dark.svg"
           alt=""
           width={120}
           height={40}

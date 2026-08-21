@@ -43,16 +43,20 @@ describe("filterCatalogAssets", () => {
     expect(
       titles(filterCatalogAssets(SEED_BRAND_ASSETS, filter({ search: "LOGOMARK" }))),
     ).toEqual(
-      expect.arrayContaining(["K Lab logomark", "K Lab logomark — white"]),
+      expect.arrayContaining([
+        "K Lab logomark — blue",
+        "K Lab logomark — dark",
+        "K Lab logomark — light",
+      ]),
     );
   });
 
   it("reaches the file names and formats folded inside a row", () => {
     const byFileName = filterCatalogAssets(
       SEED_BRAND_ASSETS,
-      filter({ search: "k-lab-logo-white" }),
+      filter({ search: "klab_full_logo_light" }),
     );
-    expect(titles(byFileName)).toEqual(["K Lab logo — reversed (white)"]);
+    expect(titles(byFileName)).toEqual(["K Lab logo — reversed (light)"]);
 
     const byFormat = filterCatalogAssets(SEED_BRAND_ASSETS, filter({ search: ".ai" }));
     expect(byFormat.length).toBeGreaterThan(0);
@@ -72,9 +76,9 @@ describe("filterCatalogAssets", () => {
   it("ANDs the search terms rather than ORing them", () => {
     const both = filterCatalogAssets(
       SEED_BRAND_ASSETS,
-      filter({ search: "logomark white" }),
+      filter({ search: "logomark reversed" }),
     );
-    expect(titles(both)).toEqual(["K Lab logomark — white"]);
+    expect(titles(both)).toEqual(["K Lab logomark — light"]);
   });
 
   it("narrows by category, visibility and status", () => {

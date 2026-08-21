@@ -6,7 +6,7 @@ import {
 } from "@/contexts/brand-assets/domain/services/asset-presentation";
 
 /** Tags that mark artwork drawn to sit on a dark surface. */
-const REVERSED_TAGS = ["reversed", "white"];
+const REVERSED_TAGS = ["reversed", "white", "light"];
 
 /** Standalone marks (the K), as opposed to the full wordmark lockup. */
 const LOGOMARK_TAGS = ["logomark", "mark"];

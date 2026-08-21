@@ -144,7 +144,7 @@ export function HomeView() {
           {slides.map((slide) => (
             <Hero.Slide key={slide.id}>
               <Hero.Logo>
-                <KLabBrandLogoMark variant="white" className="h-8 w-auto" />
+                <KLabBrandLogoMark variant="white" className="h-10 w-auto" />
               </Hero.Logo>
               <Hero.Title>{slide.title}</Hero.Title>
               <Hero.Description>{slide.description}</Hero.Description>

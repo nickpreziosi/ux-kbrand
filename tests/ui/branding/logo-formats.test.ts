@@ -114,7 +114,7 @@ describe("logo-formats", () => {
     expect(getFormatsForVariant(fixture, reversed)).toEqual([]);
   });
 
-  it("prefers PNG for the variant preview asset", () => {
+  it("prefers SVG for the variant preview asset", () => {
     const primary = LOGO_VARIANTS.find((variant) => variant.id === "primary")!;
     expect(previewAssetForVariant(fixture, primary)?.id).toBe("primary");
   });

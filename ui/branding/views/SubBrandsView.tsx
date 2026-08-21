@@ -10,14 +10,14 @@ import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 
 /**
  * The approved sub-brand roster. Kena is deliberately absent (retired from
- * the portfolio — see the Brand & Sales Portal Expansion story). K Risk and
- * K Leads follow the same chevron lockup system; their files are pending, so
- * they render as typographic placeholders.
+ * the portfolio — see the Brand & Sales Portal Expansion story). K Risk uses
+ * the same chevron lockup system as K Rails and K Talk. K Leads files are
+ * still pending, so that roster card stays a typographic placeholder.
  */
 const SUB_BRANDS = [
   { id: "kRails", name: "K Rails", assetTag: "k-rails" },
   { id: "kTalk", name: "K Talk", assetTag: "k-talk" },
-  { id: "kRisk", name: "K Risk", assetTag: null },
+  { id: "kRisk", name: "K Risk", assetTag: "k-risk" },
   { id: "kLeads", name: "K Leads", assetTag: null },
 ] as const;
 

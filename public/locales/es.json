@@ -114,7 +114,7 @@
       },
       "photography": {
         "title": "Fotografía",
-        "description": "Principios fotográficos, renders aprobados y pautas de uso."
+        "description": "Principios fotográficos y pautas de uso."
       },
       "corporateAssets": {
         "title": "Recursos corporativos",
@@ -502,10 +502,10 @@
     },
     "photography": {
       "title": "Fotografía",
-      "subtitle": "El estilo fotográfico de la marca y los visuales aprobados para usar hoy.",
+      "subtitle": "El estilo fotográfico de la marca — principios hasta que llegue la biblioteca.",
       "principlesTitle": "Principios",
       "placeholderBadge": "Biblioteca en preparación",
-      "principlesDescription": "La biblioteca fotográfica está en producción. Hasta que llegue, sigue estos principios de las guías de marca y usa los renders aprobados de abajo.",
+      "principlesDescription": "La biblioteca fotográfica está en producción. Hasta que llegue, sigue estos principios de las guías de marca.",
       "principles": {
         "mood": {
           "title": "Ambiente oscuro y técnico",
@@ -706,7 +706,8 @@
     "products": {
       "k-lab": "K Lab",
       "k-talk": "K Talk",
-      "k-rails": "K Rails"
+      "k-rails": "K Rails",
+      "k-risk": "K Risk"
     }
   },
   "sales": {
@@ -797,7 +798,8 @@
       "products": {
         "k-lab": "K Lab",
         "k-talk": "K Talk",
-        "k-rails": "K Rails"
+        "k-rails": "K Rails",
+        "k-risk": "K Risk"
       },
       "visibilityLabel": "Visibilidad",
       "tagsLabel": "Etiquetas (separadas por comas)",

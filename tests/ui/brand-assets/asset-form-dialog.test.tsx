@@ -19,6 +19,7 @@ jest.mock("next-intl", () => ({
       "products.k-lab": "K Lab",
       "products.k-talk": "K Talk",
       "products.k-rails": "K Rails",
+      "products.k-risk": "K Risk",
       visibilityPublic: "Public",
       visibilityEmployee: "Employees only",
       filesLabel: "Drop files here",

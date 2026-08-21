@@ -19,6 +19,8 @@ const privateDir = join(root, "private-assets");
 
 const CONTENT_TYPES = {
   png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
   webp: "image/webp",
   svg: "image/svg+xml",
   pdf: "application/pdf",
@@ -34,26 +36,38 @@ const CONTENT_TYPES = {
  * The asset id is the group key.
  */
 const GROUPS = {
-  "k-lab-logo-blue": {
+  klab_full_logo_blue: {
     title: "K Lab logo — primary (blue)",
     description:
       "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
   },
-  "k-lab-logo-dark": {
+  klab_full_logo_dark: {
     title: "K Lab logo — dark",
     description: "Dark lockup for light backgrounds where the blue would compete with artwork.",
   },
-  "k-lab-logo-white": {
-    title: "K Lab logo — reversed (white)",
+  klab_full_logo_light: {
+    title: "K Lab logo — reversed (light)",
     description: "Reversed lockup for dark surfaces, photography, and video overlays.",
   },
-  "k-lab-logomark": {
-    title: "K Lab logomark",
+  klab_full_logo_flat_black: {
+    title: "K Lab logo — flat black",
+    description: "Single-color black lockup for one-color print and monochrome layouts.",
+  },
+  klab_full_logo_flat_white: {
+    title: "K Lab logo — flat white",
+    description: "Single-color white lockup for one-color reverse print and dark fields.",
+  },
+  klab_logomark_blue: {
+    title: "K Lab logomark — blue",
     description:
       "The standalone mark in its rounded container — avatars, app icons, and favicons.",
   },
-  "k-lab-logomark-white": {
-    title: "K Lab logomark — white",
+  klab_logomark_dark: {
+    title: "K Lab logomark — dark",
+    description: "Dark logomark for light surfaces where the blue mark would compete.",
+  },
+  klab_logomark_light: {
+    title: "K Lab logomark — light",
     description: "Reversed logomark for dark surfaces.",
   },
   "k-rails-logo": {
@@ -64,15 +78,32 @@ const GROUPS = {
     title: "K Talk — product logo",
     description: "Dimensional product lockup for K Talk.",
   },
-  "k-rails-logo-dark": {
+  klab_sub_brands_krails_dark: {
     title: "K Rails — logo, dark",
     description:
       "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
   },
-  "k-talk-logo-dark": {
+  klab_sub_brands_krails_light: {
+    title: "K Rails — logo, light",
+    description: "Flat K Rails lockup reversed for dark surfaces.",
+  },
+  klab_sub_brands_ktalk_dark: {
     title: "K Talk — logo, dark",
     description:
       "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+  },
+  klab_sub_brands_ktalk_light: {
+    title: "K Talk — logo, light",
+    description: "Flat K Talk lockup reversed for dark surfaces.",
+  },
+  klab_sub_brands_krisk_dark: {
+    title: "K Risk — logo, dark",
+    description:
+      "Flat K Risk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+  },
+  klab_sub_brands_krisk_light: {
+    title: "K Risk — logo, light",
+    description: "Flat K Risk lockup reversed for dark surfaces.",
   },
   "k-lab-bg-001": {
     title: "Chevron neon — deep navy",
@@ -150,284 +181,259 @@ const GROUPS = {
  * tags       — `primary`/`dark`/`reversed`/`mark` pick previews for clearspace;
  *              `brand-book` marks the complete guidelines document
  */
-const CATALOG = [
-  // ── Logos: K Lab primary (blue) — PNG / SVG / AI ─────────────────────────
-  {
-    id: "ast-010",
-    group: "k-lab-logo-blue",
-    path: "logos/k-lab-logo-blue.png",
+function logoFormatRows({
+  id,
+  group,
+  productDir,
+  basename,
+  title,
+  description,
+  tags,
+  created,
+}) {
+  const formats = [
+    { ext: "png", label: "PNG" },
+    { ext: "svg", label: "SVG" },
+    { ext: "pdf", label: "PDF" },
+    { ext: "ai", label: "AI" },
+  ];
+  return formats.map((fmt, index) => ({
+    id: index === 0 ? id : `${id}-${fmt.ext}`,
+    group,
+    path: `logos/${productDir}/${basename}.${fmt.ext}`,
     category: "logos",
-    title: "K Lab logo — primary (blue), PNG",
+    title: `${title}, ${fmt.label}`,
+    description: index === 0 ? description : `${fmt.label} of ${title}.`,
+    tags: [...tags, fmt.ext],
+    created: new Date(Date.parse(created) + index * 1000).toISOString(),
+  }));
+}
+
+function pngJpgRows({
+  id,
+  group,
+  dir,
+  basename,
+  category,
+  title,
+  description,
+  tags,
+  created,
+}) {
+  return [
+    {
+      ext: "png",
+      label: "PNG",
+      offset: 1000,
+    },
+    {
+      ext: "jpg",
+      label: "JPG",
+      offset: 2000,
+    },
+  ].map((fmt) => ({
+    id: `${id}-${fmt.ext}`,
+    group,
+    path: `${dir}/${basename}.${fmt.ext}`,
+    category,
+    title: `${title}, ${fmt.label}`,
+    description,
+    tags: [...tags.filter((tag) => tag !== "webp"), fmt.ext],
+    created: new Date(Date.parse(created) + fmt.offset).toISOString(),
+  }));
+}
+
+const CATALOG = [
+  ...logoFormatRows({
+    id: "ast-010",
+    group: "klab_full_logo_blue",
+    productDir: "k-lab",
+    basename: "klab_full_logo_blue",
+    title: "K Lab logo — primary (blue)",
     description:
       "The default lockup. Use on light surfaces wherever the brand has room to breathe.",
-    tags: ["primary", "logo", "blue", "png"],
+    tags: ["primary", "logo", "blue"],
     created: "2025-11-04T09:05:00.000Z",
-  },
-  {
-    id: "ast-010-svg",
-    group: "k-lab-logo-blue",
-    path: "logos/vector/k-lab-logo-blue.svg",
-    category: "logos",
-    title: "K Lab logo — primary (blue), SVG",
-    description: "Scalable SVG of the primary lockup for digital use.",
-    tags: ["primary", "logo", "blue", "svg"],
-    created: "2026-08-13T14:00:00.000Z",
-  },
-  {
-    id: "ast-010-ai",
-    group: "k-lab-logo-blue",
-    path: "logos/vector/k-lab-logo-blue.ai",
-    category: "logos",
-    title: "K Lab logo — primary (blue), AI",
-    description: "Illustrator master of the primary lockup for design workflows.",
-    tags: ["primary", "logo", "blue", "ai"],
-    created: "2026-08-13T14:00:01.000Z",
-  },
-  {
-    id: "ast-010-ico",
-    group: "k-lab-logo-blue",
-    path: "logos/favicons/k-lab-logo-blue.ico",
-    category: "logos",
-    title: "K Lab logo — primary (blue), ICO",
-    description: "Favicon-ready ICO of the primary mark for browser tabs and pinned sites.",
-    tags: ["primary", "logo", "blue", "favicon", "ico"],
-    created: "2026-08-18T09:00:00.000Z",
-  },
+  }),
 
-  // ── Logos: K Lab dark — PNG / SVG / AI ───────────────────────────────────
-  {
+  ...logoFormatRows({
     id: "ast-011",
-    group: "k-lab-logo-dark",
-    path: "logos/k-lab-logo-dark.png",
-    category: "logos",
-    title: "K Lab logo — dark, PNG",
+    group: "klab_full_logo_dark",
+    productDir: "k-lab",
+    basename: "klab_full_logo_dark",
+    title: "K Lab logo — dark",
     description: "Dark lockup for light backgrounds where the blue would compete with artwork.",
-    tags: ["dark", "logo", "png"],
+    tags: ["dark", "logo"],
     created: "2025-11-04T09:06:00.000Z",
-  },
-  {
-    id: "ast-011-svg",
-    group: "k-lab-logo-dark",
-    path: "logos/vector/k-lab-logo-dark.svg",
-    category: "logos",
-    title: "K Lab logo — dark, SVG",
-    description: "Scalable SVG of the dark lockup.",
-    tags: ["dark", "logo", "svg"],
-    created: "2026-08-13T14:00:02.000Z",
-  },
-  {
-    id: "ast-011-ai",
-    group: "k-lab-logo-dark",
-    path: "logos/vector/k-lab-logo-dark.ai",
-    category: "logos",
-    title: "K Lab logo — dark, AI",
-    description: "Illustrator master of the dark lockup.",
-    tags: ["dark", "logo", "ai"],
-    created: "2026-08-13T14:00:03.000Z",
-  },
-
-  // ── Logos: K Lab reversed (white) — PNG / SVG / AI ───────────────────────
-  {
+  }),
+  ...logoFormatRows({
     id: "ast-012",
-    group: "k-lab-logo-white",
-    path: "logos/k-lab-logo-white.png",
-    category: "logos",
-    title: "K Lab logo — reversed (white), PNG",
+    group: "klab_full_logo_light",
+    productDir: "k-lab",
+    basename: "klab_full_logo_light",
+    title: "K Lab logo — reversed (light)",
     description: "Reversed lockup for dark surfaces, photography, and video overlays.",
-    tags: ["reversed", "white", "logo", "png"],
+    tags: ["reversed", "light", "logo"],
     created: "2025-11-04T09:07:00.000Z",
-  },
-  {
-    id: "ast-012-svg",
-    group: "k-lab-logo-white",
-    path: "logos/vector/k-lab-logo-white.svg",
-    category: "logos",
-    title: "K Lab logo — reversed (white), SVG",
-    description: "Scalable SVG of the reversed lockup.",
-    tags: ["reversed", "white", "logo", "svg"],
-    created: "2026-08-13T14:00:04.000Z",
-  },
-  {
-    id: "ast-012-ai",
-    group: "k-lab-logo-white",
-    path: "logos/vector/k-lab-logo-white.ai",
-    category: "logos",
-    title: "K Lab logo — reversed (white), AI",
-    description: "Illustrator master of the reversed lockup.",
-    tags: ["reversed", "white", "logo", "ai"],
-    created: "2026-08-13T14:00:05.000Z",
-  },
-
-  // ── Logos: K Lab logomark — PNG / SVG / PDF / AI ─────────────────────────
-  {
+  }),
+  ...logoFormatRows({
+    id: "ast-013",
+    group: "klab_full_logo_flat_black",
+    productDir: "k-lab",
+    basename: "klab_full_logo_flat_black",
+    title: "K Lab logo — flat black",
+    description: "Single-color black lockup for one-color print and monochrome layouts.",
+    tags: ["flat", "black", "logo"],
+    created: "2026-08-21T12:00:00.000Z",
+  }),
+  ...logoFormatRows({
+    id: "ast-016",
+    group: "klab_full_logo_flat_white",
+    productDir: "k-lab",
+    basename: "klab_full_logo_flat_white",
+    title: "K Lab logo — flat white",
+    description: "Single-color white lockup for one-color reverse print and dark fields.",
+    tags: ["flat", "white", "logo"],
+    created: "2026-08-21T12:01:00.000Z",
+  }),
+  ...logoFormatRows({
     id: "ast-014",
-    group: "k-lab-logomark",
-    path: "logos/k-lab-logomark.png",
-    category: "logos",
-    title: "K Lab logomark, PNG",
+    group: "klab_logomark_blue",
+    productDir: "k-lab",
+    basename: "klab_logomark_blue",
+    title: "K Lab logomark — blue",
     description:
       "The standalone mark in its rounded container — avatars, app icons, and favicons.",
-    tags: ["mark", "icon", "logomark", "png"],
+    tags: ["mark", "icon", "logomark", "blue"],
     created: "2026-01-15T10:05:00.000Z",
-  },
-  {
-    id: "ast-014-svg",
-    group: "k-lab-logomark",
-    path: "logos/vector/k-lab-logomark.svg",
-    category: "logos",
-    title: "K Lab logomark, SVG",
-    description: "Scalable SVG of the logomark.",
-    tags: ["mark", "icon", "logomark", "svg"],
-    created: "2026-08-13T14:00:06.000Z",
-  },
-  {
-    id: "ast-014-pdf",
-    group: "k-lab-logomark",
-    path: "logos/vector/k-lab-logomark.pdf",
-    category: "logos",
-    title: "K Lab logomark, PDF",
-    description: "Vector PDF master of the logomark for print.",
-    tags: ["mark", "logomark", "pdf", "vector", "print"],
-    created: "2026-08-13T14:00:07.000Z",
-  },
-  {
-    id: "ast-014-ai",
-    group: "k-lab-logomark",
-    path: "logos/vector/k-lab-logomark.ai",
-    category: "logos",
-    title: "K Lab logomark, AI",
-    description: "Illustrator master of the logomark.",
-    tags: ["mark", "logomark", "ai"],
-    created: "2026-08-13T14:00:08.000Z",
-  },
-  {
-    id: "ast-014-ico",
-    group: "k-lab-logomark",
-    path: "logos/favicons/k-lab-logomark.ico",
-    category: "logos",
-    title: "K Lab logomark, ICO",
-    description: "Favicon-ready ICO of the grey logomark for browser tabs and pinned sites.",
-    tags: ["mark", "icon", "logomark", "favicon", "ico"],
-    created: "2026-08-18T09:00:02.000Z",
-  },
-
-  // ── Logos: logomark variants (extra catalog files) ───────────────────────
-  {
+  }),
+  ...logoFormatRows({
+    id: "ast-018",
+    group: "klab_logomark_dark",
+    productDir: "k-lab",
+    basename: "klab_logomark_dark",
+    title: "K Lab logomark — dark",
+    description: "Dark logomark for light surfaces where the blue mark would compete.",
+    tags: ["logomark", "dark"],
+    created: "2026-08-21T12:02:00.000Z",
+  }),
+  ...logoFormatRows({
     id: "ast-015",
-    group: "k-lab-logomark-white",
-    path: "logos/k-lab-logomark-white.png",
-    category: "logos",
-    title: "K Lab logomark — white, PNG",
+    group: "klab_logomark_light",
+    productDir: "k-lab",
+    basename: "klab_logomark_light",
+    title: "K Lab logomark — light",
     description: "Reversed logomark for dark surfaces.",
-    tags: ["logomark", "reversed", "white", "png"],
+    tags: ["logomark", "reversed", "light"],
     created: "2026-08-13T14:00:09.000Z",
-  },
-  {
-    id: "ast-015-svg",
-    group: "k-lab-logomark-white",
-    path: "logos/vector/k-lab-logomark-white.svg",
-    category: "logos",
-    title: "K Lab logomark — white, SVG",
-    description: "Scalable SVG of the reversed logomark.",
-    tags: ["logomark", "reversed", "white", "svg"],
-    created: "2026-08-13T14:00:10.000Z",
-  },
-  {
-    id: "ast-015-pdf",
-    group: "k-lab-logomark-white",
-    path: "logos/vector/k-lab-logomark-white.pdf",
-    category: "logos",
-    title: "K Lab logomark — white, PDF",
-    description: "Vector PDF of the reversed logomark.",
-    tags: ["logomark", "reversed", "white", "pdf", "vector", "print"],
-    created: "2025-11-04T09:13:00.000Z",
-  },
-  {
-    id: "ast-015-ai",
-    group: "k-lab-logomark-white",
-    path: "logos/vector/k-lab-logomark-white.ai",
-    category: "logos",
-    title: "K Lab logomark — white, AI",
-    description: "Illustrator master of the reversed logomark.",
-    tags: ["logomark", "reversed", "white", "ai"],
-    created: "2026-08-13T14:00:11.000Z",
-  },
-  {
-    id: "ast-015-ico",
-    group: "k-lab-logomark-white",
-    path: "logos/favicons/k-lab-logomark-white.ico",
-    category: "logos",
-    title: "K Lab logomark — white, ICO",
-    description: "Favicon-ready ICO of the reversed logomark for dark browser themes.",
-    tags: ["logomark", "reversed", "white", "favicon", "ico"],
-    created: "2026-08-18T09:00:01.000Z",
-  },
-
-  // ── Logos: product brands (add PNG/SVG/AI as extra CATALOG rows on the same group)
+  }),
   {
     id: "ast-030",
     group: "k-rails-logo",
-    path: "sub-brands/k-rails.webp",
+    path: "logos/k-rails/k-rails.webp",
     category: "logos",
     title: "K Rails — product logo, WEBP",
     description: "Dimensional product lockup for K Rails, the invoice financing platform.",
     tags: ["product", "k-rails", "webp"],
     created: "2026-02-10T11:00:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-030",
+    group: "k-rails-logo",
+    dir: "logos/k-rails",
+    basename: "k-rails",
+    category: "logos",
+    title: "K Rails — product logo",
+    description: "Dimensional product lockup for K Rails, the invoice financing platform.",
+    tags: ["product", "k-rails"],
+    created: "2026-02-10T11:00:00.000Z",
+  }),
   {
     id: "ast-031",
     group: "k-talk-logo",
-    path: "sub-brands/k-talk.webp",
+    path: "logos/k-talk/k-talk.webp",
     category: "logos",
     title: "K Talk — product logo, WEBP",
     description: "Dimensional product lockup for K Talk.",
     tags: ["product", "k-talk", "webp"],
     created: "2026-02-10T11:01:00.000Z",
   },
-  {
-    id: "ast-033",
-    group: "k-rails-logo-dark",
-    path: "sub-brands/k-rails-logo-dark.png",
+  ...pngJpgRows({
+    id: "ast-031",
+    group: "k-talk-logo",
+    dir: "logos/k-talk",
+    basename: "k-talk",
     category: "logos",
-    title: "K Rails — logo dark, PNG",
+    title: "K Talk — product logo",
+    description: "Dimensional product lockup for K Talk.",
+    tags: ["product", "k-talk"],
+    created: "2026-02-10T11:01:00.000Z",
+  }),
+  ...logoFormatRows({
+    id: "ast-033",
+    group: "klab_sub_brands_krails_dark",
+    productDir: "k-rails",
+    basename: "klab_sub_brands_krails_dark",
+    title: "K Rails — logo, dark",
     description:
       "Flat K Rails lockup — the chevron mark and wordmark in charcoal for light surfaces.",
-    tags: ["product", "k-rails", "dark", "png"],
+    tags: ["product", "k-rails", "dark"],
     created: "2026-08-17T10:00:00.000Z",
-  },
-  {
-    id: "ast-033-svg",
-    group: "k-rails-logo-dark",
-    path: "sub-brands/k-rails-logo-dark.svg",
-    category: "logos",
-    title: "K Rails — logo dark, SVG",
-    description: "Scalable SVG of the dark K Rails lockup.",
-    tags: ["product", "k-rails", "dark", "svg"],
-    created: "2026-08-17T10:00:01.000Z",
-  },
-  {
+  }),
+  ...logoFormatRows({
+    id: "ast-035",
+    group: "klab_sub_brands_krails_light",
+    productDir: "k-rails",
+    basename: "klab_sub_brands_krails_light",
+    title: "K Rails — logo, light",
+    description: "Flat K Rails lockup reversed for dark surfaces.",
+    tags: ["product", "k-rails", "light"],
+    created: "2026-08-21T12:03:00.000Z",
+  }),
+  ...logoFormatRows({
     id: "ast-034",
-    group: "k-talk-logo-dark",
-    path: "sub-brands/k-talk-logo-dark.png",
-    category: "logos",
-    title: "K Talk — logo dark, PNG",
+    group: "klab_sub_brands_ktalk_dark",
+    productDir: "k-talk",
+    basename: "klab_sub_brands_ktalk_dark",
+    title: "K Talk — logo, dark",
     description:
       "Flat K Talk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
-    tags: ["product", "k-talk", "dark", "png"],
+    tags: ["product", "k-talk", "dark"],
     created: "2026-08-17T10:00:02.000Z",
-  },
-  {
-    id: "ast-034-svg",
-    group: "k-talk-logo-dark",
-    path: "sub-brands/k-talk-logo-dark.svg",
-    category: "logos",
-    title: "K Talk — logo dark, SVG",
-    description: "Scalable SVG of the dark K Talk lockup.",
-    tags: ["product", "k-talk", "dark", "svg"],
-    created: "2026-08-17T10:00:03.000Z",
-  },
+  }),
+  ...logoFormatRows({
+    id: "ast-036",
+    group: "klab_sub_brands_ktalk_light",
+    productDir: "k-talk",
+    basename: "klab_sub_brands_ktalk_light",
+    title: "K Talk — logo, light",
+    description: "Flat K Talk lockup reversed for dark surfaces.",
+    tags: ["product", "k-talk", "light"],
+    created: "2026-08-21T12:04:00.000Z",
+  }),
+  ...logoFormatRows({
+    id: "ast-037",
+    group: "klab_sub_brands_krisk_dark",
+    productDir: "k-risk",
+    basename: "klab_sub_brands_krisk_dark",
+    title: "K Risk — logo, dark",
+    description:
+      "Flat K Risk lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    tags: ["product", "k-risk", "dark"],
+    created: "2026-08-21T12:05:00.000Z",
+  }),
+  ...logoFormatRows({
+    id: "ast-038",
+    group: "klab_sub_brands_krisk_light",
+    productDir: "k-risk",
+    basename: "klab_sub_brands_krisk_light",
+    title: "K Risk — logo, light",
+    description: "Flat K Risk lockup reversed for dark surfaces.",
+    tags: ["product", "k-risk", "light"],
+    created: "2026-08-21T12:06:00.000Z",
+  }),
 
-  // ── Brand imagery: backgrounds (add another format as a CATALOG row on the same group)
+  // ── Brand imagery: backgrounds (webp + png + jpg on the same group)
   {
     id: "ast-040",
     group: "k-lab-bg-001",
@@ -438,6 +444,17 @@ const CATALOG = [
     tags: ["background", "hero", "navy", "webp"],
     created: "2025-12-02T12:00:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-040",
+    group: "k-lab-bg-001",
+    dir: "backgrounds",
+    basename: "k-lab-bg-001",
+    category: "brand-imagery",
+    title: "Chevron neon — deep navy",
+    description: "Hero background: the chevron rendered in electric blue on deep navy.",
+    tags: ["background", "hero", "navy"],
+    created: "2025-12-02T12:00:00.000Z",
+  }),
   {
     id: "ast-041",
     group: "k-lab-bg-002",
@@ -448,6 +465,17 @@ const CATALOG = [
     tags: ["background", "gradient", "webp"],
     created: "2025-12-02T12:01:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-041",
+    group: "k-lab-bg-002",
+    dir: "backgrounds",
+    basename: "k-lab-bg-002",
+    category: "brand-imagery",
+    title: "Blue gradient field",
+    description: "Smooth blue gradient for section dividers, covers, and social cards.",
+    tags: ["background", "gradient"],
+    created: "2025-12-02T12:01:00.000Z",
+  }),
   {
     id: "ast-042",
     group: "k-lab-bg-002-dots",
@@ -458,6 +486,17 @@ const CATALOG = [
     tags: ["background", "gradient", "texture", "webp"],
     created: "2025-12-02T12:02:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-042",
+    group: "k-lab-bg-002-dots",
+    dir: "backgrounds",
+    basename: "k-lab-bg-002-dots",
+    category: "brand-imagery",
+    title: "Blue gradient field — dot texture",
+    description: "The blue gradient with the brand dot matrix overlay.",
+    tags: ["background", "gradient", "texture"],
+    created: "2025-12-02T12:02:00.000Z",
+  }),
   {
     id: "ast-043",
     group: "k-lab-bg-003",
@@ -468,6 +507,17 @@ const CATALOG = [
     tags: ["background", "gradient", "slides", "webp"],
     created: "2025-12-02T12:03:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-043",
+    group: "k-lab-bg-003",
+    dir: "backgrounds",
+    basename: "k-lab-bg-003",
+    category: "brand-imagery",
+    title: "Depth gradient",
+    description: "Layered blue depth field for presentation backgrounds.",
+    tags: ["background", "gradient", "slides"],
+    created: "2025-12-02T12:03:00.000Z",
+  }),
   {
     id: "ast-044",
     group: "k-lab-bg-003-dots",
@@ -478,6 +528,17 @@ const CATALOG = [
     tags: ["background", "gradient", "texture", "webp"],
     created: "2025-12-02T12:04:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-044",
+    group: "k-lab-bg-003-dots",
+    dir: "backgrounds",
+    basename: "k-lab-bg-003-dots",
+    category: "brand-imagery",
+    title: "Depth gradient — dot texture",
+    description: "Depth field with the brand dot matrix overlay.",
+    tags: ["background", "gradient", "texture"],
+    created: "2025-12-02T12:04:00.000Z",
+  }),
   {
     id: "ast-045",
     group: "k-lab-bg-004",
@@ -488,6 +549,17 @@ const CATALOG = [
     tags: ["background", "hero", "webp"],
     created: "2025-12-02T12:05:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-045",
+    group: "k-lab-bg-004",
+    dir: "backgrounds",
+    basename: "k-lab-bg-004",
+    category: "brand-imagery",
+    title: "Horizon gradient",
+    description: "Wide horizon gradient suited to full-bleed hero sections.",
+    tags: ["background", "hero"],
+    created: "2025-12-02T12:05:00.000Z",
+  }),
   {
     id: "ast-046",
     group: "k-lab-bg-004-dots",
@@ -498,6 +570,17 @@ const CATALOG = [
     tags: ["background", "hero", "texture", "webp"],
     created: "2025-12-02T12:06:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-046",
+    group: "k-lab-bg-004-dots",
+    dir: "backgrounds",
+    basename: "k-lab-bg-004-dots",
+    category: "brand-imagery",
+    title: "Horizon gradient — dot texture",
+    description: "Horizon gradient with the brand dot matrix overlay.",
+    tags: ["background", "hero", "texture"],
+    created: "2025-12-02T12:06:00.000Z",
+  }),
   {
     id: "ast-047",
     group: "k-lab-bg-005",
@@ -508,6 +591,17 @@ const CATALOG = [
     tags: ["background", "technical", "webp"],
     created: "2025-12-02T12:07:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-047",
+    group: "k-lab-bg-005",
+    dir: "backgrounds",
+    basename: "k-lab-bg-005",
+    category: "brand-imagery",
+    title: "Circuit field",
+    description: "Technical circuit texture for data and infrastructure stories.",
+    tags: ["background", "technical"],
+    created: "2025-12-02T12:07:00.000Z",
+  }),
   {
     id: "ast-048",
     group: "k-lab-bg-006",
@@ -518,38 +612,82 @@ const CATALOG = [
     tags: ["background", "technical", "webp"],
     created: "2025-12-02T12:08:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-048",
+    group: "k-lab-bg-006",
+    dir: "backgrounds",
+    basename: "k-lab-bg-006",
+    category: "brand-imagery",
+    title: "Signal field",
+    description: "Abstract signal texture for section breaks and covers.",
+    tags: ["background", "technical"],
+    created: "2025-12-02T12:08:00.000Z",
+  }),
 
-  // ── Photography: product renders (approved stand-ins until the photo library ships) ───────────────────────────────────────
+  // ── Brand imagery: product renders ───────────────────────────────────────
   {
     id: "ast-050",
     group: "k-lab-screen-01",
     path: "screens/k-lab-screen-01.webp",
-    category: "photography",
+    category: "brand-imagery",
     title: "Product render 01, WEBP",
     description: "Device render for product marketing and deck covers.",
     tags: ["render", "product", "marketing", "webp"],
     created: "2026-02-18T09:30:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-050",
+    group: "k-lab-screen-01",
+    dir: "screens",
+    basename: "k-lab-screen-01",
+    category: "brand-imagery",
+    title: "Product render 01",
+    description: "Device render for product marketing and deck covers.",
+    tags: ["render", "product", "marketing"],
+    created: "2026-02-18T09:30:00.000Z",
+  }),
   {
     id: "ast-051",
     group: "k-lab-screen-02",
     path: "screens/k-lab-screen-02.webp",
-    category: "photography",
+    category: "brand-imagery",
     title: "Product render 02, WEBP",
     description: "Alternate device render with the platform interface in context.",
     tags: ["render", "product", "marketing", "webp"],
     created: "2026-02-18T09:31:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-051",
+    group: "k-lab-screen-02",
+    dir: "screens",
+    basename: "k-lab-screen-02",
+    category: "brand-imagery",
+    title: "Product render 02",
+    description: "Alternate device render with the platform interface in context.",
+    tags: ["render", "product", "marketing"],
+    created: "2026-02-18T09:31:00.000Z",
+  }),
   {
     id: "ast-052",
     group: "k-lab-screen-03",
     path: "screens/k-lab-screen-03.webp",
-    category: "photography",
+    category: "brand-imagery",
     title: "Product render 03, WEBP",
     description: "Wide product render for hero sections and landing pages.",
     tags: ["render", "product", "marketing", "webp"],
     created: "2026-02-18T09:32:00.000Z",
   },
+  ...pngJpgRows({
+    id: "ast-052",
+    group: "k-lab-screen-03",
+    dir: "screens",
+    basename: "k-lab-screen-03",
+    category: "brand-imagery",
+    title: "Product render 03",
+    description: "Wide product render for hero sections and landing pages.",
+    tags: ["render", "product", "marketing"],
+    created: "2026-02-18T09:32:00.000Z",
+  }),
   {
     id: "ast-053",
     group: "k-rails-keyvisual",
@@ -677,9 +815,10 @@ const SALES_CATEGORIES = ["pitch-decks", "sales-materials"];
 const FORMAT_TAGS = new Set([
   "png", "svg", "webp", "jpg", "jpeg", "gif", "ico", "pdf", "ai", "eps", "ttf", "otf", "css",
 ]);
-const PRODUCT_TAGS = new Set(["k-talk", "k-rails", "product"]);
+const PRODUCT_TAGS = new Set(["k-talk", "k-rails", "k-risk", "product"]);
 
 const PREVIEWABLE = /\.(png|webp|jpg|jpeg|svg|gif|ico)$/i;
+const PREVIEW_EXT_ORDER = [".svg", ".webp", ".png", ".jpg", ".jpeg", ".gif", ".ico"];
 const missing = [];
 const fileRows = [];
 const privateFiles = [];
@@ -687,6 +826,7 @@ const privateFiles = [];
 function productFromTags(tags) {
   if (tags.includes("k-talk")) return "k-talk";
   if (tags.includes("k-rails")) return "k-rails";
+  if (tags.includes("k-risk")) return "k-risk";
   return "k-lab";
 }
 
@@ -751,7 +891,11 @@ for (const [id, rows] of grouped) {
   const tags = allTags.filter(
     (tag) => !FORMAT_TAGS.has(tag.toLowerCase()) && !PRODUCT_TAGS.has(tag),
   );
-  const previewUrl = rows.find((row) => row.previewUrl)?.previewUrl;
+  const previewUrl = PREVIEW_EXT_ORDER.reduce((found, ext) => {
+    if (found) return found;
+    return rows.find((row) => row.previewUrl?.toLowerCase().endsWith(ext))
+      ?.previewUrl;
+  }, undefined);
   const createdAt = rows.reduce(
     (earliest, row) => (row.item.created < earliest ? row.item.created : earliest),
     primary.item.created,

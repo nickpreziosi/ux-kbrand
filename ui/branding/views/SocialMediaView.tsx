@@ -18,19 +18,19 @@ const AVATAR_TREATMENTS = [
   {
     id: "gradientIcon",
     className: "bg-gradient-to-br from-sky-400 to-blue-900",
-    src: "/brand-files/logos/k-lab-logomark-white.png",
+    src: "/brand-files/logos/k-lab/klab_logomark_light.svg",
     kind: "icon" as const,
   },
   {
     id: "graphiteIcon",
     className: "bg-gradient-to-br from-neutral-600 to-neutral-900",
-    src: "/brand-files/logos/k-lab-logomark-white.png",
+    src: "/brand-files/logos/k-lab/klab_logomark_light.svg",
     kind: "icon" as const,
   },
   {
     id: "navyWordmark",
     className: "bg-[#050d1f]",
-    src: "/brand-files/logos/k-lab-logo-white.png",
+    src: "/brand-files/logos/k-lab/klab_full_logo_light.svg",
     kind: "wordmark" as const,
   },
 ] as const;
@@ -131,7 +131,7 @@ export function SocialMediaView() {
             />
             <div className="absolute inset-0 flex items-center justify-center gap-4 px-6">
               <Image
-                src="/brand-files/logos/k-lab-logo-white.png"
+                src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
                 alt=""
                 width={160}
                 height={52}
@@ -155,7 +155,7 @@ export function SocialMediaView() {
             />
             <div className="absolute inset-0 flex items-center px-8">
               <Image
-                src="/brand-files/logos/k-lab-logo-white.png"
+                src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
                 alt=""
                 width={160}
                 height={52}

@@ -68,7 +68,7 @@ describe("assetThumbnail", () => {
   });
 
   it("puts reversed artwork on black so it is not white on white", () => {
-    for (const tag of ["reversed", "white"]) {
+    for (const tag of ["reversed", "white", "light"]) {
       expect(
         assetThumbnail(
           asset({ id: "a", fileName: "k-lab-logo-white.svg", tags: [tag] }),
@@ -82,7 +82,7 @@ describe("assetThumbnail", () => {
       asset({
         id: "a",
         fileName: "k-rails.webp",
-        previewUrl: "/brand-files/sub-brands/k-rails.webp",
+        previewUrl: "/brand-files/logos/k-rails/k-rails.webp",
         tags: [],
         files: [
           {
@@ -91,7 +91,7 @@ describe("assetThumbnail", () => {
             contentType: "image/webp",
             sizeBytes: 100,
             storagePath: "assets/logos/k-rails.webp",
-            downloadUrl: "/brand-files/sub-brands/k-rails.webp",
+            downloadUrl: "/brand-files/logos/k-rails/k-rails.webp",
           },
         ],
       }),

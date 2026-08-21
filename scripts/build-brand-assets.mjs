@@ -31,7 +31,7 @@ if (!existsSync(masters)) {
   process.exit(1);
 }
 
-for (const dir of ["logos", "logos/vector", "sub-brands", "backgrounds", "screens", "fonts", "docs"]) {
+for (const dir of ["logos", "logos/k-lab", "logos/k-rails", "logos/k-talk", "logos/k-risk", "sub-brands", "backgrounds", "screens", "fonts", "docs"]) {
   mkdirSync(join(out, dir), { recursive: true });
 }
 
@@ -83,12 +83,10 @@ await Promise.all([
     .map((f) => buildWebp("sub-brands", f.replace(/\.png$/, ""), 1600)),
 ]);
 
-// Vector downloads + the brand typeface pass through as-is.
-for (const file of readdirSync(join(source, "vector")).filter((f) => f.endsWith(".pdf"))) {
-  const dest = join(out, "logos", "vector", file);
-  copyFileSync(join(source, "vector", file), dest);
-  report.push(["vector", file, statSync(dest).size, statSync(dest).size]);
-}
+// Logo AI/PDF/SVG/PNG are produced by scripts/import-klab-logos.mjs into
+// public/brand-files/logos/{product}/. Do not dump leftover vector-root PDFs
+// into a logos/vector folder.
+
 copyFileSync(join(source, "fonts", "sora-variable.ttf"), join(out, "fonts", "sora-variable.ttf"));
 report.push(["font", "sora-variable.ttf", 110224, statSync(join(out, "fonts", "sora-variable.ttf")).size]);
 
