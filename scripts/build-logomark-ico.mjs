@@ -6,17 +6,19 @@
  *   node scripts/build-logomark-ico.mjs
  */
 import sharp from "sharp";
-import { writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dir = join(root, "public", "brand-files", "logos", "k-lab");
+const chromeIcoDir = join(root, "public", "ico");
 const SIZES = [16, 32, 48, 64, 256];
+/** Library basename → app chrome name (k-lab-components public/ico convention). */
 const MARKS = [
-  "klab_logomark_blue",
-  "klab_logomark_dark",
-  "klab_logomark_light",
+  { name: "klab_logomark_blue", chrome: "favicon-blue.ico" },
+  { name: "klab_logomark_dark", chrome: "favicon-grey.ico" },
+  { name: "klab_logomark_light", chrome: "favicon-white.ico" },
 ];
 
 function encodeIco(pngs) {
@@ -50,7 +52,9 @@ function encodeIco(pngs) {
   return buf;
 }
 
-for (const name of MARKS) {
+mkdirSync(chromeIcoDir, { recursive: true });
+
+for (const { name, chrome } of MARKS) {
   const src = join(dir, `${name}.png`);
   const pngs = [];
   for (const size of SIZES) {
@@ -67,5 +71,8 @@ for (const name of MARKS) {
   const ico = encodeIco(pngs);
   const dest = join(dir, `${name}.ico`);
   writeFileSync(dest, ico);
-  console.log(`${name}.ico  ${SIZES.join("/")}  ${(ico.length / 1024).toFixed(1)} KB`);
+  copyFileSync(dest, join(chromeIcoDir, chrome));
+  console.log(
+    `${name}.ico  ${SIZES.join("/")}  ${(ico.length / 1024).toFixed(1)} KB  →  ico/${chrome}`,
+  );
 }

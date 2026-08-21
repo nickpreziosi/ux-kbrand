@@ -148,4 +148,11 @@ describe("logo catalog (rebrand)", () => {
       }
     }
   });
+
+  it("copies logomark ICOs into public/ico for the app favicon", () => {
+    const publicRoot = join(process.cwd(), "public", "ico");
+    expect(existsSync(join(publicRoot, "favicon-grey.ico"))).toBe(true);
+    expect(existsSync(join(publicRoot, "favicon-white.ico"))).toBe(true);
+    expect(existsSync(join(publicRoot, "favicon-blue.ico"))).toBe(true);
+  });
 });

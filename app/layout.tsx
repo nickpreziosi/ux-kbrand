@@ -22,6 +22,19 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t("title"),
     description: t("description"),
+    // Follows the browser/OS color scheme, not the in-app theme.
+    icons: {
+      icon: [
+        {
+          url: "/ico/favicon-grey.ico",
+          media: "(prefers-color-scheme: light)",
+        },
+        {
+          url: "/ico/favicon-white.ico",
+          media: "(prefers-color-scheme: dark)",
+        },
+      ],
+    },
   };
 }
 
