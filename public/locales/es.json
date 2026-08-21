@@ -619,8 +619,6 @@
       "assetsPendingBadge": "Recursos pendientes",
       "downloadsTitle": "Descargas de logotipos",
       "downloadsDescription": "Todos los logotipos de submarcas aprobados del catálogo, con todos los formatos disponibles.",
-      "keyvisualsTitle": "Key visuals",
-      "keyvisualsDescription": "Arte de campaña de cada submarca, a máxima resolución.",
       "loadError": "No pudimos cargar los recursos. Inténtalo de nuevo."
     }
   },

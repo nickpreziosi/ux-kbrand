@@ -26,6 +26,8 @@ const OBSOLETE_FILE_NAMES = [
   "k-lab-logomark-2025.png",
   "kena.webp",
   "kena-keyvisual.webp",
+  "k-rails-keyvisual.webp",
+  "k-talk-keyvisual.webp",
   "k-lab-logo-blue.png",
   "k-lab-logo-white.png",
   "k-lab-logomark.png",
@@ -71,7 +73,7 @@ describe("logo catalog (rebrand)", () => {
   });
 
   it("retires obsolete dimensional raster masters from the catalog", () => {
-    const fileNames = logoAssets.flatMap((asset) =>
+    const fileNames = SEED_BRAND_ASSETS.flatMap((asset) =>
       asset.files.map((file) => file.fileName),
     );
     for (const obsolete of OBSOLETE_FILE_NAMES) {

@@ -1358,62 +1358,6 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     createdBy: "usr-001"
   },
   {
-    id: "k-rails-keyvisual",
-    title: "K Rails — key visual",
-    description: "Campaign key visual for K Rails.",
-    resourceType: "brand",
-    category: "brand-imagery",
-    product: "k-rails",
-    visibility: "public",
-    status: "active",
-    files: [
-      {
-        id: "ast-053",
-        fileName: "k-rails-keyvisual.webp",
-        contentType: "image/webp",
-        sizeBytes: 30038,
-        storagePath: "assets/sub-brands/k-rails-keyvisual.webp",
-        downloadUrl: "/brand-files/sub-brands/k-rails-keyvisual.webp"
-      }
-    ],
-    previewUrl: "/brand-files/sub-brands/k-rails-keyvisual.webp",
-    tags: [
-      "keyvisual",
-      "campaign"
-    ],
-    createdAt: "2026-02-20T14:00:00.000Z",
-    updatedAt: "2026-02-20T14:00:00.000Z",
-    createdBy: "usr-001"
-  },
-  {
-    id: "k-talk-keyvisual",
-    title: "K Talk — key visual",
-    description: "Campaign key visual for K Talk.",
-    resourceType: "brand",
-    category: "brand-imagery",
-    product: "k-talk",
-    visibility: "public",
-    status: "active",
-    files: [
-      {
-        id: "ast-054",
-        fileName: "k-talk-keyvisual.webp",
-        contentType: "image/webp",
-        sizeBytes: 28750,
-        storagePath: "assets/sub-brands/k-talk-keyvisual.webp",
-        downloadUrl: "/brand-files/sub-brands/k-talk-keyvisual.webp"
-      }
-    ],
-    previewUrl: "/brand-files/sub-brands/k-talk-keyvisual.webp",
-    tags: [
-      "keyvisual",
-      "campaign"
-    ],
-    createdAt: "2026-02-20T14:01:00.000Z",
-    updatedAt: "2026-02-20T14:01:00.000Z",
-    createdBy: "usr-001"
-  },
-  {
     id: "ast-060",
     title: "Sora — variable font",
     description: "The K Lab brand typeface as a variable font covering weights 300 to 700.",

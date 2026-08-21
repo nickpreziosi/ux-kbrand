@@ -619,8 +619,6 @@
       "assetsPendingBadge": "Assets pending",
       "downloadsTitle": "Logo downloads",
       "downloadsDescription": "Every approved sub-brand logo in the catalog, with all available formats.",
-      "keyvisualsTitle": "Key visuals",
-      "keyvisualsDescription": "Campaign artwork for each sub-brand, at full resolution.",
       "loadError": "We couldn't load the assets. Please try again."
     }
   },

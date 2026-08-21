@@ -153,14 +153,6 @@ const GROUPS = {
     title: "Product render 03",
     description: "Wide product render for hero sections and landing pages.",
   },
-  "k-rails-keyvisual": {
-    title: "K Rails — key visual",
-    description: "Campaign key visual for K Rails.",
-  },
-  "k-talk-keyvisual": {
-    title: "K Talk — key visual",
-    description: "Campaign key visual for K Talk.",
-  },
 };
 
 /**
@@ -688,26 +680,6 @@ const CATALOG = [
     tags: ["render", "product", "marketing"],
     created: "2026-02-18T09:32:00.000Z",
   }),
-  {
-    id: "ast-053",
-    group: "k-rails-keyvisual",
-    path: "sub-brands/k-rails-keyvisual.webp",
-    category: "brand-imagery",
-    title: "K Rails — key visual, WEBP",
-    description: "Campaign key visual for K Rails.",
-    tags: ["keyvisual", "k-rails", "campaign", "webp"],
-    created: "2026-02-20T14:00:00.000Z",
-  },
-  {
-    id: "ast-054",
-    group: "k-talk-keyvisual",
-    path: "sub-brands/k-talk-keyvisual.webp",
-    category: "brand-imagery",
-    title: "K Talk — key visual, WEBP",
-    description: "Campaign key visual for K Talk.",
-    tags: ["keyvisual", "k-talk", "campaign", "webp"],
-    created: "2026-02-20T14:01:00.000Z",
-  },
 
   // ── Fonts ────────────────────────────────────────────────────────────────
   {
