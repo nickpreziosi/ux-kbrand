@@ -318,6 +318,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
         sizeBytes: 1582227,
         storagePath: "assets/logos/k-lab/klab_logomark_blue.ai",
         downloadUrl: "/brand-files/logos/k-lab/klab_logomark_blue.ai"
+      },
+      {
+        id: "ast-014-ico",
+        fileName: "klab_logomark_blue.ico",
+        contentType: "image/x-icon",
+        sizeBytes: 53413,
+        storagePath: "assets/logos/k-lab/klab_logomark_blue.ico",
+        downloadUrl: "/brand-files/logos/k-lab/klab_logomark_blue.ico"
       }
     ],
     previewUrl: "/brand-files/logos/k-lab/klab_logomark_blue.svg",
@@ -328,7 +336,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
       "blue"
     ],
     createdAt: "2026-01-15T10:05:00.000Z",
-    updatedAt: "2026-01-15T10:05:03.000Z",
+    updatedAt: "2026-01-15T10:05:04.000Z",
     createdBy: "usr-001"
   },
   {
@@ -372,6 +380,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
         sizeBytes: 1582634,
         storagePath: "assets/logos/k-lab/klab_logomark_dark.ai",
         downloadUrl: "/brand-files/logos/k-lab/klab_logomark_dark.ai"
+      },
+      {
+        id: "ast-018-ico",
+        fileName: "klab_logomark_dark.ico",
+        contentType: "image/x-icon",
+        sizeBytes: 35771,
+        storagePath: "assets/logos/k-lab/klab_logomark_dark.ico",
+        downloadUrl: "/brand-files/logos/k-lab/klab_logomark_dark.ico"
       }
     ],
     previewUrl: "/brand-files/logos/k-lab/klab_logomark_dark.svg",
@@ -380,7 +396,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
       "dark"
     ],
     createdAt: "2026-08-21T12:02:00.000Z",
-    updatedAt: "2026-08-21T12:02:03.000Z",
+    updatedAt: "2026-08-21T12:02:04.000Z",
     createdBy: "usr-001"
   },
   {
@@ -424,6 +440,14 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
         sizeBytes: 1581548,
         storagePath: "assets/logos/k-lab/klab_logomark_light.ai",
         downloadUrl: "/brand-files/logos/k-lab/klab_logomark_light.ai"
+      },
+      {
+        id: "ast-015-ico",
+        fileName: "klab_logomark_light.ico",
+        contentType: "image/x-icon",
+        sizeBytes: 26775,
+        storagePath: "assets/logos/k-lab/klab_logomark_light.ico",
+        downloadUrl: "/brand-files/logos/k-lab/klab_logomark_light.ico"
       }
     ],
     previewUrl: "/brand-files/logos/k-lab/klab_logomark_light.svg",
@@ -433,7 +457,7 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
       "light"
     ],
     createdAt: "2026-08-13T14:00:09.000Z",
-    updatedAt: "2026-08-13T14:00:12.000Z",
+    updatedAt: "2026-08-13T14:00:13.000Z",
     createdBy: "usr-001"
   },
   {

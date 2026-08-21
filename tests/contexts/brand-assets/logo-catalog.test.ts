@@ -121,6 +121,18 @@ describe("logo catalog (rebrand)", () => {
     ).toBe(true);
   });
 
+  it("packs a multi-size ICO on each K Lab logomark", () => {
+    const marks = logoAssets.filter((asset) =>
+      asset.tags.includes("logomark"),
+    );
+    expect(marks.length).toBeGreaterThanOrEqual(3);
+    for (const mark of marks.filter((asset) => asset.product === "k-lab")) {
+      expect(mark.files.some((file) => file.fileName.endsWith(".ico"))).toBe(
+        true,
+      );
+    }
+  });
+
   it("is one record per artwork", () => {
     expect(logoAssets).toHaveLength(16);
   });

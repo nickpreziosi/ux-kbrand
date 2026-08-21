@@ -182,6 +182,7 @@ function logoFormatRows({
   description,
   tags,
   created,
+  includeIco = false,
 }) {
   const formats = [
     { ext: "png", label: "PNG" },
@@ -189,6 +190,7 @@ function logoFormatRows({
     { ext: "pdf", label: "PDF" },
     { ext: "ai", label: "AI" },
   ];
+  if (includeIco) formats.push({ ext: "ico", label: "ICO" });
   return formats.map((fmt, index) => ({
     id: index === 0 ? id : `${id}-${fmt.ext}`,
     group,
@@ -298,6 +300,7 @@ const CATALOG = [
       "The standalone mark in its rounded container — avatars, app icons, and favicons.",
     tags: ["mark", "icon", "logomark", "blue"],
     created: "2026-01-15T10:05:00.000Z",
+    includeIco: true,
   }),
   ...logoFormatRows({
     id: "ast-018",
@@ -308,6 +311,7 @@ const CATALOG = [
     description: "Dark logomark for light surfaces where the blue mark would compete.",
     tags: ["logomark", "dark"],
     created: "2026-08-21T12:02:00.000Z",
+    includeIco: true,
   }),
   ...logoFormatRows({
     id: "ast-015",
@@ -318,6 +322,7 @@ const CATALOG = [
     description: "Reversed logomark for dark surfaces.",
     tags: ["logomark", "reversed", "light"],
     created: "2026-08-13T14:00:09.000Z",
+    includeIco: true,
   }),
   {
     id: "ast-030",
