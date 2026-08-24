@@ -17,7 +17,8 @@ export interface AuthSessionState {
  * Auth boundary for the user-management context. Infrastructure (e.g. Firebase) implements this.
  */
 export interface AuthGatewayPort {
-  signInWithEmailAndPassword(email: string, password: string): Promise<void>;
+  /** Microsoft (Entra ID) is the only sign-in method for the brand portal. */
+  signInWithMicrosoft(): Promise<void>;
   signOut(): Promise<void>;
   subscribe(listener: (state: AuthSessionState) => void): () => void;
   refreshSessionClaims(): Promise<AuthSessionState>;

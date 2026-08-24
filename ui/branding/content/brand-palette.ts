@@ -123,6 +123,57 @@ export const BRAND_COLOR_GROUPS: BrandColorGroup[] = [
   },
 ];
 
+/**
+ * Data-viz / status states from the Brand Center reference: semantic colors
+ * for product dashboards, deliberately separate from the brand palette. They
+ * signal document and payment state (approved, pending, disputed…), never
+ * brand expression.
+ */
+export const STATUS_COLORS: BrandColor[] = [
+  {
+    id: "statusSuccess",
+    hex: "#1A8A4A",
+    rgb: "26, 138, 74",
+    cmyk: "81, 0, 46, 46",
+    hsl: "146, 68%, 32%",
+  },
+  {
+    id: "statusPending",
+    hex: "#C98A1E",
+    rgb: "201, 138, 30",
+    cmyk: "0, 31, 85, 21",
+    hsl: "38, 74%, 45%",
+  },
+  {
+    id: "statusDispute",
+    hex: "#C8433F",
+    rgb: "200, 67, 63",
+    cmyk: "0, 67, 69, 22",
+    hsl: "2, 55%, 52%",
+  },
+  {
+    id: "statusCritical",
+    hex: "#8F1F1F",
+    rgb: "143, 31, 31",
+    cmyk: "0, 78, 78, 44",
+    hsl: "0, 64%, 34%",
+  },
+  {
+    id: "statusInfo",
+    hex: "#00ACFD",
+    rgb: "0, 172, 253",
+    cmyk: "67, 20, 0, 0",
+    hsl: "199, 100%, 50%",
+  },
+  {
+    id: "statusNeutral",
+    hex: "#8A8A88",
+    rgb: "138, 138, 136",
+    cmyk: "0, 0, 1, 46",
+    hsl: "60, 1%, 54%",
+  },
+];
+
 export const BRAND_GRADIENTS: BrandGradient[] = [
   {
     id: "primaryGradient",

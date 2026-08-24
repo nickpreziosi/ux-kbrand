@@ -4,15 +4,11 @@ import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
 
 export const APP_AUTH_PATHS = {
   loginPath: "/login",
-  forgotPasswordPath: "/forgot-password",
-  resetPasswordPath: "/reset-password",
   registerPath: "/login",
 } as const;
 
 export const APP_AUTH_PUBLIC_ROUTES = [
   APP_AUTH_PATHS.loginPath,
-  APP_AUTH_PATHS.forgotPasswordPath,
-  APP_AUTH_PATHS.resetPasswordPath,
   "/auth/callback",
 ] as const;
 

@@ -4,18 +4,12 @@ import type { PortalUser } from "@/contexts/user-management/user/domain/models/p
  * Seed directory for prototype development. The signed-in Firebase user is
  * matched by email; anyone authenticated but not listed falls back to the
  * "employee" role (see PortalUserDirectoryService.resolveByEmail).
+ *
+ * Microsoft-only sign-in presents Entra UPN emails, so every admin is seeded
+ * with their k-lab.ai work address. Personal-email seeds (gmail etc.) cannot
+ * sign in at all and must not be listed.
  */
 export const SEED_PORTAL_USERS: PortalUser[] = [
-  {
-    id: "usr-001",
-    displayName: "Nelson Reina",
-    email: "nelsondavidreina@gmail.com",
-    role: "admin",
-    status: "active",
-    createdAt: "2026-05-01T08:00:00.000Z",
-    updatedAt: "2026-08-01T10:00:00.000Z",
-    lastLoginAt: "2026-08-10T09:12:00.000Z",
-  },
   {
     id: "usr-007",
     displayName: "Nicholas Preziosi",
@@ -45,6 +39,24 @@ export const SEED_PORTAL_USERS: PortalUser[] = [
     createdAt: "2026-05-01T08:05:00.000Z",
     updatedAt: "2026-07-20T11:00:00.000Z",
     lastLoginAt: "2026-08-08T14:40:00.000Z",
+  },
+  {
+    id: "usr-009",
+    displayName: "Carolina",
+    email: "carolina@k-lab.ai",
+    role: "admin",
+    status: "active",
+    createdAt: "2026-08-17T09:00:00.000Z",
+    updatedAt: "2026-08-17T09:00:00.000Z",
+  },
+  {
+    id: "usr-010",
+    displayName: "Nicholas Preziosi",
+    email: "nicholas.preziosi@k-lab.ai",
+    role: "admin",
+    status: "active",
+    createdAt: "2026-08-18T17:10:00.000Z",
+    updatedAt: "2026-08-18T17:10:00.000Z",
   },
   {
     id: "usr-003",

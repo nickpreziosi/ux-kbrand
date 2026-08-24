@@ -12,6 +12,7 @@ import { SEED_BRAND_ASSETS } from "@/contexts/brand-assets/infrastructure/mock/s
 import type { CreateBrandAssetInput } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 
 const file = {
+  id: "fil-deck",
   fileName: "deck.pdf",
   contentType: "application/pdf",
   sizeBytes: 10,
@@ -26,8 +27,9 @@ function createInput(
     title: "New deck",
     description: "",
     category: "pitch-decks",
+    product: "k-lab",
     visibility: "public",
-    file,
+    files: [{ file }],
     tags: [],
     createdBy: "usr-001",
     ...overrides,
@@ -161,6 +163,26 @@ describe("catalog listings for anonymous visitors", () => {
     expect(Object.values(grouped).flat()).toEqual([]);
   });
 
+  it("keeps the brand library free of sales and employee-gated assets", async () => {
+    const repository = new MockBrandAssetRepository(0);
+    const catalog = new BrandAssetCatalogService(repository);
+    const [logo] = await repository.list({ category: "logos" });
+    await repository.update(logo.id, { visibility: "employee" });
+
+    const library = await catalog.listLibrary("public", {
+      search: "",
+      category: "all",
+      format: "all",
+      product: "all",
+      resourceType: "brand",
+    });
+
+    expect(library.length).toBeGreaterThan(0);
+    expect(library.every((asset) => asset.resourceType === "brand")).toBe(true);
+    expect(library.every((asset) => asset.visibility === "public")).toBe(true);
+    expect(library.map((asset) => asset.id)).not.toContain(logo.id);
+  });
+
   it("returns them to employees and admins", async () => {
     const catalog = new BrandAssetCatalogService(new MockBrandAssetRepository(0));
 
@@ -168,5 +190,22 @@ describe("catalog listings for anonymous visitors", () => {
       const grouped = await catalog.listSalesAssets(role);
       expect(Object.values(grouped).flat().length).toBeGreaterThan(0);
     }
+  });
+
+  it("lists sales through the shared library filter for employees, not guests", async () => {
+    const catalog = new BrandAssetCatalogService(new MockBrandAssetRepository(0));
+    const salesFilter = {
+      search: "",
+      category: "all" as const,
+      format: "all" as const,
+      product: "all" as const,
+      resourceType: "sales" as const,
+    };
+
+    expect(await catalog.listLibrary("public", salesFilter)).toEqual([]);
+
+    const employee = await catalog.listLibrary("employee", salesFilter);
+    expect(employee.length).toBeGreaterThan(0);
+    expect(employee.every((asset) => asset.resourceType === "sales")).toBe(true);
   });
 });

@@ -19,7 +19,33 @@ interface DocumentViewerCardProps {
   loading?: boolean;
   /** Renders the inline preview frame; off for compact reference cards. */
   showPreview?: boolean;
+  /** View/Download in the card; off when those live in the page header. */
+  showActions?: boolean;
   className?: string;
+}
+
+export function BrandBookActions({ asset }: { asset: BrandAsset }) {
+  const t = useTranslations("branding.document");
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button
+        variant="outline"
+        icon={<ExternalLink aria-hidden />}
+        href={asset.files[0]?.downloadUrl}
+        target="_blank"
+        rel="noopener"
+      >
+        {t("view")}
+      </Button>
+      <Button
+        variant="accent-brand"
+        icon={<Download aria-hidden />}
+        href={assetDownloadHref(asset)}
+      >
+        {t("download")}
+      </Button>
+    </div>
+  );
 }
 
 /**
@@ -31,6 +57,7 @@ export function DocumentViewerCard({
   asset,
   loading = false,
   showPreview = true,
+  showActions = true,
   className,
 }: DocumentViewerCardProps) {
   const t = useTranslations("branding.document");
@@ -69,38 +96,21 @@ export function DocumentViewerCard({
               <h3 className="text-lg font-semibold leading-snug">{asset.title}</h3>
               <p className="text-sm text-muted-foreground">{asset.description}</p>
               <p className="text-xs text-muted-foreground">
-                {asset.file.fileName} · {formatFileSize(asset.file.sizeBytes)} ·{" "}
+                {asset.files[0]?.fileName} · {formatFileSize(asset.files[0]?.sizeBytes ?? 0)} ·{" "}
                 {t("updated", {
                   date: new Date(asset.updatedAt).toLocaleDateString(),
                 })}
               </p>
             </div>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button
-              variant="outline"
-              icon={<ExternalLink aria-hidden />}
-              href={asset.file.downloadUrl}
-              target="_blank"
-              rel="noopener"
-            >
-              {t("view")}
-            </Button>
-            <Button
-              variant="accent-brand"
-              icon={<Download aria-hidden />}
-              href={assetDownloadHref(asset)}
-            >
-              {t("download")}
-            </Button>
-          </div>
+          {showActions ? <BrandBookActions asset={asset} /> : null}
         </div>
 
         {showPreview ? (
           <div className="overflow-hidden rounded-app-radius border border-border bg-secondary">
             <object
-              data={asset.file.downloadUrl}
-              type={asset.file.contentType}
+              data={asset.files[0]?.downloadUrl}
+              type={asset.files[0]?.contentType}
               aria-label={asset.title}
               className="h-[70vh] max-h-[860px] min-h-[420px] w-full"
             >
@@ -108,7 +118,7 @@ export function DocumentViewerCard({
                 <p className="text-sm text-muted-foreground">{t("previewFallback")}</p>
                 <Button
                   variant="outline"
-                  href={asset.file.downloadUrl}
+                  href={asset.files[0]?.downloadUrl}
                   target="_blank"
                   rel="noopener"
                 >

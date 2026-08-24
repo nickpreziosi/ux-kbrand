@@ -10,6 +10,7 @@ import {
   BRAND_COLOR_FORMATS,
   BRAND_COLOR_GROUPS,
   BRAND_GRADIENTS,
+  STATUS_COLORS,
   colorValue,
   type BrandColor,
   type BrandGradient,
@@ -213,6 +214,32 @@ export function ColorPaletteView() {
             <GradientSwatch
               key={gradient.id}
               gradient={gradient}
+              copiedKey={copiedKey}
+              onCopy={handleCopy}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Semantic UI colors sit apart from the brand palette on purpose —
+          they communicate state, never brand. */}
+      <section
+        className="@container space-y-4 border-t border-border pt-8"
+        aria-label={t("groups.statusColors.title")}
+      >
+        <div>
+          <h2 className="text-xl font-semibold">
+            {t("groups.statusColors.title")}
+          </h2>
+          <p className="max-w-3xl text-sm text-muted-foreground">
+            {t("groups.statusColors.description")}
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3">
+          {STATUS_COLORS.map((color) => (
+            <ColorSwatch
+              key={color.id}
+              color={color}
               copiedKey={copiedKey}
               onCopy={handleCopy}
             />

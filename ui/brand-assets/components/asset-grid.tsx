@@ -13,9 +13,10 @@ import { useTranslations } from "next-intl";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { canSeeAssetGating } from "@/contexts/brand-assets/domain/services/asset-access";
 import {
-  groupBrandAssets,
-  type AssetGroup,
-} from "@/contexts/brand-assets/domain/services/asset-grouping";
+  assetPresentationKind,
+  presentationAllowsExpand,
+  presentationShowsImagePreview,
+} from "@/contexts/brand-assets/domain/services/asset-presentation";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { AssetCard } from "./asset-card";
 import { AssetPreviewDialog } from "./asset-preview-dialog";
@@ -24,8 +25,13 @@ interface AssetGridProps {
   assets: BrandAsset[];
   loading?: boolean;
   skeletonCount?: number;
-  /** Click a thumbnail to open a larger preview dialog. */
+  /** Click a thumbnail to open a larger preview dialog when the kind allows. */
   expandPreview?: boolean;
+  selectable?: boolean;
+  selectedIds?: ReadonlySet<string>;
+  onSelectedChange?: (id: string, selected: boolean) => void;
+  /** Library format facet — when set, cards download that file directly. */
+  format?: string;
 }
 
 export function AssetGrid({
@@ -33,21 +39,16 @@ export function AssetGrid({
   loading = false,
   skeletonCount = 4,
   expandPreview = false,
+  selectable = false,
+  selectedIds,
+  onSelectedChange,
+  format,
 }: AssetGridProps) {
   const t = useTranslations("assets");
-  // Employees/admins see each asset's gating on the card; public visitors never do.
   const { viewerRole } = usePortalRole();
   const showVisibility = canSeeAssetGating(viewerRole);
-  const [previewGroup, setPreviewGroup] = React.useState<AssetGroup | null>(
-    null,
-  );
-  // Format duplicates (the same logo as PNG, SVG, PDF, AI) collapse into one
-  // card; assets without a group stay one card each, exactly as before.
-  const groups = React.useMemo(() => groupBrandAssets(assets), [assets]);
+  const [previewAsset, setPreviewAsset] = React.useState<BrandAsset | null>(null);
 
-  // Column count tracks the grid's own width, not the viewport: the content
-  // area shrinks when the sidebar expands, so viewport breakpoints would leave
-  // cards overflowing at exactly the widths that matter.
   if (loading) {
     return (
       <div className="@container">
@@ -79,27 +80,39 @@ export function AssetGrid({
   return (
     <div className="@container">
       <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4">
-        {groups.map((group, index) => (
-          <AssetCard
-            key={group.id}
-            group={group}
-            showVisibility={showVisibility}
-            priority={index === 0}
-            onPreview={
-              expandPreview && group.preview.previewUrl
-                ? () => setPreviewGroup(group)
-                : undefined
-            }
-          />
-        ))}
+        {assets.map((asset, index) => {
+          const kind = assetPresentationKind(asset.category);
+          const canExpand =
+            expandPreview &&
+            presentationShowsImagePreview(kind) &&
+            Boolean(asset.previewUrl) &&
+            presentationAllowsExpand(kind);
+          return (
+            <AssetCard
+              key={asset.id}
+              asset={asset}
+              showVisibility={showVisibility}
+              priority={index === 0}
+              selectable={selectable}
+              selected={selectedIds?.has(asset.id) ?? false}
+              onSelectedChange={
+                onSelectedChange
+                  ? (selected) => onSelectedChange(asset.id, selected)
+                  : undefined
+              }
+              format={format}
+              onPreview={canExpand ? () => setPreviewAsset(asset) : undefined}
+            />
+          );
+        })}
       </div>
       {expandPreview ? (
         <AssetPreviewDialog
-          asset={previewGroup?.preview ?? null}
-          title={previewGroup?.title}
-          open={Boolean(previewGroup)}
+          asset={previewAsset}
+          title={previewAsset?.title}
+          open={Boolean(previewAsset)}
           onOpenChange={(open) => {
-            if (!open) setPreviewGroup(null);
+            if (!open) setPreviewAsset(null);
           }}
         />
       ) : null}

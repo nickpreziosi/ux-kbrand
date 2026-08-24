@@ -14,7 +14,6 @@ describe("MockBrandAssetRepository.update", () => {
       description: undefined,
       category: undefined,
       visibility: "employee",
-      file: undefined,
       previewUrl: undefined,
       tags: undefined,
     });
@@ -23,7 +22,7 @@ describe("MockBrandAssetRepository.update", () => {
     expect(updated.title).toBe(SEEDED.title);
     expect(updated.description).toBe(SEEDED.description);
     expect(updated.category).toBe(SEEDED.category);
-    expect(updated.file).toEqual(SEEDED.file);
+    expect(updated.files).toEqual(SEEDED.files);
     expect(updated.previewUrl).toBe(SEEDED.previewUrl);
     expect(updated.tags).toEqual(SEEDED.tags);
   });

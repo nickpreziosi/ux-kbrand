@@ -4,9 +4,7 @@ import * as React from "react";
 import type {
   AssetVisibility,
   BrandAsset,
-  CreateBrandAssetGroupInput,
   CreateBrandAssetInput,
-  SaveBrandAssetGroupInput,
   UpdateBrandAssetInput,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { brandAssetAdminService } from "@/contexts/brand-assets/application/brand-assets-client-services";
@@ -75,40 +73,6 @@ export function useAssetAdmin() {
     [runMutation],
   );
 
-  const createAssetGroup = React.useCallback(
-    (input: CreateBrandAssetGroupInput) =>
-      runMutation(() => brandAssetAdminService.createGroup(input)),
-    [runMutation],
-  );
-
-  const saveAssetGroup = React.useCallback(
-    (groupId: string, input: SaveBrandAssetGroupInput) =>
-      runMutation(() => brandAssetAdminService.saveGroup(groupId, input)),
-    [runMutation],
-  );
-
-  const setGroupVisibility = React.useCallback(
-    (groupId: string, visibility: AssetVisibility) =>
-      runMutation(() =>
-        brandAssetAdminService.setGroupVisibility(groupId, visibility),
-      ),
-    [runMutation],
-  );
-
-  const setGroupArchived = React.useCallback(
-    (groupId: string, archived: boolean) =>
-      runMutation(() =>
-        brandAssetAdminService.setGroupArchived(groupId, archived),
-      ),
-    [runMutation],
-  );
-
-  const removeAssetGroup = React.useCallback(
-    (groupId: string) =>
-      runMutation(() => brandAssetAdminService.removeGroup(groupId)),
-    [runMutation],
-  );
-
   return {
     assets,
     loading,
@@ -120,10 +84,5 @@ export function useAssetAdmin() {
     setVisibility,
     setArchived,
     removeAsset,
-    createAssetGroup,
-    saveAssetGroup,
-    setGroupVisibility,
-    setGroupArchived,
-    removeAssetGroup,
   };
 }

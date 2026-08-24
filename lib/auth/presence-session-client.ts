@@ -1,18 +1,18 @@
 "use client";
 
 /**
- * Tells the server to set the httpOnly presence cookie (no token; no Firebase
- * on server). The signed-in email rides along so the mock HTTP backend can
- * resolve the viewer's portal role server-side.
+ * Tells the server to set the httpOnly presence cookie. The Firebase ID token
+ * rides along so the session route can verify it server-side and derive the
+ * viewer's email from the *verified* claims (see /api/auth/session).
  */
-export async function setPresenceSession(email?: string): Promise<void> {
+export async function setPresenceSession(idToken?: string): Promise<void> {
   const res = await fetch("/api/auth/session", {
     method: "POST",
     credentials: "include",
-    ...(email
+    ...(idToken
       ? {
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ token: idToken }),
         }
       : {}),
   });

@@ -2,26 +2,37 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { SEED_BRAND_ASSETS } from "@/contexts/brand-assets/infrastructure/mock/seed-assets";
 import {
-  formatFromAsset,
+  formatFromFile,
   type LogoFormat,
 } from "@/ui/branding/content/logo-formats";
 import { LOGO_VARIANTS } from "@/ui/branding/content/logo-variants";
 
 const publicBrandFiles = join(process.cwd(), "public", "brand-files");
 
-/** Expected format sets after the rebrand — only formats that exist on disk. */
+const ALL_LOGO_FORMATS: LogoFormat[] = ["png", "svg", "pdf", "ai"];
+
 const EXPECTED_VARIANT_FORMATS: Record<string, LogoFormat[]> = {
-  primary: ["png", "svg", "ai"],
-  dark: ["png", "svg", "ai"],
-  reversed: ["png", "svg", "ai"],
-  logomark: ["png", "svg", "pdf", "ai"],
+  primary: ALL_LOGO_FORMATS,
+  dark: ALL_LOGO_FORMATS,
+  reversed: ALL_LOGO_FORMATS,
+  logomark: ALL_LOGO_FORMATS,
 };
 
-const PRODUCT_TAGS = ["k-rails", "k-talk", "kena"] as const;
+const PRODUCT_VALUES = ["k-rails", "k-talk", "k-risk"] as const;
+const RETIRED_PRODUCT_TAGS = ["kena"] as const;
 
 const OBSOLETE_FILE_NAMES = [
   "k-lab-logo-2025.png",
   "k-lab-logomark-2025.png",
+  "kena.webp",
+  "kena-keyvisual.webp",
+  "k-rails-keyvisual.webp",
+  "k-talk-keyvisual.webp",
+  "k-lab-logo-blue.png",
+  "k-lab-logo-white.png",
+  "k-lab-logomark.png",
+  "k-rails-logo-dark.png",
+  "k-talk-logo-dark.png",
 ];
 
 describe("logo catalog (rebrand)", () => {
@@ -29,16 +40,42 @@ describe("logo catalog (rebrand)", () => {
     (asset) => asset.category === "logos",
   );
 
-  it("keeps product logos tagged and present", () => {
-    for (const tag of PRODUCT_TAGS) {
-      const match = logoAssets.find((asset) => asset.tags.includes(tag));
+  it("keeps product logos tagged by product field", () => {
+    for (const product of PRODUCT_VALUES) {
+      const match = logoAssets.find((asset) => asset.product === product);
       expect(match).toBeDefined();
-      expect(match!.tags).toContain("product");
+    }
+  });
+
+  it("ships flat lockups (png + svg + pdf + ai) for K Rails, K Talk, and K Risk", () => {
+    for (const product of PRODUCT_VALUES) {
+      const darkLockups = logoAssets.filter(
+        (asset) => asset.product === product && asset.tags.includes("dark"),
+      );
+      const formats = darkLockups
+        .flatMap((asset) => asset.files.map((file) => formatFromFile(file)))
+        .filter((format): format is LogoFormat => format !== null);
+      expect(formats.sort()).toEqual(["ai", "pdf", "png", "svg"]);
+    }
+  });
+
+  it("carries no retired product brand anywhere in the catalog", () => {
+    for (const tag of RETIRED_PRODUCT_TAGS) {
+      const matches = SEED_BRAND_ASSETS.filter(
+        (asset) =>
+          asset.tags.includes(tag) ||
+          asset.product === tag ||
+          asset.title.toLowerCase().includes(tag) ||
+          asset.files.some((file) => file.fileName.includes(tag)),
+      );
+      expect(matches).toEqual([]);
     }
   });
 
   it("retires obsolete dimensional raster masters from the catalog", () => {
-    const fileNames = logoAssets.map((asset) => asset.file.fileName);
+    const fileNames = SEED_BRAND_ASSETS.flatMap((asset) =>
+      asset.files.map((file) => file.fileName),
+    );
     for (const obsolete of OBSOLETE_FILE_NAMES) {
       expect(fileNames).not.toContain(obsolete);
     }
@@ -51,9 +88,11 @@ describe("logo catalog (rebrand)", () => {
       );
       const formats = [
         ...new Set(
-          matched
-            .map((asset) => formatFromAsset(asset))
-            .filter((format): format is LogoFormat => format !== null),
+          matched.flatMap((asset) =>
+            asset.files
+              .map((file) => formatFromFile(file))
+              .filter((format): format is LogoFormat => format !== null),
+          ),
         ),
       ];
       expect(formats.sort()).toEqual(
@@ -63,8 +102,10 @@ describe("logo catalog (rebrand)", () => {
   });
 
   it("covers png, svg, pdf, and ai content types among K Lab logo files", () => {
-    const kLabLogos = logoAssets.filter((asset) => !asset.tags.includes("product"));
-    const types = new Set(kLabLogos.map((asset) => asset.file.contentType));
+    const kLabLogos = logoAssets.filter((asset) => asset.product === "k-lab");
+    const types = new Set(
+      kLabLogos.flatMap((asset) => asset.files.map((file) => file.contentType)),
+    );
     expect(types.has("image/png")).toBe(true);
     expect(types.has("image/svg+xml")).toBe(true);
     expect(types.has("application/pdf")).toBe(true);
@@ -73,16 +114,45 @@ describe("logo catalog (rebrand)", () => {
         types.has("application/illustrator") ||
         types.has("application/octet-stream"),
     ).toBe(true);
-    expect(kLabLogos.some((asset) => asset.file.fileName.endsWith(".ai"))).toBe(
-      true,
-    );
+    expect(
+      kLabLogos.some((asset) =>
+        asset.files.some((file) => file.fileName.endsWith(".ai")),
+      ),
+    ).toBe(true);
   });
 
-  it("points every logo asset at a file under public/brand-files", () => {
-    for (const asset of logoAssets) {
-      expect(asset.file.downloadUrl.startsWith("/brand-files/")).toBe(true);
-      const relative = asset.file.downloadUrl.replace(/^\/brand-files\//, "");
-      expect(existsSync(join(publicBrandFiles, relative))).toBe(true);
+  it("packs a multi-size ICO on each K Lab logomark", () => {
+    const marks = logoAssets.filter((asset) =>
+      asset.tags.includes("logomark"),
+    );
+    expect(marks.length).toBeGreaterThanOrEqual(3);
+    for (const mark of marks.filter((asset) => asset.product === "k-lab")) {
+      expect(mark.files.some((file) => file.fileName.endsWith(".ico"))).toBe(
+        true,
+      );
     }
+  });
+
+  it("is one record per artwork", () => {
+    expect(logoAssets).toHaveLength(16);
+  });
+
+  it("stores logos under public/brand-files/logos/{product}/", () => {
+    for (const asset of logoAssets) {
+      for (const file of asset.files) {
+        expect(file.downloadUrl.startsWith("/brand-files/")).toBe(true);
+        expect(file.downloadUrl).toContain(`/logos/${asset.product}/`);
+        expect(file.downloadUrl).not.toContain("/logos/vector/");
+        const relative = file.downloadUrl.replace(/^\/brand-files\//, "");
+        expect(existsSync(join(publicBrandFiles, relative))).toBe(true);
+      }
+    }
+  });
+
+  it("copies logomark ICOs into public/ico for the app favicon", () => {
+    const publicRoot = join(process.cwd(), "public", "ico");
+    expect(existsSync(join(publicRoot, "favicon-grey.ico"))).toBe(true);
+    expect(existsSync(join(publicRoot, "favicon-white.ico"))).toBe(true);
+    expect(existsSync(join(publicRoot, "favicon-blue.ico"))).toBe(true);
   });
 });

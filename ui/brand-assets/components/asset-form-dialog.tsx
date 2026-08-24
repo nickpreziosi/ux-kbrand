@@ -29,21 +29,24 @@ import {
   resolveVisibilityForCategory,
   type AssetCategory,
 } from "@/contexts/brand-assets/domain/models/asset-category.model";
+import {
+  ASSET_PRODUCTS,
+  type AssetProduct,
+} from "@/contexts/brand-assets/domain/models/asset-product.model";
 import type {
-  AssetFile,
-  AssetGroupFileInput,
+  AssetFileDraft,
+  AssetFileInput,
   AssetVisibility,
   BrandAsset,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import {
-  assetFormat,
+  fileFormat,
   formatFromFileName,
-  type AssetGroup,
-} from "@/contexts/brand-assets/domain/services/asset-grouping";
+  sortedFiles,
+} from "@/contexts/brand-assets/domain/services/asset-files";
 import { uploadAssetFile } from "@/contexts/brand-assets/infrastructure/http/upload-asset-file";
 import { readFloatingLabelInputValue } from "@/ui/shared/lib/floating-label-input-value";
 
-/** How many formats one artwork may carry — PNG/SVG/WEBP/PDF/AI/EPS and room. */
 const MAX_GROUP_FILES = 10;
 
 export interface AssetFormValues {
@@ -51,29 +54,24 @@ export interface AssetFormValues {
   description: string;
   category: AssetCategory;
   visibility: AssetVisibility;
+  product: AssetProduct;
   tags: string[];
-  /** Formats to publish: every file on create, only the new ones on edit. */
-  addFiles: AssetGroupFileInput[];
-  /** Member asset ids the admin dropped (edit only). */
-  removeAssetIds: string[];
+  addFiles: AssetFileInput[];
+  removeFileIds: string[];
 }
 
 interface AssetFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  /** Existing artwork and its formats when editing; undefined when creating. */
-  group?: AssetGroup;
+  asset?: BrandAsset;
   submitting?: boolean;
   onSubmit: (values: AssetFormValues) => Promise<void> | void;
 }
 
-/**
- * Builds domain file metadata from a browser File. Default: upload the bytes
- * to the mock HTTP backend so every tab (and download gating) can serve them.
- * The in-browser mock (NEXT_PUBLIC_USE_MOCK_BRAND_API=true) keeps the old
- * blob-URL shortcut — bytes never leave the browser there.
- */
-async function toAssetFile(file: File, category: AssetCategory): Promise<AssetFile> {
+async function toAssetFile(
+  file: File,
+  category: AssetCategory,
+): Promise<AssetFileDraft> {
   if (process.env.NEXT_PUBLIC_USE_MOCK_BRAND_API === "true") {
     return {
       fileName: file.name,
@@ -86,20 +84,10 @@ async function toAssetFile(file: File, category: AssetCategory): Promise<AssetFi
   return uploadAssetFile(file, category);
 }
 
-/**
- * Images preview from their own bytes, the way the seeded PNGs do (uploads are
- * served inline by /api/uploads/[id]). PDFs, fonts and stylesheets have no
- * thumbnail to show, so they fall back to the card's file-type icon.
- */
-function selfPreviewUrl(file: File, assetFile: AssetFile): string {
+function selfPreviewUrl(file: File, assetFile: AssetFileDraft): string {
   return file.type.startsWith("image/") ? assetFile.downloadUrl : "";
 }
 
-function formatLabel(fileName: string): string {
-  return formatFromFileName(fileName)?.toUpperCase() ?? "FILE";
-}
-
-/** Formats claimed twice across the files the group would end up with. */
 function duplicateFormats(fileNames: string[]): string[] {
   const seen = new Set<string>();
   const duplicates = new Set<string>();
@@ -115,18 +103,19 @@ function duplicateFormats(fileNames: string[]): string[] {
 export function AssetFormDialog({
   open,
   onOpenChange,
-  group,
+  asset,
   submitting = false,
   onSubmit,
 }: AssetFormDialogProps) {
   const t = useTranslations("adminAssets.form");
   const tCategories = useTranslations("brand.categories");
-  const isEdit = Boolean(group);
+  const isEdit = Boolean(asset);
 
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [category, setCategory] = React.useState<AssetCategory>("brand-guidelines");
   const [visibility, setVisibility] = React.useState<AssetVisibility>("public");
+  const [product, setProduct] = React.useState<AssetProduct>("k-lab");
   const [tags, setTags] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]);
   const [removedIds, setRemovedIds] = React.useState<string[]>([]);
@@ -136,22 +125,20 @@ export function AssetFormDialog({
 
   React.useEffect(() => {
     if (!open) return;
-    setTitle(group?.title ?? "");
-    setDescription(group?.description ?? "");
-    setCategory(group?.category ?? "brand-guidelines");
-    setVisibility(group?.visibility ?? "public");
-    setTags(group?.tags.join(", ") ?? "");
+    setTitle(asset?.title ?? "");
+    setDescription(asset?.description ?? "");
+    setCategory(asset?.category ?? "brand-guidelines");
+    setVisibility(asset?.visibility ?? "public");
+    setProduct(asset?.product ?? "k-lab");
+    setTags(asset?.tags.join(", ") ?? "");
     setFiles([]);
     setRemovedIds([]);
     setFormError(null);
-  }, [open, group]);
+  }, [open, asset]);
 
-  // Sales categories are employee-only by domain rule, so the picker follows
-  // the category instead of offering a choice that cannot be honoured.
   const salesGated = isSalesCategory(category);
-
-  const existingFiles: BrandAsset[] = group?.assets ?? [];
-  const keptFiles = existingFiles.filter((asset) => !removedIds.includes(asset.id));
+  const existingFiles = asset ? sortedFiles(asset.files) : [];
+  const keptFiles = existingFiles.filter((file) => !removedIds.includes(file.id));
   const totalFiles = keptFiles.length + files.length;
 
   const handleCategoryChange = (value: string) => {
@@ -160,12 +147,12 @@ export function AssetFormDialog({
     setVisibility((current) => resolveVisibilityForCategory(next, current));
   };
 
-  const toggleRemoved = (assetId: string) => {
+  const toggleRemoved = (fileId: string) => {
     setFormError(null);
     setRemovedIds((current) =>
-      current.includes(assetId)
-        ? current.filter((id) => id !== assetId)
-        : [...current, assetId],
+      current.includes(fileId)
+        ? current.filter((id) => id !== fileId)
+        : [...current, fileId],
     );
   };
 
@@ -184,10 +171,8 @@ export function AssetFormDialog({
       return;
     }
 
-    // One format per artwork: a second PNG would render as a duplicate chip
-    // with no way for a visitor to tell the two apart.
     const duplicates = duplicateFormats([
-      ...keptFiles.map((asset) => asset.file.fileName),
+      ...keptFiles.map((file) => file.fileName),
       ...files.map((file) => file.name),
     ]);
     if (duplicates.length > 0) {
@@ -197,7 +182,7 @@ export function AssetFormDialog({
 
     setFormError(null);
 
-    let addFiles: AssetGroupFileInput[] = [];
+    let addFiles: AssetFileInput[] = [];
     if (files.length > 0) {
       setUploading(true);
       try {
@@ -220,18 +205,24 @@ export function AssetFormDialog({
       description: description.trim(),
       category,
       visibility,
+      product,
       tags: tags
         .split(",")
         .map((tag) => tag.trim())
         .filter(Boolean),
       addFiles,
-      removeAssetIds: removedIds,
+      removeFileIds: removedIds,
     });
   };
 
   const categoryOptions = ASSET_CATEGORIES.map((value) => ({
     value,
     label: tCategories(`${value}.title`),
+  }));
+
+  const productOptions = ASSET_PRODUCTS.map((value) => ({
+    value,
+    label: t(`products.${value}`),
   }));
 
   const visibilityOptions: { value: AssetVisibility; label: string }[] = [
@@ -272,25 +263,33 @@ export function AssetFormDialog({
               onChange={(e) => handleCategoryChange(readFloatingLabelInputValue(e))}
               disabled={busy}
             />
-            <div className="space-y-1">
-              <FloatingLabelInput
-                label={t("visibilityLabel")}
-                type="select"
-                selectOptions={visibilityOptions}
-                value={visibility}
-                onChange={(e) =>
-                  setVisibility(readFloatingLabelInputValue(e) as AssetVisibility)
-                }
-                disabled={busy || salesGated}
-              />
-              {/* The server enforces this either way — say so rather than let
-                  an admin pick "Public" and watch it silently flip back. */}
-              {salesGated ? (
-                <p className="text-xs text-muted-foreground">
-                  {t("visibilitySalesLocked")}
-                </p>
-              ) : null}
-            </div>
+            <FloatingLabelInput
+              label={t("productLabel")}
+              type="select"
+              selectOptions={productOptions}
+              value={product}
+              onChange={(e) =>
+                setProduct(readFloatingLabelInputValue(e) as AssetProduct)
+              }
+              disabled={busy}
+            />
+          </div>
+          <div className="space-y-1">
+            <FloatingLabelInput
+              label={t("visibilityLabel")}
+              type="select"
+              selectOptions={visibilityOptions}
+              value={visibility}
+              onChange={(e) =>
+                setVisibility(readFloatingLabelInputValue(e) as AssetVisibility)
+              }
+              disabled={busy || salesGated}
+            />
+            {salesGated ? (
+              <p className="text-xs text-muted-foreground">
+                {t("visibilitySalesLocked")}
+              </p>
+            ) : null}
           </div>
           <FloatingLabelInput
             label={t("tagsLabel")}
@@ -299,24 +298,22 @@ export function AssetFormDialog({
             disabled={busy}
           />
 
-          {/* The formats already published for this artwork. Dropping one here
-              deletes that file on save; the group must keep at least one. */}
           {existingFiles.length > 0 ? (
             <section className="space-y-2">
               <p className="text-sm font-medium">{t("currentFormats")}</p>
               <ul className="divide-y divide-border rounded-md border border-border">
-                {existingFiles.map((asset) => {
-                  const removed = removedIds.includes(asset.id);
+                {existingFiles.map((file) => {
+                  const removed = removedIds.includes(file.id);
                   return (
                     <li
-                      key={asset.id}
+                      key={file.id}
                       className="flex items-center gap-3 p-2 ps-3 text-sm"
                     >
                       <Badge
                         variant={removed ? "outline" : "secondary"}
                         className="shrink-0 font-semibold"
                       >
-                        {assetFormat(asset)?.toUpperCase() ?? "FILE"}
+                        {fileFormat(file)?.toUpperCase() ?? "FILE"}
                       </Badge>
                       <span
                         className={cn(
@@ -324,10 +321,10 @@ export function AssetFormDialog({
                           removed && "text-muted-foreground line-through",
                         )}
                       >
-                        {asset.file.fileName}
+                        {file.fileName}
                       </span>
                       <span className="shrink-0 text-xs text-muted-foreground">
-                        {formatFileSize(asset.file.sizeBytes)}
+                        {formatFileSize(file.sizeBytes)}
                       </span>
                       <Button
                         type="button"
@@ -338,13 +335,13 @@ export function AssetFormDialog({
                         aria-label={
                           removed
                             ? t("restoreFormat", {
-                                format: assetFormat(asset)?.toUpperCase() ?? "",
+                                format: fileFormat(file)?.toUpperCase() ?? "",
                               })
                             : t("removeFormat", {
-                                format: assetFormat(asset)?.toUpperCase() ?? "",
+                                format: fileFormat(file)?.toUpperCase() ?? "",
                               })
                         }
-                        onClick={() => toggleRemoved(asset.id)}
+                        onClick={() => toggleRemoved(file.id)}
                       >
                         {removed ? (
                           <Undo2 className="h-4 w-4" aria-hidden />

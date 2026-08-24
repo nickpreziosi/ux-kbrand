@@ -1,8 +1,6 @@
 import type {
   BrandAsset,
-  CreateBrandAssetGroupInput,
   CreateBrandAssetInput,
-  SaveBrandAssetGroupInput,
   UpdateBrandAssetInput,
 } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import {
@@ -10,9 +8,8 @@ import {
   resolveVisibilityForCategory,
 } from "@/contexts/brand-assets/domain/models/asset-category.model";
 import type { BrandAssetRepository } from "@/contexts/brand-assets/domain/repositories/brandAssetRepository.interface";
-import { groupMembers } from "@/contexts/brand-assets/domain/services/asset-grouping";
 
-/** Write side of the catalog — admin create / edit / replace / archive / delete. */
+/** Write side of the catalog — admin create / edit / archive / delete. */
 export class BrandAssetAdminService {
   constructor(private readonly assets: BrandAssetRepository) {}
 
@@ -36,8 +33,6 @@ export class BrandAssetAdminService {
    */
   async update(id: string, input: UpdateBrandAssetInput): Promise<BrandAsset> {
     if (input.category) {
-      // Moving into a sales category gates the asset even when the edit says
-      // nothing about visibility; moving elsewhere leaves gating untouched.
       return this.assets.update(id, {
         ...input,
         visibility: isSalesCategory(input.category)
@@ -70,63 +65,5 @@ export class BrandAssetAdminService {
 
   remove(id: string): Promise<void> {
     return this.assets.remove(id);
-  }
-
-  /** Publishes one artwork in every format it was uploaded with. */
-  createGroup(input: CreateBrandAssetGroupInput): Promise<BrandAsset[]> {
-    return this.assets.createGroup({
-      ...input,
-      visibility: resolveVisibilityForCategory(input.category, input.visibility),
-    });
-  }
-
-  /**
-   * Group edit — same sales-gating invariant as {@link update}, applied to the
-   * group as it will be after the edit, so adding a format or renaming an
-   * artwork can never quietly publish a sales resource.
-   */
-  async saveGroup(
-    groupId: string,
-    input: SaveBrandAssetGroupInput,
-  ): Promise<BrandAsset[]> {
-    if (input.category) {
-      return this.assets.saveGroup(groupId, {
-        ...input,
-        visibility: isSalesCategory(input.category)
-          ? "employee"
-          : input.visibility,
-      });
-    }
-
-    if (input.visibility === "public") {
-      const members = groupMembers(
-        await this.assets.list({ includeArchived: true }),
-        groupId,
-      );
-      const [primary] = members;
-      if (primary) {
-        return this.assets.saveGroup(groupId, {
-          ...input,
-          visibility: resolveVisibilityForCategory(primary.category, "public"),
-        });
-      }
-    }
-
-    return this.assets.saveGroup(groupId, input);
-  }
-
-  setGroupVisibility(
-    groupId: string,
-    visibility: BrandAsset["visibility"],
-  ): Promise<BrandAsset[]> {
-    return this.saveGroup(groupId, { visibility });
-  }
-
-  setGroupArchived(groupId: string, archived: boolean): Promise<BrandAsset[]> {
-    return this.assets.setGroupArchived(groupId, archived);
-  }
-
-  removeGroup(groupId: string): Promise<void> {
-    return this.assets.removeGroup(groupId);
   }
 }

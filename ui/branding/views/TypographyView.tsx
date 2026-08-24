@@ -6,7 +6,7 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Type as TypeIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 import {
   ARIAL_STACK,
   TYPE_HIERARCHY,
@@ -20,7 +20,7 @@ export function TypographyView() {
   const t = useTranslations("branding.typography");
   const { assets, loading, loadError } = useCategoryAssets("fonts");
   const fontFiles = assets.filter(
-    (asset) => asset.file.fileName !== TYPOGRAPHY_TOKEN_FILE,
+    (asset) => !asset.files.some((file) => file.fileName === TYPOGRAPHY_TOKEN_FILE),
   );
 
   return (
@@ -29,7 +29,18 @@ export function TypographyView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<TypeIcon className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="fonts"
+            assets={fontFiles}
+            loading={loading}
+          />
+        }
       />
+
+      {loadError ? (
+        <p className="text-sm text-destructive">{t("loadError")}</p>
+      ) : null}
 
       <section className="space-y-4" aria-label={t("typefaceTitle")}>
         <div>
@@ -105,20 +116,6 @@ export function TypographyView() {
             ))}
           </CardContent>
         </Card>
-      </section>
-
-      <section className="space-y-4" aria-label={t("downloadsTitle")}>
-        <div>
-          <h2 className="text-xl font-semibold">{t("downloadsTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("downloadsDescription")}
-          </p>
-        </div>
-        {loadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid assets={fontFiles} loading={loading} skeletonCount={2} />
-        )}
       </section>
     </div>
   );

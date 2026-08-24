@@ -23,7 +23,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
   const url = uploadDownloadUrl(id);
   const owner = (
     await getServerBrandAssetRepository().list({ includeArchived: true })
-  ).find((asset) => asset.file.downloadUrl === url);
+  ).find((asset) => asset.files.some((file) => file.downloadUrl === url));
 
   const allowed = owner
     ? canViewAsset(viewer.role, owner)

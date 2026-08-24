@@ -1,5 +1,5 @@
 import type { AssetCategory } from "@/contexts/brand-assets/domain/models/asset-category.model";
-import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
+import type { AssetFileDraft } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 
 /**
  * Sends the chosen file to the mock HTTP backend (admin-gated) and returns the
@@ -8,7 +8,7 @@ import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asse
 export async function uploadAssetFile(
   file: File,
   category: AssetCategory,
-): Promise<AssetFile> {
+): Promise<AssetFileDraft> {
   const form = new FormData();
   form.append("file", file);
   form.append("category", category);
@@ -30,6 +30,6 @@ export async function uploadAssetFile(
     throw new Error(key);
   }
 
-  const { file: assetFile } = (await res.json()) as { file: AssetFile };
+  const { file: assetFile } = (await res.json()) as { file: AssetFileDraft };
   return assetFile;
 }

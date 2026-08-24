@@ -6,7 +6,7 @@ import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Image as ImageIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
-import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
+import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
 
 const IMAGERY_DO_KEYS = ["approvedSets", "contrast", "crop"] as const;
 const IMAGERY_DONT_KEYS = ["stretch", "recolor", "clutter"] as const;
@@ -21,7 +21,18 @@ export function ImageryView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<ImageIcon className="h-8 w-8" aria-hidden />}
+        actions={
+          <GuidelineDownloadsSection
+            category="brand-imagery"
+            assets={assets}
+            loading={loading}
+          />
+        }
       />
+
+      {loadError ? (
+        <p className="text-sm text-destructive">{t("loadError")}</p>
+      ) : null}
 
       <Card className="@container">
         <CardContent className="grid grid-cols-1 gap-6 p-6 @md:grid-cols-2">
@@ -55,25 +66,6 @@ export function ImageryView() {
           </div>
         </CardContent>
       </Card>
-
-      <section className="@container space-y-4" aria-label={t("libraryTitle")}>
-        <div>
-          <h2 className="text-xl font-semibold">{t("libraryTitle")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("libraryDescription")}
-          </p>
-        </div>
-        {loadError ? (
-          <p className="text-sm text-destructive">{t("loadError")}</p>
-        ) : (
-          <AssetGrid
-            assets={assets}
-            loading={loading}
-            skeletonCount={3}
-            expandPreview
-          />
-        )}
-      </section>
     </div>
   );
 }

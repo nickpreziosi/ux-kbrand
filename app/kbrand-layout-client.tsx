@@ -24,27 +24,36 @@ import {
 } from "@k-lab/components";
 import {
   BookOpen,
+  Boxes,
+  Briefcase,
+  Camera,
   FolderCog,
   House,
   Image as ImageIcon,
+  Images,
   LayoutGrid,
   LogIn,
   Palette,
   PenTool,
   Presentation,
+  Shapes,
+  Share2,
+  ShoppingBag,
   Type,
   Users,
 } from "lucide-react";
 import { useMessages, useTranslations } from "next-intl";
 import { canSeeSalesSection } from "@/contexts/brand-assets/domain/services/asset-access";
 import type { ViewerRole } from "@/contexts/shared/domain/viewer-role";
+import { shouldShowGuestChrome } from "@/lib/auth/guest-chrome";
+import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAuth } from "@/ui/user-management/auth/auth-provider";
 import {
   DEV_ROLE_OVERRIDE_ENABLED,
   writeDevRoleOverride,
 } from "@/ui/user-management/dev/dev-role-override";
+import { GuestSidebarSignIn } from "@/ui/user-management/components/guest-sidebar-sign-in";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
-import { isPublicPath } from "@/lib/auth/public-routes";
 import { useAppLocaleChange } from "@/app/providers/app-intl-provider";
 import { KBrandSidebarBrand } from "@/ui/shared/components/k-brand-sidebar-brand";
 import { KLabBrandLogo } from "@/ui/shared/components/k-lab-brand-logo";
@@ -77,8 +86,15 @@ export function KBrandLayoutClient({
   const pathname = usePathname() ?? "/";
   const t = useTranslations("shell");
   const messages = useMessages();
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading: authLoading } = useAuth();
   const { viewerRole, devRoleOverride, isAdmin } = usePortalRole();
+  // Sign-in action is for settled anonymous sessions only — hidden while auth
+  // is restoring (no signed-in flash) and when a dev role override is active.
+  const showSignIn = shouldShowGuestChrome({
+    authLoading,
+    user,
+    viewerRole,
+  });
   const tDevRole = useTranslations("devTools.roleSwitcher");
   const { locale, changeLocale } = useAppLocaleChange();
 
@@ -106,53 +122,62 @@ export function KBrandLayoutClient({
   }, [messages]);
 
   const primaryNav = React.useMemo<AppSidebarNavLink[]>(
-    () => [{ href: "/", label: t("nav.home"), icon: House }],
-    [t]
-  );
-
-  /** Branding standards live under one expandable group; the full guidelines
-   *  document is the last entry, as the source of truth behind the summaries. */
-  const brandingAccordion = React.useMemo<AppSidebarAccordionItem[]>(
     () => [
-      {
-        id: "branding",
-        label: t("nav.branding"),
-        icon: Palette,
-        items: [
-          { href: "/branding", label: t("nav.overview"), icon: LayoutGrid },
-          { href: "/branding/logo", label: t("nav.logo"), icon: PenTool },
-          { href: "/branding/colors", label: t("nav.colors"), icon: Palette },
-          { href: "/branding/typography", label: t("nav.typography"), icon: Type },
-          { href: "/branding/imagery", label: t("nav.imagery"), icon: ImageIcon },
-          { href: "/branding/guidelines", label: t("nav.guidelines"), icon: BookOpen },
-        ],
-      },
-    ],
-    [t]
-  );
-
-  // Public visitors don't see the Sales section at all; admins additionally
-  // get the management area (see asset-access domain rules).
-  const secondaryNav = React.useMemo<AppSidebarNavLink[]>(
-    () => [
+      { href: "/", label: t("nav.home"), icon: House },
+      { href: "/assets", label: t("nav.assetLibrary"), icon: Images },
       ...(canSeeSalesSection(viewerRole)
         ? [{ href: "/sales", label: t("nav.sales"), icon: Presentation }]
         : []),
-      ...(isAdmin
-        ? [
-            { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
-            { href: "/admin/users", label: t("nav.adminUsers"), icon: Users },
-          ]
-        : []),
     ],
-    [viewerRole, isAdmin, t]
+    [t, viewerRole]
+  );
+
+  const brandingAccordion = React.useMemo<AppSidebarAccordionItem>(
+    () => ({
+      id: "branding",
+      label: t("nav.guidelines"),
+      icon: Palette,
+      items: [
+        { href: "/branding", label: t("nav.overview"), icon: LayoutGrid },
+        { href: "/branding/logo", label: t("nav.logo"), icon: PenTool },
+        { href: "/branding/colors", label: t("nav.colors"), icon: Palette },
+        { href: "/branding/typography", label: t("nav.typography"), icon: Type },
+        { href: "/branding/iconography", label: t("nav.iconography"), icon: Shapes },
+        { href: "/branding/imagery", label: t("nav.imagery"), icon: ImageIcon },
+        { href: "/branding/photography", label: t("nav.photography"), icon: Camera },
+        { href: "/branding/corporate-assets", label: t("nav.corporateAssets"), icon: Briefcase },
+        { href: "/branding/social-media", label: t("nav.socialMedia"), icon: Share2 },
+        { href: "/branding/merchandise", label: t("nav.merchandise"), icon: ShoppingBag },
+        { href: "/branding/sub-brands", label: t("nav.subBrands"), icon: Boxes },
+        { href: "/branding/guidelines", label: t("nav.guidelines"), icon: BookOpen },
+      ],
+    }),
+    [t]
+  );
+
+  const adminAccordion = React.useMemo<AppSidebarAccordionItem[]>(
+    () =>
+      isAdmin
+        ? [
+            {
+              id: "admin",
+              label: t("nav.admin"),
+              icon: FolderCog,
+              items: [
+                { href: "/admin/assets", label: t("nav.adminAssets"), icon: FolderCog },
+                { href: "/admin/users", label: t("nav.adminUsers"), icon: Users },
+              ],
+            },
+          ]
+        : [],
+    [isAdmin, t]
   );
 
   const isAuthPage = isPublicPath(pathname);
 
   const handleLogoutClick = async () => {
     await signOut();
-    router.replace("/");
+    router.replace("/login");
   };
 
   const shellUser = user
@@ -237,38 +262,42 @@ export function KBrandLayoutClient({
       defaultEmail={shellUser?.email ?? undefined}
       onSubmit={async () => undefined}
     >
-      <AppLayoutClient
-        currentPath={pathname}
-        homeHref="/"
-        initialCollapsed={initialSidebarCollapsed}
-        sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
-        preferences={preferences}
-        primaryNav={primaryNav}
-        accordions={brandingAccordion}
-        bottomNav={secondaryNav}
-        user={shellUser}
-        onProfileClick={() => undefined}
-        onSettingsClick={() => router.push("/settings")}
-        onLogoutClick={handleLogoutClick}
-        locale={locale}
-        onLocaleChange={(code) => {
-          void changeLocale(code);
-        }}
-        languages={DEFAULT_LANGUAGE_OPTIONS}
-        brand={<KBrandSidebarBrand />}
-        footer={footer}
-        navbarRightSlot={
-          !user ? (
-            <Button
-              variant="accent-brand"
-              size="sm"
-              icon={<LogIn aria-hidden />}
-              href={`/login?next=${encodeURIComponent(pathname)}`}
-            >
-              {t("signIn")}
-            </Button>
-          ) : undefined
-        }
+      <div {...(showSignIn ? { "data-kbrand-guest": "" } : {})} className="contents">
+        {showSignIn ? <GuestSidebarSignIn pathname={pathname} /> : null}
+        <AppLayoutClient
+          className={showSignIn ? "kbrand-guest-chrome" : undefined}
+          currentPath={pathname}
+          homeHref="/"
+          initialCollapsed={initialSidebarCollapsed}
+          sidebarCollapseCookieKey={DEFAULT_SIDEBAR_COLLAPSE_COOKIE}
+          preferences={preferences}
+          primaryNav={primaryNav}
+          accordions={[brandingAccordion, ...adminAccordion]}
+          bottomNav={[]}
+          user={showSignIn ? undefined : shellUser}
+          onProfileClick={showSignIn ? undefined : () => undefined}
+          onSettingsClick={showSignIn ? undefined : () => router.push("/settings")}
+          onLogoutClick={showSignIn ? undefined : handleLogoutClick}
+          locale={locale}
+          onLocaleChange={(code) => {
+            void changeLocale(code);
+          }}
+          languages={DEFAULT_LANGUAGE_OPTIONS}
+          brand={<KBrandSidebarBrand />}
+          footer={footer}
+          navbarRightSlot={
+            showSignIn ? (
+              <Button
+                variant="accent-brand"
+                size="icon"
+                className="h-11 w-11 shrink-0"
+                icon={<LogIn aria-hidden />}
+                href={`/login?next=${encodeURIComponent(pathname)}`}
+                aria-label={t("signIn")}
+                title={t("signIn")}
+              />
+            ) : undefined
+          }
         mobileHeader={
           <Link
             href="/"
@@ -288,6 +317,7 @@ export function KBrandLayoutClient({
       >
         <div className="mx-auto w-full max-w-[1800px]">{children}</div>
       </AppLayoutClient>
+      </div>
     </SupportDialogProvider>
   );
 }

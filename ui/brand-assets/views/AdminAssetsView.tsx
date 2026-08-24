@@ -37,21 +37,22 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import {
-  assetFormat,
-  groupBrandAssets,
-  type AssetGroup,
-} from "@/contexts/brand-assets/domain/services/asset-grouping";
+  assetTotalBytes,
+  fileFormat,
+  sortedFiles,
+} from "@/contexts/brand-assets/domain/services/asset-files";
 import {
   EMPTY_ASSET_GROUP_FILTER,
-  filterAssetGroups,
-  hasActiveAssetGroupFilter,
-  type AssetGroupFilter,
+  filterCatalogAssets,
+  hasActiveAssetCatalogFilter,
+  type AssetCatalogFilter,
 } from "@/contexts/brand-assets/domain/services/asset-filtering";
 import { AssetTableToolbar } from "@/ui/brand-assets/components/asset-table-toolbar";
 import { useAssetAdmin } from "@/ui/brand-assets/hooks/use-asset-admin";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
-import { groupDownloadHref } from "@/ui/brand-assets/lib/asset-download-href";
+import { assetBundleHref } from "@/ui/brand-assets/lib/asset-download-href";
 import {
   AssetFormDialog,
   type AssetFormValues,
@@ -65,32 +66,24 @@ export function AdminAssetsView() {
     loading,
     loadError,
     mutating,
-    createAssetGroup,
-    saveAssetGroup,
-    setGroupVisibility,
-    setGroupArchived,
-    removeAssetGroup,
+    createAsset,
+    updateAsset,
+    setVisibility,
+    setArchived,
+    removeAsset,
   } = useAssetAdmin();
   const { portalUser } = usePortalRole();
 
   const [formOpen, setFormOpen] = React.useState(false);
-  const [editing, setEditing] = React.useState<AssetGroup | undefined>(
-    undefined,
-  );
-  const [deleting, setDeleting] = React.useState<AssetGroup | undefined>(
-    undefined,
-  );
-
-  const [filter, setFilter] = React.useState<AssetGroupFilter>(
+  const [editing, setEditing] = React.useState<BrandAsset | undefined>(undefined);
+  const [deleting, setDeleting] = React.useState<BrandAsset | undefined>(undefined);
+  const [filter, setFilter] = React.useState<AssetCatalogFilter>(
     EMPTY_ASSET_GROUP_FILTER,
   );
 
-  // One row per artwork, not per file — the admin edits the same unit a
-  // visitor downloads, so adding a format never means hunting for siblings.
-  const groups = React.useMemo(() => groupBrandAssets(assets), [assets]);
-  const visibleGroups = React.useMemo(
-    () => filterAssetGroups(groups, filter),
-    [groups, filter],
+  const visibleAssets = React.useMemo(
+    () => filterCatalogAssets(assets, filter),
+    [assets, filter],
   );
 
   const openCreate = () => {
@@ -98,30 +91,32 @@ export function AdminAssetsView() {
     setFormOpen(true);
   };
 
-  const openEdit = (group: AssetGroup) => {
-    setEditing(group);
+  const openEdit = (asset: BrandAsset) => {
+    setEditing(asset);
     setFormOpen(true);
   };
 
   const handleSubmit = async (values: AssetFormValues) => {
     try {
       if (editing) {
-        await saveAssetGroup(editing.id, {
+        await updateAsset(editing.id, {
           title: values.title,
           description: values.description,
           category: values.category,
           visibility: values.visibility,
+          product: values.product,
           tags: values.tags,
           addFiles: values.addFiles,
-          removeAssetIds: values.removeAssetIds,
+          removeFileIds: values.removeFileIds,
         });
         toast.success(t("toasts.updated"));
       } else {
-        await createAssetGroup({
+        await createAsset({
           title: values.title,
           description: values.description,
           category: values.category,
           visibility: values.visibility,
+          product: values.product,
           tags: values.tags,
           files: values.addFiles,
           createdBy: portalUser?.id ?? "usr-unknown",
@@ -134,11 +129,11 @@ export function AdminAssetsView() {
     }
   };
 
-  const handleVisibilityToggle = async (group: AssetGroup) => {
+  const handleVisibilityToggle = async (asset: BrandAsset) => {
     try {
-      await setGroupVisibility(
-        group.id,
-        group.visibility === "public" ? "employee" : "public",
+      await setVisibility(
+        asset.id,
+        asset.visibility === "public" ? "employee" : "public",
       );
       toast.success(t("toasts.visibilityUpdated"));
     } catch {
@@ -146,10 +141,10 @@ export function AdminAssetsView() {
     }
   };
 
-  const handleArchiveToggle = async (group: AssetGroup) => {
+  const handleArchiveToggle = async (asset: BrandAsset) => {
     try {
-      const archived = group.status !== "archived";
-      await setGroupArchived(group.id, archived);
+      const archived = asset.status !== "archived";
+      await setArchived(asset.id, archived);
       toast.success(archived ? t("toasts.archived") : t("toasts.restored"));
     } catch {
       toast.error(t("toasts.saveFailed"));
@@ -159,7 +154,7 @@ export function AdminAssetsView() {
   const handleDelete = async () => {
     if (!deleting) return;
     try {
-      await removeAssetGroup(deleting.id);
+      await removeAsset(deleting.id);
       toast.success(t("toasts.deleted"));
     } catch {
       toast.error(t("toasts.saveFailed"));
@@ -168,7 +163,7 @@ export function AdminAssetsView() {
     }
   };
 
-  const columns = React.useMemo<ColumnDef<AssetGroup, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<BrandAsset, unknown>[]>(
     () => [
       {
         accessorKey: "title",
@@ -177,9 +172,9 @@ export function AdminAssetsView() {
           <div className="min-w-0">
             <p className="truncate font-medium">{row.original.title}</p>
             <p className="truncate text-xs text-muted-foreground">
-              {row.original.assets.length > 1
-                ? t("fileCount", { count: row.original.assets.length })
-                : row.original.preview.file.fileName}
+              {row.original.files.length > 1
+                ? t("fileCount", { count: row.original.files.length })
+                : row.original.files[0]?.fileName}
             </p>
           </div>
         ),
@@ -189,13 +184,13 @@ export function AdminAssetsView() {
         header: t("columns.formats"),
         cell: ({ row }) => (
           <div className="flex flex-wrap gap-1">
-            {row.original.assets.map((asset) => (
+            {sortedFiles(row.original.files).map((file) => (
               <Badge
-                key={asset.id}
+                key={file.id}
                 variant="outline"
                 className="font-semibold uppercase"
               >
-                {assetFormat(asset) ?? "file"}
+                {fileFormat(file) ?? "file"}
               </Badge>
             ))}
           </div>
@@ -235,7 +230,7 @@ export function AdminAssetsView() {
         header: t("columns.size"),
         cell: ({ row }) => (
           <span className="text-sm text-muted-foreground">
-            {formatFileSize(row.original.totalBytes)}
+            {formatFileSize(assetTotalBytes(row.original))}
           </span>
         ),
       },
@@ -252,8 +247,8 @@ export function AdminAssetsView() {
         id: "actions",
         header: "",
         cell: ({ row }) => {
-          const group = row.original;
-          const multiFormat = group.assets.length > 1;
+          const asset = row.original;
+          const multiFormat = asset.files.length > 1;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -267,13 +262,13 @@ export function AdminAssetsView() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => openEdit(group)}>
+                <DropdownMenuItem onSelect={() => openEdit(asset)}>
                   <Pencil className="me-2 h-4 w-4" aria-hidden />
                   {multiFormat ? t("actions.editFormats") : t("actions.edit")}
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <a
-                    href={groupDownloadHref(group)}
+                    href={assetBundleHref(asset)}
                     target="_blank"
                     rel="noopener"
                   >
@@ -288,9 +283,9 @@ export function AdminAssetsView() {
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onSelect={() => void handleVisibilityToggle(group)}
+                  onSelect={() => void handleVisibilityToggle(asset)}
                 >
-                  {group.visibility === "public" ? (
+                  {asset.visibility === "public" ? (
                     <>
                       <Lock className="me-2 h-4 w-4" aria-hidden />
                       {t("actions.makeEmployee")}
@@ -303,9 +298,9 @@ export function AdminAssetsView() {
                   )}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onSelect={() => void handleArchiveToggle(group)}
+                  onSelect={() => void handleArchiveToggle(asset)}
                 >
-                  {group.status === "archived" ? (
+                  {asset.status === "archived" ? (
                     <>
                       <ArchiveRestore className="me-2 h-4 w-4" aria-hidden />
                       {t("actions.restore")}
@@ -320,7 +315,7 @@ export function AdminAssetsView() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="text-destructive focus:text-destructive"
-                  onSelect={() => setDeleting(group)}
+                  onSelect={() => setDeleting(asset)}
                 >
                   <Trash2 className="me-2 h-4 w-4" aria-hidden />
                   {t("actions.delete")}
@@ -357,22 +352,21 @@ export function AdminAssetsView() {
       ) : (
         <DataTableShell
           columns={columns}
-          data={visibleGroups}
+          data={visibleAssets}
           loading={loading}
           emptyMessage={
-            hasActiveAssetGroupFilter(filter)
+            hasActiveAssetCatalogFilter(filter)
               ? t("filters.emptyMessage")
               : t("emptyMessage")
           }
-          getRowId={(group) => group.id}
-          // Narrowing while on page 3 would otherwise land on an empty page.
+          getRowId={(asset) => asset.id}
           resetPageKey={JSON.stringify(filter)}
           toolbar={
             <AssetTableToolbar
               filter={filter}
               onFilterChange={setFilter}
-              resultCount={visibleGroups.length}
-              totalCount={groups.length}
+              resultCount={visibleAssets.length}
+              totalCount={assets.length}
               disabled={loading}
             />
           }
@@ -382,7 +376,7 @@ export function AdminAssetsView() {
       <AssetFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        group={editing}
+        asset={editing}
         submitting={mutating}
         onSubmit={handleSubmit}
       />
@@ -399,7 +393,7 @@ export function AdminAssetsView() {
             <AlertDialogDescription>
               {t("deleteDialog.description", {
                 title: deleting?.title ?? "",
-                count: deleting?.assets.length ?? 0,
+                count: deleting?.files.length ?? 0,
               })}
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -409,7 +403,7 @@ export function AdminAssetsView() {
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => void handleDelete()}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive text-foreground hover:bg-destructive/90"
             >
               {t("deleteDialog.confirm")}
             </AlertDialogAction>

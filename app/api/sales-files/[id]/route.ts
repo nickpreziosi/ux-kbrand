@@ -33,7 +33,7 @@ export async function GET(
     const bytes = await readFile(join(process.cwd(), "private-assets", fileName));
     return new NextResponse(new Uint8Array(bytes), {
       headers: {
-        "Content-Type": asset.file.contentType,
+        "Content-Type": asset.files[0]?.contentType ?? "application/octet-stream",
         "Content-Disposition": `attachment; filename="${fileName}"`,
         "Cache-Control": "private, no-store",
       },

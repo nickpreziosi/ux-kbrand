@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { GUEST_COOKIE_NAME, GUEST_COOKIE_VALUE } from "@/lib/auth/guest-cookie";
 import { PRESENCE_COOKIE_NAME } from "@/lib/auth/presence-cookie";
 import { isAuthApiPath, isPublicPath } from "@/lib/auth/public-routes";
 import { isProtectedPath } from "@/lib/auth/protected-routes";
@@ -29,14 +30,24 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  const hasChildSession = request.cookies.get(PRESENCE_COOKIE_NAME)?.value === "1";
+  const hasPlatformPresence =
+    request.cookies.get(PLATFORM_PRESENCE_COOKIE)?.value === "1";
+  const hasGuest =
+    request.cookies.get(GUEST_COOKIE_NAME)?.value === GUEST_COOKIE_VALUE;
+  const hasLandingSession = isPlatformDeployment()
+    ? hasPlatformPresence || hasGuest
+    : hasChildSession || hasGuest;
+
+  // Landing prompt: `/` requires Guest or Microsoft before the public portal.
+  if (pathname === "/" && !hasLandingSession) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   // Public-first portal: everything except the employee/admin area is open.
   if (!isProtectedPath(pathname)) {
     return NextResponse.next();
   }
-
-  const hasChildSession = request.cookies.get(PRESENCE_COOKIE_NAME)?.value === "1";
-  const hasPlatformPresence =
-    request.cookies.get(PLATFORM_PRESENCE_COOKIE)?.value === "1";
 
   if (isPlatformDeployment()) {
     if (!hasPlatformPresence) {

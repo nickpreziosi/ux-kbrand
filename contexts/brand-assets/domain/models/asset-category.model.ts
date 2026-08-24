@@ -7,6 +7,11 @@ export const ASSET_CATEGORIES = [
   "brand-guidelines",
   "logos",
   "brand-imagery",
+  "iconography",
+  "photography",
+  "corporate-assets",
+  "social-media",
+  "merchandise",
   "fonts",
   "pitch-decks",
   "sales-materials",
@@ -19,6 +24,11 @@ export const PUBLIC_CATEGORIES: readonly AssetCategory[] = [
   "brand-guidelines",
   "logos",
   "brand-imagery",
+  "iconography",
+  "photography",
+  "corporate-assets",
+  "social-media",
+  "merchandise",
   "fonts",
 ];
 
@@ -34,6 +44,15 @@ export function isAssetCategory(value: string): value is AssetCategory {
 
 export function isSalesCategory(category: AssetCategory): boolean {
   return SALES_CATEGORIES.includes(category);
+}
+
+/** Which library an asset belongs to — derived from category, never chosen. */
+export type AssetResourceType = "brand" | "sales";
+
+export function resourceTypeForCategory(
+  category: AssetCategory,
+): AssetResourceType {
+  return isSalesCategory(category) ? "sales" : "brand";
 }
 
 /**

@@ -3,8 +3,7 @@ import type { NextRequest } from "next/server";
 import {
   canViewAsset,
   isAssetCategory,
-  isAssetFile,
-  type AssetVisibility,
+  isAssetProduct,
   type UpdateBrandAssetInput,
 } from "@/contexts/brand-assets/domain";
 import {
@@ -17,16 +16,21 @@ import {
   resolveApiViewer,
 } from "@/lib/api/viewer";
 import { isRecord } from "@/contexts/shared/domain/is-record";
+import {
+  isVisibility,
+  readAssetFiles,
+  readAssetIds,
+  readTags,
+} from "@/lib/api/asset-group-wire";
 
 type RouteContext = { params: Promise<{ id: string }> };
-
-function isVisibility(value: unknown): value is AssetVisibility {
-  return value === "public" || value === "employee";
-}
 
 function mapKnownError(err: unknown): NextResponse {
   if (err instanceof Error && err.message === "errors.assets.notFound") {
     return jsonError(err.message, 404);
+  }
+  if (err instanceof Error && err.message === "errors.assets.groupEmpty") {
+    return jsonError(err.message, 400);
   }
   return jsonError("errors.api.requestFailed", 500);
 }
@@ -61,10 +65,15 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
       return NextResponse.json({ asset });
     }
 
+    const addFiles =
+      body.addFiles === undefined ? undefined : readAssetFiles(body.addFiles);
     if (
+      addFiles === null ||
       (body.category !== undefined &&
         (typeof body.category !== "string" || !isAssetCategory(body.category))) ||
-      (body.visibility !== undefined && !isVisibility(body.visibility))
+      (body.visibility !== undefined && !isVisibility(body.visibility)) ||
+      (body.product !== undefined &&
+        (typeof body.product !== "string" || !isAssetProduct(body.product)))
     ) {
       return jsonError("errors.api.invalidRequest", 400);
     }
@@ -78,12 +87,15 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
           ? body.category
           : undefined,
       visibility: isVisibility(body.visibility) ? body.visibility : undefined,
-      file: isAssetFile(body.file) ? body.file : undefined,
+      product:
+        typeof body.product === "string" && isAssetProduct(body.product)
+          ? body.product
+          : undefined,
       previewUrl:
         typeof body.previewUrl === "string" ? body.previewUrl : undefined,
-      tags: Array.isArray(body.tags)
-        ? body.tags.filter((tag): tag is string => typeof tag === "string")
-        : undefined,
+      tags: readTags(body.tags),
+      addFiles,
+      removeFileIds: readAssetIds(body.removeFileIds),
     };
     const asset = await getServerBrandAssetAdminService().update(id, input);
     return NextResponse.json({ asset });

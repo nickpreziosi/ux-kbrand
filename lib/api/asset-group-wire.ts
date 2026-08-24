@@ -1,11 +1,9 @@
 import {
-  isAssetFile,
-  type AssetGroupFileInput,
+  isAssetFileDraft,
+  type AssetFileInput,
   type AssetVisibility,
 } from "@/contexts/brand-assets/domain";
 import { isRecord } from "@/contexts/shared/domain/is-record";
-
-/** Wire guards shared by the asset-group routes. */
 
 export function isVisibility(value: unknown): value is AssetVisibility {
   return value === "public" || value === "employee";
@@ -13,14 +11,14 @@ export function isVisibility(value: unknown): value is AssetVisibility {
 
 /**
  * Reads a list of `{ file, previewUrl? }` entries. Returns null when the shape
- * is wrong at all — a half-valid file list would publish a broken group.
+ * is wrong at all — a half-valid file list would publish a broken asset.
  */
-export function readGroupFiles(value: unknown): AssetGroupFileInput[] | null {
+export function readAssetFiles(value: unknown): AssetFileInput[] | null {
   if (!Array.isArray(value)) return null;
 
-  const files: AssetGroupFileInput[] = [];
+  const files: AssetFileInput[] = [];
   for (const entry of value) {
-    if (!isRecord(entry) || !isAssetFile(entry.file)) return null;
+    if (!isRecord(entry) || !isAssetFileDraft(entry.file)) return null;
     files.push({
       file: entry.file,
       previewUrl:
@@ -31,6 +29,9 @@ export function readGroupFiles(value: unknown): AssetGroupFileInput[] | null {
   }
   return files;
 }
+
+/** @deprecated Use readAssetFiles. */
+export const readGroupFiles = readAssetFiles;
 
 export function readTags(value: unknown): string[] | undefined {
   if (!Array.isArray(value)) return undefined;

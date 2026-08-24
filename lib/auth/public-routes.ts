@@ -1,7 +1,5 @@
 const PUBLIC_PATHS = new Set<string>([
   "/login",
-  "/forgot-password",
-  "/reset-password",
   "/auth/callback",
 ]);
 

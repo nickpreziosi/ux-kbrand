@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { inflateRawSync } from "node:zlib";
-import { createZip, crc32, type ZipEntry } from "@/lib/zip/create-zip";
+import { createZip, crc32, uniqueZipEntryName, type ZipEntry } from "@/lib/zip/create-zip";
 
 const LOCAL_HEADER = 0x04034b50;
 const CENTRAL_HEADER = 0x02014b50;
@@ -119,5 +119,25 @@ describe("createZip", () => {
     expect(Buffer.from(createZip(entries)).equals(Buffer.from(createZip(entries)))).toBe(
       true,
     );
+  });
+});
+
+describe("uniqueZipEntryName", () => {
+  it("keeps the first name and numbers later collisions", () => {
+    const taken = new Set<string>();
+
+    expect(uniqueZipEntryName(taken, "k-lab-logomark.pdf")).toBe("k-lab-logomark.pdf");
+    expect(uniqueZipEntryName(taken, "k-lab-logomark.pdf")).toBe("k-lab-logomark-2.pdf");
+    expect(uniqueZipEntryName(taken, "k-lab-logomark.pdf")).toBe("k-lab-logomark-3.pdf");
+    expect([...taken]).toEqual([
+      "k-lab-logomark.pdf",
+      "k-lab-logomark-2.pdf",
+      "k-lab-logomark-3.pdf",
+    ]);
+  });
+
+  it("handles a name with no extension", () => {
+    const taken = new Set<string>(["readme"]);
+    expect(uniqueZipEntryName(taken, "readme")).toBe("readme-2");
   });
 });

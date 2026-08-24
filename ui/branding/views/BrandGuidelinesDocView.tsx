@@ -6,7 +6,10 @@ import { useTranslations } from "next-intl";
 import { findBrandBookAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { AssetGrid } from "@/ui/brand-assets/components/asset-grid";
-import { DocumentViewerCard } from "@/ui/branding/components/document-viewer-card";
+import {
+  BrandBookActions,
+  DocumentViewerCard,
+} from "@/ui/branding/components/document-viewer-card";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 
 export function BrandGuidelinesDocView() {
@@ -21,13 +24,18 @@ export function BrandGuidelinesDocView() {
         title={t("title")}
         subtitle={t("subtitle")}
         icon={<BookOpen className="h-8 w-8" aria-hidden />}
+        actions={brandBook ? <BrandBookActions asset={brandBook} /> : undefined}
       />
 
       {loadError ? (
         <p className="text-sm text-destructive">{t("loadError")}</p>
       ) : (
         <>
-          <DocumentViewerCard asset={brandBook} loading={loading} />
+          <DocumentViewerCard
+            asset={brandBook}
+            loading={loading}
+            showActions={false}
+          />
 
           {companionDocs.length > 0 ? (
             <section className="space-y-4" aria-label={t("companionAriaLabel")}>

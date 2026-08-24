@@ -8,6 +8,18 @@
     background-color: hsl(var(--accent-brand) / 0.1) !important;
   }
 
+  /* Guest chrome: hide the library account menus; Sign in is injected instead.
+     SidebarFooter is a div.border-t.border-sidebar-border.p-4 (no data-sidebar). */
+  .kbrand-guest-chrome div.border-t.border-sidebar-border.p-4 > :not([data-kbrand-guest-sign-in]),
+  [data-kbrand-guest] [data-sidebar="footer"] > :not([data-kbrand-guest-sign-in]) {
+    display: none !important;
+  }
+
+  .kbrand-guest-chrome button:has(.overflow-hidden.rounded-app-radius),
+  [data-kbrand-guest] button:has(.overflow-hidden.rounded-app-radius) {
+    display: none !important;
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -263,12 +275,6 @@ a {
     --amex-brand-l: 40.98%;
     --amex-brand: var(--amex-brand-h) var(--amex-brand-s) var(--amex-brand-l);
 
-    /* Brand preview surfaces - the backdrops the logo lockups are designed
-       against. Fixed in both themes on purpose: a logo swatch has to show the
-       real surface, not the current UI theme, so .dark does not override these. */
-    --brand-surface-light: 0 0% 100%;
-    --brand-surface-dark: 210 100% 5%;
-
     /* Core colors */
     --background: 0 0% 100%;
     --foreground: var(--base);
@@ -515,14 +521,16 @@ body {
 }
 
 /* Disable transitions during theme/branding switches */
-/* Exclude elements with [data-allow-transition] to preserve specific animations (e.g., toggle icons) */
+/* [data-allow-transition] preserves the element + descendants (e.g. toggle icons).
+   [data-allow-animation] preserves only that element's animation (e.g. accordion height)
+   so children still snap colors instead of transitioning. */
 html.no-transitions,
 html.no-transitions
-  *:not([data-allow-transition]):not([data-allow-transition] *),
+  *:not([data-allow-transition]):not([data-allow-transition] *):not([data-allow-animation]),
 html.no-transitions
-  *:not([data-allow-transition]):not([data-allow-transition] *)::before,
+  *:not([data-allow-transition]):not([data-allow-transition] *):not([data-allow-animation])::before,
 html.no-transitions
-  *:not([data-allow-transition]):not([data-allow-transition] *)::after {
+  *:not([data-allow-transition]):not([data-allow-transition] *):not([data-allow-animation])::after {
   transition: none !important;
   animation: none !important;
 }

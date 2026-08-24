@@ -39,13 +39,49 @@ jest.mock("next-intl", () => ({
         "rules.donts.distort": "Don't distort.",
         "rules.donts.effects": "Don't add effects.",
         "rules.donts.rebuild": "Don't rebuild.",
+        backgroundsTitle: "Logo backgrounds",
+        backgroundsDescription: "Pick contrast.",
+        "backgrounds.photoGradient.label": "Reversed on photography",
+        "backgrounds.photoGradient.description": "White on a gradient.",
+        "backgrounds.neonField.label": "Reversed on brand imagery",
+        "backgrounds.neonField.description": "White on neon.",
+        "backgrounds.solidWhite.label": "Primary on white",
+        "backgrounds.solidWhite.description": "Blue on white.",
+        "backgrounds.greyOnWhite.label": "Grey on white",
+        "backgrounds.greyOnWhite.description": "Charcoal on white.",
+        cobrandingTitle: "Co-branding",
+        cobrandingDescription: "Equal weight.",
+        "cobranding.divider": "Use a divider.",
+        "cobranding.spacing": "Keep 0.5× gaps.",
+        "cobranding.parity": "Match wordmark height.",
+        cobrandingSpacingLabel: "Spacing",
+        cobrandingFinalLabel: "Partner lockup",
+        cobrandingPartnerLabel: "Partner",
+        misuseTitle: "Logo misuse",
+        misuseDescription: "Never alter the logo.",
+        "misuse.stretch": "Do not stretch the logo",
+        "misuse.rotate": "Do not rotate the logo",
+        "misuse.containers": "Do not add containers",
+        "misuse.flipHorizontal": "Do not flip horizontally",
+        "misuse.flipVertical": "Do not flip vertically",
+        "misuse.shear": "Do not shear the logo",
       },
-      "brandAssets.assetCard": {
-        download: "Download",
+      assets: {
+        viewAll: "View all {category}",
+        downloadPackage: "Download {category} package",
+      },
+      "brand.categories": {
+        "logos.title": "Logos",
       },
     };
     const table = catalog[namespace ?? ""] ?? {};
-    const t = (key: string) => table[key] ?? key;
+    const t = (key: string, values?: Record<string, string | number>) => {
+      const message = table[key] ?? key;
+      if (!values) return message;
+      return message.replace(/\{(\w+)\}/g, (_match, name: string) =>
+        String(values[name] ?? ""),
+      );
+    };
     return t;
   },
 }));
@@ -55,14 +91,25 @@ jest.mock("@/ui/brand-assets/hooks/use-category-assets", () => ({
 }));
 
 jest.mock("@/ui/brand-assets/components/asset-grid", () => ({
-  AssetGrid: () => <div data-testid="asset-grid" />,
+  AssetGrid: ({ assets }: { assets: BrandAsset[] }) => (
+    <div data-testid="asset-grid">{assets.length}</div>
+  ),
 }));
 
 jest.mock("@/ui/shared/components/k-brand-page-header", () => ({
-  KBrandPageHeader: ({ title, subtitle }: { title: string; subtitle?: string }) => (
+  KBrandPageHeader: ({
+    title,
+    subtitle,
+    actions,
+  }: {
+    title: string;
+    subtitle?: string;
+    actions?: React.ReactNode;
+  }) => (
     <header>
       <h1>{title}</h1>
       {subtitle ? <p>{subtitle}</p> : null}
+      {actions}
     </header>
   ),
 }));
@@ -130,16 +177,21 @@ function asset(partial: {
     id: partial.id,
     title: partial.title ?? partial.id,
     description: "",
+    resourceType: "brand",
     category: "logos",
+    product: "k-lab",
     visibility: "public",
     status: "active",
-    file: {
-      fileName: partial.fileName,
-      contentType: "image/png",
-      sizeBytes: 1,
-      storagePath: `assets/logos/${partial.fileName}`,
-      downloadUrl: `/brand-files/logos/${partial.fileName}`,
-    },
+    files: [
+      {
+        id: partial.id,
+        fileName: partial.fileName,
+        contentType: "image/png",
+        sizeBytes: 1,
+        storagePath: `assets/logos/${partial.fileName}`,
+        downloadUrl: `/brand-files/logos/${partial.fileName}`,
+      },
+    ],
     previewUrl: `/brand-files/logos/${partial.fileName}`,
     tags: partial.tags,
     createdAt: "2026-01-01T00:00:00.000Z",
@@ -173,6 +225,30 @@ const fixtureAssets: BrandAsset[] = [
     tags: ["mark", "icon", "logomark", "png"],
     title: "Mark PNG",
   }),
+  asset({
+    id: "ast-dark",
+    fileName: "k-lab-logo-dark.png",
+    tags: ["dark", "logo"],
+    title: "Dark",
+  }),
+  asset({
+    id: "ast-reversed",
+    fileName: "k-lab-logo-white.png",
+    tags: ["reversed", "logo"],
+    title: "Reversed",
+  }),
+  asset({
+    id: "ast-extra-1",
+    fileName: "k-lab-favicon.png",
+    tags: ["favicon"],
+    title: "Favicon",
+  }),
+  asset({
+    id: "ast-extra-2",
+    fileName: "k-lab-app-icon.png",
+    tags: ["app-icon"],
+    title: "App icon",
+  }),
 ];
 
 describe("LogoGuidelinesView", () => {
@@ -196,12 +272,49 @@ describe("LogoGuidelinesView", () => {
     expect(images).toHaveLength(2);
     expect(images[0]).toHaveAttribute(
       "src",
-      "/brand-files/logos/k-lab-logo-blue.png",
+      "/brand-files/logos/k-lab-logo-blue.svg",
     );
     expect(images[1]).toHaveAttribute(
       "src",
       "/brand-files/logos/k-lab-logomark.png",
     );
     expect(within(clearspaceSection).queryByText("K Lab")).not.toBeInTheDocument();
+  });
+
+  it("offers a logo package and links View all to the library", () => {
+    render(<LogoGuidelinesView />);
+
+    expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Download Logos package" })).toBeEnabled();
+    expect(screen.getByRole("link", { name: "View all Logos" })).toHaveAttribute(
+      "href",
+      "/assets?category=logos",
+    );
+  });
+
+  it("recreates background, co-branding, and misuse examples from catalog lockups", () => {
+    render(<LogoGuidelinesView />);
+
+    expect(
+      screen.getByRole("heading", { name: "Logo backgrounds" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Reversed on photography" }),
+    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-white.png");
+    expect(
+      screen.getByRole("img", { name: "Primary on white" }),
+    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-blue.svg");
+
+    expect(screen.getByRole("img", { name: "Spacing" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Partner lockup" }),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("heading", { name: "Logo misuse" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Do not stretch the logo")).toBeInTheDocument();
+    expect(screen.getByText("Do not add containers")).toBeInTheDocument();
+    expect(screen.getByText("Do not shear the logo")).toBeInTheDocument();
   });
 });
