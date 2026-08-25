@@ -5,8 +5,10 @@
  * replaces app-chrome SVGs in public/logos/.
  *
  *   node scripts/import-klab-logos.mjs
+ *   KLAB_LOGO_PACK=/path/to/pack KLAB_LOGO_ONLY=k-leads node scripts/import-klab-logos.mjs
  *
  * Requires Adobe Illustrator. Override the pack folder with KLAB_LOGO_PACK.
+ * KLAB_LOGO_ONLY limits the run to matching artwork ids or product slugs.
  */
 import sharp from "sharp";
 import {
@@ -79,7 +81,28 @@ const ARTWORKS = [
     id: "klab_sub_brands_ktalk_light",
     product: "k-talk",
   },
+  {
+    source: "klab_24_sub brands_KLeads dark",
+    id: "klab_sub_brands_kleads_dark",
+    product: "k-leads",
+  },
+  {
+    source: "klab_24_sub brands_KLeads light",
+    id: "klab_sub_brands_kleads_light",
+    product: "k-leads",
+  },
 ];
+
+const PRODUCTS = ["k-lab", "k-rails", "k-talk", "k-risk", "k-leads"];
+const onlyFilter = (process.env.KLAB_LOGO_ONLY ?? "")
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
+const artworks = onlyFilter.length
+  ? ARTWORKS.filter(
+      (art) => onlyFilter.includes(art.id) || onlyFilter.includes(art.product),
+    )
+  : ARTWORKS;
 
 const CHROME = {
   "klab-logo-full-blue.svg": "k-lab/klab_full_logo_blue.svg",
@@ -94,14 +117,19 @@ if (!existsSync(sourceDir)) {
   process.exit(1);
 }
 
-for (const product of ["k-lab", "k-rails", "k-talk", "k-risk"]) {
+if (onlyFilter.length && artworks.length === 0) {
+  console.error(`No artworks matched KLAB_LOGO_ONLY=${onlyFilter.join(",")}`);
+  process.exit(1);
+}
+
+for (const product of PRODUCTS) {
   mkdirSync(join(publicLogos, product), { recursive: true });
 }
 mkdirSync(brandSource, { recursive: true });
 mkdirSync(chromeDir, { recursive: true });
 
 const jobs = [];
-for (const art of ARTWORKS) {
+for (const art of artworks) {
   const aiSrc = join(sourceDir, `${art.source}.ai`);
   const pdfSrc = join(sourceDir, `${art.source}.pdf`);
   if (!existsSync(aiSrc) || !existsSync(pdfSrc)) {
@@ -211,44 +239,46 @@ for (const job of jobs) {
   }
 }
 
-for (const [chromeName, relative] of Object.entries(CHROME)) {
-  copyFileSync(join(publicLogos, relative), join(chromeDir, chromeName));
-}
+if (!onlyFilter.length) {
+  for (const [chromeName, relative] of Object.entries(CHROME)) {
+    copyFileSync(join(publicLogos, relative), join(chromeDir, chromeName));
+  }
 
-const subBrands = join(root, "public", "brand-files", "sub-brands");
-for (const [file, dest] of [
-  ["k-rails.webp", join(publicLogos, "k-rails", "k-rails.webp")],
-  ["k-talk.webp", join(publicLogos, "k-talk", "k-talk.webp")],
-]) {
-  const from = join(subBrands, file);
-  if (existsSync(from)) copyFileSync(from, dest);
-}
+  const subBrands = join(root, "public", "brand-files", "sub-brands");
+  for (const [file, dest] of [
+    ["k-rails.webp", join(publicLogos, "k-rails", "k-rails.webp")],
+    ["k-talk.webp", join(publicLogos, "k-talk", "k-talk.webp")],
+  ]) {
+    const from = join(subBrands, file);
+    if (existsSync(from)) copyFileSync(from, dest);
+  }
 
-const stale = [
-  join(subBrands, "k-rails.webp"),
-  join(subBrands, "k-talk.webp"),
-  join(subBrands, "k-rails-logo-dark.png"),
-  join(subBrands, "k-rails-logo-dark.svg"),
-  join(subBrands, "k-talk-logo-dark.png"),
-  join(subBrands, "k-talk-logo-dark.svg"),
-];
-for (const file of stale) {
-  if (existsSync(file)) unlinkSync(file);
-}
+  const stale = [
+    join(subBrands, "k-rails.webp"),
+    join(subBrands, "k-talk.webp"),
+    join(subBrands, "k-rails-logo-dark.png"),
+    join(subBrands, "k-rails-logo-dark.svg"),
+    join(subBrands, "k-talk-logo-dark.png"),
+    join(subBrands, "k-talk-logo-dark.svg"),
+  ];
+  for (const file of stale) {
+    if (existsSync(file)) unlinkSync(file);
+  }
 
-for (const name of readdirSync(publicLogos)) {
-  const path = join(publicLogos, name);
-  if (["k-lab", "k-rails", "k-talk", "k-risk"].includes(name)) continue;
-  rmSync(path, { recursive: true, force: true });
+  for (const name of readdirSync(publicLogos)) {
+    const path = join(publicLogos, name);
+    if (PRODUCTS.includes(name)) continue;
+    rmSync(path, { recursive: true, force: true });
+  }
 }
 
 if (existsSync(jsxPath)) unlinkSync(jsxPath);
 
-const written = ARTWORKS.flatMap((art) =>
+const written = artworks.flatMap((art) =>
   ["png", "svg", "pdf", "ai"].map((ext) => `${art.product}/${art.id}.${ext}`),
 );
 console.log(`Wrote ${written.length} library files under public/brand-files/logos/`);
-for (const art of ARTWORKS) {
+for (const art of artworks) {
   const svg = readFileSync(join(publicLogos, art.product, `${art.id}.svg`), "utf8");
   if (!svg.includes("<path") && !svg.includes("<polygon")) {
     console.warn(`SVG for ${art.id} may not contain vector paths`);

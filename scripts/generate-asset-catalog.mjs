@@ -105,6 +105,15 @@ const GROUPS = {
     title: "K Risk — logo, light",
     description: "Flat K Risk lockup reversed for dark surfaces.",
   },
+  klab_sub_brands_kleads_dark: {
+    title: "K Leads — logo, dark",
+    description:
+      "Flat K Leads lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+  },
+  klab_sub_brands_kleads_light: {
+    title: "K Leads — logo, light",
+    description: "Flat K Leads lockup reversed for dark surfaces.",
+  },
   "k-lab-bg-001": {
     title: "Chevron neon — deep navy",
     description: "Hero background: the chevron rendered in electric blue on deep navy.",
@@ -428,6 +437,27 @@ const CATALOG = [
     description: "Flat K Risk lockup reversed for dark surfaces.",
     tags: ["product", "k-risk", "light"],
     created: "2026-08-21T12:06:00.000Z",
+  }),
+  ...logoFormatRows({
+    id: "ast-039",
+    group: "klab_sub_brands_kleads_dark",
+    productDir: "k-leads",
+    basename: "klab_sub_brands_kleads_dark",
+    title: "K Leads — logo, dark",
+    description:
+      "Flat K Leads lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    tags: ["product", "k-leads", "dark"],
+    created: "2026-08-25T15:00:00.000Z",
+  }),
+  ...logoFormatRows({
+    id: "ast-032",
+    group: "klab_sub_brands_kleads_light",
+    productDir: "k-leads",
+    basename: "klab_sub_brands_kleads_light",
+    title: "K Leads — logo, light",
+    description: "Flat K Leads lockup reversed for dark surfaces.",
+    tags: ["product", "k-leads", "light"],
+    created: "2026-08-25T15:01:00.000Z",
   }),
 
   // ── Brand imagery: backgrounds (webp + png + jpg on the same group)
@@ -792,7 +822,7 @@ const SALES_CATEGORIES = ["pitch-decks", "sales-materials"];
 const FORMAT_TAGS = new Set([
   "png", "svg", "webp", "jpg", "jpeg", "gif", "ico", "pdf", "ai", "eps", "ttf", "otf", "css",
 ]);
-const PRODUCT_TAGS = new Set(["k-talk", "k-rails", "k-risk", "product"]);
+const PRODUCT_TAGS = new Set(["k-talk", "k-rails", "k-risk", "k-leads", "product"]);
 
 const PREVIEWABLE = /\.(png|webp|jpg|jpeg|svg|gif|ico)$/i;
 const PREVIEW_EXT_ORDER = [".svg", ".webp", ".png", ".jpg", ".jpeg", ".gif", ".ico"];
@@ -804,6 +834,7 @@ function productFromTags(tags) {
   if (tags.includes("k-talk")) return "k-talk";
   if (tags.includes("k-rails")) return "k-rails";
   if (tags.includes("k-risk")) return "k-risk";
+  if (tags.includes("k-leads")) return "k-leads";
   return "k-lab";
 }
 

@@ -18,7 +18,7 @@ const EXPECTED_VARIANT_FORMATS: Record<string, LogoFormat[]> = {
   logomark: ALL_LOGO_FORMATS,
 };
 
-const PRODUCT_VALUES = ["k-rails", "k-talk", "k-risk"] as const;
+const PRODUCT_VALUES = ["k-rails", "k-talk", "k-risk", "k-leads"] as const;
 const RETIRED_PRODUCT_TAGS = ["kena"] as const;
 
 const OBSOLETE_FILE_NAMES = [
@@ -47,7 +47,7 @@ describe("logo catalog (rebrand)", () => {
     }
   });
 
-  it("ships flat lockups (png + svg + pdf + ai) for K Rails, K Talk, and K Risk", () => {
+  it("ships flat lockups (png + svg + pdf + ai) for K Rails, K Talk, K Risk, and K Leads", () => {
     for (const product of PRODUCT_VALUES) {
       const darkLockups = logoAssets.filter(
         (asset) => asset.product === product && asset.tags.includes("dark"),
@@ -134,7 +134,7 @@ describe("logo catalog (rebrand)", () => {
   });
 
   it("is one record per artwork", () => {
-    expect(logoAssets).toHaveLength(16);
+    expect(logoAssets).toHaveLength(18);
   });
 
   it("stores logos under public/brand-files/logos/{product}/", () => {

@@ -849,6 +849,108 @@ export const SEED_BRAND_ASSETS: BrandAsset[] = [
     createdBy: "usr-001"
   },
   {
+    id: "klab_sub_brands_kleads_dark",
+    title: "K Leads — logo, dark",
+    description: "Flat K Leads lockup — the chevron mark and wordmark in charcoal for light surfaces.",
+    resourceType: "brand",
+    category: "logos",
+    product: "k-leads",
+    visibility: "public",
+    status: "active",
+    files: [
+      {
+        id: "ast-039",
+        fileName: "klab_sub_brands_kleads_dark.png",
+        contentType: "image/png",
+        sizeBytes: 77811,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_dark.png",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_dark.png"
+      },
+      {
+        id: "ast-039-svg",
+        fileName: "klab_sub_brands_kleads_dark.svg",
+        contentType: "image/svg+xml",
+        sizeBytes: 6869,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_dark.svg",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_dark.svg"
+      },
+      {
+        id: "ast-039-pdf",
+        fileName: "klab_sub_brands_kleads_dark.pdf",
+        contentType: "application/pdf",
+        sizeBytes: 5136,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_dark.pdf",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_dark.pdf"
+      },
+      {
+        id: "ast-039-ai",
+        fileName: "klab_sub_brands_kleads_dark.ai",
+        contentType: "application/postscript",
+        sizeBytes: 1585590,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_dark.ai",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_dark.ai"
+      }
+    ],
+    previewUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_dark.svg",
+    tags: [
+      "dark"
+    ],
+    createdAt: "2026-08-25T15:00:00.000Z",
+    updatedAt: "2026-08-25T15:00:03.000Z",
+    createdBy: "usr-001"
+  },
+  {
+    id: "klab_sub_brands_kleads_light",
+    title: "K Leads — logo, light",
+    description: "Flat K Leads lockup reversed for dark surfaces.",
+    resourceType: "brand",
+    category: "logos",
+    product: "k-leads",
+    visibility: "public",
+    status: "active",
+    files: [
+      {
+        id: "ast-032",
+        fileName: "klab_sub_brands_kleads_light.png",
+        contentType: "image/png",
+        sizeBytes: 73839,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_light.png",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_light.png"
+      },
+      {
+        id: "ast-032-svg",
+        fileName: "klab_sub_brands_kleads_light.svg",
+        contentType: "image/svg+xml",
+        sizeBytes: 8286,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_light.svg",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_light.svg"
+      },
+      {
+        id: "ast-032-pdf",
+        fileName: "klab_sub_brands_kleads_light.pdf",
+        contentType: "application/pdf",
+        sizeBytes: 6872,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_light.pdf",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_light.pdf"
+      },
+      {
+        id: "ast-032-ai",
+        fileName: "klab_sub_brands_kleads_light.ai",
+        contentType: "application/postscript",
+        sizeBytes: 1585536,
+        storagePath: "assets/logos/k-leads/klab_sub_brands_kleads_light.ai",
+        downloadUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_light.ai"
+      }
+    ],
+    previewUrl: "/brand-files/logos/k-leads/klab_sub_brands_kleads_light.svg",
+    tags: [
+      "light"
+    ],
+    createdAt: "2026-08-25T15:01:00.000Z",
+    updatedAt: "2026-08-25T15:01:03.000Z",
+    createdBy: "usr-001"
+  },
+  {
     id: "k-lab-bg-001",
     title: "Chevron neon — deep navy",
     description: "Hero background: the chevron rendered in electric blue on deep navy.",

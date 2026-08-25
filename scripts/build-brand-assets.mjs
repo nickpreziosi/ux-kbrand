@@ -31,7 +31,7 @@ if (!existsSync(masters)) {
   process.exit(1);
 }
 
-for (const dir of ["logos", "logos/k-lab", "logos/k-rails", "logos/k-talk", "logos/k-risk", "sub-brands", "backgrounds", "screens", "fonts", "docs"]) {
+for (const dir of ["logos", "logos/k-lab", "logos/k-rails", "logos/k-talk", "logos/k-risk", "logos/k-leads", "sub-brands", "backgrounds", "screens", "fonts", "docs"]) {
   mkdirSync(join(out, dir), { recursive: true });
 }
 
