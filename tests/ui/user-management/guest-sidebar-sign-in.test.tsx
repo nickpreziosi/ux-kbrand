@@ -25,22 +25,16 @@ jest.mock("next-intl", () => {
 });
 
 jest.mock("@k-lab/components", () => ({
-  Button: ({
+  TooltipProvider: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  Tooltip: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  TooltipTrigger: ({ children }: React.PropsWithChildren) => <>{children}</>,
+  TooltipContent: ({
     children,
-    href,
-    icon,
-    variant,
-    className,
-  }: React.PropsWithChildren<{
-    href?: string;
-    icon?: React.ReactNode;
-    variant?: string;
-    className?: string;
-  }>) => (
-    <a href={href} data-variant={variant} className={className}>
-      {icon}
+    side,
+  }: React.PropsWithChildren<{ side?: string }>) => (
+    <div data-testid="guest-sign-in-tooltip" data-side={side}>
       {children}
-    </a>
+    </div>
   ),
 }));
 
@@ -57,10 +51,13 @@ describe("GuestSidebarSignIn", () => {
     });
     const link = screen.getByRole("link", { name: /sign in/i });
     expect(link).toHaveAttribute("href", "/login?next=%2Fbranding%2Flogo");
-    expect(link).toHaveAttribute("data-variant", "ghost");
     expect(link.className).toMatch(/justify-start/);
+    expect(link.className).toMatch(/overflow-hidden/);
+    expect(link.className).toMatch(/h-10/);
+    expect(link.className).toMatch(/w-full/);
     expect(link.querySelector("svg")).not.toBeNull();
     expect(footer.querySelector("[data-kbrand-guest-sign-in]")).not.toBeNull();
+    expect(screen.queryByTestId("guest-sign-in-tooltip")).not.toBeInTheDocument();
 
     unmount();
     footer.remove();
@@ -89,5 +86,34 @@ describe("GuestSidebarSignIn", () => {
 
     unmount();
     footer.remove();
+  });
+
+  it("matches collapsed sidebar links: icon-only control with a right tooltip", async () => {
+    const sidebar = document.createElement("div");
+    sidebar.setAttribute("data-collapsed", "true");
+    const footer = document.createElement("div");
+    footer.className = "border-t border-sidebar-border p-5";
+    sidebar.appendChild(footer);
+    document.body.appendChild(sidebar);
+
+    const { unmount } = render(<GuestSidebarSignIn pathname="/" />);
+
+    await waitFor(() => {
+      expect(footer.querySelector("[data-kbrand-guest-sign-in]")).not.toBeNull();
+    });
+    const link = screen.getByRole("link", { name: "Sign in" });
+    expect(link).toHaveAttribute("href", "/login?next=%2F");
+    expect(link).toHaveAttribute("aria-label", "Sign in");
+    expect(link).not.toHaveTextContent("Sign in");
+    expect(link.className).toMatch(/h-10/);
+    expect(link.className).toMatch(/w-10/);
+    expect(link.className).toMatch(/justify-center/);
+    expect(link.querySelector("svg")).not.toBeNull();
+    const tooltip = screen.getByTestId("guest-sign-in-tooltip");
+    expect(tooltip).toHaveTextContent("Sign in");
+    expect(tooltip).toHaveAttribute("data-side", "right");
+
+    unmount();
+    sidebar.remove();
   });
 });
