@@ -68,7 +68,7 @@ describe("GuestSidebarSignIn", () => {
 
   it("finds k-lab SidebarFooter nodes that have no data-sidebar hook", () => {
     const footer = document.createElement("div");
-    footer.className = "border-t border-sidebar-border p-4";
+    footer.className = "border-t border-sidebar-border p-5";
     document.body.appendChild(footer);
 
     expect(findSidebarFooters()).toContain(footer);
@@ -78,7 +78,7 @@ describe("GuestSidebarSignIn", () => {
 
   it("portals Sign in into a k-lab SidebarFooter without data-sidebar", async () => {
     const footer = document.createElement("div");
-    footer.className = "border-t border-sidebar-border p-4";
+    footer.className = "border-t border-sidebar-border p-5";
     document.body.appendChild(footer);
 
     const { unmount } = render(<GuestSidebarSignIn pathname="/" />);

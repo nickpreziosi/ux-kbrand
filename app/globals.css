@@ -9,8 +9,8 @@
   }
 
   /* Guest chrome: hide the library account menus; Sign in is injected instead.
-     SidebarFooter is a div.border-t.border-sidebar-border.p-4 (no data-sidebar). */
-  .kbrand-guest-chrome div.border-t.border-sidebar-border.p-4 > :not([data-kbrand-guest-sign-in]),
+     SidebarFooter is a div.border-t.border-sidebar-border.p-5 (no data-sidebar). */
+  .kbrand-guest-chrome div.border-t.border-sidebar-border.p-5 > :not([data-kbrand-guest-sign-in]),
   [data-kbrand-guest] [data-sidebar="footer"] > :not([data-kbrand-guest-sign-in]) {
     display: none !important;
   }

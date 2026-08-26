@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 export function findSidebarFooters(root: ParentNode = document): Element[] {
   const hooked = Array.from(root.querySelectorAll("[data-sidebar='footer']"));
   const byClass = Array.from(
-    root.querySelectorAll("div.border-t.border-sidebar-border.p-4"),
+    root.querySelectorAll("div.border-t.border-sidebar-border.p-5"),
   );
   return Array.from(new Set([...hooked, ...byClass]));
 }
