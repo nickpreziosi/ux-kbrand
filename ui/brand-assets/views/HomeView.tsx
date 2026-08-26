@@ -22,6 +22,15 @@ const HOME_HERO_BACKGROUNDS = [
   "/brand-files/backgrounds/k-lab-bg-004.webp",
 ] as const;
 
+type HomeSlide = {
+  id: string;
+  background: (typeof HOME_HERO_BACKGROUNDS)[number];
+  title: string;
+  description: string;
+  cta: string;
+  href: string;
+};
+
 function heroBackgroundLayers(src: string): AuthBrandPanelLayer[] {
   return [
     {
@@ -77,7 +86,7 @@ export function HomeView() {
   const showSales = canSeeSalesSection(viewerRole);
 
   const slides = React.useMemo(() => {
-    const items = [
+    const items: HomeSlide[] = [
       {
         id: "guidelines",
         background: HOME_HERO_BACKGROUNDS[0],

@@ -64,7 +64,7 @@ describe("logo catalog (rebrand)", () => {
       const matches = SEED_BRAND_ASSETS.filter(
         (asset) =>
           asset.tags.includes(tag) ||
-          asset.product === tag ||
+          (asset.product as string) === tag ||
           asset.title.toLowerCase().includes(tag) ||
           asset.files.some((file) => file.fileName.includes(tag)),
       );

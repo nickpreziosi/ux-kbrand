@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 import { inflateRawSync } from "node:zlib";
+import { NextRequest } from "next/server";
 import type { BrandAsset } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 import type { AssetFile } from "@/contexts/brand-assets/domain/models/brand-asset.model";
 
@@ -197,7 +198,7 @@ describe("GET /api/asset-bundle/[id]", () => {
 });
 
 function postRequest(body: unknown) {
-  return new Request("http://localhost/api/asset-bundle", {
+  return new NextRequest("http://localhost/api/asset-bundle", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

@@ -11,7 +11,7 @@ Prototype status: functional demo on mock data (Notion task
 ## Getting started
 
 ```bash
-npm install                                  # needs the @k-lab Azure feed PAT (see .npmrc)
+npm install                                  # needs AZURE_NPM_TOKEN (Azure Artifacts PAT; see .npmrc)
 node scripts/generate-placeholder-docs.mjs   # once: employee demo docs + guidelines stand-in
 npm run dev                                  # http://localhost:3005 (or kbrand.klab.localhost:3005)
 ```
@@ -73,3 +73,23 @@ next-intl cookie-based locales (en / es / pt / ar).
 Deployment profiles follow the platform architecture doc: `isolated` (default —
 standalone public portal) or `platform` (SSO shell bridge, same plumbing as the
 other product repos).
+
+## Vercel
+
+`@k-lab/components` is served from a private Azure Artifacts feed. Vercel
+`npm install` needs `AZURE_NPM_TOKEN` (Production + Preview): an Azure DevOps
+PAT with **Packaging Read** on `klab-inc`. `.npmrc` interpolates that env var
+onto the feed URLs only — do not commit a token.
+
+Copy `NEXT_PUBLIC_FIREBASE_*` and `NEXT_PUBLIC_ENTRA_TENANT_ID` from local
+`.env` into the Vercel project **before** the first production build so they
+are inlined into the client bundle.
+
+Leave `NEXT_PUBLIC_COOKIE_DOMAIN` unset (host-only cookies). The
+`.klab.localhost` value in `.env.example` is local-only. Keep
+`NEXT_PUBLIC_DEPLOYMENT_PROFILE=isolated`. Set `NEXT_PUBLIC_APP_ORIGIN` to the
+Vercel URL or custom domain; do not set `NEXT_PUBLIC_SHELL_ORIGIN` unless this
+is a platform-shell deploy.
+
+The mock HTTP backend is in-memory per serverless instance — admin uploads and
+catalog edits do not persist across invocations.

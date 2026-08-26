@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import type { AssetFileDraft } from "@/contexts/brand-assets/domain";
+import { isAssetCategory, type AssetFileDraft } from "@/contexts/brand-assets/domain";
 import {
   saveUpload,
   uploadDownloadUrl,

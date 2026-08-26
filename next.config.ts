@@ -14,6 +14,13 @@ const nextConfig: NextConfig = {
     "kbrand.klab.localhost",
     "*.klab.localhost",
   ],
+  // Download/zip routes read these from disk via process.cwd(); NFT misses
+  // runtime-computed paths, so they must be traced into the serverless bundle.
+  outputFileTracingIncludes: {
+    "/api/brand-download/**": ["./public/brand-files/**"],
+    "/api/asset-bundle/**": ["./public/brand-files/**", "./private-assets/**"],
+    "/api/sales-files/**": ["./private-assets/**"],
+  },
 };
 
 export default withNextIntl(nextConfig);
