@@ -44,10 +44,6 @@ jest.mock("@/ui/shared/components/k-brand-page-header", () => ({
   KBrandPageHeader: ({ title }: { title: string }) => <h1>{title}</h1>,
 }));
 
-jest.mock("@/ui/shared/components/k-lab-brand-logo", () => ({
-  KLabBrandLogoMark: () => <span>logo</span>,
-}));
-
 jest.mock("@/ui/branding/components/document-viewer-card", () => ({
   DocumentViewerCard: () => <div data-testid="brand-book" />,
 }));
@@ -58,6 +54,7 @@ jest.mock("@k-lab/components", () => ({
   Tile: {
     Navigation: ({ title }: { title: string }) => <a href="/">{title}</a>,
   },
+  ProductLogo: require("@/tests/helpers/library-logo-stubs").StubProductLogo,
 }));
 
 import { BrandingOverviewView } from "@/ui/branding/views/BrandingOverviewView";
@@ -103,5 +100,7 @@ describe("BrandingOverviewView", () => {
       screen.getByRole("heading", { name: "Brand sections" }),
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Logos" })).toBeInTheDocument();
+    const lockup = screen.getByTestId("product-logo");
+    expect(lockup).toHaveAttribute("data-product", "klab");
   });
 });

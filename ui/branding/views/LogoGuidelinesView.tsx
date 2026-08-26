@@ -2,32 +2,37 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Card, CardContent, Skeleton, cn } from "@k-lab/components";
+import { Card, CardContent, KLabLogo, cn, type KLabLogoProps } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, PenTool, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 import { GuidelineDownloadsSection } from "@/ui/branding/components/guideline-downloads-section";
-import { previewAssetForVariant } from "@/ui/branding/content/logo-formats";
 import {
   LOGO_BACKGROUND_EXAMPLES,
   LOGO_MISUSE_EXAMPLES,
   LOGO_RULE_KEYS,
-  LOGO_VARIANTS,
   PRIMARY_LOGO_TREATMENTS,
   type LogoBackgroundExample,
   type LogoMisuseExample,
   type LogoVariant,
 } from "@/ui/branding/content/logo-variants";
 
-function previewUrlForVariant(
-  assets: Parameters<typeof previewAssetForVariant>[0],
-  variantId: LogoVariant["id"],
-): string | undefined {
-  const variant = LOGO_VARIANTS.find((entry) => entry.id === variantId);
-  return variant
-    ? previewAssetForVariant(assets, variant)?.previewUrl
-    : undefined;
+const GUIDELINE_LOGO_VARIANT: Record<
+  LogoVariant["id"],
+  NonNullable<KLabLogoProps["variant"]>
+> = {
+  primary: "blue",
+  dark: "dark",
+  reversed: "white",
+  logomark: "icon",
+};
+
+function GuidelineLogo({
+  variantId,
+  ...props
+}: Omit<KLabLogoProps, "variant" | "src"> & { variantId: LogoVariant["id"] }) {
+  return <KLabLogo variant={GUIDELINE_LOGO_VARIANT[variantId]} {...props} />;
 }
 
 /**
@@ -36,11 +41,11 @@ function previewUrlForVariant(
  * the diagram is drawn to spec, not just annotated with it.
  */
 function ClearspaceDiagram({
-  src,
+  variantId,
   alt,
   label,
 }: {
-  src: string;
+  variantId: LogoVariant["id"];
   alt: string;
   label: string;
 }) {
@@ -48,12 +53,9 @@ function ClearspaceDiagram({
     <div className="flex flex-col items-center gap-2">
       <div className="flex w-full items-center justify-center rounded-app-radius border border-dashed border-border bg-secondary p-6">
         <div className="relative border border-dashed border-accent-brand/60 p-6">
-          <Image
-            src={src}
+          <GuidelineLogo
+            variantId={variantId}
             alt={alt}
-            width={200}
-            height={80}
-            unoptimized
             className="h-12 w-auto max-w-full object-contain"
           />
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary px-1 text-xs font-semibold uppercase tracking-wider text-accent-brand">
@@ -68,12 +70,12 @@ function ClearspaceDiagram({
 
 /** A lockup shown on its only approved surface (white on black, grey on white). */
 function PrimaryLogoCard({
-  src,
+  variantId,
   surface,
   label,
   description,
 }: {
-  src: string;
+  variantId: LogoVariant["id"];
   surface: "light" | "dark";
   label: string;
   description: string;
@@ -86,12 +88,9 @@ function PrimaryLogoCard({
           surface === "dark" ? "bg-black" : "border-b border-border bg-white",
         )}
       >
-        <Image
-          src={src}
+        <GuidelineLogo
+          variantId={variantId}
           alt={label}
-          width={280}
-          height={90}
-          unoptimized
           className="h-12 w-auto max-w-full object-contain sm:h-14"
         />
       </div>
@@ -105,12 +104,10 @@ function PrimaryLogoCard({
 
 function BackgroundExampleCard({
   example,
-  src,
   label,
   description,
 }: {
   example: LogoBackgroundExample;
-  src: string;
   label: string;
   description: string;
 }) {
@@ -131,12 +128,9 @@ function BackgroundExampleCard({
             className="object-cover"
           />
         ) : null}
-        <Image
-          src={src}
+        <GuidelineLogo
+          variantId={example.variantId}
           alt={label}
-          width={240}
-          height={80}
-          unoptimized
           className="relative z-10 h-10 w-auto max-w-[70%] object-contain sm:h-12"
         />
       </div>
@@ -174,14 +168,10 @@ function PartnerLockup({ label }: { label: string }) {
  * that width on each side (w-6). `ltr` keeps the lockup oriented as drawn.
  */
 function CobrandingLockup({
-  darkSrc,
-  reversedSrc,
   partnerLabel,
   showSpacing,
   figureLabel,
 }: {
-  darkSrc?: string;
-  reversedSrc?: string;
   partnerLabel: string;
   showSpacing: boolean;
   figureLabel: string;
@@ -194,32 +184,18 @@ function CobrandingLockup({
       aria-label={figureLabel}
     >
       <div className="flex items-center">
-        {darkSrc ? (
-          <Image
-            src={darkSrc}
-            alt=""
-            width={200}
-            height={64}
-            unoptimized
-            className={cn(
-              "h-12 w-auto object-contain",
-              reversedSrc && "dark:hidden",
-            )}
-          />
-        ) : null}
-        {reversedSrc ? (
-          <Image
-            src={reversedSrc}
-            alt=""
-            width={200}
-            height={64}
-            unoptimized
-            className={cn(
-              "h-12 w-auto object-contain",
-              darkSrc && "hidden dark:block",
-            )}
-          />
-        ) : null}
+        <KLabLogo
+          variant="dark"
+          alt=""
+          aria-hidden
+          className="h-12 w-auto object-contain dark:hidden"
+        />
+        <KLabLogo
+          variant="white"
+          alt=""
+          aria-hidden
+          className="hidden h-12 w-auto object-contain dark:block"
+        />
         <div className="relative mx-0 flex h-12 items-stretch">
           {showSpacing ? (
             <>
@@ -267,20 +243,15 @@ function MisuseStrike() {
 
 function MisuseExampleCard({
   example,
-  src,
   caption,
 }: {
   example: LogoMisuseExample;
-  src: string;
   caption: string;
 }) {
   const logo = (
-    <Image
-      src={src}
+    <KLabLogo
+      variant="dark"
       alt=""
-      width={200}
-      height={64}
-      unoptimized
       className={cn(
         "h-8 w-auto max-w-[70%] object-contain sm:h-10",
         "className" in example ? example.className : undefined,
@@ -313,17 +284,6 @@ export function LogoGuidelinesView() {
   const t = useTranslations("branding.logo");
   const { assets, loading, loadError } = useCategoryAssets("logos");
 
-  const primaryPreview = previewAssetForVariant(
-    assets,
-    LOGO_VARIANTS.find((variant) => variant.id === "primary")!,
-  );
-  const markPreview = previewAssetForVariant(
-    assets,
-    LOGO_VARIANTS.find((variant) => variant.id === "logomark")!,
-  );
-  const darkPreviewUrl = previewUrlForVariant(assets, "dark");
-  const reversedPreviewUrl = previewUrlForVariant(assets, "reversed");
-
   return (
     <div className="space-y-8">
       <KBrandPageHeader
@@ -354,26 +314,17 @@ export function LogoGuidelinesView() {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4 @lg:grid-cols-2">
-              {PRIMARY_LOGO_TREATMENTS.map((treatment) => {
-                const preview = previewAssetForVariant(assets, {
-                  id: treatment.id === "whiteOnBlack" ? "reversed" : "dark",
-                  matchTags: [...treatment.matchTags],
-                  surface: treatment.surface,
-                });
-                return preview?.previewUrl ? (
-                  <PrimaryLogoCard
-                    key={treatment.id}
-                    src={preview.previewUrl}
-                    surface={treatment.surface}
-                    label={t(`primaryTreatments.${treatment.id}.label`)}
-                    description={t(
-                      `primaryTreatments.${treatment.id}.description`,
-                    )}
-                  />
-                ) : (
-                  <Skeleton key={treatment.id} className="h-48 w-full" />
-                );
-              })}
+              {PRIMARY_LOGO_TREATMENTS.map((treatment) => (
+                <PrimaryLogoCard
+                  key={treatment.id}
+                  variantId={treatment.id === "whiteOnBlack" ? "reversed" : "dark"}
+                  surface={treatment.surface}
+                  label={t(`primaryTreatments.${treatment.id}.label`)}
+                  description={t(
+                    `primaryTreatments.${treatment.id}.description`,
+                  )}
+                />
+              ))}
             </div>
           </section>
 
@@ -388,24 +339,16 @@ export function LogoGuidelinesView() {
                     {t("clearspaceDescription")}
                   </p>
                   <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2">
-                    {primaryPreview?.previewUrl ? (
-                      <ClearspaceDiagram
-                        src={primaryPreview.previewUrl}
-                        alt={t("clearspaceFullLabel")}
-                        label={t("clearspaceFullLabel")}
-                      />
-                    ) : (
-                      <Skeleton className="h-32 w-full" />
-                    )}
-                    {markPreview?.previewUrl ? (
-                      <ClearspaceDiagram
-                        src={markPreview.previewUrl}
-                        alt={t("clearspaceIconLabel")}
-                        label={t("clearspaceIconLabel")}
-                      />
-                    ) : (
-                      <Skeleton className="h-32 w-full" />
-                    )}
+                    <ClearspaceDiagram
+                      variantId="primary"
+                      alt={t("clearspaceFullLabel")}
+                      label={t("clearspaceFullLabel")}
+                    />
+                    <ClearspaceDiagram
+                      variantId="logomark"
+                      alt={t("clearspaceIconLabel")}
+                      label={t("clearspaceIconLabel")}
+                    />
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {t("minimumSize")}
@@ -452,20 +395,14 @@ export function LogoGuidelinesView() {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2">
-              {LOGO_BACKGROUND_EXAMPLES.map((example) => {
-                const src = previewUrlForVariant(assets, example.variantId);
-                return src ? (
-                  <BackgroundExampleCard
-                    key={example.id}
-                    example={example}
-                    src={src}
-                    label={t(`backgrounds.${example.id}.label`)}
-                    description={t(`backgrounds.${example.id}.description`)}
-                  />
-                ) : (
-                  <Skeleton key={example.id} className="h-56 w-full" />
-                );
-              })}
+              {LOGO_BACKGROUND_EXAMPLES.map((example) => (
+                <BackgroundExampleCard
+                  key={example.id}
+                  example={example}
+                  label={t(`backgrounds.${example.id}.label`)}
+                  description={t(`backgrounds.${example.id}.description`)}
+                />
+              ))}
             </div>
           </section>
 
@@ -476,28 +413,20 @@ export function LogoGuidelinesView() {
                 <p className="max-w-3xl text-sm text-muted-foreground">
                   {t("cobrandingDescription")}
                 </p>
-                {darkPreviewUrl || reversedPreviewUrl ? (
-                  <div className="grid grid-cols-1 overflow-hidden rounded-app-radius border border-border @lg:grid-cols-2">
+                <div className="grid grid-cols-1 overflow-hidden rounded-app-radius border border-border @lg:grid-cols-2">
+                  <CobrandingLockup
+                    partnerLabel={t("cobrandingPartnerLabel")}
+                    showSpacing
+                    figureLabel={t("cobrandingSpacingLabel")}
+                  />
+                  <div className="border-t border-border @lg:border-l @lg:border-t-0">
                     <CobrandingLockup
-                      darkSrc={darkPreviewUrl}
-                      reversedSrc={reversedPreviewUrl}
                       partnerLabel={t("cobrandingPartnerLabel")}
-                      showSpacing
-                      figureLabel={t("cobrandingSpacingLabel")}
+                      showSpacing={false}
+                      figureLabel={t("cobrandingFinalLabel")}
                     />
-                    <div className="border-t border-border @lg:border-l @lg:border-t-0">
-                      <CobrandingLockup
-                        darkSrc={darkPreviewUrl}
-                        reversedSrc={reversedPreviewUrl}
-                        partnerLabel={t("cobrandingPartnerLabel")}
-                        showSpacing={false}
-                        figureLabel={t("cobrandingFinalLabel")}
-                      />
-                    </div>
                   </div>
-                ) : (
-                  <Skeleton className="h-48 w-full" />
-                )}
+                </div>
                 <ul className="grid grid-cols-1 gap-2 @md:grid-cols-3">
                   {(["divider", "spacing", "parity"] as const).map((key) => (
                     <li key={key} className="flex gap-2 text-sm">
@@ -524,18 +453,13 @@ export function LogoGuidelinesView() {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2 @lg:grid-cols-3">
-              {LOGO_MISUSE_EXAMPLES.map((example) =>
-                darkPreviewUrl ? (
-                  <MisuseExampleCard
-                    key={example.id}
-                    example={example}
-                    src={darkPreviewUrl}
-                    caption={t(`misuse.${example.id}`)}
-                  />
-                ) : (
-                  <Skeleton key={example.id} className="h-48 w-full" />
-                ),
-              )}
+              {LOGO_MISUSE_EXAMPLES.map((example) => (
+                <MisuseExampleCard
+                  key={example.id}
+                  example={example}
+                  caption={t(`misuse.${example.id}`)}
+                />
+              ))}
             </div>
           </section>
         </>

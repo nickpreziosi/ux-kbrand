@@ -41,10 +41,6 @@ jest.mock("@/ui/user-management/hooks/use-portal-role", () => ({
   }),
 }));
 
-jest.mock("@/ui/shared/components/k-lab-brand-logo", () => ({
-  KLabBrandLogoMark: () => <div>mark</div>,
-}));
-
 jest.mock("@k-lab/components", () => {
   function Tile() {
     return null;
@@ -129,6 +125,7 @@ jest.mock("@k-lab/components", () => {
 
   return {
     cn: (...parts: Array<string | false | undefined>) => parts.filter(Boolean).join(" "),
+    KLabLogo: require("@/tests/helpers/library-logo-stubs").StubKLabLogo,
     Button: ({
       children,
       href,
@@ -246,5 +243,17 @@ describe("HomeView launch tiles", () => {
     expect(srcs[0]).toContain("k-lab-bg-003");
     expect(srcs.length).toBeGreaterThanOrEqual(2);
     expect(new Set(srcs).size).toBe(srcs.length);
+  });
+
+  it("puts the library white KLabLogo in each hero slide", () => {
+    const { container } = render(<HomeView />);
+
+    const logos = container.querySelectorAll(
+      'img[src="/logos/k-lab/klab_full_logo_light.svg"]',
+    );
+    expect(logos.length).toBeGreaterThanOrEqual(2);
+    for (const logo of logos) {
+      expect(logo).toHaveAttribute("data-variant", "white");
+    }
   });
 });

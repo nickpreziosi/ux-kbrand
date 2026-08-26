@@ -62,6 +62,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sora)", "sans-serif"],
+        body: ["Arial", "Helvetica", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

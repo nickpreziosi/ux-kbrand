@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Badge, Card, CardContent } from "@k-lab/components";
+import { Badge, Card, CardContent, KLabLogo } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Briefcase, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -22,14 +22,7 @@ function LetterheadMockup({ label }: { label: string }) {
       role="img"
       aria-label={label}
     >
-      <Image
-        src="/brand-files/logos/k-lab/klab_full_logo_dark.svg"
-        alt=""
-        width={120}
-        height={40}
-        unoptimized
-        className="h-6 w-auto"
-      />
+      <KLabLogo variant="dark" alt="" className="h-6 w-auto" />
       {/* Blueprint-style linework across the top, as on the guideline letterhead */}
       <div className="pointer-events-none absolute right-0 top-0 h-16 w-2/3 opacity-40">
         <div className="absolute right-6 top-5 h-px w-full bg-sky-300" />
@@ -64,14 +57,7 @@ function CoverMockup({ label }: { label: string }) {
         className="object-cover"
       />
       <div className="absolute bottom-4 left-4">
-        <Image
-          src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
-          alt=""
-          width={120}
-          height={40}
-          unoptimized
-          className="h-6 w-auto"
-        />
+        <KLabLogo variant="white" alt="" className="h-6 w-auto" />
       </div>
     </div>
   );
@@ -85,24 +71,10 @@ function BusinessCardMockup({ label }: { label: string }) {
       aria-label={label}
     >
       <div className="flex aspect-[17/10] w-full max-w-56 items-center justify-center rounded-md bg-black shadow-sm">
-        <Image
-          src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
-          alt=""
-          width={120}
-          height={40}
-          unoptimized
-          className="h-5 w-auto"
-        />
+        <KLabLogo variant="white" alt="" className="h-5 w-auto" />
       </div>
       <div className="flex aspect-[17/10] w-full max-w-56 items-center justify-center rounded-md border border-border bg-white p-4 shadow-sm">
-        <Image
-          src="/brand-files/logos/k-lab/klab_full_logo_dark.svg"
-          alt=""
-          width={120}
-          height={40}
-          unoptimized
-          className="h-5 w-auto"
-        />
+        <KLabLogo variant="dark" alt="" className="h-5 w-auto" />
       </div>
     </div>
   );

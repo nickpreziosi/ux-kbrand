@@ -27,18 +27,26 @@ jest.mock("next-intl", () => ({
         loadError: "Failed",
         clearspaceTitle: "Clearspace & minimum size",
         clearspaceDescription: "Keep clearspace.",
+        clearspaceFullLabel: "Full lockup",
+        clearspaceIconLabel: "Icon",
         minimumSize: "Min size 24px.",
         rulesTitle: "Do and don't",
-        allFilesTitle: "All logo files",
+        primaryTitle: "Primary logos",
+        "primaryTreatments.whiteOnBlack.label": "White on black",
+        "primaryTreatments.whiteOnBlack.description": "White on dark.",
+        "primaryTreatments.greyOnWhite.label": "Grey on white",
+        "primaryTreatments.greyOnWhite.description": "Grey on light.",
         allFilesDescription: "Every file.",
         "rules.dos.clearspace": "Respect clearspace.",
         "rules.dos.approvedFiles": "Use approved files.",
         "rules.dos.contrast": "Use contrast.",
         "rules.dos.scaleProportionally": "Scale proportionally.",
-        "rules.donts.recolor": "Don't recolor.",
-        "rules.donts.distort": "Don't distort.",
-        "rules.donts.effects": "Don't add effects.",
-        "rules.donts.rebuild": "Don't rebuild.",
+        "rules.donts.stretch": "Don't stretch.",
+        "rules.donts.rotate": "Don't rotate.",
+        "rules.donts.containers": "Don't add containers.",
+        "rules.donts.flipHorizontal": "Don't flip horizontally.",
+        "rules.donts.flipVertical": "Don't flip vertically.",
+        "rules.donts.shear": "Don't shear.",
         backgroundsTitle: "Logo backgrounds",
         backgroundsDescription: "Pick contrast.",
         "backgrounds.photoGradient.label": "Reversed on photography",
@@ -119,6 +127,7 @@ jest.mock("@k-lab/components", () => {
   return {
     cn: (...parts: Array<string | false | undefined>) =>
       parts.filter(Boolean).join(" "),
+    KLabLogo: require("@/tests/helpers/library-logo-stubs").StubKLabLogo,
     Button: ({
       children,
       href,
@@ -261,7 +270,7 @@ describe("LogoGuidelinesView", () => {
     });
   });
 
-  it("renders real full and icon logos in the clearspace section", () => {
+  it("renders library full and icon logos in the clearspace section", () => {
     render(<LogoGuidelinesView />);
 
     const clearspaceHeading = screen.getByRole("heading", {
@@ -272,11 +281,11 @@ describe("LogoGuidelinesView", () => {
     expect(images).toHaveLength(2);
     expect(images[0]).toHaveAttribute(
       "src",
-      "/brand-files/logos/k-lab-logo-blue.svg",
+      "/logos/k-lab/klab_full_logo_blue.svg",
     );
     expect(images[1]).toHaveAttribute(
       "src",
-      "/brand-files/logos/k-lab-logomark.png",
+      "/logos/k-lab/klab_logomark_dark.svg",
     );
     expect(within(clearspaceSection).queryByText("K Lab")).not.toBeInTheDocument();
   });
@@ -292,7 +301,7 @@ describe("LogoGuidelinesView", () => {
     );
   });
 
-  it("recreates background, co-branding, and misuse examples from catalog lockups", () => {
+  it("recreates background, co-branding, and misuse examples from library lockups", () => {
     render(<LogoGuidelinesView />);
 
     expect(
@@ -300,10 +309,10 @@ describe("LogoGuidelinesView", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("img", { name: "Reversed on photography" }),
-    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-white.png");
+    ).toHaveAttribute("src", "/logos/k-lab/klab_full_logo_light.svg");
     expect(
       screen.getByRole("img", { name: "Primary on white" }),
-    ).toHaveAttribute("src", "/brand-files/logos/k-lab-logo-blue.svg");
+    ).toHaveAttribute("src", "/logos/k-lab/klab_full_logo_blue.svg");
 
     expect(screen.getByRole("img", { name: "Spacing" })).toBeInTheDocument();
     expect(
@@ -316,5 +325,26 @@ describe("LogoGuidelinesView", () => {
     expect(screen.getByText("Do not stretch the logo")).toBeInTheDocument();
     expect(screen.getByText("Do not add containers")).toBeInTheDocument();
     expect(screen.getByText("Do not shear the logo")).toBeInTheDocument();
+  });
+
+  it("renders library lockups even when the catalog has no preview URLs", () => {
+    mockUseCategoryAssets.mockReturnValue({
+      assets: [],
+      loading: false,
+      loadError: null,
+      refresh: jest.fn(),
+    });
+
+    const { container } = render(<LogoGuidelinesView />);
+
+    expect(
+      container.querySelector('img[alt="White on black"]'),
+    ).toHaveAttribute("src", "/logos/k-lab/klab_full_logo_light.svg");
+    expect(
+      container.querySelector(
+        'img[alt="Grey on white"][class*="sm:h-14"]',
+      ),
+    ).toHaveAttribute("src", "/logos/k-lab/klab_full_logo_dark.svg");
+    expect(screen.queryByTestId("skeleton")).not.toBeInTheDocument();
   });
 });

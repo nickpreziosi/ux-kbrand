@@ -1,12 +1,17 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
-import { Card, CardContent } from "@k-lab/components";
+import {
+  Card,
+  CardContent,
+  KLeadsLogo,
+  KRailsLogo,
+  KRiskLogo,
+  KTalkLogo,
+} from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Boxes } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
 
 /**
  * The approved sub-brand roster. Kena is deliberately absent (retired from
@@ -14,43 +19,14 @@ import { useCategoryAssets } from "@/ui/brand-assets/hooks/use-category-assets";
  * sub-brand uses the same chevron lockup system.
  */
 const SUB_BRANDS = [
-  { id: "kRails", name: "K Rails", assetTag: "k-rails" },
-  { id: "kTalk", name: "K Talk", assetTag: "k-talk" },
-  { id: "kRisk", name: "K Risk", assetTag: "k-risk" },
-  { id: "kLeads", name: "K Leads", assetTag: "k-leads" },
+  { id: "kRails", name: "K Rails", Logo: KRailsLogo },
+  { id: "kTalk", name: "K Talk", Logo: KTalkLogo },
+  { id: "kRisk", name: "K Risk", Logo: KRiskLogo },
+  { id: "kLeads", name: "K Leads", Logo: KLeadsLogo },
 ] as const;
-
-/** Typographic stand-in following the chevron lockup construction —
- *  monochrome like the real lockups (rendered on the card's white surface). */
-function LockupPlaceholder({ name }: { name: string }) {
-  return (
-    <span className="flex items-baseline gap-2 font-sans text-3xl font-bold tracking-tight text-neutral-900">
-      <span aria-hidden>&gt;</span>
-      {name}
-    </span>
-  );
-}
 
 export function SubBrandsView() {
   const t = useTranslations("branding.subBrands");
-  const { assets, loadError } = useCategoryAssets("logos");
-
-  const productAssets = React.useMemo(
-    () => assets.filter((asset) => asset.product !== "k-lab"),
-    [assets],
-  );
-
-  /** Dark flat lockup previews for the roster cards, by sub-brand tag. */
-  const lockupPreview = React.useCallback(
-    (tag: string) =>
-      productAssets.find(
-        (asset) =>
-          asset.product === tag &&
-          asset.tags.includes("dark") &&
-          asset.previewUrl,
-      ),
-    [productAssets],
-  );
 
   return (
     <div className="space-y-8">
@@ -59,10 +35,6 @@ export function SubBrandsView() {
         subtitle={t("subtitle")}
         icon={<Boxes className="h-8 w-8" aria-hidden />}
       />
-
-      {loadError ? (
-        <p className="text-sm text-destructive">{t("loadError")}</p>
-      ) : null}
 
       <Card>
         <CardContent className="space-y-2 p-6">
@@ -82,22 +54,15 @@ export function SubBrandsView() {
         </div>
         <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2">
           {SUB_BRANDS.map((brand) => {
-            const preview = lockupPreview(brand.assetTag);
+            const Logo = brand.Logo;
             return (
               <Card key={brand.id} className="flex h-full flex-col">
                 <div className="flex min-h-36 items-center justify-center border-b border-border bg-white p-8">
-                  {preview?.previewUrl ? (
-                    <Image
-                      src={preview.previewUrl}
-                      alt={brand.name}
-                      width={240}
-                      height={62}
-                      unoptimized
-                      className="h-9 w-auto max-w-full object-contain sm:h-10"
-                    />
-                  ) : (
-                    <LockupPlaceholder name={brand.name} />
-                  )}
+                  <Logo
+                    variant="dark"
+                    alt={brand.name}
+                    className="h-9 w-auto max-w-full object-contain sm:h-10"
+                  />
                 </div>
                 <CardContent className="flex flex-1 flex-col gap-2 p-4">
                   <h3 className="text-sm font-semibold">{brand.name}</h3>

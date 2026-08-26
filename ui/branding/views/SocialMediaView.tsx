@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Badge, Card, CardContent, cn } from "@k-lab/components";
+import { Badge, Card, CardContent, KLabLogo, cn } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import { Check, Share2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -18,20 +18,17 @@ const AVATAR_TREATMENTS = [
   {
     id: "gradientIcon",
     className: "bg-gradient-to-br from-sky-400 to-blue-900",
-    src: "/brand-files/logos/k-lab/klab_logomark_light.svg",
-    kind: "icon" as const,
+    variant: "icon" as const,
   },
   {
     id: "graphiteIcon",
     className: "bg-gradient-to-br from-neutral-600 to-neutral-900",
-    src: "/brand-files/logos/k-lab/klab_logomark_light.svg",
-    kind: "icon" as const,
+    variant: "icon" as const,
   },
   {
     id: "navyWordmark",
     className: "bg-[#050d1f]",
-    src: "/brand-files/logos/k-lab/klab_full_logo_light.svg",
-    kind: "wordmark" as const,
+    variant: "white" as const,
   },
 ] as const;
 
@@ -87,15 +84,12 @@ export function SocialMediaView() {
                     treatment.className,
                   )}
                 >
-                  <Image
-                    src={treatment.src}
+                  <KLabLogo
+                    variant={treatment.variant}
                     alt={t(`avatars.${treatment.id}`)}
-                    width={treatment.kind === "icon" ? 56 : 88}
-                    height={treatment.kind === "icon" ? 56 : 28}
-                    unoptimized
                     className={cn(
                       "w-auto object-contain",
-                      treatment.kind === "icon" ? "h-12" : "h-5",
+                      treatment.variant === "icon" ? "h-12" : "h-5",
                     )}
                   />
                 </div>
@@ -130,14 +124,7 @@ export function SocialMediaView() {
               className="aspect-[4/1] w-full object-cover"
             />
             <div className="absolute inset-0 flex items-center justify-center gap-4 px-6">
-              <Image
-                src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
-                alt=""
-                width={160}
-                height={52}
-                unoptimized
-                className="h-6 w-auto sm:h-9"
-              />
+              <KLabLogo variant="white" alt="" className="h-6 w-auto sm:h-9" />
             </div>
           </div>
           <div
@@ -154,14 +141,7 @@ export function SocialMediaView() {
               className="aspect-[4/1] w-full object-cover"
             />
             <div className="absolute inset-0 flex items-center px-8">
-              <Image
-                src="/brand-files/logos/k-lab/klab_full_logo_light.svg"
-                alt=""
-                width={160}
-                height={52}
-                unoptimized
-                className="h-6 w-auto sm:h-9"
-              />
+              <KLabLogo variant="white" alt="" className="h-6 w-auto sm:h-9" />
             </div>
           </div>
         </div>

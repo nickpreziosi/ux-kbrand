@@ -1,8 +1,8 @@
 /**
  * Imports the 2026 K Lab logo pack: copies AI/PDF masters as-is, exports
  * tight SVG/PNG via Adobe Illustrator (artboard fitted to visibleBounds),
- * writes the library tree under public/brand-files/logos/{product}/, and
- * replaces app-chrome SVGs in public/logos/.
+ * writes the library tree under public/brand-files/logos/{product}/.
+ * App chrome lockups come from `npx @k-lab/components add brand-assets`.
  *
  *   node scripts/import-klab-logos.mjs
  *   KLAB_LOGO_PACK=/path/to/pack KLAB_LOGO_ONLY=k-leads node scripts/import-klab-logos.mjs
@@ -31,7 +31,6 @@ const sourceDir =
   "/Users/nicholaspreziosi/Downloads/KLab 2026 all assets brand portal/KLab_logos";
 const publicLogos = join(root, "public", "brand-files", "logos");
 const brandSource = join(root, "brand-source", "vector", "logos");
-const chromeDir = join(root, "public", "logos");
 const jsxPath = join(root, "scripts", ".import-klab-logos.jsx");
 
 const ARTWORKS = [
@@ -104,14 +103,6 @@ const artworks = onlyFilter.length
     )
   : ARTWORKS;
 
-const CHROME = {
-  "klab-logo-full-blue.svg": "k-lab/klab_full_logo_blue.svg",
-  "klab-logo-full-dark.svg": "k-lab/klab_full_logo_dark.svg",
-  "klab-logo-full-white.svg": "k-lab/klab_full_logo_light.svg",
-  "klab-logo-icon.svg": "k-lab/klab_logomark_dark.svg",
-  "klab-logo-icon-white.svg": "k-lab/klab_logomark_light.svg",
-};
-
 if (!existsSync(sourceDir)) {
   console.error(`Logo pack not found: ${sourceDir}`);
   process.exit(1);
@@ -126,7 +117,6 @@ for (const product of PRODUCTS) {
   mkdirSync(join(publicLogos, product), { recursive: true });
 }
 mkdirSync(brandSource, { recursive: true });
-mkdirSync(chromeDir, { recursive: true });
 
 const jobs = [];
 for (const art of artworks) {
@@ -240,10 +230,6 @@ for (const job of jobs) {
 }
 
 if (!onlyFilter.length) {
-  for (const [chromeName, relative] of Object.entries(CHROME)) {
-    copyFileSync(join(publicLogos, relative), join(chromeDir, chromeName));
-  }
-
   const subBrands = join(root, "public", "brand-files", "sub-brands");
   for (const [file, dest] of [
     ["k-rails.webp", join(publicLogos, "k-rails", "k-rails.webp")],

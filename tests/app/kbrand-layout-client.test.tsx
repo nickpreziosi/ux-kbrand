@@ -65,14 +65,6 @@ jest.mock("@/app/providers/app-intl-provider", () => ({
   useAppLocaleChange: () => ({ locale: "en", changeLocale: jest.fn() }),
 }));
 
-jest.mock("@/ui/shared/components/k-brand-sidebar-brand", () => ({
-  KBrandSidebarBrand: () => <div>brand</div>,
-}));
-
-jest.mock("@/ui/shared/components/k-lab-brand-logo", () => ({
-  KLabBrandLogo: () => <div>logo</div>,
-}));
-
 jest.mock("@/ui/user-management/components/guest-sidebar-sign-in", () => ({
   GuestSidebarSignIn: ({ pathname }: { pathname: string }) => (
     <div data-testid="guest-sidebar-sign-in">{pathname}</div>
@@ -180,6 +172,17 @@ describe("KBrandLayoutClient resources nav", () => {
     ]);
     expect(captured.props?.accordions).toEqual([brandingAccordion()]);
     expect(captured.props?.bottomNav).toEqual([]);
+  });
+
+  it("omits custom brand and mobileHeader so the library stacked K Lab lockup is used", () => {
+    render(
+      <KBrandLayoutClient>
+        <div>page</div>
+      </KBrandLayoutClient>,
+    );
+
+    expect(captured.props?.brand).toBeUndefined();
+    expect(captured.props?.mobileHeader).toBeUndefined();
   });
 
   it("adds Sales resources for Microsoft-signed-in employees", () => {

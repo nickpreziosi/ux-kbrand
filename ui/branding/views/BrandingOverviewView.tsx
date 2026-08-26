@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Card, CardContent, Tile } from "@k-lab/components";
+import { Card, CardContent, ProductLogo, Tile } from "@k-lab/components";
 import { KBrandPageHeader } from "@/ui/shared/components/k-brand-page-header";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -28,7 +28,6 @@ import {
   OVERVIEW_VISION_KEYS,
   OVERVIEW_WELCOME_BACKGROUND,
 } from "@/ui/branding/content/brand-overview";
-import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
 
 const SECTION_TILES: { id: string; href: string; icon: LucideIcon }[] = [
   { id: "logo", href: "/branding/logo", icon: PenTool },
@@ -46,18 +45,11 @@ const SECTION_TILES: { id: string; href: string; icon: LucideIcon }[] = [
 
 function ThemeLockup() {
   return (
-    <>
-      <KLabBrandLogoMark
-        variant="dark"
-        className="h-12 w-auto dark:hidden"
-        aria-hidden
-      />
-      <KLabBrandLogoMark
-        variant="white"
-        className="hidden h-12 w-auto dark:block"
-        aria-hidden
-      />
-    </>
+    <ProductLogo
+      product="klab"
+      className="h-12 w-auto"
+      aria-hidden
+    />
   );
 }
 

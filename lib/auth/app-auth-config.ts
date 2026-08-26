@@ -1,6 +1,9 @@
-import { resolveAuthConfig, type AuthConfig } from "@k-lab/components";
-import { gradientBrandLayers } from "@/lib/brand/auth-brand-layers";
-import { KLabBrandLogoMark } from "@/ui/shared/components/k-lab-brand-logo";
+import {
+  KLabLogo,
+  authBrandPanelPresets,
+  resolveAuthConfig,
+  type AuthConfig,
+} from "@k-lab/components";
 
 export const APP_AUTH_PATHS = {
   loginPath: "/login",
@@ -26,10 +29,8 @@ export function getAppAuthConfig(overrides?: {
     welcomeText:
       overrides?.welcomeText ??
       "Employee sign in — sales resources and admin tools.",
-    Logo: KLabBrandLogoMark,
-    // Matches k-lab-components authBrandPanelPresets.gradient()
-    // (WebP in public/images/ from brand-assets package).
-    brandPanelLayers: gradientBrandLayers(),
+    Logo: KLabLogo,
+    brandPanelLayers: authBrandPanelPresets.gradient(),
     brandPanelLogoVariant: "white",
     ...APP_AUTH_PATHS,
   });

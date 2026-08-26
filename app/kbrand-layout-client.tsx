@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   AppLayoutClient,
@@ -55,8 +54,6 @@ import {
 import { GuestSidebarSignIn } from "@/ui/user-management/components/guest-sidebar-sign-in";
 import { usePortalRole } from "@/ui/user-management/hooks/use-portal-role";
 import { useAppLocaleChange } from "@/app/providers/app-intl-provider";
-import { KBrandSidebarBrand } from "@/ui/shared/components/k-brand-sidebar-brand";
-import { KLabBrandLogo } from "@/ui/shared/components/k-lab-brand-logo";
 
 /** Same recipe as InternalAppShellLayout DEMO_SUPPORT_TOPICS. */
 const SUPPORT_TOPICS: SupportTopicOption[] = [
@@ -283,7 +280,6 @@ export function KBrandLayoutClient({
             void changeLocale(code);
           }}
           languages={DEFAULT_LANGUAGE_OPTIONS}
-          brand={<KBrandSidebarBrand />}
           footer={footer}
           navbarRightSlot={
             showSignIn ? (
@@ -298,23 +294,8 @@ export function KBrandLayoutClient({
               />
             ) : undefined
           }
-        mobileHeader={
-          <Link
-            href="/"
-            className="flex h-11 w-full min-w-0 items-center"
-            aria-label={t("homeAriaLabel")}
-          >
-            <span className="inline-flex h-8 max-w-full items-center origin-left scale-[1.08]">
-              <KLabBrandLogo
-                variant="theme-aware"
-                className="h-7 w-auto max-w-full"
-                aria-hidden
-              />
-            </span>
-          </Link>
-        }
-        contentClassName="bg-background"
-      >
+          contentClassName="bg-background"
+        >
         <div className="mx-auto w-full max-w-[1800px]">{children}</div>
       </AppLayoutClient>
       </div>

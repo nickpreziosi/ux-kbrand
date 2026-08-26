@@ -95,6 +95,11 @@ jest.mock("@k-lab/components", () => ({
   CardContent: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
   CardTitle: ({ children }: React.PropsWithChildren) => <h3>{children}</h3>,
   Skeleton: () => <div data-testid="skeleton" />,
+  KLabLogo: require("@/tests/helpers/library-logo-stubs").StubKLabLogo,
+  KRailsLogo: require("@/tests/helpers/library-logo-stubs").StubKRailsLogo,
+  KTalkLogo: require("@/tests/helpers/library-logo-stubs").StubKTalkLogo,
+  KRiskLogo: require("@/tests/helpers/library-logo-stubs").StubKRiskLogo,
+  KLeadsLogo: require("@/tests/helpers/library-logo-stubs").StubKLeadsLogo,
 }));
 
 import { ImageryView } from "@/ui/branding/views/ImageryView";
@@ -229,9 +234,23 @@ describe("guideline pages category packages", () => {
   it("keeps corporate stationery mockups and zips templates", async () => {
     const user = userEvent.setup();
     stubCategory(many("corporate-assets", 6));
-    render(<CorporateAssetsView />);
+    const { container } = render(<CorporateAssetsView />);
 
     expect(screen.getByRole("heading", { name: "Stationery system" })).toBeInTheDocument();
+    const lockups = Array.from(
+      container.querySelectorAll('img[src^="/logos/k-lab/"]'),
+    );
+    expect(lockups.map((node) => node.getAttribute("src"))).toEqual(
+      expect.arrayContaining([
+        "/logos/k-lab/klab_full_logo_dark.svg",
+        "/logos/k-lab/klab_full_logo_light.svg",
+      ]),
+    );
+    expect(
+      Array.from(container.querySelectorAll("img")).some((node) =>
+        node.getAttribute("src")?.startsWith("/brand-files/backgrounds/"),
+      ),
+    ).toBe(true);
     expect(screen.getByRole("link", { name: "View all Corporate assets" })).toHaveAttribute(
       "href",
       "/assets?category=corporate-assets",
@@ -267,9 +286,24 @@ describe("guideline pages category packages", () => {
   it("keeps social avatar mockups and zips social files", async () => {
     const user = userEvent.setup();
     stubCategory(many("social-media", 6));
-    render(<SocialMediaView />);
+    const { container } = render(<SocialMediaView />);
 
     expect(screen.getByRole("heading", { name: "Profile avatars" })).toBeInTheDocument();
+    expect(
+      container.querySelectorAll(
+        'img[src="/logos/k-lab/klab_logomark_dark.svg"]',
+      ).length,
+    ).toBeGreaterThanOrEqual(2);
+    expect(
+      container.querySelectorAll(
+        'img[src="/logos/k-lab/klab_full_logo_light.svg"]',
+      ).length,
+    ).toBeGreaterThanOrEqual(2);
+    expect(
+      Array.from(container.querySelectorAll("img")).some((node) =>
+        node.getAttribute("src")?.startsWith("/brand-files/backgrounds/"),
+      ),
+    ).toBe(true);
     expect(screen.getByRole("link", { name: "View all Social media" })).toHaveAttribute(
       "href",
       "/assets?category=social-media",
@@ -295,17 +329,26 @@ describe("guideline pages category packages", () => {
   });
 
   it("keeps the sub-brand roster without category packages", () => {
-    stubCategory([
-      ...Array.from({ length: 5 }, (_, index) =>
-        asset(`talk-${index}`, "logos", {
-          product: "k-talk",
-          tags: ["dark"],
-        }),
-      ),
-    ]);
+    stubCategory([]);
     render(<SubBrandsView />);
 
     expect(screen.getByRole("heading", { name: "Product family" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "K Rails" })).toHaveAttribute(
+      "src",
+      "/logos/k-rails/klab_sub_brands_krails_dark.svg",
+    );
+    expect(screen.getByRole("img", { name: "K Talk" })).toHaveAttribute(
+      "src",
+      "/logos/k-talk/klab_sub_brands_ktalk_dark.svg",
+    );
+    expect(screen.getByRole("img", { name: "K Risk" })).toHaveAttribute(
+      "src",
+      "/logos/k-risk/klab_sub_brands_krisk_dark.svg",
+    );
+    expect(screen.getByRole("img", { name: "K Leads" })).toHaveAttribute(
+      "src",
+      "/logos/k-leads/klab_sub_brands_kleads_dark.svg",
+    );
     expect(screen.queryByTestId("asset-grid")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Download Logos package" })).not.toBeInTheDocument();
     expect(
